@@ -1,0 +1,185 @@
+﻿//imagen loading
+splash_image	a	1	/media/look/loading.png	-	0	0	505	335
+//define musica
+musicaciudad	/media/sonidos/menu/juego01.mid
+
+//define fondo del escenario
+bgimage	-	0	/media/imagenes/tiles/Adoquin_16_base.png	-
+//define cuadro calle
+calle	*	0	/media/imagenes/tiles/marble16.gif	-
+//define cuadro fin de la calle
+callefin	|	32	/media/imagenes/tiles/marble16.gif	-
+//define piedra
+piedra	+	11	/media/imagenes/tiles/piedra_16x16.png	-
+//define piedraOscura
+piedra_os	^	16	/media/imagenes/tiles/Rock_Gray_1.png	-
+//define pasto
+pasto	%	0	/media/imagenes/tiles/pasto_oscuro.png	-
+//define tile bloquedo
+cuadro	!	20	/media/imagenes/tiles/vacio.png	-
+//define mob
+mario	-	0	/media/imagenes/mobs/mario.gif	-
+//define imagen del cursor
+cursor	-	0	/media/imagenes/menu/banana-con-capa.gif	-
+
+
+//gif-map de 11 cuadros que simulan el desplazar frontal del personaje
+pj_front_map		/media/imagenes/personaje/Animation_Front64.png		0	0	21	64	0	0
+pj_back_map		/media/imagenes/personaje/Animation_Back64.png		0	0	21	64	0	0
+pj_right_map		/media/imagenes/personaje/Animation_Right64.png		0	0	49	64	0	0
+//arbolMap
+arbol_map		/media/imagenes/tiles/secuenciarbol.png		0	0	64	128	0	0
+//piletaMap
+pileta_map		/media/imagenes/tiles/secuenciapileta.png		0	0	85	64	0	0
+//casa4Map
+casa4_map		/media/imagenes/tiles/secuenciacasas.png		0	0	192	123	0	0
+//gif-map casa1
+casa1_map	/media/imagenes/tiles/casa2.gif	0	0	192	100	192	100
+//casa2
+casa2	-	0	/media/imagenes/tiles/Terrible_Casa_HechaMier.png	-
+//casa3
+casa3	-	0	/media/imagenes/tiles/Terrible_Casa_HechaMier2.png	-
+
+//casa5
+casa5	-	0	/media/imagenes/tiles/Terrible_Casa_Trasparente_2.png	-
+//npc's
+alcaldiaNpc	-	0	/media/imagenes/npc/npc4.png	-
+//npc's
+casa1Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa2Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa3Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa4Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa5Npc	-	0	/media/imagenes/npc/npc4.png	-
+//separacion cuadro por cuadro del movimiento del pj a la izquierda
+human_f0	p	0	pj_front_map	0		-	0	0	21	64
+human_f1	p	0	pj_front_map	1		-	0	0	21	64
+human_f2	p	0	pj_front_map	2		-	0	0	21	64
+human_f3	p	0	pj_front_map	3		-	0	0	21	64
+human_f4	p	0	pj_front_map	4		-	0	0	21	64
+human_f5	p	0	pj_front_map	5		-	0	0	21	64
+human_f6	p	0	pj_front_map	6		-	0	0	21	64
+human_f7	p	0	pj_front_map	7		-	0	0	21	64
+human_f8	p	0	pj_front_map	8		-	0	0	21	64
+human_f9	p	0	pj_front_map	9		-	0	0	21	64
+human_f10	p	0	pj_front_map	10		-	0	0	21	64
+human_f11	p	0	pj_front_map	11		-	0	0	21	64
+
+//separacion cuadro por cuadro del movimiento del pj a la derecha
+human_b0	p	0	pj_back_map	0		-	0	0	21	64
+human_b1	p	0	pj_back_map	1		-	0	0	21	64
+human_b2	p	0	pj_back_map	2		-	0	0	21	64
+human_b3	p	0	pj_back_map	3		-	0	0	21	64
+human_b4	p	0	pj_back_map	4		-	0	0	21	64
+human_b5	p	0	pj_back_map	5		-	0	0	21	64
+human_b6	p	0	pj_back_map	6		-	0	0	21	64
+human_b7	p	0	pj_back_map	7		-	0	0	21	64
+human_b8	p	0	pj_back_map	8		-	0	0	21	64
+human_b9	p	0	pj_back_map	9		-	0	0	21	64
+human_b10	p	0	pj_back_map	10		-	0	0	21	64
+human_b11	p	0	pj_back_map	11		-	0	0	21	64
+
+//separacion cuadro por cuadro del movimiento del pj adelante
+human_l0	p	0	pj_right_map	0		x	0	0	21	64
+human_l1	p	0	pj_right_map	1		x	0	0	21	64
+human_l2	p	0	pj_right_map	2		x	0	0	21	64
+human_l3	p	0	pj_right_map	3		x	0	0	21	64
+human_l4	p	0	pj_right_map	4		x	0	0	21	64
+human_l5	p	0	pj_right_map	5		x	0	0	21	64
+human_l6	p	0	pj_right_map	6		x	0	0	21	64
+human_l7	p	0	pj_right_map	7		x	0	0	21	64
+human_l8	p	0	pj_right_map	8		x	0	0	21	64
+human_l9	p	0	pj_right_map	9		x	0	0	21	64
+human_l10	p	0	pj_right_map	10		x	0	0	21	64
+human_l11	p	0	pj_right_map	11		x	0	0	21	64
+
+//separacion cuadro por cuadro del movimiento del pj detras
+human_r0	p	0	pj_right_map	0		-	0	0	21	64
+human_r1	p	0	pj_right_map	1		-	0	0	21	64
+human_r2	p	0	pj_right_map	2		-	0	0	21	64
+human_r3	p	0	pj_right_map	3		-	0	0	21	64
+human_r4	p	0	pj_right_map	4		-	0	0	21	64
+human_r5	p	0	pj_right_map	5		-	0	0	21	64
+human_r6	p	0	pj_right_map	6		-	0	0	21	64
+human_r7	p	0	pj_right_map	7		-	0	0	21	64
+human_r8	p	0	pj_right_map	8		-	0	0	21	64
+human_r9	p	0	pj_right_map	9		-	0	0	21	64
+human_r10	p	0	pj_right_map	10		-	0	0	21	64
+human_r11	p	0	pj_right_map	11		-	0	0	21	64
+
+
+//separacion cuadro por cuadro del movimiento del arbol
+arbol_00	p	0	arbol_map	0		-	0	0	64	128
+arbol_01	p	0	arbol_map	1		-	0	0	64	128
+arbol_02	p	0	arbol_map	2		-	0	0	64	128
+arbol_03	p	0	arbol_map	3		-	0	0	64	128
+arbol_04	p	0	arbol_map	4		-	0	0	64	128
+arbol_05	p	0	arbol_map	5		-	0	0	64	128
+arbol_06	p	0	arbol_map	6		-	0	0	64	128
+arbol_07	p	0	arbol_map	7		-	0	0	64	128
+arbol_08	p	0	arbol_map	8		-	0	0	64	128
+arbol_09	p	0	arbol_map	9		-	0	0	64	128
+arbol_10	p	0	arbol_map	10		-	0	0	64	128
+arbol_11	p	0	arbol_map	11		-	0	0	64	128
+arbol_12	p	0	arbol_map	12		-	0	0	64	128
+arbol_13	p	0	arbol_map	13		-	0	0	64	128
+arbol_14	p	0	arbol_map	14		-	0	0	64	128
+arbol_15	p	0	arbol_map	15		-	0	0	64	128
+
+//separacion cuadro por cuadro del movimiento de la pileta
+pileta_00	p	0	pileta_map	0		-	0	0	85	64
+pileta_01	p	0	pileta_map	1		-	0	0	85	64
+pileta_02	p	0	pileta_map	2		-	0	0	85	64
+pileta_03	p	0	pileta_map	3		-	0	0	85	64
+pileta_04	p	0	pileta_map	4		-	0	0	85	64
+pileta_05	p	0	pileta_map	5		-	0	0	85	64
+pileta_06	p	0	pileta_map	6		-	0	0	85	64
+pileta_07	p	0	pileta_map	7		-	0	0	85	64
+pileta_08	p	0	pileta_map	8		-	0	0	85	64
+
+//separacion cuadro por cuadro del movimiento de casa4
+casa4_00	p	0	casa4_map	0		-	0	0	192	123
+casa4_01	p	0	casa4_map	1		-	0	0	192	123
+casa4_02	p	0	casa4_map	2		-	0	0	192	123
+casa4_03	p	0	casa4_map	3		-	0	0	192	123
+casa4_04	p	0	casa4_map	4		-	0	0	192	123
+casa4_05	p	0	casa4_map	5		-	0	0	192	123
+casa4_06	p	0	casa4_map	6		-	0	0	192	123
+casa4_07	p	0	casa4_map	7		-	0	0	192	123
+casa4_08	p	0	casa4_map	8		-	0	0	192	123
+casa4_09	p	0	casa4_map	9		-	0	0	192	123
+casa4_10	p	0	casa4_map	10		-	0	0	192	123
+casa4_11	p	0	casa4_map	11		-	0	0	192	123
+casa4_12	p	0	casa4_map	12		-	0	0	192	123
+casa4_13	p	0	casa4_map	13		-	0	0	192	123
+
+//concatenacion de cuadros y tiempo por cuadro en una sola variable
+//simula el movimiento del pj recorriendo el gif-map del personaje
+
+human_		human_f0		0.0
+human_d		human_f0;human_f1;human_f2;human_f3;human_f4;human_f5;human_f6;human_f7;human_f8;human_f9;human_f10;human_f11		0.3
+human_u		human_b0;human_b1;human_b2;human_b3;human_b4;human_b5;human_b6;human_b7;human_b8;human_b9;human_b10;human_b11		0.3
+human_l		human_l0;human_l1;human_l2;human_l3;human_l4;human_l5;human_l6;human_l7;human_l8;human_l9;human_l10;human_l11		0.3
+human_r		human_r0;human_r1;human_r2;human_r3;human_r4;human_r5;human_r6;human_r7;human_r8;human_r9;human_r10;human_r11		0.3		-
+
+arbol		arbol_00;arbol_01;arbol_02;arbol_03;arbol_04;arbol_05;arbol_06;arbol_07;arbol_08;arbol_09;arbol_10;arbol_11;arbol_12;arbol_13;arbol_14;arbol_15	0.1
+pileta		pileta_00;pileta_01;pileta_02;pileta_03;pileta_04;pileta_05;pileta_06;pileta_07;pileta_08	0.2
+casa4		casa4_00;casa4_01;casa4_02;casa4_03;casa4_04;casa4_05;casa4_06;casa4_07;casa4_08;casa4_09;casa4_10;casa4_11;casa4_12;casa4_13	0.07
+
+casa1_0		x	0	casa1_map	0	-
+casa1_1		x	0	casa1_map	0	-
+casa1_2		x	0	casa1_map	0	-
+
+
+
+casa1	casa1_0;casa1_1;casa1_2		0.3
+
+
+
+// "null" indica un tile vacio, se representara como un espacio trasparente
+vacio	.	0	null	-
+//tile vacio que se usara para determinar cuadros ineccesibles, barreras, etc
+nulo	.	10	null	-
