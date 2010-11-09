@@ -21,6 +21,12 @@ cuadro	!	20	/media/imagenes/tiles/vacio.png	-
 mario	-	0	/media/imagenes/mobs/mario.gif	-
 //define imagen del cursor
 cursor	-	0	/media/imagenes/menu/banana-con-capa.gif	-
+//define imagen del npc vendedor
+vendedor	-	0	/media/imagenes/npc/vendedor.png	-
+//define imagen de la ventana de trade
+ventana trade	-	0	/media/imagenes/npc/ventana_trade.png	-
+//define imagen boton cerrar
+cerrar	-	0	/media/imagenes/npc/cerrar.png	-
 
 
 //gif-map de 11 cuadros que simulan el desplazar frontal del personaje
