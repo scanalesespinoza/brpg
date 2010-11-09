@@ -15,7 +15,6 @@ import jgame.JGObject;
  * @author gerald
  */
 public class Manager extends JGEngine {
-
     /*
      *@param idJugador Esta variable idetificador corresponde a la clave
      * principal del personaje que ha seleccionado el usuario para jugar.
@@ -45,7 +44,16 @@ public class Manager extends JGEngine {
     public Npc arbol1;
     public Npc arbol2;
     public Npc pileta;
+    public Npc vendedor;
+
+    /*
+     * Objetos menú
+     */
     public Cursor cursor;
+    public Boton ventanaTrade;
+    public Boton cerrar;
+
+
     /*
      * Variables para probar funcionalidad "Realizar Mision"
      */
@@ -112,7 +120,10 @@ public class Manager extends JGEngine {
         //setMsgFont(new JGFont("Helvetica",0,32));
         setFont(new JGFont("Arial", 0, 20));
         setPFSize(80, 60);//menuJuego de juego
-        //Obtiene los datos del jugador guardados en la DB
+
+        //Objeto cursor, imágen que sigue las coordenadas del mouse
+        cursor = new Cursor();
+
         //cargaJugador(0,0); reemplazamos por el metodo nuevo
         this.pj = new Jugador();
         this.pj.cargarDatos(this.idJugador);
@@ -145,10 +156,11 @@ public class Manager extends JGEngine {
             arbol1 = new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
             arbol2 = new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
             pileta = new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-            cursor = new Cursor();
+            vendedor = new Npc(1040, 416, "vendedor", "vendedor", 2^5, 0, (short) 0, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+            
             
             //instancia mob y define como objeto home a pj
-            this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.5,192);
+            this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, 192);
 
 
 
@@ -187,16 +199,16 @@ public class Manager extends JGEngine {
                     "+!.................................**********..................................+",
                     "+!.................................*****.*****.................................+",
                     "+!..!!!!!!!!!!!!!!....^............*****..*****................................+",
-                    "+!..!!!!!!!!!!!!!!.................*****...*****...............................+",//25
-                    "+!..!!!!!!!!!!!!!!.................*****....*****..............................+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.....*****.....^.......................+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****......*****............................+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.......*****...........................+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****........*****..........................+",//30
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.^.......*****.........................+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..........*****........................+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****...........*****.......................+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****............*****......................+",
+                    "+!..!!!!!!!!!!!!!!.................*****...*****.................!!!!!!........+",//25
+                    "+!..!!!!!!!!!!!!!!.................*****....*****................!!!!!!........+",
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.....*****.....^.........!!!!!!........+",
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****......*****..............!!!!!!........+",
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.......*****.............!!!!!!........+",
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****........*****............!!!!!!........+",//30
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.^.......*****...........!!!!!!........+",
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..........*****..........!!!!!!........+",
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****...........*****.........!!!!!!........+",
+                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****............*****........!!!!!!........+",
                     "+!...................!!!!!!!!!!!!!!*****.............*****.....................+",//35
                     "+!...................!!!!!!!!!!!!!!*****..............*****....................+",
                     "+!...................!!!!!!!!!!!!!!*****...............*****...................+",
@@ -230,7 +242,8 @@ public class Manager extends JGEngine {
 
     @Override
     public void doFrame() {
-
+        capturarTeclas();
+        
         if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
             pj = new Jugador();
             pj.cargarPersonaje((short) 1);
@@ -261,6 +274,7 @@ public class Manager extends JGEngine {
         }
         moveObjects(null, 0);
         // llamada al metodo de colision entre objetos con las siguientes id de colision
+
         checkCollision(
                 4 + 1, // cids of objects that our objects should collide with
                 1 // cids of the objects whose hit() should be called
@@ -277,6 +291,30 @@ public class Manager extends JGEngine {
                 192 + 256, // cids of objects that our objects should collide with
                 256 // cids of the objects whose hit() should be called
                 );
+        checkCollision(//vendedor
+                2^5 + 256, // cids of objects that our objects should collide with
+                256 // cids of the objects whose hit() should be called
+                );
+        checkCollision(//vendedor + pj
+                1 + 2^5, // cids of objects that our objects should collide with
+                2^5 // cids of the objects whose hit() should be called
+                );
+        checkCollision(//boton cerrar
+                2^6 + 256, // cids of objects that our objects should collide with
+                256 // cids of the objects whose hit() should be called
+                );
+        checkCollision(//boton cerrar + pj
+                1 + 2^6, // cids of objects that our objects should collide with
+                2^6 // cids of the objects whose hit() should be called
+                );
+        checkCollision(//ventana trade
+                2^7 + 256, // cids of objects that our objects should collide with
+                256 // cids of the objects whose hit() should be called
+                );
+        checkCollision(//ventana trade + pj
+                1 + 2^7, // cids of objects that our objects should collide with
+                2^7 // cids of the objects whose hit() should be called
+                );
         // llamada al metodo de colision entre objeto y escenario con las siguientes id de colision
         checkBGCollision(
                 1 + 11 + 13, // collide with the marble and border tiles
@@ -291,6 +329,17 @@ public class Manager extends JGEngine {
         setViewOffset(
                 xofs, yofs,
                 true);
+
+
+            if(cursor.getVentana()==1){
+                ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
+                cerrar = new Boton("cerrar", "cerrar",viewXOfs()+300,viewYOfs()+150,2^6);
+                cursor.setVentana((byte)2);
+            }else if(cursor.getVentana()==3){
+                removeObjects("ventana trade", 0);
+                removeObjects("cerrar", 2^6);
+                cursor.setVentana((byte)0);
+            }
 
 
         /*
@@ -309,7 +358,7 @@ public class Manager extends JGEngine {
 
         drawString("SEGUNDOS: " + seg, viewXOfs() + 200 / 2, viewHeight() / 2, 1);
         drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
-
+        drawImage(cursor.x,cursor.y, "cursor");
 
         if (getKey(KeyEsc)) {
             menu.ventanaSalida();
@@ -414,6 +463,13 @@ public class Manager extends JGEngine {
             // new Ventana(300, 300, textoPrueba);
         }
         tiempoMensaje--;
+
+
+        if (cursor.getMensaje().length()>0){
+            new Ventana(cursor.getMensaje());
+            cursor.setMensaje("");
+        }
+
 
     }
 
@@ -792,7 +848,60 @@ public class Manager extends JGEngine {
 
     }
 
+        public class Boton extends JGObject {
+            public Boton(String nombre,String graf,double x, double y,int cid){
+                super(nombre,false,x,y,cid,graf);
+            }
+        @Override
+            public void hit(JGObject obj){
+
+            }
+        }
+
+        public class Item extends JGObject {
+            public Item(String nombre,String graf,double x, double y,int cid){
+                super(nombre,false,x,y,cid,graf);
+            }
+        }
+
+
 	public class Cursor extends JGObject {
+            private String mensaje = new String();
+            private double ejex = eng.getMouseX() + eng.viewXOfs();
+            private double ejey = eng.getMouseY() + eng.viewYOfs();
+            private byte ventana = 0;
+
+            public byte getVentana() {
+                return ventana;
+            }
+
+            public void setVentana(byte ventana) {
+                this.ventana = ventana;
+            }
+
+            public double getEjex() {
+                return ejex;
+            }
+
+            public void setEjex(double ejex) {
+                this.ejex = ejex;
+            }
+
+            public double getEjey() {
+                return ejey;
+            }
+
+            public void setEjey(double ejey) {
+                this.ejey = ejey;
+            }
+
+            public String getMensaje() {
+                return mensaje;
+            }
+
+            public void setMensaje(String mensaje) {
+                this.mensaje = mensaje;
+            }
             public Cursor() {
                     super("cursor",false,0,0,256,"cursor");
             }
@@ -811,12 +920,33 @@ public class Manager extends JGEngine {
 
         @Override
             public void hit(JGObject obj) {
-                    System.out.println("hit de la banana!");
-                    if ((getMouseButton(1))||(getKey(KeyRight))) {
-                        new Ventana("Soy Mario");
-                        System.out.println("MMMMMMMMMMMMMMMM!");
-                    }
+
+                System.out.println(obj.getGraphic());
+
+
+                if(obj.getGraphic().equals("mario")){
+                        setMensaje("Soy "+obj.getGraphic());
+                }
+                if(obj.getGraphic().equals("vendedor")){
+                        setMensaje("Vendedor: Hola "+pj.getNombre()+", deseas hacer un trato?");
+                        if(getMouseButton(3)){
+                        setVentana((byte)1);
+                        }
+                }
+                if((obj.getGraphic().equals("cerrar"))&&(getMouseButton(3))){
+                        System.out.println("----------cerrar trade");
+                        setMensaje("");
+                        setVentana((byte)3);
+                        System.out.println("getVentana: "+getVentana());
+                        System.out.println(getMensaje()+"Nada");
+                        System.out.println(getMouseButton(3)+" boton derecho del mouse");
+                        
+
+                }
+
+                    
             }
     }
+
 
 }
