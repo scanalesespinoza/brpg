@@ -10,6 +10,7 @@ import java.util.HashMap;
 import jgame.JGTimer;
 import jgame.JGObject;
 
+
 /**
  *
  * @author gerald
@@ -82,12 +83,17 @@ public class Manager extends JGEngine {
     /** Application constructor. */
     public Manager(JGPoint size) {
         initEngine(size.x, size.y);
+        setProgressMessage("Iniciando la aplicación, espere...");
+        setAuthorMessage("Sergio Canales Espinoza ||                    -JGame-                    || Gerald Schmidt Padilla");
+
 
     }
 
     /** Applet constructor. */
     public Manager() {
         initEngineApplet();
+        setProgressMessage("Iniciando la aplicación, espere...");
+        setAuthorMessage("Sergio Canales Espinoza ||                    -JGame-                    || Gerald Schmidt Padilla");
     }
 
     @Override
@@ -108,7 +114,6 @@ public class Manager extends JGEngine {
         } catch (Exception ex) {
             System.out.println("Error al cargar medios: " + ex);
         }
-
         new JGTimer(60, false) {
 
             @Override
@@ -130,10 +135,7 @@ public class Manager extends JGEngine {
         setCursor(null);
         inicializarTeclas();
         try {
-
-
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-
             casa1 = new Npc(680, 660, "casa1", "casa3", 2, 0, (short) 100,
                     new String[]{"Hola amigo",
                         "Miguel: Como estas, espero mejor que yo",
@@ -157,13 +159,8 @@ public class Manager extends JGEngine {
             arbol2 = new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
             pileta = new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
             vendedor = new Npc(1040, 416, "vendedor", "vendedor", 2^5, 0, (short) 0, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-            
-            
             //instancia mob y define como objeto home a pj
             this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, 192);
-
-
-
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
@@ -236,14 +233,34 @@ public class Manager extends JGEngine {
                     "+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*****!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**|",
                     "+++++++++++++++++++++++++++++++++++|||||++++++++++++++++++++++++++++++++++++++||",});
         textoPrueba = new String[]{"hola", "como estas?", "necesito dinero", "enserio", "piola"};
+        setGameState("Title");
+
     }
     /** View offset. */
     int xofs = 0, yofs = 0;
 
-    @Override
-    public void doFrame() {
+    public void paintFrameTitle() {
+                drawString("Trabajo de título blah blah", 100, 100, 0);
+	}
+    public void doFrameTitle() {
+		if (getMouseButton(1)) { // start game
+			clearMouseButton(1);
+			setGameState("InWorld");
+
+		} else if (getMouseButton(2)) { // start game
+			clearMouseButton(1);
+			setGameState("InDeath");
+
+		}
+	}
+
+    public void doFrameInWorld() {
         capturarTeclas();
-        
+        if (isPresionada(KeyShift)){
+            
+        }else if (isPresionada(KeyShift) && isPresionada(KeyTab)){
+            initGame();
+        }
         if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
             pj = new Jugador();
             pj.cargarPersonaje((short) 1);
@@ -341,46 +358,36 @@ public class Manager extends JGEngine {
                 cursor.setVentana((byte)0);
             }
 
-
-        /*
-         * Comprueba si debe cerrarse la aplicacion
-         */
         if (isSalir()) {
             System.exit(0);
         }
     }
-
-    @Override
-    public void paintFrame() {
-
-        //panel basico
-        menu.menuActual(getTeclaMenu());
-
-        drawString("SEGUNDOS: " + seg, viewXOfs() + 200 / 2, viewHeight() / 2, 1);
+    
+    public void paintFrameInWorld() {
+        drawString("SEGUNDO: " + seg, viewXOfs() + 200 / 2, viewHeight() / 2, 1);
         drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
+        menu.menuActual(getTeclaMenu());
         drawImage(cursor.x,cursor.y, "cursor");
-
-        if (getKey(KeyEsc)) {
+         if (getKey(KeyEsc)) {
             menu.ventanaSalida();
-
             pj.bloquear(60);
             if (getKey(KeyEnter)) {
                 menu.setTeclaEscape(false);
                 setSalir(true);
             }
         }
-
         if (interactuar > 0) {
             // ventanaDialogo(pj.npcInterac.obtieneDialogo());
             asd.avanzarTexto();
 
         }
-
-        //prueba de captura de teclas
-
         if (isPresionada(KeyCtrl)) {
+            setGameState("Title");
             new Ventana("presionaste crtl");
         }
+        //prueba de captura de teclas
+
+        
         /*
          * Detecta si has encontrado un hongo para la mision
          */
@@ -472,7 +479,23 @@ public class Manager extends JGEngine {
 
 
     }
+    @Override
+    public void paintFrame(){}
+    @Override
+    public void doFrame(){}
 
+    public void paintFrameInDeath(){}
+
+    public void doFrameInDeath(){
+
+    }
+    public void paintFrameInCombat(){}
+
+    public void doFrameInCombat(){}
+
+    public void paintFrameInInteraction(){}
+
+    public void doFrameInInteraction(){}
     public void capturarTeclas() {
         if (getKey(KeyUp)) {
             teclas.put(KeyUp, true);
@@ -751,7 +774,7 @@ public class Manager extends JGEngine {
             setFont(new JGFont("Arial", 0, 16));
             drawString(mensaje, viewWidth() / 2, viewHeight() / 2 + 45, 0);
         }
-
+        
         /**
          * despliega mensaje en la posicion indicada
          * @param x
