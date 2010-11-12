@@ -314,4 +314,12 @@ public class Jugador extends Personaje {
         return cantidad > 0 && objt != null && objt.getPeso() * cantidad <= this.getPesoDisponible();
     }
 
+    public void paint(){
+        eng.setColor(JGColor.red);
+            eng.drawRect(eng.viewXOfs() + 200, eng.viewYOfs() + 250, 300, 100, true, false);
+            //interior
+            eng.setColor(JGColor.white);
+            eng.drawRect(eng.viewXOfs() + 205, eng.viewYOfs() + 255, 290, 90, true, false);
+    }
+
 }
