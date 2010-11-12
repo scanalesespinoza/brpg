@@ -79,6 +79,8 @@ public class Manager extends JGEngine {
         new Manager(new JGPoint(800, 540));
 
     }
+    public Boton grillaNpc;
+    public Boton grillaPj;
 
     /** Application constructor. */
     public Manager(JGPoint size) {
@@ -338,6 +340,14 @@ public class Manager extends JGEngine {
                 1 // cids of our objects
                 );
 
+        checkCollision(//vendedor + pj
+                1500 + 2^12, // cids of objects that our objects should collide with
+                2^12 // cids of the objects whose hit() should be called
+                );
+        checkCollision(//vendedor + pj
+                1600 + 2^11, // cids of objects that our objects should collide with
+                2^11 // cids of the objects whose hit() should be called
+                );
         int posX = (int) pj.x;
         int posY = (int) pj.y;
 
@@ -348,15 +358,15 @@ public class Manager extends JGEngine {
                 true);
 
 
-            if(cursor.getVentana()==1){
-                ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
-                cerrar = new Boton("cerrar", "cerrar",viewXOfs()+300,viewYOfs()+150,2^6);
-                cursor.setVentana((byte)2);
-            }else if(cursor.getVentana()==3){
-                removeObjects("ventana trade", 0);
-                removeObjects("cerrar", 2^6);
-                cursor.setVentana((byte)0);
-            }
+//            if(cursor.getVentana()==1){
+//                ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
+//                cerrar = new Boton("cerrar", "cerrar",viewXOfs()+300,viewYOfs()+150,2^6);
+//                cursor.setVentana((byte)2);
+//            }else if(cursor.getVentana()==3){
+//                removeObjects("ventana trade", 0);
+//                removeObjects("cerrar", 2^6);
+//                cursor.setVentana((byte)0);
+//            }
 
         if (isSalir()) {
             System.exit(0);
@@ -472,13 +482,37 @@ public class Manager extends JGEngine {
         tiempoMensaje--;
 
 
-        if (cursor.getMensaje().length()>0){
-            new Ventana(cursor.getMensaje());
-            cursor.setMensaje("");
-        }
-
-
+//        if (cursor.getMensaje().length()>0){
+//            new Ventana(cursor.getMensaje());
+//            cursor.setMensaje("");
+//        }
+        if(cursor.getVentana()==1){
+                pj.colid=0;
+                grillaNpc = new Boton("grilla npc", "grilla npc",viewXOfs()+10,viewYOfs()+10,2^12);
+                grillaPj = new Boton("grilla pj","grilla pj", viewXOfs()+200,viewYOfs()+10,2^11);
+                //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
+                Item item2 = new Item("item2", "item2",viewXOfs()+20,viewYOfs()+20,1600);
+                item2.snapToGrid();
+                Item item1 = new Item("item1","item1", viewXOfs()+210,viewYOfs()+20,1500);
+                item1.snapToGrid();
+                cerrar = new Boton("cerrar", "cerrar",viewXOfs()+300,viewYOfs()+200,2^6);
+                //pj.bloquear();
+                cursor.setVentana((byte)2);
+            }else if(cursor.getVentana()==3){
+                removeObjects("ventana trade", 0);
+                removeObjects("grilla npc", 2^12);
+                removeObjects("grilla pj", 2^11);
+                removeObjects("cerrar", 2^6);
+                for (int i=0;i<200;i++){
+                    System.out.println("i: "+i);
+                    removeObjects("item"+i, i+1500);
+                }
+                //pj.desbloquear();
+                pj.colid=1;
+                cursor.setVentana((byte)0);
+            }
     }
+
     @Override
     public void paintFrame(){}
     @Override
@@ -486,9 +520,7 @@ public class Manager extends JGEngine {
 
     public void paintFrameInDeath(){}
 
-    public void doFrameInDeath(){
-
-    }
+    public void doFrameInDeath(){}
     public void paintFrameInCombat(){}
 
     public void doFrameInCombat(){}
@@ -871,13 +903,20 @@ public class Manager extends JGEngine {
 
     }
 
-        public class Boton extends JGObject {
+       public class Boton extends JGObject {
             public Boton(String nombre,String graf,double x, double y,int cid){
                 super(nombre,false,x,y,cid,graf);
             }
         @Override
             public void hit(JGObject obj){
-
+                    if((obj.colid>=1500)&&(obj.colid<1600)&&(!getMouseButton(3))/*&&(this.colid==2^12)*/){
+                        System.out.println("Has vendido item");
+                        new Ventana("Has vendido item");
+                    }
+                    if((obj.colid>=1600)&&(obj.colid<1700)&&(!getMouseButton(3))){
+                        System.out.println("Has comprado item");
+                        new Ventana("Has comprado item");
+                    }
             }
         }
 
@@ -940,7 +979,6 @@ public class Manager extends JGEngine {
                     oldmousex=mx;
                     oldmousey=my;
             }
-
         @Override
             public void hit(JGObject obj) {
 
@@ -963,8 +1001,11 @@ public class Manager extends JGEngine {
                         System.out.println("getVentana: "+getVentana());
                         System.out.println(getMensaje()+"Nada");
                         System.out.println(getMouseButton(3)+" boton derecho del mouse");
-                        
-
+                }
+                if((obj.colid>=1500)&&(obj.colid<=1700)&&(getMouseButton(3))){
+                    obj.x=cursor.x;
+                    obj.y=cursor.y;
+                    obj.snapToGrid();
                 }
 
                     
