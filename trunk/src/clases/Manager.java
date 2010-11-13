@@ -9,6 +9,8 @@ import jgame.platform.*;
 import java.util.HashMap;
 import jgame.JGTimer;
 import jgame.JGObject;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -49,6 +51,18 @@ public class Manager extends JGEngine {
     public Npc arbol2;
     public Npc pileta;
     public Npc vendedor;
+    /*
+     * Objetos de combate
+     */
+    private Icono icon;
+
+    public Icono getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icono icon) {
+        this.icon = icon;
+    }
 
     /*
      * Objetos menú
@@ -139,7 +153,7 @@ public class Manager extends JGEngine {
         inicializarTeclas();
         try {
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            casa1 = new Npc(680, 660, "casa1", "casa3", 2, 0, (short) 100,
+            casa1 = new Npc((double) 680, (double) 660, "casa1", "casa3", 0, (short) 100, (short) 1, (short) 1,
                     new String[]{"Hola amigo",
                         "Miguel: Como estas, espero mejor que yo",
                         "Me doy cuenta que no eres de estos lados",
@@ -152,16 +166,18 @@ public class Manager extends JGEngine {
                         "20 serán suficientes, en la cuidad suelen",
                         "crecer en la humedad de las rocas."
                     });//casa superior
-            casa2 = new Npc(80, 400, "casa2", "casa2", 8, 0, (short) 101, new String[]{"Casa 2"});
-            casa3 = new Npc(350, 448, "casa3", "casa4", 8, 0, (short) 102, new String[]{"Casa 3"});
-            casa4 = new Npc(80, 634, "casa3", "casa3", 8, 0, (short) 103, new String[]{"Casa 3"});
-            casa5 = new Npc(350, 682, "casa3", "casa5", 8, 0, (short) 104, new String[]{"Casa 3"});
-            alcaldia = new Npc(700, 75, "alcaldia", "casa4", 8, 0, (short) 105, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
+            casa2 = new Npc(80, 400, "casa2", "casa2", 0, (short) 101, (short) 1, (short) 1, new String[]{"Casa 2"});
+            casa3 = new Npc(350, 448, "casa3", "casa4", 0, (short) 102, (short) 1, (short) 1, new String[]{"Casa 3"});
+            casa4 = new Npc(80, 634, "casa3", "casa3", 0, (short) 103, (short) 1, (short) 1, new String[]{"Casa 3"});
+            casa5 = new Npc(350, 682, "casa3", "casa5", 0, (short) 104, (short) 1, (short) 1, new String[]{"Casa 3"});
+            alcaldia = new Npc(700, 75, "alcaldia", "casa4", 0, (short) 105, (short) 1, (short) 1, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
             //pasto1 = new Npc(192,128,"pasto","pasto",4,0,new String[]{"Hola amiguirijillo","soy pastillo1"});//pasto
-            arbol1 = new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-            arbol2 = new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-            pileta = new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-            vendedor = new Npc(1040, 416, "vendedor", "vendedor", 2 ^ 5, 0, (short) 0, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+            arbol1 = new Npc(352, 64, "arbol1", "arbol", 0, (short) 106, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+            arbol2 = new Npc(288, 32, "arbol2", "arbol", 0, (short) 107, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+            pileta = new Npc(128, 64, "arbol2", "pileta", 0, (short) 108, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
+            vendedor = new Npc(1040, 416, "vendedor", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+            vendedor.cargarDatos((short)22);
+            System.out.println("ID vendedor: "+vendedor.getIdPersonaje()+"---"+vendedor.getIdNpc());
             //instancia mob y define como objeto home a pj
             this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, 192);
             this.mob.cargarDatos((short)40);
@@ -260,6 +276,9 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInWorld() {
+        if (pj.isSuspended()){
+            pj.setResumeMode(true);
+        }
         capturarTeclas();
         if (isPresionada(KeyShift) && isPresionada(KeyCtrl)) {
             setGameState("InCombat");
@@ -269,13 +288,13 @@ public class Manager extends JGEngine {
         if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
             pj = new Jugador();
             pj.cargarPersonaje((short) 1);
-            removeObjects(getNomNpcInteractuar(), 51);
+            removeObjects(getNomNpcInteractuar(), (int) Math.pow(2, 3));
             pj.setInteractuarNpc(false);
             setInteractuar(0);
         } else if ((pj.isInteractuarNpc()) && (interactuar == 0)) {
             System.out.println(pj.npcInterac.getNomNpc() + "Npc");
             try {
-                casa1 = new Npc(viewXOfs() + 380, viewYOfs() + 120, pj.npcInterac.getNomNpc() + "Npc", pj.npcInterac.getNomNpc() + "Npc", 51, 51, (short) (pj.npcInterac.getIdNpc()), pj.npcInterac.obtieneDialogo());
+                casa1 = new Npc(viewXOfs() + 380, viewYOfs() + 120, pj.npcInterac.getNomNpc() + "Npc", pj.npcInterac.getNomNpc() + "Npc", 51, (short) (pj.npcInterac.getIdNpc()), (short) 1, (short) 1, pj.npcInterac.obtieneDialogo());
                 // casa1.realizaTarea(pj);
                 asd = new Ventana(300, 300, casa1.obtieneDialogo());//casa superior);
             } catch (Exception ex) {
@@ -298,30 +317,30 @@ public class Manager extends JGEngine {
         // llamada al metodo de colision entre objetos con las siguientes id de colision
 
         checkCollision(
-                4 + 1, // cids of objects that our objects should collide with
-                1 // cids of the objects whose hit() should be called
+                (int) Math.pow(2, 3) + (int)Math.pow(2, 1), // Colisión entre Npc + Jugador
+                (int)Math.pow(2, 1) // ejecuta hit Jugador
                 );
         checkCollision(
-                2 + 1, // cids of objects that our objects should collide with
-                1 // cids of the objects whose hit() should be called
+                (int) Math.pow(2, 3) + (int)Math.pow(2, 0), // Colisión entre Npc + Cursor
+                (int)Math.pow(2, 0) // ejecuta hit Cursor
                 );
         checkCollision(
-                8 + 1, // cids of objects that our objects should collide with
-                1 // cids of the objects whose hit() should be called
+                (int) Math.pow(2, 2) + (int)Math.pow(2, 1), // Colisión entre Mob + Jugador
+                (int)Math.pow(2, 1) // ejecuta hit Jugador
                 );
         checkCollision(
-                192 + 256, // cids of objects that our objects should collide with
-                256 // cids of the objects whose hit() should be called
+                (int) Math.pow(2, 4) + (int) Math.pow(2, 5), // Colisión entre Iconos + botones
+                (int) Math.pow(2, 5) // ejecuta hit botones
                 );
-        checkCollision(//vendedor
-                2 ^ 5 + 256, // cids of objects that our objects should collide with
-                256 // cids of the objects whose hit() should be called
+        checkCollision(
+                (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
+                (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
-        checkCollision(//vendedor + pj
-                1 + 2 ^ 5, // cids of objects that our objects should collide with
-                2 ^ 5 // cids of the objects whose hit() should be called
+        checkCollision(
+                (int) Math.pow(2, 5) + (int) Math.pow(2, 0), // Colisión entre botones  + cursor
+                (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
-        checkCollision(//boton cerrar
+        /*checkCollision(//boton cerrar
                 2 ^ 6 + 256, // cids of objects that our objects should collide with
                 256 // cids of the objects whose hit() should be called
                 );
@@ -336,21 +355,21 @@ public class Manager extends JGEngine {
         checkCollision(//ventana trade + pj
                 1 + 2 ^ 7, // cids of objects that our objects should collide with
                 2 ^ 7 // cids of the objects whose hit() should be called
-                );
+                );*/
         // llamada al metodo de colision entre objeto y escenario con las siguientes id de colision
         checkBGCollision(
                 1 + 11 + 13, // collide with the marble and border tiles
-                1 // cids of our objects
+                (int)Math.pow(2, 1) // cids of our objects
                 );
 
-        checkCollision(//vendedor + pj
+        /*checkCollision(//vendedor + pj
                 1500 + 2 ^ 12, // cids of objects that our objects should collide with
                 2 ^ 12 // cids of the objects whose hit() should be called
                 );
         checkCollision(//vendedor + pj
                 1600 + 2 ^ 11, // cids of objects that our objects should collide with
                 2 ^ 11 // cids of the objects whose hit() should be called
-                );
+                );*/
         int posX = (int) pj.x;
         int posY = (int) pj.y;
 
@@ -484,33 +503,34 @@ public class Manager extends JGEngine {
         tiempoMensaje--;
 
 
-//        if (cursor.getMensaje().length()>0){
-//            new Ventana(cursor.getMensaje());
-//            cursor.setMensaje("");
-//        }
+        if (cursor.getMensaje().length()>0){
+            new Ventana(cursor.getMensaje());
+            cursor.setMensaje("");
+        }
         if (cursor.getVentana() == 1) {
             pj.colid = 0;
-            grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, 2 ^ 12);
-            grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, 2 ^ 11);
+            grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int)Math.pow(2, 5));
+            grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int)Math.pow(2, 5));
             //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
-            Item item2 = new Item("item2", "item2", viewXOfs() + 20, viewYOfs() + 20, 1600);
-            item2.snapToGrid();
-            Item item1 = new Item("item1", "item1", viewXOfs() + 210, viewYOfs() + 20, 1500);
-            item1.snapToGrid();
-            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, 2 ^ 6);
-            //pj.bloquear();
+            procesaItem(pj,grillaPj.x,grillaPj.y);
+            procesaItem(vendedor,grillaNpc.x,grillaNpc.y);
+            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int)Math.pow(2, 5));
+            pj.bloquear();
             cursor.setVentana((byte) 2);
         } else if (cursor.getVentana() == 3) {
+            //Remueve todos los objetos que forman la ventana de comerciar
             removeObjects("ventana trade", 0);
-            removeObjects("grilla npc", 2 ^ 12);
-            removeObjects("grilla pj", 2 ^ 11);
-            removeObjects("cerrar", 2 ^ 6);
-            for (int i = 0; i < 200; i++) {
-                System.out.println("i: " + i);
-                removeObjects("item" + i, i + 1500);
-            }
-            //pj.desbloquear();
-            pj.colid = 1;
+            removeObjects("grilla npc", (int)Math.pow(2, 5));
+            removeObjects("grilla pj", (int)Math.pow(2, 5));
+            removeObjects("cerrar", (int)Math.pow(2, 5));
+//            for (int i = 0; i < 200; i++) {
+
+                //Renueve todos los objetos item
+                removeObjects("item",(int)Math.pow(2, 4));
+
+//            }
+            pj.desbloquear();
+            pj.colid = 2;
             cursor.setVentana((byte) 0);
         }
     }
@@ -531,7 +551,14 @@ public class Manager extends JGEngine {
     public void doFrameInDeath() {
         //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
 
-        pj.setPos(CIUDAD_X, CIUDAD_Y);
+        pj.suspend();
+        new JGTimer(60*3 , true) {
+
+            @Override
+            public void alarm() {
+                setGameState("InWorld");
+            }
+        };
         //aplicar alguna sancion xD!!!!
     }
 
@@ -976,31 +1003,122 @@ public class Manager extends JGEngine {
             this.mensajes = mensajes;
         }
     }
+    /*
+     *Procesa la lista de objetos del inventario del jugador para generar sus representaciones gráficas
+     */
+
+    public void procesaItem(Jugador pj, double x, double y) {
+        Inventario inv = pj.getInventario();
+        Iterator it = inv.getObjetos().entrySet().iterator();
+        Objeto obj = new Objeto();
+        int i = 0;
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            obj.setObjeto(Short.parseShort(e.getKey().toString()));
+                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)0);
+
+            System.out.println("Item: "+i);
+            i++;
+
+        }
+    }
+    public void procesaItem(Npc npc, double x, double y) {
+        Inventario inv = npc.getInventario();
+        Iterator it = inv.getObjetos().entrySet().iterator();
+        Objeto obj = new Objeto();
+        int i = 0;
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            obj.setObjeto(Short.parseShort(e.getKey().toString()));
+                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)1);
+
+            System.out.println("Item: "+i);
+            i++;
+
+        }
+    }
+    public void procesaHabilidad(Jugador pj, double x, double y) {
+        ContrincanteHabilidad listHab = pj.getHabilidades();
+        Iterator it = listHab.getHabilidades().entrySet().iterator();
+        Habilidad hab = new Habilidad();
+        int i = 1;
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
+
+            System.out.println("Item: "+i);
+            i++;
+
+        }
+    }
+    public void procesaHabilidad(Mob mob, double x, double y) {
+        ContrincanteHabilidad listHab = mob.getHabilidades();
+        Iterator it = listHab.getHabilidades().entrySet().iterator();
+        Habilidad hab = new Habilidad();
+        int i = 1;
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
+
+            System.out.println("Item: "+i);
+            i++;
+
+        }
+    }
+
+    /*
+     * Clases anidadas
+     */
+
 
     public class Boton extends JGObject {
 
         public Boton(String nombre, String graf, double x, double y, int cid) {
-            super(nombre, false, x, y, cid, graf);
+            super(nombre, false, x, y, (int)Math.pow(2, 5), graf);
         }
 
         @Override
         public void hit(JGObject obj) {
-            if ((obj.colid >= 1500) && (obj.colid < 1600) && (!getMouseButton(3))/*&&(this.colid==2^12)*/) {
+            System.out.println("hit boton");
+            if ((obj.colid == (int)Math.pow(2, 4)) && (!getMouseButton(3))&&(obj.getGraphic().equals("grilla npc"))) {
                 System.out.println("Has vendido item");
                 new Ventana("Has vendido item");
             }
-            if ((obj.colid >= 1600) && (obj.colid < 1700) && (!getMouseButton(3))) {
+            if ((obj.colid == (int)Math.pow(2, 4)) && (!getMouseButton(3))&&(obj.getGraphic().equals("grilla pj"))) {
                 System.out.println("Has comprado item");
                 new Ventana("Has comprado item");
             }
         }
     }
 
-    public class Item extends JGObject {
+    public class Icono extends JGObject {
+        private short idObjeto;
+        private short tipo;
 
-        public Item(String nombre, String graf, double x, double y, int cid) {
-            super(nombre, false, x, y, cid, graf);
+
+        public short getIdObjeto() {
+            return idObjeto;
         }
+
+        public void setIdObjeto(short idObjeto) {
+            this.idObjeto = idObjeto;
+        }
+
+        public short getTipo() {
+            return tipo;
+        }
+
+        public void setTipo(short tipo) {
+            this.tipo = tipo;
+        }
+        public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono) {
+            super(nombre, true, x, y, (int) Math.pow(2, 4), graf);
+            this.setIdObjeto(id);
+            this.setTipo(tipoIcono);
+        }
+        
     }
 
     public class Cursor extends JGObject {
@@ -1043,7 +1161,7 @@ public class Manager extends JGEngine {
         }
 
         public Cursor() {
-            super("cursor", false, 0, 0, 256, "cursor");
+            super("cursor", false, 0, 0, (int) Math.pow(2, 0), "cursor");
         }
         int oldmousex = 0, oldmousey = 0;
         boolean scissors_c = false;
@@ -1065,6 +1183,7 @@ public class Manager extends JGEngine {
 
         @Override
         public void hit(JGObject obj) {
+
             System.out.println(obj.getGraphic());
             if (obj.getGraphic().equals("mario")) {
                 setMensaje("Soy " + obj.getGraphic());
@@ -1083,10 +1202,14 @@ public class Manager extends JGEngine {
                 System.out.println(getMensaje() + "Nada");
                 System.out.println(getMouseButton(3) + " boton derecho del mouse");
             }
-            if ((obj.colid >= 1500) && (obj.colid <= 1700) && (getMouseButton(3))) {
+            if ((obj.colid == Math.pow(2, 4)) && (getMouseButton(3))) {
                 obj.x = cursor.x;
                 obj.y = cursor.y;
                 obj.snapToGrid();
+            }
+            if((obj.colid==(int)Math.pow(2, 4))&&(getMouseButton(3))&(inGameState("InCombat"))){
+                setIcon((Icono)obj);
+
             }
 
         }

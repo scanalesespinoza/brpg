@@ -19,6 +19,7 @@ public class Habilidad {
     private short danoBeneficio;
     private short costoBasico;
     private short nivelMaximo;
+    private String nombreGrafico;
     private dbDelegate conexion;
     private int tiempoEspera = 3;
 
@@ -45,6 +46,7 @@ public class Habilidad {
                     this.setDanoBeneficio(res.getShort("danoBeneficio"));
                     this.setNivelMaximo(res.getShort("nivelMaximo"));
                     this.setCostoBasico(res.getShort("costoBasico"));
+                    this.setNombreGrafico(res.getString("nom_grafico"));
 
                 }
             } catch (SQLException ex) {
@@ -99,6 +101,16 @@ public class Habilidad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getNombreGrafico() {
+        return nombreGrafico;
+    }
+
+
+
+    public void setNombreGrafico(String nombreGrafico) {
+        this.nombreGrafico = nombreGrafico;
     }
 
     int getTiempoEspera() {

@@ -67,7 +67,7 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
     }
 
     public Personaje() {
-        super("player", 0, 0, 1, "human_", true, false,
+        super("player", 0, 0, 2, "human_", true, false,
                 16, 32, 2.3);
         this.inventario = new Inventario();
         this.habilidades = new ContrincanteHabilidad();
@@ -203,6 +203,11 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
         };
     }
 
+     public void bloquear() {
+        this.setBloqueo(true);
+        
+    }
+
     public void setBloqueo(Boolean bloqueo) {
         this.bloqueo = bloqueo;
     }
@@ -215,7 +220,7 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
         return bloqueo;
     }
 
-    private void desbloquear() {
+    public void desbloquear() {
         this.setBloqueo(false);
     }
 

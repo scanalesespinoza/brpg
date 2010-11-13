@@ -35,6 +35,7 @@ public class Mob extends Personaje {
     private short destreza;
     private short experiencia;
     private int hpMax;
+    private boolean muerto;
 
     public Mob(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, JGObject home_in, boolean avoid, double random_proportion, int cid) /*throws SQLException*/ {
         super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
@@ -365,7 +366,19 @@ System.out.println(StrSql);
     }
 
     public void muerte() {
-        eng.setGameState("InDeath");
+        // si por algún motivo el mob muere, debe ser redireccionado
+        // a UNA ventana en donde se lea el inventario del mob (mob.getInventario()
+        // y se ofrezca los item al jugador, seleccionandoel icono correspondiente
+        
+        this.setMuerto(true);
+    }
+
+    private void setMuerto(boolean b) {
+        this.muerto = b;
+    }
+
+    public boolean isMuerto() {
+        return muerto;
     }
 
 }

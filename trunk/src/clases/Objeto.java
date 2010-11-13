@@ -26,6 +26,10 @@ private Short idObjeto;
     private short valorDinero;
 
     private boolean usoCombate;
+
+    private String nombreGrafico;
+
+
     private dbDelegate conexion;
 
 
@@ -49,6 +53,7 @@ private Short idObjeto;
                 this.setTipo(Boolean.valueOf(res.getString("tipo")));
                 this.setUsoCombate(Boolean.parseBoolean(res.getString("usocombate")));
                 this.setValorDinero(res.getShort("valordinero"));
+                this.setNombreGrafico(res.getString("nom_grafico"));
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->Objeto , método->setObjeto() " + ex);
@@ -110,6 +115,12 @@ private Short idObjeto;
     public void setValorDinero(short valorDinero) {
         this.valorDinero = valorDinero;
     }
+    public String getNombreGrafico() {
+        return nombreGrafico;
+    }
 
-    
+    public void setNombreGrafico(String nombreGrafico) {
+        this.nombreGrafico = nombreGrafico;
+    }
+
 }
