@@ -275,20 +275,6 @@ public class Inventario {
         return new Item(this.getIdPersonaje(), idObjeto, cantidad, estaequipado);
     }
 
-//    /*DEBEN IR EN PERSONAJE
-//     * Equipa un item
-//     */
-//    public void equiparItem(short idItem){
-//        this.getObjetos().get(idItem).setEstaEquipado((short)1);
-//    }
-//
-//    /*
-//     * Desequipa un item
-//     */
-//    public void desequiparItem(short idItem){
-//        this.getObjetos().get(idItem).setEstaEquipado((short)0);
-//    }
-
     /*
      * Devuelve la cantidad de objetos de un determinado tipo
      */

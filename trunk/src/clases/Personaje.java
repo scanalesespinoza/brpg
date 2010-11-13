@@ -39,7 +39,7 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
     private String nombre;
     private short nivel;
     private short tipo;
-    private dbDelegate conexion;
+    protected  dbDelegate conexion;
     public JGRectangle rClick;
     public boolean estadoClick = false;
     double mouseX;
@@ -149,7 +149,6 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
     public void cargarDatos(Short id) {
         this.cargarPersonaje(id);
         this.getInventario().cargarInventario(id);
-        System.out.println("Problemas en: clase->personaje , método->cargarDatos() -> despue sde inventario");
         this.getMisiones().cargarMisiones(id);
         this.getHabilidades().cargarHabilidades(id);
 
@@ -163,14 +162,8 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
         this.conexion = new dbDelegate();
         System.out.println("Inicio obtiene datos personaje");
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
-                + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit,"
-                + " pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue,"
-                + " pjdos.totalPuntosHabilidad ptosHab, pjdos.totalPuntosEstadistica ptosEst,"
-                + " pjdos.limiteSuperiorExperiencia limExp, pjdos.experiencia experiencia,"
-                + " pjdos.pesoSoportado peso, pjdos.fechaCreacion, pjdos.estaBaneado ban,"
-                + " pjdos.Cuenta_id cuenta FROM personaje pjuno, jugador pjdos "
-                + "WHERE pjuno.id=" + id
-                + "  AND pjdos.Personaje_id=" + id;
+                + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo FROM personaje pjuno "
+                + "WHERE pjuno.id=" + id;
 
         try {
 

@@ -27,6 +27,14 @@ vendedor	-	0	/media/imagenes/npc/vendedor.png	-
 ventana trade	-	0	/media/imagenes/npc/ventana_trade.png	-
 //define imagen boton cerrar
 cerrar	-	0	/media/imagenes/npc/cerrar.png	-
+//define imagen grilla npc
+grilla npc	-	0	/media/imagenes/npc/grilla_npc.png	-
+//define imagen grilla pj
+grilla pj	-	0	/media/imagenes/npc/grilla_pj.png	-
+//define item1
+item1	-	0	/media/imagenes/habilidades/bolas-de-fuego.jpg	-
+//define item2
+item2	-	0	/media/imagenes/habilidades/golpesimple.jpg	-
 
 
 //gif-map de 11 cuadros que simulan el desplazar frontal del personaje
