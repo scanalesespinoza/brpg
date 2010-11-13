@@ -486,13 +486,16 @@ public class Jugador extends Personaje {
             eng.setColor(JGColor.red);
             eng.drawRect(eng.viewXOfs() + 200, eng.viewYOfs() + 250, 300, 100, true, false);
             //interior
-
+             eng.setColor(JGColor.black);
+            eng.setFont(new JGFont("Arial", 0, 16));
+            eng.drawString("HP: "+this.getHp(), eng.viewWidth() / 2, eng.viewHeight() / 2 + 45, 0);
         }else if (eng.inGameState("InDeath")){
 
             eng.setColor(JGColor.white);
             eng.drawRect(eng.viewXOfs() + 205, eng.viewYOfs() + 255, 290, 90, true, false);
             eng.setColor(JGColor.red);
             eng.setFont(new JGFont("Arial", 0, 16));
+            eng.drawString("HAS MUErTOOOOOOOOO: ", eng.viewWidth() / 2, eng.viewHeight() / 2 + 20, 0);
             eng.drawString("HP: "+this.getHp(), eng.viewWidth() / 2, eng.viewHeight() / 2 + 45, 0);
         }
     }

@@ -136,7 +136,7 @@ public class ContrincanteHabilidad {
         return this.getHabilidades().containsKey(idHabilidad);
     }
 
-    private HashMap<Short, UnaHabilidad> getHabilidades() {
+    public HashMap<Short, UnaHabilidad> getHabilidades() {
         return habilidades;
     }
 
@@ -178,7 +178,7 @@ public class ContrincanteHabilidad {
         return result;
     }
 
-    private class UnaHabilidad {
+    public class UnaHabilidad {
 
         private short idPersonaje;
         private short idHabilidad;

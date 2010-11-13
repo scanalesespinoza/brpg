@@ -309,11 +309,11 @@ public class Inventario {
         this.idPersonaje = idPersonaje;
     }
 
-    private HashMap<Short, Item> getObjetos() {
+    public HashMap<Short, Item> getObjetos() {
         return objetos;
     }
 
-    private class Item {
+    public class Item {
 
         private short idPersonaje;
         private short idObjeto;

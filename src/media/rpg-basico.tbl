@@ -36,6 +36,9 @@ item1	-	0	/media/imagenes/habilidades/bolas-de-fuego.jpg	-
 //define item2
 item2	-	0	/media/imagenes/habilidades/golpesimple.jpg	-
 
+item1	-	0	/media/imagenes/habilidades/bolas-de-fuego.jpg	-
+//define imagen por defecto de iconos
+singrafico	-	0	/media/imagenes/menu/not_found.png	-
 
 //gif-map de 11 cuadros que simulan el desplazar frontal del personaje
 pj_front_map		/media/imagenes/personaje/Animation_Front64.png		0	0	21	64	0	0
