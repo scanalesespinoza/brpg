@@ -1,7 +1,10 @@
 package clases;
 
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jgame.*;
 
 /**
@@ -15,6 +18,7 @@ public class Jugador extends Personaje {
     public Jugador(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, int cid) throws SQLException {
         super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
         this.idJugador = idPj;
+
     }
     private short vitalidad;
     private short destreza;
@@ -31,8 +35,103 @@ public class Jugador extends Personaje {
     private boolean interactuarNpc = false;
     private dbDelegate conect = new dbDelegate();
     public Npc npcInterac;
+    private short idProximoAtaque, idProximoItem;
+    private Integer hp, mp, defensa, ataque, hpMax, mpMax;
+
+    @Override
+    public void cargarPersonaje(Short id) {
+        conexion = new dbDelegate();
+        System.out.println("Inicio obtiene datos Jugador");
+        String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
+                + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit,"
+                + " pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue,"
+                + " pjdos.totalPuntosHabilidad ptosHab, pjdos.totalPuntosEstadistica ptosEst,"
+                + " pjdos.limiteSuperiorExperiencia limExp, pjdos.experiencia experiencia,"
+                + " pjdos.pesoSoportado peso, pjdos.fechaCreacion, pjdos.estaBaneado ban,"
+                + " pjdos.Cuenta_id cuenta FROM personaje pjuno, jugador pjdos "
+                + "WHERE pjuno.id=" + id
+                + "  AND pjdos.Personaje_id=" + id;
+
+        try {
+
+            ResultSet res = conexion.Consulta(StrSql);
+
+            if (res.next()) {
+                this.setIdPersonaje(res.getShort("id"));
+                this.setNombre(res.getString("nombre"));
+                this.setNivel(res.getShort("nivel"));
+                this.setPos(res.getInt("posx"), res.getInt("posy"));
+                this.setTipo(res.getShort("tipo"));
+                this.setVitalidad(res.getShort("vit"));
+                this.setTotalPuntosHabilidad(res.getShort("ptosHab"));
+                this.setTotalPuntosEstadistica(res.getShort("ptosEst"));
+                this.setDestreza(res.getShort("des"));
+                this.setFuerza(res.getShort("fue"));
+                this.setSabiduria(res.getShort("sab"));
+                this.setLimiteSuperiorExperiencia(res.getInt("limExp"));
+                this.setExperiencia(res.getInt("experiencia"));
+                this.setPesoSoportado(res.getInt("peso"));
+                this.setFechaCreacion(res.getDate("fechaCreacion"));
+                this.setEsBaneado(res.getBoolean("ban"));
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problemas en: clase->Jugador , método->cargarPersonaje() " + ex);
+        }
+        try {
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        setHp();
+        setMp();
+    }
+
+    public Integer getAtaque() {
+        return getFuerza() * 2 + getFuerza() / 5 + getNivel(); //+ dañoArma
+    }
+
+    public Integer getDefensa() {
+        return getVitalidad() / 10; // + defensa equipo
+    }
+
+    public Integer getHp() {
+        return hp;
+    }
+
+    public Integer getMp() {
+        return mp;
+    }
+
+    private void setHp() {
+        this.hp = (getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 10) + getNivel();
+        this.hpMax = this.hp;
+        System.out.println("hp: "+this.hp);
+    }
+
+    private void setMp() {
+        this.mp = (((getSabiduria() / 7) * 50) + (getSabiduria() / 30) + getNivel() * 10 + getNivel());
+        this.mpMax = this.mp;
+    }
+
+    public short getIdProximoAtaque() {
+        return idProximoAtaque;
+    }
+
+    public void setIdProximoAtaque(short idProximoAtaque) {
+        this.idProximoAtaque = idProximoAtaque;
+    }
+
+    public short getIdProximoItem() {
+        return idProximoItem;
+    }
+
+    public void setIdProximoItem(short idProximoItem) {
+        this.idProximoItem = idProximoItem;
+    }
 
     public Jugador() {
+        
     }
     /* Aumenta la todas las  cosas inherentes al subir de nivel
      * 
@@ -59,10 +158,12 @@ public class Jugador extends Personaje {
 
         return limite * 1.35;
     }
-    /*aumenta los stats
-     * del jugador
-     */
 
+    /**
+     * Aumenta los stats
+     * del jugador
+     *
+     */
     private void aumentarStats() {
         short aumento = 3;
         this.setVitalidad((short) (this.getVitalidad() + aumento));
@@ -303,23 +404,96 @@ public class Jugador extends Personaje {
     public void agregarItem(short idItem) {
         Objeto objt = new Objeto();
         objt.setObjeto(idItem);
-        if (puedellevarItem(idItem, (short)1)) {
-            this.getInventario().agregarItem(idItem, (short)1);
+        if (puedellevarItem(idItem, (short) 1)) {
+            this.getInventario().agregarItem(idItem, (short) 1);
         }
     }
 
-    private boolean puedellevarItem(short idItem, short cantidad ){
+    private boolean puedellevarItem(short idItem, short cantidad) {
         Objeto objt = new Objeto();
         objt.setObjeto(idItem);
         return cantidad > 0 && objt != null && objt.getPeso() * cantidad <= this.getPesoDisponible();
     }
 
-    public void paint(){
-        eng.setColor(JGColor.red);
-            eng.drawRect(eng.viewXOfs() + 200, eng.viewYOfs() + 250, 300, 100, true, false);
-            //interior
-            eng.setColor(JGColor.white);
-            eng.drawRect(eng.viewXOfs() + 205, eng.viewYOfs() + 255, 290, 90, true, false);
+    /**
+     * Retoma el boton de habilidad
+     */
+    public void setProximoAtaque(Short idHabilidad) {
+        if (eng.inGameState("InCombat")) {
+            if (!isBlocked()) {
+                this.setIdProximoAtaque(idHabilidad);
+                this.utilizarHabilidad();
+            } else {
+                this.setIdProximoAtaque((short) -1);
+            }
+        } else {
+            this.setIdProximoAtaque((short) -1);
+        }
     }
 
+    public void setProximoItem(Short idItem) {
+        if (eng.inGameState("InCombat")) {
+            if (!isBlocked()) {
+                this.setIdProximoItem(idItem);
+                this.utilizarItem();
+            } else {
+                this.setIdProximoItem((short) -1);
+            }
+        }
+    }
+
+    /**
+     * actualiza al jugador en cuanto a uso de poderes se refiere
+     */
+    public void utilizarHabilidad() {
+        if (this.getIdProximoAtaque() != -1) {
+            //quitar mp
+            this.mp -= this.getHabilidades().getCosto(this.getIdProximoAtaque());
+
+            //bloqueo segun tiempo de espera
+            this.bloquear(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
+        }
+
+    }
+
+    public void utilizarItem() {
+        if (this.getIdProximoItem() != -1) {
+            //bloqueo 1 tiempo de espera
+            this.bloquear(2);
+        }
+
+    }
+
+    public void recibirDañoBeneficio(int daño) {
+        if (this.hpMax >= this.getHp() + daño && this.getHp() + daño > 0) {
+            this.hp += daño;
+        } else if (this.hpMax <= this.getHp() + daño) {
+            this.hp = this.hpMax;
+        } else {
+            this.hp = 0;
+            muerte();
+        }
+    }
+
+    public void muerte() {
+        eng.setGameState("InDeath");
+    }
+
+    @Override
+    public void paint() {
+        if (eng.inGameState("InCombat")) {
+            //borde externo
+            eng.setColor(JGColor.red);
+            eng.drawRect(eng.viewXOfs() + 200, eng.viewYOfs() + 250, 300, 100, true, false);
+            //interior
+
+        }else if (eng.inGameState("InDeath")){
+
+            eng.setColor(JGColor.white);
+            eng.drawRect(eng.viewXOfs() + 205, eng.viewYOfs() + 255, 290, 90, true, false);
+            eng.setColor(JGColor.red);
+            eng.setFont(new JGFont("Arial", 0, 16));
+            eng.drawString("HP: "+this.getHp(), eng.viewWidth() / 2, eng.viewHeight() / 2 + 45, 0);
+        }
+    }
 }

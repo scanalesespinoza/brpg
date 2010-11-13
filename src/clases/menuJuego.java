@@ -59,9 +59,9 @@ public class menuJuego extends JGObject {
             eng.setFont(new JGFont("Arial",0,20));
 
             //eng.drawString("Coordenada X: "+pj.x+" Coordenada Y: "+pj.y, eng.viewWidth()/2, 420, 0);
-            eng.drawString("Bienvenido al Mundo de BRPG(Demo)", eng.viewWidth()/2, 420, 0);
-            eng.setFont(new JGFont("Arial",0,10));
-            eng.drawString("Presiona Escape para salir del Juego ", eng.viewWidth()/2, 450, 0);
+////            eng.drawString("Bienvenido al Mundo de BRPG(Demo)", eng.viewWidth()/2, 420, 0);
+////            eng.setFont(new JGFont("Arial",0,10));
+////            eng.drawString("Presiona Escape para salir del Juego ", eng.viewWidth()/2, 450, 0);
 
 
             switch(menu){

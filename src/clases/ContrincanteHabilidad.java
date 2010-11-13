@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 /**
  *
@@ -19,6 +20,12 @@ public class ContrincanteHabilidad {
     private short idPersonaje;
     private HashMap<Short, UnaHabilidad> habilidades;//contiene las habilidades del personaje
     private dbDelegate conexion;
+    private Habilidad hab;
+
+    public ContrincanteHabilidad() {
+        this.habilidades = new HashMap<Short, UnaHabilidad>();
+        this.hab  = new Habilidad();
+    }
 
     public short getIdPersonaje() {
         return idPersonaje;
@@ -37,6 +44,7 @@ public class ContrincanteHabilidad {
         System.out.println("Inicio obtiene datos personaje");
         String StrSql = "SELECT * FROM contrincante_habilidad "
                 + "WHERE personaje_id = " + id;
+        System.out.println(StrSql);
         try {
             ResultSet res = conexion.Consulta(StrSql);
             System.out.println(StrSql);
@@ -73,12 +81,12 @@ public class ContrincanteHabilidad {
         Iterator it = this.getHabilidades().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
-            UnaHabilidad hab = this.getHabilidad(Short.parseShort(e.getKey().toString()));
-            if (!hab.isNewHabilidad()) {
+            UnaHabilidad habi = this.getHabilidad(Short.parseShort(e.getKey().toString()));
+            if (!habi.isNewHabilidad()) {
                 String StrSql = "UPDATE contrincante_habilidad"
-                        + " SET nivelhabilidad= " + hab.getNivelHabilidad() + ","
+                        + " SET nivelhabilidad= " + habi.getNivelHabilidad() + ","
                         + " WHERE personaje_id = " + this.getIdPersonaje()
-                        + "   AND objeto_id = " + hab.getIdHabilidad();
+                        + "   AND objeto_id = " + habi.getIdHabilidad();
                 conexion.Ejecutar(StrSql);
             }
         }
@@ -92,43 +100,32 @@ public class ContrincanteHabilidad {
         Iterator it = this.getHabilidades().entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
-            UnaHabilidad hab = this.getHabilidad(Short.parseShort(e.getKey().toString()));
-            if (hab.isNewHabilidad()) {
+            UnaHabilidad habi = this.getHabilidad(Short.parseShort(e.getKey().toString()));
+            if (habi.isNewHabilidad()) {
                 String StrSql = "INSERT INTO contrincante_habilidad VALUES("
                         + this.getIdPersonaje() + ","
-                        + hab.getIdHabilidad() + ","
-                        + hab.getNivelHabilidad() + ")";
+                        + habi.getIdHabilidad() + ","
+                        + habi.getNivelHabilidad() + ")";
                 conexion.Ejecutar(StrSql);
             }
         }
     }
-//    /*
-//     * Aumenta el nivel de la habilidad del personaje
-//     */
-//
-//    public void aumentaNivelHabilidad(short idHabilidad) {
-//        this.conexion = new dbDelegate();
-//        System.out.println("Inicio aumentaHabilidad");
-//        String StrSql = "Update contrincante_habilidad "
-//                + "SET nivelHabilidad = nivelHabilidad+1 "
-//                + "WHERE personaje_id = " + idPersonaje + "AND"
-//                + "habilidad_id = " + idHabilidad;
-//        conexion.Ejecutar(StrSql);
-//    }
+
     /**
      * Agrega una habilidad al personaje, para considerarse activa debe tener un
      * nivel  mayor que 0
      * @param idhabilidad
      */
     public void agregaHabilidad(short idhabilidad) {
-        if (!tieneHabilidad(idhabilidad)){
-            UnaHabilidad hab  = new UnaHabilidad(idhabilidad, (short) 1, true);
-            this.getHabilidades().put(idhabilidad, hab);
+        if (!tieneHabilidad(idhabilidad)) {
+            UnaHabilidad habi = new UnaHabilidad(idhabilidad, (short) 1, true);
+            this.getHabilidades().put(idhabilidad, habi);
         }
     }
     /*
      * Aumenta el nivel de una habilidad
      */
+
     public void aumentarNivel(short idHabilidad) {
         if (tieneHabilidad(idHabilidad)) {
             aumentarNivel(idHabilidad);
@@ -138,33 +135,6 @@ public class ContrincanteHabilidad {
     public boolean tieneHabilidad(short idHabilidad) {
         return this.getHabilidades().containsKey(idHabilidad);
     }
-//    /*
-//     * Agrega nuevas habilidades al personaje segun el nivel adquirido
-//     */
-//
-//    public void agregaNuevaHabilidad(short nivelPersonaje) {
-//        this.conexion = new dbDelegate();
-//        String StrSqlUno = new String();
-//        String StrSqlDos = new String();
-//        if (nivelPersonaje == 3) {
-//            StrSqlUno = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",3,1)";
-//            StrSqlDos = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",4,1)";
-//        } else if (nivelPersonaje == 7) {
-//            StrSqlUno = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",5,1)";
-//            StrSqlDos = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",6,1)";
-//        } else if (nivelPersonaje == 12) {
-//            StrSqlUno = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",7,1)";
-//            StrSqlDos = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",8,1)";
-//        } else if (nivelPersonaje == 18) {
-//            StrSqlUno = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",9,1)";
-//            StrSqlDos = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",10,1)";
-//        } else if (nivelPersonaje == 25) {
-//            StrSqlUno = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",3,1)";
-//            StrSqlDos = "INSERT INTO contrincante_habilidad VALUES (" + idPersonaje + ",4,1)";
-//        }
-//        conexion.Ejecutar(StrSqlUno);
-//        conexion.Ejecutar(StrSqlDos);
-//    }
 
     private HashMap<Short, UnaHabilidad> getHabilidades() {
         return habilidades;
@@ -172,6 +142,40 @@ public class ContrincanteHabilidad {
 
     private UnaHabilidad getHabilidad(short idHabilidad) {
         return this.getHabilidades().get(idHabilidad);
+    }
+
+    public Integer getCosto(short idHabilidad) {
+        Short nivel = this.getHabilidades().get(idHabilidad).getNivelHabilidad();
+        hab.setHabilidad(idHabilidad);
+        return (nivel * hab.getCostoBasico()) / 2;
+    }
+
+    public Integer getDañoBeneficio(short idHabilidad) {
+        Short nivel = this.getHabilidades().get(idHabilidad).getNivelHabilidad();
+        hab.setHabilidad(idHabilidad);
+        return Math.round((int) (hab.getDanoBeneficio() * (1 + (0.1 * nivel))));
+    }
+
+    public int getTiempoEspera(short idHabilidad) {
+        hab.setHabilidad(idHabilidad);
+        return hab.getTiempoEspera();
+    }
+
+    public short getHabilidadAlAzar() {
+        short result = -1;
+        if (this.getHabilidades().size() > 0) {
+            System.out.println("ENTRE A SACAR HABILIDAD ");
+            Random tope = new Random();
+            int num = tope.nextInt(this.getHabilidades().size()+1);
+            int i = 0;
+            Iterator it = this.getHabilidades().entrySet().iterator();
+            while (it.hasNext() && i < num) {
+                Map.Entry e = (Map.Entry) it.next();
+                i++;
+                result = Short.parseShort(e.getKey().toString());
+            }
+        }
+        return result;
     }
 
     private class UnaHabilidad {
@@ -188,7 +192,6 @@ public class ContrincanteHabilidad {
         }
 
         public UnaHabilidad() {
-            
         }
 
         public short getIdHabilidad() {
