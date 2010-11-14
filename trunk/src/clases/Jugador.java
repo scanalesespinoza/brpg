@@ -267,7 +267,7 @@ public class Jugador extends Personaje {
             }//else {eng.clearKey(eng.KeyRight);}
 
         }
-        super.desplazar();
+        player_move();
     }
 
     @Override

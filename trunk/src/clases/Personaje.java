@@ -16,7 +16,7 @@ import jgame.JGTimer;
  *
  * @author gerald
  */
-public class Personaje extends extensiones.StdDungeonPlayerV2 {
+public class Personaje extends extensiones.StdDungeon {
     // object cids: 1=player 2=monster 4=bullet 8=monsterbullet
 
     public static final int WALL_T = 1;
@@ -51,6 +51,11 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
     private ContrincanteHabilidad habilidades;
     private Encargo misiones;
     private Boolean bloqueo;
+
+    public Personaje(String name, boolean unique_id, double x, double y, int cid, String graphic, int occupy_mask) {
+        super(name, unique_id, x, y, cid, graphic, occupy_mask);
+    }
+
 
     public Personaje(double x, double y, double speed, short idPersonaje, String nombre, String graf, short nivel, short tipo, int cid) {
         super(nombre, x, y, cid, graf, true, false,
@@ -100,12 +105,6 @@ public class Personaje extends extensiones.StdDungeonPlayerV2 {
         this.misiones = misiones;
     }
 
-    /**
-     * Este método es un puente al move de la clase StdDungeonPlayerV2
-     */
-    public void desplazar() {
-        super.move();
-    }
 
     public short getIdPersonaje() {
         return idPersonaje;
