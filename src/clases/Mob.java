@@ -17,12 +17,6 @@ import jgame.JGPoint;
  */
 public class Mob extends Personaje {
 
-    public JGObject home_in = null;
-    /** true = avoid home_in position */
-    public boolean avoid = false;
-    /** chance that object moves randomly */
-    public double random_proportion;
-    /* state */
     public double tiempo_espera_original;
     /* tiempo de espera oeiginal para volver a moverse */
     public double tiempo_espera;

@@ -48,6 +48,7 @@ public class Inventario {
                 item.setEstaEquipado(res.getShort("estaequipado"));
                 item.setNewItem(false);
                 this.objetos.put(item.getIdObjeto(), item);
+                System.out.println("EL personaje con id "+ id + "Tiene hasta el momento "+ i +"Items");
                 i += 1;
 
             }

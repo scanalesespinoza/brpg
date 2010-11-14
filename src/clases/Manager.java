@@ -153,7 +153,8 @@ public class Manager extends JGEngine {
         inicializarTeclas();
         try {
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            casa1 = new Npc((double) 680, (double) 660, "casa1", "casa3", 0, (short) 100, (short) 1, (short) 1,
+
+            casa1 = new Npc(680, 660, "casa1", "casa3", 2, 0, (short) 100,
                     new String[]{"Hola amigo",
                         "Miguel: Como estas, espero mejor que yo",
                         "Me doy cuenta que no eres de estos lados",
@@ -166,15 +167,16 @@ public class Manager extends JGEngine {
                         "20 serán suficientes, en la cuidad suelen",
                         "crecer en la humedad de las rocas."
                     });//casa superior
-            casa2 = new Npc(80, 400, "casa2", "casa2", 0, (short) 101, (short) 1, (short) 1, new String[]{"Casa 2"});
-            casa3 = new Npc(350, 448, "casa3", "casa4", 0, (short) 102, (short) 1, (short) 1, new String[]{"Casa 3"});
-            casa4 = new Npc(80, 634, "casa3", "casa3", 0, (short) 103, (short) 1, (short) 1, new String[]{"Casa 3"});
-            casa5 = new Npc(350, 682, "casa3", "casa5", 0, (short) 104, (short) 1, (short) 1, new String[]{"Casa 3"});
-            alcaldia = new Npc(700, 75, "alcaldia", "casa4", 0, (short) 105, (short) 1, (short) 1, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
+            casa2 = new Npc(80, 400, "casa2", "casa2", 8, 0, (short) 101, new String[]{"Casa 2"});
+            casa3 = new Npc(350, 448, "casa3", "casa4", 8, 0, (short) 102, new String[]{"Casa 3"});
+            casa4 = new Npc(80, 634, "casa3", "casa3", 8, 0, (short) 103, new String[]{"Casa 3"});
+            casa5 = new Npc(350, 682, "casa3", "casa5", 8, 0, (short) 104, new String[]{"Casa 3"});
+            alcaldia = new Npc(700, 75, "alcaldia", "casa4", 8, 0, (short) 105, new String[]{ "Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
             //pasto1 = new Npc(192,128,"pasto","pasto",4,0,new String[]{"Hola amiguirijillo","soy pastillo1"});//pasto
-            arbol1 = new Npc(352, 64, "arbol1", "arbol", 0, (short) 106, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-            arbol2 = new Npc(288, 32, "arbol2", "arbol", 0, (short) 107, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-            pileta = new Npc(128, 64, "arbol2", "pileta", 0, (short) 108, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
+            arbol1 = new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+            arbol2 = new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+            pileta = new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
+            cursor = new Cursor();
             vendedor = new Npc(1040, 416, "vendedor", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
             vendedor.cargarDatos((short)22);
             System.out.println("ID vendedor: "+vendedor.getIdPersonaje()+"---"+vendedor.getIdNpc());
