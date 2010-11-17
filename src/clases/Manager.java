@@ -1,5 +1,6 @@
 package clases;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.JGColor;
@@ -51,6 +52,9 @@ public class Manager extends JGEngine {
     public Npc arbol2;
     public Npc pileta;
     public Npc vendedor;
+    public Seccion seccion = new Seccion();
+    public Habilidad hab =  new Habilidad();
+    Objeto obj = new Objeto();
     /*
      * Objetos de combate
      */
@@ -123,6 +127,7 @@ public class Manager extends JGEngine {
     @Override
     public void initGame() {
         setFrameRate(60, 2);
+        dbgShowGameState(true);
         try {
             defineMedia("/media/rpg-basico.tbl");
             setBGImage("bgimage");
@@ -509,41 +514,46 @@ public class Manager extends JGEngine {
             new Ventana(cursor.getMensaje());
             cursor.setMensaje("");
         }
-        if (cursor.getVentana() == 1) {
-            pj.colid = 0;
-            grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int)Math.pow(2, 5));
-            grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int)Math.pow(2, 5));
-            //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
-            procesaItem(pj,grillaPj.x,grillaPj.y);
-            procesaItem(vendedor,grillaNpc.x,grillaNpc.y);
-            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int)Math.pow(2, 5));
-            pj.bloquear();
-            cursor.setVentana((byte) 2);
-        } else if (cursor.getVentana() == 3) {
-            //Remueve todos los objetos que forman la ventana de comerciar
-            removeObjects("ventana trade", 0);
-            removeObjects("grilla npc", (int)Math.pow(2, 5));
-            removeObjects("grilla pj", (int)Math.pow(2, 5));
-            removeObjects("cerrar", (int)Math.pow(2, 5));
-//            for (int i = 0; i < 200; i++) {
-
-                //Renueve todos los objetos item
-                removeObjects("item",(int)Math.pow(2, 4));
-
-//            }
-            pj.desbloquear();
-            pj.colid = 2;
-            cursor.setVentana((byte) 0);
-        }
+//        if (cursor.getVentana() == 1) {
+//            pj.colid = 0;
+//            grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int)Math.pow(2, 5));
+//            grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int)Math.pow(2, 5));
+//            //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
+//            procesaItem(pj,grillaPj.x,grillaPj.y);
+//            procesaItem(vendedor,grillaNpc.x,grillaNpc.y);
+//            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int)Math.pow(2, 5));
+//            pj.bloquear();
+//            cursor.setVentana((byte) 2);
+//        } else if (cursor.getVentana() == 3) {
+//            //Remueve todos los objetos que forman la ventana de comerciar
+//            removeObjects("ventana trade", 0);
+//            removeObjects("grilla npc", (int)Math.pow(2, 5));
+//            removeObjects("grilla pj", (int)Math.pow(2, 5));
+//            removeObjects("cerrar", (int)Math.pow(2, 5));
+////            for (int i = 0; i < 200; i++) {
+//
+//                //Renueve todos los objetos item
+//                removeObjects("item",(int)Math.pow(2, 4));
+//
+////            }
+//            pj.desbloquear();
+//            pj.colid = 2;
+//            cursor.setVentana((byte) 0);
+//        }
     }
 
     @Override
     public void paintFrame() {
         menu.menuActual(getTeclaMenu());
+        moveObjects(null, 1);
     }
 
     @Override
     public void doFrame() {
+        if((inGameStateNextFrame("InComybat"))||(inGameStateNextFrame("InWorld"))||(inGameStateNextFrame("InCoymmerce"))||
+           (inGameStateNextFrame("InDeath"))||(inGameStateNextFrame("InReyward"))){
+           removeObjects("icono", (int)Math.pow(2, 4));
+        }
     }
 
     public void paintFrameInDeath() {
@@ -566,6 +576,8 @@ public class Manager extends JGEngine {
 
     public void paintFrameInCombat() {
         // aca graficar todas las wes hermosas y lindas de la warifaifa
+        seccion.setSeccion(new JGPoint(16,416), new JGPoint(12,1));
+        seccion.generaSeccion(pj,0);
     }
 
     public void doFrameInCombat() {
@@ -629,6 +641,46 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInInteraction() {
+    }
+
+    public void paintFrameInCommerce() {
+    }
+
+    public void doFrameInCommerce() {
+
+        checkCollision(
+                (int) Math.pow(2, 5) + (int) Math.pow(2, 0), // Colisión entre botones  + cursor
+                (int) Math.pow(2, 0) // ejecuta hit cursor
+                );
+        if (cursor.getVentana() == 1) {
+            pj.colid = 0;
+            //grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int) Math.pow(2, 5));
+            //grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int) Math.pow(2, 5));
+            //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
+//            procesaItem(pj, grillaPj.x, grillaPj.y);
+//            procesaItem(vendedor, grillaNpc.x, grillaNpc.y);
+           //seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
+            seccion.generaSeccion(pj, 1);
+            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
+            pj.bloquear();
+            cursor.setVentana((byte) 2);
+        } else if (cursor.getVentana() == 3) {
+            //Remueve todos los objetos que forman la ventana de comerciar
+//            removeObjects("ventana trade", 0);
+//            removeObjects("grilla npc", (int) Math.pow(2, 5));
+//            removeObjects("grilla pj", (int) Math.pow(2, 5));
+              removeObjects("cerrar", (int) Math.pow(2, 5));
+//            for (int i = 0; i < 200; i++) {
+
+            //Renueve todos los objetos item
+            seccion.removerIconos();
+
+//            }
+            pj.desbloquear();
+            pj.colid = 2;
+            cursor.setVentana((byte) 0);
+            setGameState("InWorld");
+        }
     }
 
     public void capturarTeclas() {
@@ -1009,66 +1061,66 @@ public class Manager extends JGEngine {
      *Procesa la lista de objetos del inventario del jugador para generar sus representaciones gráficas
      */
 
-    public void procesaItem(Jugador pj, double x, double y) {
-        Inventario inv = pj.getInventario();
-        Iterator it = inv.getObjetos().entrySet().iterator();
-        Objeto obj = new Objeto();
-        int i = 0;
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)0);
-
-            System.out.println("Item: "+i);
-            i++;
-
-        }
-    }
-    public void procesaItem(Npc npc, double x, double y) {
-        Inventario inv = npc.getInventario();
-        Iterator it = inv.getObjetos().entrySet().iterator();
-        Objeto obj = new Objeto();
-        int i = 0;
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)1);
-
-            System.out.println("Item: "+i);
-            i++;
-
-        }
-    }
-    public void procesaHabilidad(Jugador pj, double x, double y) {
-        ContrincanteHabilidad listHab = pj.getHabilidades();
-        Iterator it = listHab.getHabilidades().entrySet().iterator();
-        Habilidad hab = new Habilidad();
-        int i = 1;
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
-
-            System.out.println("Item: "+i);
-            i++;
-
-        }
-    }
-    public void procesaHabilidad(Mob mob, double x, double y) {
-        ContrincanteHabilidad listHab = mob.getHabilidades();
-        Iterator it = listHab.getHabilidades().entrySet().iterator();
-        Habilidad hab = new Habilidad();
-        int i = 1;
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
-
-            System.out.println("Item: "+i);
-            i++;
-
-        }
-    }
+//    public void procesaItem(Jugador pj, double x, double y) {
+//        Inventario inv = pj.getInventario();
+//        Iterator it = inv.getObjetos().entrySet().iterator();
+//        Objeto obj = new Objeto();
+//        int i = 0;
+//        while (it.hasNext()) {
+//            Map.Entry e = (Map.Entry) it.next();
+//            obj.setObjeto(Short.parseShort(e.getKey().toString()));
+//                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)0);
+//
+//            System.out.println("Item: "+i);
+//            i++;
+//
+//        }
+//    }
+//    public void procesaItem(Npc npc, double x, double y) {
+//        Inventario inv = npc.getInventario();
+//        Iterator it = inv.getObjetos().entrySet().iterator();
+//        Objeto obj = new Objeto();
+//        int i = 0;
+//        while (it.hasNext()) {
+//            Map.Entry e = (Map.Entry) it.next();
+//            obj.setObjeto(Short.parseShort(e.getKey().toString()));
+//                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)1);
+//
+//            System.out.println("Item: "+i);
+//            i++;
+//
+//        }
+//    }
+//    public void procesaHabilidad(Jugador pj, double x, double y) {
+//        ContrincanteHabilidad listHab = pj.getHabilidades();
+//        Iterator it = listHab.getHabilidades().entrySet().iterator();
+//        Habilidad hab = new Habilidad();
+//        int i = 1;
+//        while (it.hasNext()) {
+//            Map.Entry e = (Map.Entry) it.next();
+//            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+//                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
+//
+//            System.out.println("Item: "+i);
+//            i++;
+//
+//        }
+//    }
+//    public void procesaHabilidad(Mob mob, double x, double y) {
+//        ContrincanteHabilidad listHab = mob.getHabilidades();
+//        Iterator it = listHab.getHabilidades().entrySet().iterator();
+//        Habilidad hab = new Habilidad();
+//        int i = 1;
+//        while (it.hasNext()) {
+//            Map.Entry e = (Map.Entry) it.next();
+//            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+//                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
+//
+//            System.out.println("Item: "+i);
+//            i++;
+//
+//        }
+//    }
 
     /*
      * Clases anidadas
@@ -1098,6 +1150,8 @@ public class Manager extends JGEngine {
     public class Icono extends JGObject {
         private short idObjeto;
         private short tipo;
+        private double xAnt ;
+        private double yAnt ;
 
 
         public short getIdObjeto() {
@@ -1119,8 +1173,15 @@ public class Manager extends JGEngine {
             super(nombre, true, x, y, (int) Math.pow(2, 4), graf);
             this.setIdObjeto(id);
             this.setTipo(tipoIcono);
+            xAnt = x;
+            yAnt = y;
         }
-        
+        @Override
+        public void paint(){
+           x = xAnt+viewXOfs();
+           y = yAnt+viewYOfs();
+        }
+            
     }
 
     public class Cursor extends JGObject {
@@ -1194,6 +1255,8 @@ public class Manager extends JGEngine {
                 setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato?");
                 if (getMouseButton(3)) {
                     setVentana((byte) 1);
+                    seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
+                    setGameState("InCommerce");
                 }
             }
             if ((obj.getGraphic().equals("cerrar")) && (getMouseButton(3))) {
@@ -1215,5 +1278,104 @@ public class Manager extends JGEngine {
             }
 
         }
+    }
+
+
+    public class Seccion{
+        private int pos_inicial_x,pos_inicial_y;
+        private JGPoint recorrido;
+        private int tabla_inicial_x,tabla_inicial_y;
+        private JGPoint tabla;
+
+        public Seccion() {
+        }
+
+        public void generaSeccion(Personaje personaje, int tipo){
+            Iterator it;
+            switch(tipo){
+                case 0:
+                    System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x"+tabla_inicial_x+"<<<<<<<<<<<<<<<<<<<<<");
+                        ContrincanteHabilidad listHab = personaje.getHabilidades();
+                        it = listHab.getHabilidades().entrySet().iterator();
+                            while(this.tabla.y>0){
+                                System.out.println(">>>>>>>>>>>>>>>>>>>>tabla CIclo while y<<<<<<<<<<<<<<<<<<<<<");
+                                System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
+                                System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x"+pos_inicial_x+"<<<<<<<<<<<<<<<<<<<<<");
+                               while(this.tabla.x>0){
+                                   System.out.println(">>>>>>>>>>>>>>>>>>>> ciclo While X<<<<<<<<<<<<<<<<<<<<<");
+                                    if (it.hasNext()) {
+                                        Map.Entry e = (Map.Entry) it.next();
+                                        hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+                                            new Icono("icono", this.recorrido.x,this.recorrido.y, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
+                                            System.out.println("habilidad                      = "+ hab.getNombre());
+                                        this.recorrido.x+=21;
+                                    }
+                                    System.out.println("recorrido : "+tabla.x);
+//                                    System.out.println(">>>>>>>>>>>>>>>>>>>>tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
+//                                   System.out.println(">>>>>>>>>>>>>>>>>>>> tabla y"+ tabla.y+"<<<<<<<<<<<<<<<<<<<<<");
+                                    this.tabla.x--;
+                                }
+                                this.recorrido.x=pos_inicial_x;
+                                this.tabla.x=tabla_inicial_x;
+                                this.tabla.y--;
+                                this.recorrido.y+=21;
+                                
+                            }
+                    break;
+                case 1:
+                        Inventario inv = pj.getInventario();
+                        it = inv.getObjetos().entrySet().iterator();
+                            while(this.tabla.y>0){
+                                while(this.tabla.x>0){
+                                    if (it.hasNext()) {
+                                        Map.Entry e = (Map.Entry) it.next();
+                                        obj.setObjeto(Short.parseShort(e.getKey().toString()));
+                                            new Icono("icono", this.recorrido.x,this.recorrido.y, obj.getNombreGrafico(),obj.getIdObjeto(),(short)0);
+                                            System.out.println("objeto                      = "+ obj.getNombre());
+                                        this.recorrido.x+=21;
+                                    }
+                                    this.tabla.x--;
+                                }
+                                this.recorrido.x=pos_inicial_x;
+                                this.tabla.x=tabla_inicial_x;
+                                this.tabla.y--;
+                                this.recorrido.y+=21;
+                            }
+                    break;
+            }
+
+        }
+
+        public void setSeccion(JGPoint posicion, JGPoint tabla){
+            setRecorrido(posicion);
+            setTabla(tabla);
+            this.pos_inicial_x = posicion.x;
+            this.pos_inicial_y = posicion.y;
+            this.tabla_inicial_x = tabla.x;
+            this.tabla_inicial_y = tabla.y;
+        }
+
+        public void removerIconos(){
+            removeObjects("icono", (int)Math.pow(2, 4));
+        }
+
+        public JGPoint getRecorrido() {
+            return recorrido;
+        }
+
+        public void setRecorrido(JGPoint recorrido) {
+            this.recorrido = recorrido;
+        }
+
+        public JGPoint getTabla() {
+            return tabla;
+        }
+
+        public void setTabla(JGPoint tabla) {
+            this.tabla = tabla;
+        }
+
+
+
     }
 }

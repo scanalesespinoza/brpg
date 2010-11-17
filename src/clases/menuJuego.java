@@ -35,12 +35,12 @@ public class menuJuego extends JGObject {
 
     public void menuActual(int menu) {
             //Fondo blanco del menu
-            eng.setColor(JGColor.white);
-            eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs(),100,eng.viewHeight(), true, false);
-            eng.setColor(JGColor.black);
-            eng.drawRect(eng.viewXOfs(),eng.viewYOfs()+400,eng.viewWidth()-90,100, true, false);
-            eng.setColor(JGColor.white);
-            eng.drawRect(eng.viewXOfs()+5,eng.viewYOfs()+405,eng.viewWidth()-100,70, true, false);
+//            eng.setColor(JGColor.white);
+//            eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs(),100,eng.viewHeight(), true, false);
+//            eng.setColor(JGColor.black);
+//            eng.drawRect(eng.viewXOfs(),eng.viewYOfs()+400,eng.viewWidth()-90,100, true, false);
+//            eng.setColor(JGColor.white);
+//            eng.drawRect(eng.viewXOfs()+5,eng.viewYOfs()+405,eng.viewWidth()-100,70, true, false);
             //Cuadros de menu
             eng.setColor(JGColor.black);
             eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs(),100,300, true, false);

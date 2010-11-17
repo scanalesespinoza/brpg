@@ -476,6 +476,7 @@ public class Jugador extends Personaje {
     }
 
     public void muerte() {
+
         eng.setGameState("InDeath");
     }
 
