@@ -140,7 +140,7 @@ public class ContrincanteHabilidad {
         return habilidades;
     }
 
-    private UnaHabilidad getHabilidad(short idHabilidad) {
+    public UnaHabilidad getHabilidad(short idHabilidad) {
         return this.getHabilidades().get(idHabilidad);
     }
 

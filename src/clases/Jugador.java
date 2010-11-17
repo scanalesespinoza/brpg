@@ -218,6 +218,9 @@ public class Jugador extends Personaje {
         setbRightkey(false);
         setbUpkey(false);
 
+        if(!isBlocked()){
+
+
         int entorno = 16; //variable para formar cuadrados a partir de un punto.
         if (eng.getMouseButton(1)) {
             //Obtengo posicion del mouse
@@ -282,17 +285,24 @@ public class Jugador extends Personaje {
 
         }
         player_move();
+
+
+        }
     }
 
     @Override
     public void hit(JGObject obj) {
-        try {
-            conect.actualizaPosicionJugador(this.getIdPersonaje(), (int) this.getLastX(), (int) this.getLastY() + 5);
-        } catch (Exception ex) {
-            System.out.println("Error al conectar la DB #Jugador.Hit: " + ex);
-        }
+//        try {
+//            conect.actualizaPosicionJugador(this.getIdPersonaje(), (int) this.getLastX(), (int) this.getLastY() + 5);
+//        } catch (Exception ex) {
+//            System.out.println("Error al conectar la DB #Jugador.Hit: " + ex);
+//        }
+        
+        ydir=0;
+        bloquear();
+        suspend();
 
-        remove();
+
         this.setInteractuarNpc(true);
         System.out.println("Nombre del objeto colisionador: " + getGraphic() + getName());
 

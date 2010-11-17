@@ -241,9 +241,9 @@ public class SeccionMenu {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, personaje.getTipo());
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo());
                                     System.out.println("habilidad                      = " + hab.getNombre());
-                                    this.recorrido.x += 21;
+                                    this.recorrido.x += 37;
                                 }
                                 System.out.println("recorrido : " + tabla.x);
 //                                    System.out.println(">>>>>>>>>>>>>>>>>>>>tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
@@ -253,7 +253,7 @@ public class SeccionMenu {
                             this.recorrido.x = pos_inicial_x;
                             this.tabla.x = tabla_inicial_x;
                             this.tabla.y--;
-                            this.recorrido.y += 21;
+                            this.recorrido.y += 37;
                         }
                         break;
                     case 1:
@@ -264,16 +264,16 @@ public class SeccionMenu {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0,personaje.getTipo());
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0, inv.contarItem(obj.getIdObjeto()),personaje.getTipo());
                                     System.out.println("objeto                      = " + obj.getNombre());
-                                    this.recorrido.x += 21;
+                                    this.recorrido.x += 37;
                                 }
                                 this.tabla.x--;
                             }
                             this.recorrido.x = pos_inicial_x;
                             this.tabla.x = tabla_inicial_x;
                             this.tabla.y--;
-                            this.recorrido.y += 21;
+                            this.recorrido.y += 37;
                         }
                         break;
                 }
