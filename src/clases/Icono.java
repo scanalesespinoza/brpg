@@ -17,7 +17,7 @@ import jgame.JGObject;
         private short tipo;
         private double xAnt;
         private double yAnt;
-        private String pertenece;
+        private short pertenece;
 
         public short getIdObjeto() {
             return idObjeto;
@@ -35,7 +35,10 @@ import jgame.JGObject;
             this.tipo = tipo;
         }
 
-        public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono) {
+        public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono, short pertenece) {
+            //tipo icono :
+            // 0 = habilidades (habilidad)
+            // 1 = inventario (objeto)
             super(nombre, true, x, y, (int) Math.pow(2, 4), graf);
             this.setIdObjeto(id);
             this.setTipo(tipoIcono);
@@ -44,8 +47,8 @@ import jgame.JGObject;
             this.pertenece = pertenece;
         }
 
-        public boolean belongTo(String string) {
-            if (this.pertenece.equals(string)) {
+        public boolean belongTo(short tipo) {
+            if (this.pertenece == tipo) {
                 return true;
             }
             return false;

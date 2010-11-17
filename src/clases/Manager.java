@@ -150,7 +150,7 @@ public class Manager extends JGEngine {
 
         //Objeto cursor, imágen que sigue las coordenadas del mouse
         cursor = new Cursor();
-
+        dbgShowBoundingBox(true);
         //cargaJugador(0,0); reemplazamos por el metodo nuevo
         this.pj = new Jugador();
         this.pj.cargarDatos(this.idJugador);
@@ -262,6 +262,7 @@ public class Manager extends JGEngine {
                     "+++++++++++++++++++++++++++++++++++|||||++++++++++++++++++++++++++++++++++++++||",});
         textoPrueba = new String[]{"hola", "como estas?", "necesito dinero", "enserio", "piola"};
         setGameState("Title");
+
 
     }
     /** View offset. */
@@ -547,6 +548,7 @@ public class Manager extends JGEngine {
         menu.getSeccion().setSeccion(new JGPoint(400,30), new JGPoint(2,6));
         menu.menuActual(getTeclaMenu(),pj);
         moveObjects(null, 1);
+
     }
 
     @Override
@@ -577,6 +579,9 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInCombat() {
+                String msg;
+        
+        dbgPrint("HP MOB: "+mob.getHp());
         // aca graficar todas las wes hermosas y lindas de la warifaifa
         seccion.setSeccion(new JGPoint(16, 416), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
@@ -584,40 +589,52 @@ public class Manager extends JGEngine {
 
     public void doFrameInCombat() {
         int dañoBeneficio = 0;
-//
-//        //PESCO LOS ICONOS QUE FUERON PRESIONADOS POR EL JUGADOR Y LE DIGO AL OBJETO JUGADOR
-//        //QUE ESA HABILIDAD SE VA A OCUPAR, LE ENTREGO COMO PARAMETRO LA HABILIDAD DEL ICONO
-//        //PONER EN VARIABLES AL WEON CON CUAL EL QLIO DEL JUGADOR PELEA (nombre = Enemigo)
-//        /**************************PERSONAJE**********************************/
-//        if (this.getIconoPresionado().isHabilidad()) {
-//            //personaje utilizara una habilidad
-//            pj.setProximoAtaque(this.getIconoPresionado().getId());
-//            if (pj.getIdProximoAtaque() != -1) {
-//                //el personaje puede atacar por que no está bloqueado
-//                dañoBeneficio = ((pj.getAtaque()) * (100 - mob.getDefensa())) - pj.getAtaque();
-//                if (dañoBeneficio < 0) {
-//                    //se convierte en daño hacia el enemigo
-//                    mob.recibirDañoBeneficio(dañoBeneficio);
-//                    //si no es beneficio al jugador
-//                } else {
-//                    pj.recibirDañoBeneficio(dañoBeneficio);
-//                }
-//            }
-//
-//        } else if (this.getIconoPresionado().isObjeto()) {
-//            //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
-//            Objeto obj = new Objeto();
-//            obj.setObjeto(this.getIconoPresionado.getId());
-//            if (obj.isUsoCombate()) {
-//                pj.setProximoItem(this.getIconoPresionado.getId());
-//            }
-//            if (pj.getIdProximoItem() != -1) {
-//                //el personaje puede usar un item
-//                dañoBeneficio = random(pj.getNivel() * 2, pj.getNivel() * 5, 10);
-//                pj.recibirDañoBeneficio(dañoBeneficio);
-//            }
-//
-//        }
+        checkCollision(
+                (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
+                (int) Math.pow(2, 0) // ejecuta hit cursor
+                );
+
+
+        //PESCO LOS ICONOS QUE FUERON PRESIONADOS POR EL JUGADOR Y LE DIGO AL OBJETO JUGADOR
+        //QUE ESA HABILIDAD SE VA A OCUPAR, LE ENTREGO COMO PARAMETRO LA HABILIDAD DEL ICONO
+        //PONER EN VARIABLES AL WEON CON CUAL EL QLIO DEL JUGADOR PELEA (nombre = Enemigo)
+        /**************************PERSONAJE**********************************/
+        
+        if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 0) {
+            
+            //personaje utilizara una habilidad
+            pj.setProximoAtaque(this.getIconoPresionado().getIdObjeto());
+            if (pj.getIdProximoAtaque() != -1) {
+                //el personaje puede atacar por que no está bloqueado
+                dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
+                if (dañoBeneficio < 0) {
+                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa())) - pj.getAtaque();
+                    //se convierte en daño hacia el enemigo
+                    System.out.println("DAÑP HACIA MOB: "+dañoBeneficio);
+                    mob.recibirDañoBeneficio(dañoBeneficio);
+                    //si no es beneficio al jugador
+                } else {
+                    System.out.println("Sanacion hacia pj: "+dañoBeneficio);
+                    pj.recibirDañoBeneficio(dañoBeneficio);
+                }
+            }
+            setIcon(null);
+
+        } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
+            //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
+            Objeto obj = new Objeto();
+            obj.setObjeto(this.getIconoPresionado().getIdObjeto());
+            if (obj.isUsoCombate()) {
+                pj.setProximoItem(this.getIconoPresionado().getIdObjeto());
+            }
+            if (pj.getIdProximoItem() != -1) {
+                //el personaje puede usar un item
+                dañoBeneficio = random(pj.getNivel() * 2, pj.getNivel() * 5, 10);
+                pj.recibirDañoBeneficio(dañoBeneficio);
+            }
+            setIcon(null);
+
+        }
 
         dañoBeneficio = 0;
         /**************************ENEMIGO MOB*********************************/
@@ -631,7 +648,7 @@ public class Manager extends JGEngine {
             if (dañoBeneficio < 0) {
                 dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) - mob.getAtaque();
                 //se convierte en daño hacia el jugador
-                pj.recibirDañoBeneficio(dañoBeneficio);
+                pj.recibirDañoBeneficio(/*dañoBeneficio*/0);
                 //si no es beneficio al MOB
             } else {
                 mob.recibirDañoBeneficio(dañoBeneficio);
@@ -648,7 +665,9 @@ public class Manager extends JGEngine {
 
     public void paintFrameInCommerce() {
     }
-
+    public Icono getIconoPresionado(){
+        return this.icon;
+    }
     public void doFrameInCommerce() {
 
         checkCollision(
@@ -1238,18 +1257,17 @@ public class Manager extends JGEngine {
                 System.out.println(getMensaje() + "Nada");
                 System.out.println(getMouseButton(3) + " boton derecho del mouse");
             }
-            if ((obj.colid == Math.pow(2, 4)) && (getMouseButton(3))) {
-                obj.x = cursor.x;
-                obj.y = cursor.y;
-                obj.snapToGrid();
-            }
+//            if ((obj.colid == Math.pow(2, 4)) && (getMouseButton(3))) {
+//                obj.x = cursor.x;
+//                obj.y = cursor.y;
+//                obj.snapToGrid();
+//            }
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
                 setIcon((Icono) obj);
-
             }
             if (obj.getGraphic().equals("icono")) {
                 Icono icon = (Icono) obj;
-                if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo("Jugador")) {
+                if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())){
                     pj.preComprarItem(icon.getIdObjeto());
                 }
             }
@@ -1293,7 +1311,7 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0);
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, personaje.getTipo());
                                     System.out.println("habilidad                      = " + hab.getNombre());
                                     this.recorrido.x += 21;
                                 }
@@ -1309,14 +1327,14 @@ public class Manager extends JGEngine {
                         }
                         break;
                     case 1:
-                        Inventario inv = pj.getInventario();
+                        Inventario inv = personaje.getInventario();
                         it = inv.getObjetos().entrySet().iterator();
                         while (this.tabla.y > 0) {
                             while (this.tabla.x > 0) {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0);
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, personaje.getTipo());
                                     System.out.println("objeto                      = " + obj.getNombre());
                                     this.recorrido.x += 21;
                                 }

@@ -241,7 +241,7 @@ public class SeccionMenu {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0);
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, personaje.getTipo());
                                     System.out.println("habilidad                      = " + hab.getNombre());
                                     this.recorrido.x += 21;
                                 }
@@ -257,14 +257,14 @@ public class SeccionMenu {
                         }
                         break;
                     case 1:
-                        Inventario inv = pj.getInventario();
+                        Inventario inv = personaje.getInventario();
                         it = inv.getObjetos().entrySet().iterator();
                         while (this.tabla.y > 0) {
                             while (this.tabla.x > 0) {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0);
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0,personaje.getTipo());
                                     System.out.println("objeto                      = " + obj.getNombre());
                                     this.recorrido.x += 21;
                                 }
