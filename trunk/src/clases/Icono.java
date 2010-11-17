@@ -5,6 +5,8 @@
 
 package clases;
 
+import jgame.JGColor;
+import jgame.JGFont;
 import jgame.JGObject;
 
 /**
@@ -18,7 +20,17 @@ import jgame.JGObject;
         private double xAnt;
         private double yAnt;
         private short pertenece;
+        private int cantidad =0;
 
+        public int getCantidad() {
+            return cantidad;
+        }
+
+        public void setCantidad(int cantidad) {
+            this.cantidad = cantidad;
+        }
+
+        
         public short getIdObjeto() {
             return idObjeto;
         }
@@ -35,7 +47,7 @@ import jgame.JGObject;
             this.tipo = tipo;
         }
 
-        public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono, short pertenece) {
+        public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono, int cantidad, short pertenece) {
             //tipo icono :
             // 0 = habilidades (habilidad)
             // 1 = inventario (objeto)
@@ -45,6 +57,7 @@ import jgame.JGObject;
             xAnt = x;
             yAnt = y;
             this.pertenece = pertenece;
+            this.cantidad = cantidad;
         }
 
         public boolean belongTo(short tipo) {
@@ -58,6 +71,13 @@ import jgame.JGObject;
         public void paint() {
             x = xAnt + eng.viewXOfs();
             y = yAnt + eng.viewYOfs();
+            System.out.println("Cantidad: "+this.cantidad);
+            System.out.println("X: "+x);
+            System.out.println("Y: "+y);
+            eng.setFont(new JGFont("Arial", 0, 24));
+            eng.setColor(JGColor.blue);
+            eng.drawString(""+this.cantidad, xAnt, yAnt, 0);
+
         }
     }
 

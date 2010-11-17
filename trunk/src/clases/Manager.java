@@ -294,8 +294,9 @@ public class Manager extends JGEngine {
             initGame();
         }
         if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
-            pj = new Jugador();
-            pj.cargarPersonaje((short) 1);
+
+            pj.y=pj.y+10;
+            pj.desbloquear();
             removeObjects(getNomNpcInteractuar(), (int) Math.pow(2, 3));
             pj.setInteractuarNpc(false);
             setInteractuar(0);
@@ -648,7 +649,7 @@ public class Manager extends JGEngine {
             if (dañoBeneficio < 0) {
                 dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) - mob.getAtaque();
                 //se convierte en daño hacia el jugador
-                pj.recibirDañoBeneficio(/*dañoBeneficio*/0);
+                pj.recibirDañoBeneficio(dañoBeneficio);
                 //si no es beneficio al MOB
             } else {
                 mob.recibirDañoBeneficio(dañoBeneficio);
@@ -664,6 +665,8 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInCommerce() {
+
+
     }
     public Icono getIconoPresionado(){
         return this.icon;
@@ -672,6 +675,10 @@ public class Manager extends JGEngine {
 
         checkCollision(
                 (int) Math.pow(2, 5) + (int) Math.pow(2, 0), // Colisión entre botones  + cursor
+                (int) Math.pow(2, 0) // ejecuta hit cursor
+                );
+        checkCollision(
+                (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre iconos  + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
         if (cursor.getVentana() == 1) {
@@ -1237,6 +1244,9 @@ public class Manager extends JGEngine {
         public void hit(JGObject obj) {
 
             System.out.println(obj.getGraphic());
+            System.out.println("Nombre: "+obj.getName());
+
+
             if (obj.getGraphic().equals("mario")) {
                 setMensaje("Soy " + obj.getGraphic());
             }
@@ -1244,8 +1254,8 @@ public class Manager extends JGEngine {
                 setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato?");
                 if (getMouseButton(3)) {
                     setVentana((byte) 1);
-                    seccion.setSeccion(new JGPoint(10, 10), new JGPoint(3, 4));
-                    seccionNpc.setSeccion(new JGPoint(100,10), new JGPoint(3,4));
+                    seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
+                    seccionNpc.setSeccion(new JGPoint(250,10), new JGPoint(3,4));
                     setGameState("InCommerce");
                 }
             }
@@ -1265,10 +1275,17 @@ public class Manager extends JGEngine {
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
                 setIcon((Icono) obj);
             }
-            if (obj.getGraphic().equals("icono")) {
+            if (obj.colid == (int) Math.pow(2, 4)) {
+                System.out.println("choka item");
                 Icono icon = (Icono) obj;
-                if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())){
-                    pj.preComprarItem(icon.getIdObjeto());
+                if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())){
+                    clearMouseButton(3);
+                    System.out.println("Agregar item");
+                    System.out.println("ICON ID OBJETO *******************"+icon.getIdObjeto());
+                    pj.getInventario().agregarItem(icon.getIdObjeto());
+                    seccion.setWorking(false);
+                    seccion.generaSeccion(pj, 1);
+                    System.out.println("Todos los item************************"+pj.getInventario().contarTodosItems());
                 }
             }
         }
@@ -1311,9 +1328,10 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, personaje.getTipo());
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo());
+
                                     System.out.println("habilidad                      = " + hab.getNombre());
-                                    this.recorrido.x += 21;
+                                    this.recorrido.x += 37;
                                 }
                                 System.out.println("recorrido : " + tabla.x);
 //                                    System.out.println(">>>>>>>>>>>>>>>>>>>>tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
@@ -1323,7 +1341,7 @@ public class Manager extends JGEngine {
                             this.recorrido.x = pos_inicial_x;
                             this.tabla.x = tabla_inicial_x;
                             this.tabla.y--;
-                            this.recorrido.y += 21;
+                            this.recorrido.y += 37;
                         }
                         break;
                     case 1:
@@ -1334,16 +1352,20 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, personaje.getTipo());
-                                    System.out.println("objeto                      = " + obj.getNombre());
-                                    this.recorrido.x += 21;
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, inv.contarItem(obj.getIdObjeto()), personaje.getTipo());
+                                    setFont(new JGFont("Arial",0,24));
+                                    drawString("Cantidad"+inv.contarItem(obj.getIdObjeto()), viewHeight()/2,viewWidth()/2, 0);
+                                    System.out.println("Nombre objeto                      = " + obj.getNombre());
+                                    System.out.println("Id objeto                      = " + obj.getIdObjeto());
+                                    System.out.println("Cantidad: "+inv.contarItem(obj.getIdObjeto()));
+                                    this.recorrido.x += 37;
                                 }
                                 this.tabla.x--;
                             }
                             this.recorrido.x = pos_inicial_x;
                             this.tabla.x = tabla_inicial_x;
                             this.tabla.y--;
-                            this.recorrido.y += 21;
+                            this.recorrido.y += 37;
                         }
                         break;
                 }

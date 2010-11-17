@@ -19,7 +19,7 @@ public class Inventario {
     private short idPersonaje;
     private dbDelegate conexion;
     private HashMap<Short, Item> objetos;//contiene los objetos del personaje
-
+    private Objeto obj = new Objeto();
     public Inventario() {
         this.objetos = new HashMap<Short, Item>();
     }
@@ -166,14 +166,18 @@ public class Inventario {
      * @param idItem
      */
     public void agregarItem(short idItem) {
+        obj.setObjeto(idItem);
+        System.out.println("VOY A AGREGAR : "+obj.getNombre());
         Item item = creaItem(idItem, (short) 1, (short) 0);
         if (this.comprobarItem(idItem)) {
             this.getObjetos().get(idItem).sumarCantidad((short) 1);
+            System.out.println("YA LO TENGO..TENIA : "+(this.getObjetos().get(idItem).getCantidad() -1));
         } else {
             //si el item es nuevo en el hashmap, se debe ingresar en la base de datos
             //para eso  se pone el valor newItem como true
             item.setNewItem(true);
             this.getObjetos().put(idItem, item);
+             System.out.println("NO LO TENGO..AHORA TENGO: "+(this.getObjetos().get(idItem).getCantidad()));
         }
     }
 
@@ -228,7 +232,7 @@ public class Inventario {
      */
     public boolean tieneItem(short idObjeto, short cantidad) {
         return this.getObjetos().containsKey(idObjeto)
-                && this.getObjetos().get(idObjeto).getCantidad() == cantidad;
+                && this.getObjetos().get(idObjeto).getCantidad() >= cantidad;
 
     }
 
@@ -283,6 +287,7 @@ public class Inventario {
         int cuenta = 0;
         if (tieneItem(idItem)) {
             cuenta = this.getObjetos().get(idItem).getCantidad();
+            System.out.println("Contar item"+this.getObjetos().get(idItem).getCantidad());
         }
         return cuenta;
     }
