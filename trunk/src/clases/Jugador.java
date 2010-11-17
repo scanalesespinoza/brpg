@@ -3,6 +3,9 @@ package clases;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.*;
@@ -14,6 +17,7 @@ import jgame.*;
 public class Jugador extends Personaje {
 
     private short idJugador;
+    private HashMap<Short, Integer> preCompra = new HashMap<Short, Integer>();
 
     public Jugador(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, int cid) throws SQLException {
         super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
@@ -31,6 +35,7 @@ public class Jugador extends Personaje {
     private int pesoSoportado;
     private Date fechaCreacion;
     private boolean esBaneado;
+    private boolean haComprado;
     //Determina si un npc esta activo (se ha colisionado con el desencadenando un dialogo con el jugador)
     private boolean interactuarNpc = false;
     private dbDelegate conect = new dbDelegate();
@@ -153,11 +158,20 @@ public class Jugador extends Personaje {
 
     private double calcularLimiteExperiencia() {
         int limite = this.getLimiteSuperiorExperiencia();
-        //hay que fijar en el trabajo (domcumento word) la formula que emplearemos.
+        //hay que fijar en el trabajo (documento word) la formula que emplearemos.
         //aca usare que aumente el 37%
 
-        return limite * 1.35;
+        return limite * 1.37;
     }
+
+    public boolean haComprado() {
+        return haComprado;
+    }
+
+    public void setHaComprado(boolean haComprado) {
+        this.haComprado = haComprado;
+    }
+
 
     /**
      * Aumenta los stats
@@ -413,6 +427,35 @@ public class Jugador extends Personaje {
         Objeto objt = new Objeto();
         objt.setObjeto(idItem);
         return cantidad > 0 && objt != null && objt.getPeso() * cantidad <= this.getPesoDisponible();
+    }
+
+    public void preComprarItem(Short id) {
+        if (puedellevarItem(id, (short) 1)) {
+            if (getPreCompra().containsKey(id)) {
+                getPreCompra().put(id, getPreCompra().get(id) + 1);
+            } else {
+                getPreCompra().put(id, 1);
+            }
+            setHaComprado(true);
+        }
+    }
+
+    public void procesarPreCompra() {
+        this.conexion = new dbDelegate();
+        Iterator it = this.getPreCompra().entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            agregarItem(Short.parseShort(e.getKey().toString()), Short.parseShort(e.getValue().toString()));
+        }
+        setHaComprado(false);
+    }
+
+    public HashMap<Short, Integer> getPreCompra() {
+        return preCompra;
+    }
+
+    public void setPreCompra(HashMap<Short, Integer> preCompra) {
+        this.preCompra = preCompra;
     }
 
     /**

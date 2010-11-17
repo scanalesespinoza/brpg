@@ -1,6 +1,5 @@
 package clases;
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.JGColor;
@@ -53,7 +52,7 @@ public class Manager extends JGEngine {
     public Npc pileta;
     public Npc vendedor;
     public Seccion seccion = new Seccion();
-    public Habilidad hab =  new Habilidad();
+    public Habilidad hab = new Habilidad();
     Objeto obj = new Objeto();
     /*
      * Objetos de combate
@@ -176,22 +175,22 @@ public class Manager extends JGEngine {
             casa3 = new Npc(350, 448, "casa3", "casa4", 8, 0, (short) 102, new String[]{"Casa 3"});
             casa4 = new Npc(80, 634, "casa3", "casa3", 8, 0, (short) 103, new String[]{"Casa 3"});
             casa5 = new Npc(350, 682, "casa3", "casa5", 8, 0, (short) 104, new String[]{"Casa 3"});
-            alcaldia = new Npc(700, 75, "alcaldia", "casa4", 8, 0, (short) 105, new String[]{ "Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
+            alcaldia = new Npc(700, 75, "alcaldia", "casa4", 8, 0, (short) 105, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
             //pasto1 = new Npc(192,128,"pasto","pasto",4,0,new String[]{"Hola amiguirijillo","soy pastillo1"});//pasto
             arbol1 = new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
             arbol2 = new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
             pileta = new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
             cursor = new Cursor();
             vendedor = new Npc(1040, 416, "vendedor", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-            vendedor.cargarDatos((short)22);
-            System.out.println("ID vendedor: "+vendedor.getIdPersonaje()+"---"+vendedor.getIdNpc());
+            vendedor.cargarDatos((short) 22);
+            System.out.println("ID vendedor: " + vendedor.getIdPersonaje() + "---" + vendedor.getIdNpc());
             //instancia mob y define como objeto home a pj
             this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, 192);
-            this.mob.cargarDatos((short)40);
+            this.mob.cargarDatos((short) 40);
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
-        
+
         /*
          * Mapa completo de tiles que definen el campo de juego.
          * Simbologia presente en el archivo TBL.
@@ -283,7 +282,7 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInWorld() {
-        if (pj.isSuspended()){
+        if (pj.isSuspended()) {
             pj.setResumeMode(true);
         }
         capturarTeclas();
@@ -324,16 +323,16 @@ public class Manager extends JGEngine {
         // llamada al metodo de colision entre objetos con las siguientes id de colision
 
         checkCollision(
-                (int) Math.pow(2, 3) + (int)Math.pow(2, 1), // Colisión entre Npc + Jugador
-                (int)Math.pow(2, 1) // ejecuta hit Jugador
+                (int) Math.pow(2, 3) + (int) Math.pow(2, 1), // Colisión entre Npc + Jugador
+                (int) Math.pow(2, 1) // ejecuta hit Jugador
                 );
         checkCollision(
-                (int) Math.pow(2, 3) + (int)Math.pow(2, 0), // Colisión entre Npc + Cursor
-                (int)Math.pow(2, 0) // ejecuta hit Cursor
+                (int) Math.pow(2, 3) + (int) Math.pow(2, 0), // Colisión entre Npc + Cursor
+                (int) Math.pow(2, 0) // ejecuta hit Cursor
                 );
         checkCollision(
-                (int) Math.pow(2, 2) + (int)Math.pow(2, 1), // Colisión entre Mob + Jugador
-                (int)Math.pow(2, 1) // ejecuta hit Jugador
+                (int) Math.pow(2, 2) + (int) Math.pow(2, 1), // Colisión entre Mob + Jugador
+                (int) Math.pow(2, 1) // ejecuta hit Jugador
                 );
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 5), // Colisión entre Iconos + botones
@@ -348,35 +347,35 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
         /*checkCollision(//boton cerrar
-                2 ^ 6 + 256, // cids of objects that our objects should collide with
-                256 // cids of the objects whose hit() should be called
-                );
+        2 ^ 6 + 256, // cids of objects that our objects should collide with
+        256 // cids of the objects whose hit() should be called
+        );
         checkCollision(//boton cerrar + pj
-                1 + 2 ^ 6, // cids of objects that our objects should collide with
-                2 ^ 6 // cids of the objects whose hit() should be called
-                );
+        1 + 2 ^ 6, // cids of objects that our objects should collide with
+        2 ^ 6 // cids of the objects whose hit() should be called
+        );
         checkCollision(//ventana trade
-                2 ^ 7 + 256, // cids of objects that our objects should collide with
-                256 // cids of the objects whose hit() should be called
-                );
+        2 ^ 7 + 256, // cids of objects that our objects should collide with
+        256 // cids of the objects whose hit() should be called
+        );
         checkCollision(//ventana trade + pj
-                1 + 2 ^ 7, // cids of objects that our objects should collide with
-                2 ^ 7 // cids of the objects whose hit() should be called
-                );*/
+        1 + 2 ^ 7, // cids of objects that our objects should collide with
+        2 ^ 7 // cids of the objects whose hit() should be called
+        );*/
         // llamada al metodo de colision entre objeto y escenario con las siguientes id de colision
         checkBGCollision(
                 1 + 11 + 13, // collide with the marble and border tiles
-                (int)Math.pow(2, 1) // cids of our objects
+                (int) Math.pow(2, 1) // cids of our objects
                 );
 
         /*checkCollision(//vendedor + pj
-                1500 + 2 ^ 12, // cids of objects that our objects should collide with
-                2 ^ 12 // cids of the objects whose hit() should be called
-                );
+        1500 + 2 ^ 12, // cids of objects that our objects should collide with
+        2 ^ 12 // cids of the objects whose hit() should be called
+        );
         checkCollision(//vendedor + pj
-                1600 + 2 ^ 11, // cids of objects that our objects should collide with
-                2 ^ 11 // cids of the objects whose hit() should be called
-                );*/
+        1600 + 2 ^ 11, // cids of objects that our objects should collide with
+        2 ^ 11 // cids of the objects whose hit() should be called
+        );*/
         int posX = (int) pj.x;
         int posY = (int) pj.y;
 
@@ -510,7 +509,7 @@ public class Manager extends JGEngine {
         tiempoMensaje--;
 
 
-        if (cursor.getMensaje().length()>0){
+        if (cursor.getMensaje().length() > 0) {
             new Ventana(cursor.getMensaje());
             cursor.setMensaje("");
         }
@@ -550,9 +549,9 @@ public class Manager extends JGEngine {
 
     @Override
     public void doFrame() {
-        if((inGameStateNextFrame("InComybat"))||(inGameStateNextFrame("InWorld"))||(inGameStateNextFrame("InCoymmerce"))||
-           (inGameStateNextFrame("InDeath"))||(inGameStateNextFrame("InReyward"))){
-           removeObjects("icono", (int)Math.pow(2, 4));
+        if ((inGameStateNextFrame("InComybat")) || (inGameStateNextFrame("InWorld")) || (inGameStateNextFrame("InCoymmerce"))
+                || (inGameStateNextFrame("InDeath")) || (inGameStateNextFrame("InReyward"))) {
+            removeObjects("icono", (int) Math.pow(2, 4));
         }
     }
 
@@ -564,7 +563,7 @@ public class Manager extends JGEngine {
         //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
 
         pj.suspend();
-        new JGTimer(60*3 , true) {
+        new JGTimer(60 * 3, true) {
 
             @Override
             public void alarm() {
@@ -576,8 +575,8 @@ public class Manager extends JGEngine {
 
     public void paintFrameInCombat() {
         // aca graficar todas las wes hermosas y lindas de la warifaifa
-        seccion.setSeccion(new JGPoint(16,416), new JGPoint(12,1));
-        seccion.generaSeccion(pj,0);
+        seccion.setSeccion(new JGPoint(16, 416), new JGPoint(12, 1));
+        seccion.generaSeccion(pj, 0);
     }
 
     public void doFrameInCombat() {
@@ -616,24 +615,25 @@ public class Manager extends JGEngine {
 //            }
 //
 //        }
-        
+
         dañoBeneficio = 0;
         /**************************ENEMIGO MOB*********************************/
         //MOB utilizara una habilidad
         mob.generarProximoAtaque();
-        System.out.println("mob.getIdProximoAtaque(): "+mob.getIdProximoAtaque());
+        System.out.println("mob.getIdProximoAtaque(): " + mob.getIdProximoAtaque());
         if (mob.getIdProximoAtaque() != -1) {
-             System.out.println("mob.getIdProximoAtaque()xxxxxxxxxxxxxxxx: "+mob.getIdProximoAtaque());
+            System.out.println("mob.getIdProximoAtaque()xxxxxxxxxxxxxxxx: " + mob.getIdProximoAtaque());
             //el MOB puede atacar por que no está bloqueado
             dañoBeneficio = mob.getHabilidades().getDañoBeneficio(mob.getIdProximoAtaque());
-            if (dañoBeneficio < 0 ){
+            if (dañoBeneficio < 0) {
                 dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) - mob.getAtaque();
                 //se convierte en daño hacia el jugador
                 pj.recibirDañoBeneficio(dañoBeneficio);
                 //si no es beneficio al MOB
             } else {
                 mob.recibirDañoBeneficio(dañoBeneficio);
-            }System.out.println("DAÑO BENEFICIO: "+dañoBeneficio);
+            }
+            System.out.println("DAÑO BENEFICIO: " + dañoBeneficio);
         }
     }
 
@@ -659,7 +659,7 @@ public class Manager extends JGEngine {
             //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
 //            procesaItem(pj, grillaPj.x, grillaPj.y);
 //            procesaItem(vendedor, grillaNpc.x, grillaNpc.y);
-           //seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
+            //seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
             seccion.generaSeccion(pj, 1);
             cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
             pj.bloquear();
@@ -669,7 +669,7 @@ public class Manager extends JGEngine {
 //            removeObjects("ventana trade", 0);
 //            removeObjects("grilla npc", (int) Math.pow(2, 5));
 //            removeObjects("grilla pj", (int) Math.pow(2, 5));
-              removeObjects("cerrar", (int) Math.pow(2, 5));
+            removeObjects("cerrar", (int) Math.pow(2, 5));
 //            for (int i = 0; i < 200; i++) {
 
             //Renueve todos los objetos item
@@ -1125,22 +1125,20 @@ public class Manager extends JGEngine {
     /*
      * Clases anidadas
      */
-
-
     public class Boton extends JGObject {
 
         public Boton(String nombre, String graf, double x, double y, int cid) {
-            super(nombre, false, x, y, (int)Math.pow(2, 5), graf);
+            super(nombre, false, x, y, (int) Math.pow(2, 5), graf);
         }
 
         @Override
         public void hit(JGObject obj) {
             System.out.println("hit boton");
-            if ((obj.colid == (int)Math.pow(2, 4)) && (!getMouseButton(3))&&(obj.getGraphic().equals("grilla npc"))) {
+            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla npc"))) {
                 System.out.println("Has vendido item");
                 new Ventana("Has vendido item");
             }
-            if ((obj.colid == (int)Math.pow(2, 4)) && (!getMouseButton(3))&&(obj.getGraphic().equals("grilla pj"))) {
+            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla pj"))) {
                 System.out.println("Has comprado item");
                 new Ventana("Has comprado item");
             }
@@ -1148,11 +1146,12 @@ public class Manager extends JGEngine {
     }
 
     public class Icono extends JGObject {
+
         private short idObjeto;
         private short tipo;
-        private double xAnt ;
-        private double yAnt ;
-
+        private double xAnt;
+        private double yAnt;
+        private String pertenece;
 
         public short getIdObjeto() {
             return idObjeto;
@@ -1169,19 +1168,28 @@ public class Manager extends JGEngine {
         public void setTipo(short tipo) {
             this.tipo = tipo;
         }
+
         public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono) {
             super(nombre, true, x, y, (int) Math.pow(2, 4), graf);
             this.setIdObjeto(id);
             this.setTipo(tipoIcono);
             xAnt = x;
             yAnt = y;
+            this.pertenece = pertenece;
         }
+
+        private boolean belongTo(String string) {
+            if (this.pertenece.equals(string)) {
+                return true;
+            }
+            return false;
+        }
+
         @Override
-        public void paint(){
-           x = xAnt+viewXOfs();
-           y = yAnt+viewYOfs();
+        public void paint() {
+            x = xAnt + viewXOfs();
+            y = yAnt + viewYOfs();
         }
-            
     }
 
     public class Cursor extends JGObject {
@@ -1255,7 +1263,7 @@ public class Manager extends JGEngine {
                 setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato?");
                 if (getMouseButton(3)) {
                     setVentana((byte) 1);
-                    seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
+                    seccion.setSeccion(new JGPoint(10, 10), new JGPoint(3, 4));
                     setGameState("InCommerce");
                 }
             }
@@ -1272,81 +1280,86 @@ public class Manager extends JGEngine {
                 obj.y = cursor.y;
                 obj.snapToGrid();
             }
-            if((obj.colid==(int)Math.pow(2, 4))&&(getMouseButton(3))&(inGameState("InCombat"))){
-                setIcon((Icono)obj);
+            if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
+                setIcon((Icono) obj);
 
             }
-
+            if (obj.getGraphic().equals("icono")) {
+                Icono icon = (Icono) obj;
+                if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo("Jugador")) {
+                    pj.preComprarItem(icon.getIdObjeto());
+                }
+            }
         }
     }
 
+    public class Seccion {
 
-    public class Seccion{
-        private int pos_inicial_x,pos_inicial_y;
+        private int pos_inicial_x, pos_inicial_y;
         private JGPoint recorrido;
-        private int tabla_inicial_x,tabla_inicial_y;
+        private int tabla_inicial_x, tabla_inicial_y;
         private JGPoint tabla;
 
         public Seccion() {
         }
 
-        public void generaSeccion(Personaje personaje, int tipo){
+        public void generaSeccion(Personaje personaje, int tipo) {
             Iterator it;
-            switch(tipo){
+            switch (tipo) {
                 case 0:
-                    System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x"+tabla_inicial_x+"<<<<<<<<<<<<<<<<<<<<<");
-                        ContrincanteHabilidad listHab = personaje.getHabilidades();
-                        it = listHab.getHabilidades().entrySet().iterator();
-                            while(this.tabla.y>0){
-                                System.out.println(">>>>>>>>>>>>>>>>>>>>tabla CIclo while y<<<<<<<<<<<<<<<<<<<<<");
-                                System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
-                                System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x"+pos_inicial_x+"<<<<<<<<<<<<<<<<<<<<<");
-                               while(this.tabla.x>0){
-                                   System.out.println(">>>>>>>>>>>>>>>>>>>> ciclo While X<<<<<<<<<<<<<<<<<<<<<");
-                                    if (it.hasNext()) {
-                                        Map.Entry e = (Map.Entry) it.next();
-                                        hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                            new Icono("icono", this.recorrido.x,this.recorrido.y, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
-                                            System.out.println("habilidad                      = "+ hab.getNombre());
-                                        this.recorrido.x+=21;
-                                    }
-                                    System.out.println("recorrido : "+tabla.x);
+                    System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
+                    ContrincanteHabilidad listHab = personaje.getHabilidades();
+                    it = listHab.getHabilidades().entrySet().iterator();
+                    while (this.tabla.y > 0) {
+                        System.out.println(">>>>>>>>>>>>>>>>>>>>tabla CIclo while y<<<<<<<<<<<<<<<<<<<<<");
+                        System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla.x + "<<<<<<<<<<<<<<<<<<<<<");
+                        System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + pos_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
+                        while (this.tabla.x > 0) {
+                            System.out.println(">>>>>>>>>>>>>>>>>>>> ciclo While X<<<<<<<<<<<<<<<<<<<<<");
+                            if (it.hasNext()) {
+                                Map.Entry e = (Map.Entry) it.next();
+                                hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+                                new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0);
+                                System.out.println("habilidad                      = " + hab.getNombre());
+                                this.recorrido.x += 21;
+                            }
+                            System.out.println("recorrido : " + tabla.x);
 //                                    System.out.println(">>>>>>>>>>>>>>>>>>>>tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
 //                                   System.out.println(">>>>>>>>>>>>>>>>>>>> tabla y"+ tabla.y+"<<<<<<<<<<<<<<<<<<<<<");
-                                    this.tabla.x--;
-                                }
-                                this.recorrido.x=pos_inicial_x;
-                                this.tabla.x=tabla_inicial_x;
-                                this.tabla.y--;
-                                this.recorrido.y+=21;
-                                
-                            }
+                            this.tabla.x--;
+                        }
+                        this.recorrido.x = pos_inicial_x;
+                        this.tabla.x = tabla_inicial_x;
+                        this.tabla.y--;
+                        this.recorrido.y += 21;
+
+                    }
                     break;
                 case 1:
-                        Inventario inv = pj.getInventario();
-                        it = inv.getObjetos().entrySet().iterator();
-                            while(this.tabla.y>0){
-                                while(this.tabla.x>0){
-                                    if (it.hasNext()) {
-                                        Map.Entry e = (Map.Entry) it.next();
-                                        obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                            new Icono("icono", this.recorrido.x,this.recorrido.y, obj.getNombreGrafico(),obj.getIdObjeto(),(short)0);
-                                            System.out.println("objeto                      = "+ obj.getNombre());
-                                        this.recorrido.x+=21;
-                                    }
-                                    this.tabla.x--;
-                                }
-                                this.recorrido.x=pos_inicial_x;
-                                this.tabla.x=tabla_inicial_x;
-                                this.tabla.y--;
-                                this.recorrido.y+=21;
+                    Inventario inv = pj.getInventario();
+                    it = inv.getObjetos().entrySet().iterator();
+                    while (this.tabla.y > 0) {
+                        while (this.tabla.x > 0) {
+                            if (it.hasNext()) {
+                                Map.Entry e = (Map.Entry) it.next();
+                                obj.setObjeto(Short.parseShort(e.getKey().toString()));
+                                new Icono("icono", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0);
+                                System.out.println("objeto                      = " + obj.getNombre());
+                                this.recorrido.x += 21;
                             }
+                            this.tabla.x--;
+                        }
+                        this.recorrido.x = pos_inicial_x;
+                        this.tabla.x = tabla_inicial_x;
+                        this.tabla.y--;
+                        this.recorrido.y += 21;
+                    }
                     break;
             }
 
         }
 
-        public void setSeccion(JGPoint posicion, JGPoint tabla){
+        public void setSeccion(JGPoint posicion, JGPoint tabla) {
             setRecorrido(posicion);
             setTabla(tabla);
             this.pos_inicial_x = posicion.x;
@@ -1355,8 +1368,8 @@ public class Manager extends JGEngine {
             this.tabla_inicial_y = tabla.y;
         }
 
-        public void removerIconos(){
-            removeObjects("icono", (int)Math.pow(2, 4));
+        public void removerIconos() {
+            removeObjects("icono", (int) Math.pow(2, 4));
         }
 
         public JGPoint getRecorrido() {
@@ -1374,8 +1387,5 @@ public class Manager extends JGEngine {
         public void setTabla(JGPoint tabla) {
             this.tabla = tabla;
         }
-
-
-
     }
 }
