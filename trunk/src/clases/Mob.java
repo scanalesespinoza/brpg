@@ -365,6 +365,7 @@ System.out.println(StrSql);
         // y se ofrezca los item al jugador, seleccionandoel icono correspondiente
         
         this.setMuerto(true);
+        eng.setGameState("InCommerce");
     }
 
     private void setMuerto(boolean b) {
