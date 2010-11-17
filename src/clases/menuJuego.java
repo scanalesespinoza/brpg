@@ -10,6 +10,10 @@ import java.util.logging.Logger;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGObject;
+import java.util.Iterator;
+import java.util.Map;
+import jgame.JGPoint;
+
 
 
 
@@ -22,6 +26,13 @@ public class menuJuego extends JGObject {
     private Jugador pj;
     private boolean teclaEscape=false;
     private boolean teclaEnter=false;
+    private Habilidad hab = new Habilidad();
+    private Objeto obj = new Objeto();
+    private SeccionMenu seccion = new SeccionMenu();
+
+    public SeccionMenu getSeccion() {
+        return seccion;
+    }
 
     public menuJuego(String string, boolean bln, double d, double d1, int i, String string1, Jugador pj) {
         super(string, bln, d, d1, i, string1);
@@ -33,7 +44,7 @@ public class menuJuego extends JGObject {
 
 
 
-    public void menuActual(int menu) {
+    public void menuActual(int menu, Jugador pj) {
             //Fondo blanco del menu
 //            eng.setColor(JGColor.white);
 //            eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs(),100,eng.viewHeight(), true, false);
@@ -42,17 +53,17 @@ public class menuJuego extends JGObject {
 //            eng.setColor(JGColor.white);
 //            eng.drawRect(eng.viewXOfs()+5,eng.viewYOfs()+405,eng.viewWidth()-100,70, true, false);
             //Cuadros de menu
-            eng.setColor(JGColor.black);
-            eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs(),100,300, true, false);
-            eng.setColor(JGColor.white);
-            eng.drawRect(eng.viewXOfs()+555,eng.viewYOfs()+5,80,290, true, false);
-
-            eng.setColor(JGColor.black);
-            eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs()+300,100,180, true, false);
-            eng.setColor(JGColor.white);
-            eng.drawRect(eng.viewXOfs()+555,eng.viewYOfs()+305,80,170, true, false);
-
-
+//            eng.setColor(JGColor.black);
+//            eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs(),100,300, true, false);
+//            eng.setColor(JGColor.white);
+//            eng.drawRect(eng.viewXOfs()+555,eng.viewYOfs()+5,80,290, true, false);
+//
+//            eng.setColor(JGColor.black);
+//            eng.drawRect(eng.viewXOfs()+550,eng.viewYOfs()+300,100,180, true, false);
+//            eng.setColor(JGColor.white);
+//            eng.drawRect(eng.viewXOfs()+555,eng.viewYOfs()+305,80,170, true, false);
+//
+//
 
 
             eng.setColor(JGColor.black);
@@ -71,7 +82,7 @@ public class menuJuego extends JGObject {
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
                     eng.drawString("Nombre: "+pj.getNombre().toString(), eng.viewWidth()-45, 30, 0);
                     eng.drawString("Nivel: "+pj.getNivel(), eng.viewWidth()-45, 40, 0);
-
+                    seccion.removerIconos();
                     break;
                 case 1/*"habilidad"*/:
                     eng.setFont(new JGFont("Arial",0,14));//fuente titulo
@@ -100,24 +111,8 @@ public class menuJuego extends JGObject {
                     eng.drawString("[-Eliminar mision:]", eng.viewWidth()-45, 120, 0);
                     break;
                 case 3/*"inventario"*/:
-                    /*Inventario[] inventario=pj.getInv();
-                    String equipado  = "";
-                    eng.setFont(new JGFont("Arial",0,14));
-                    eng.drawString("Inventario", eng.viewWidth()-45, 10, 0);
-                    eng.setFont(new JGFont("Arial",0,10));
-                    int cont=1;
-                    for(int i=0;i<inventario.length;i++){
-                        cont+=i;
-                        if(inventario[i].getEstaEquipado()==0){equipado="No";}else{equipado="Si";}
-                        eng.drawString("-N°: "+cont, eng.viewWidth()-45, 30+i*50, 0);
-                        eng.drawString("-Nombre: "+inventario[i].getNombre(), eng.viewWidth()-45, 40+i*50, 0);
-                        eng.drawString("-Equipado: "+equipado, eng.viewWidth()-45, 50+i*50, 0);
-                        eng.drawString("-Cantidad: "+inventario[i].getCantidad(), eng.viewWidth()-45, 60+i*50, 0);
-                        eng.drawString("--------------------", eng.viewWidth()-45, 70+i*50, 0);
-                    }
-                    eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("[-Descripción:    ]", eng.viewWidth()-45, 270, 0);
-                    eng.drawString("[-Eliminar objeto:]", eng.viewWidth()-45, 280, 0);*/
+                    
+                    seccion.generaSeccion(pj, 1);
                     break;
                 case 4/*"estadistica"*/:
                     eng.setFont(new JGFont("Arial",0,14));
@@ -208,6 +203,114 @@ public class menuJuego extends JGObject {
 
     public void setTeclaEscape(boolean teclaEscape) {
         this.teclaEscape = teclaEscape;
+    }
+
+public class SeccionMenu {
+
+        private int pos_inicial_x, pos_inicial_y;
+        private JGPoint recorrido;
+        private int tabla_inicial_x, tabla_inicial_y;
+        private JGPoint tabla;
+        private boolean working = false;
+
+        public SeccionMenu() {
+        }
+
+        public boolean isWorking() {
+            return working;
+        }
+
+        public void setWorking(boolean working) {
+            this.working = working;
+        }
+
+        public void generaSeccion(Personaje personaje, int tipo) {
+            Iterator it;
+            if (!isWorking()) {
+                switch (tipo) {
+                    case 0:
+                        System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
+                        ContrincanteHabilidad listHab = personaje.getHabilidades();
+                        it = listHab.getHabilidades().entrySet().iterator();
+                        while (this.tabla.y > 0) {
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>tabla CIclo while y<<<<<<<<<<<<<<<<<<<<<");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla.x + "<<<<<<<<<<<<<<<<<<<<<");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + pos_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
+                            while (this.tabla.x > 0) {
+                                System.out.println(">>>>>>>>>>>>>>>>>>>> ciclo While X<<<<<<<<<<<<<<<<<<<<<");
+                                if (it.hasNext()) {
+                                    Map.Entry e = (Map.Entry) it.next();
+                                    hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0);
+                                    System.out.println("habilidad                      = " + hab.getNombre());
+                                    this.recorrido.x += 21;
+                                }
+                                System.out.println("recorrido : " + tabla.x);
+//                                    System.out.println(">>>>>>>>>>>>>>>>>>>>tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
+//                                   System.out.println(">>>>>>>>>>>>>>>>>>>> tabla y"+ tabla.y+"<<<<<<<<<<<<<<<<<<<<<");
+                                this.tabla.x--;
+                            }
+                            this.recorrido.x = pos_inicial_x;
+                            this.tabla.x = tabla_inicial_x;
+                            this.tabla.y--;
+                            this.recorrido.y += 21;
+                        }
+                        break;
+                    case 1:
+                        Inventario inv = pj.getInventario();
+                        it = inv.getObjetos().entrySet().iterator();
+                        while (this.tabla.y > 0) {
+                            while (this.tabla.x > 0) {
+                                if (it.hasNext()) {
+                                    Map.Entry e = (Map.Entry) it.next();
+                                    obj.setObjeto(Short.parseShort(e.getKey().toString()));
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0);
+                                    System.out.println("objeto                      = " + obj.getNombre());
+                                    this.recorrido.x += 21;
+                                }
+                                this.tabla.x--;
+                            }
+                            this.recorrido.x = pos_inicial_x;
+                            this.tabla.x = tabla_inicial_x;
+                            this.tabla.y--;
+                            this.recorrido.y += 21;
+                        }
+                        break;
+                }
+                setWorking(true);
+            }
+
+        }
+
+        public void setSeccion(JGPoint posicion, JGPoint tabla) {
+            setRecorrido(posicion);
+            setTabla(tabla);
+            this.pos_inicial_x = posicion.x;
+            this.pos_inicial_y = posicion.y;
+            this.tabla_inicial_x = tabla.x;
+            this.tabla_inicial_y = tabla.y;
+        }
+
+        public void removerIconos() {
+            setWorking(false);
+            eng.removeObjects("iconoMenu", (int) Math.pow(2, 4));
+        }
+
+        public JGPoint getRecorrido() {
+            return recorrido;
+        }
+
+        public void setRecorrido(JGPoint recorrido) {
+            this.recorrido = recorrido;
+        }
+
+        public JGPoint getTabla() {
+            return tabla;
+        }
+
+        public void setTabla(JGPoint tabla) {
+            this.tabla = tabla;
+        }
     }
 
 }
