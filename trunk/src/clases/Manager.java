@@ -546,6 +546,17 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
+        setFont(new JGFont("Arial",0,15));
+        setColor(JGColor.orange);
+        // aca graficar todas las wes hermosas y lindas de la warifaifa
+        drawString(pj.getNombre(),((viewWidth()*10)/100) , (double)405,0);
+        drawRect(viewWidth()*10/100 + viewXOfs(), 422+  viewYOfs(), pj.getHp(), 10, true,false, 400, JGColor.green);
+        drawRect(viewWidth()*10/100 + viewXOfs(), 437+  viewYOfs(), pj.getMp(), 10, true,false, 400, JGColor.blue);
+
+        setColor(JGColor.yellow);
+        drawString(mob.getNombre(),((viewWidth()*60)/100) , (double)405,0);
+        drawRect(viewWidth()*60/100 + viewXOfs(), 422+  viewYOfs(), mob.getHp(), 10, true,false, 400, JGColor.green);
+        drawRect(viewWidth()*60/100 + viewXOfs(), 437+  viewYOfs(), mob.getMp(), 10, true,false, 400, JGColor.blue);
         menu.getSeccion().setSeccion(new JGPoint(400,30), new JGPoint(2,6));
         menu.menuActual(getTeclaMenu(),pj);
         moveObjects(null, 1);
@@ -580,10 +591,8 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInCombat() {
-                String msg;
-        
         dbgPrint("HP MOB: "+mob.getHp());
-        // aca graficar todas las wes hermosas y lindas de la warifaifa
+        
         seccion.setSeccion(new JGPoint(16, 416), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
     }
@@ -594,24 +603,21 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
-
-
         //PESCO LOS ICONOS QUE FUERON PRESIONADOS POR EL JUGADOR Y LE DIGO AL OBJETO JUGADOR
         //QUE ESA HABILIDAD SE VA A OCUPAR, LE ENTREGO COMO PARAMETRO LA HABILIDAD DEL ICONO
         //PONER EN VARIABLES AL WEON CON CUAL EL QLIO DEL JUGADOR PELEA (nombre = Enemigo)
         /**************************PERSONAJE**********************************/
         
         if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 0) {
-            
             //personaje utilizara una habilidad
             pj.setProximoAtaque(this.getIconoPresionado().getIdObjeto());
             if (pj.getIdProximoAtaque() != -1) {
                 //el personaje puede atacar por que no está bloqueado
                 dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
                 if (dañoBeneficio < 0) {
-                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa())) - pj.getAtaque();
+                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa()))/50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
-                    System.out.println("DAÑP HACIA MOB: "+dañoBeneficio);
+                    System.out.println("DAÑ0 HACIA MOB: "+dañoBeneficio);
                     mob.recibirDañoBeneficio(dañoBeneficio);
                     //si no es beneficio al jugador
                 } else {
@@ -620,10 +626,9 @@ public class Manager extends JGEngine {
                 }
             }
             setIcon(null);
-
         } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
             //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
-            Objeto obj = new Objeto();
+            obj = new Objeto();
             obj.setObjeto(this.getIconoPresionado().getIdObjeto());
             if (obj.isUsoCombate()) {
                 pj.setProximoItem(this.getIconoPresionado().getIdObjeto());
@@ -647,7 +652,7 @@ public class Manager extends JGEngine {
             //el MOB puede atacar por que no está bloqueado
             dañoBeneficio = mob.getHabilidades().getDañoBeneficio(mob.getIdProximoAtaque());
             if (dañoBeneficio < 0) {
-                dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) - mob.getAtaque();
+                dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa()))/50 - mob.getAtaque();
                 //se convierte en daño hacia el jugador
                 pj.recibirDañoBeneficio(dañoBeneficio);
                 //si no es beneficio al MOB
@@ -656,6 +661,10 @@ public class Manager extends JGEngine {
             }
             System.out.println("DAÑO BENEFICIO: " + dañoBeneficio);
         }
+        mob.regenerarMp(4, seg);
+        pj.regenerarMp(6,seg);
+        System.out.println("hp mob: "+mob.getHp());
+        System.out.println("hp pj : "+pj.getHp());
     }
 
     public void paintFrameInInteraction() {

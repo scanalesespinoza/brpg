@@ -4,9 +4,6 @@
  */
 package clases;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGObject;
@@ -229,15 +226,10 @@ public class SeccionMenu {
             if (!isWorking()) {
                 switch (tipo) {
                     case 0:
-                        System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
                         ContrincanteHabilidad listHab = personaje.getHabilidades();
                         it = listHab.getHabilidades().entrySet().iterator();
                         while (this.tabla.y > 0) {
-                            System.out.println(">>>>>>>>>>>>>>>>>>>>tabla CIclo while y<<<<<<<<<<<<<<<<<<<<<");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla.x + "<<<<<<<<<<<<<<<<<<<<<");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + pos_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
                             while (this.tabla.x > 0) {
-                                System.out.println(">>>>>>>>>>>>>>>>>>>> ciclo While X<<<<<<<<<<<<<<<<<<<<<");
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
@@ -246,8 +238,6 @@ public class SeccionMenu {
                                     this.recorrido.x += 37;
                                 }
                                 System.out.println("recorrido : " + tabla.x);
-//                                    System.out.println(">>>>>>>>>>>>>>>>>>>>tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
-//                                   System.out.println(">>>>>>>>>>>>>>>>>>>> tabla y"+ tabla.y+"<<<<<<<<<<<<<<<<<<<<<");
                                 this.tabla.x--;
                             }
                             this.recorrido.x = pos_inicial_x;
