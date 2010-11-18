@@ -12,7 +12,7 @@ public class dbDelegate {
 
    static final String bd = "db_web_tt2";
    static final String login = "root";
-   static final String password = "gwdesarrollo";
+   static final String password = "Vicarious";
    static String url = "jdbc:mysql://127.0.0.1:3306/"+bd;
    private Statement St;
    private ResultSet reg;

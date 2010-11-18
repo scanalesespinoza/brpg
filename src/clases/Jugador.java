@@ -109,13 +109,13 @@ public class Jugador extends Personaje {
     }
 
     private void setHp() {
-        this.hp = (getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 10) + getNivel();
+        this.hp = (getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 100) + getNivel();
         this.hpMax = this.hp;
-        System.out.println("hp: "+this.hp);
+        System.out.println("hp: " + this.hp);
     }
 
     private void setMp() {
-        this.mp = (((getSabiduria() / 7) * 50) + (getSabiduria() / 30) + getNivel() * 10 + getNivel());
+        this.mp = (((getSabiduria() / 7) * 50) + (getSabiduria() / 30) + getNivel() * 100 + getNivel());
         this.mpMax = this.mp;
     }
 
@@ -136,7 +136,6 @@ public class Jugador extends Personaje {
     }
 
     public Jugador() {
-        
     }
     /* Aumenta la todas las  cosas inherentes al subir de nivel
      * 
@@ -171,7 +170,6 @@ public class Jugador extends Personaje {
     public void setHaComprado(boolean haComprado) {
         this.haComprado = haComprado;
     }
-
 
     /**
      * Aumenta los stats
@@ -237,8 +235,6 @@ public class Jugador extends Personaje {
             this.estadoClick = true;
             eng.clearMouseButton(1);
         }
-
-
         if (estadoClick) {
 
             if (this.x < mouseX - entorno) {
@@ -500,13 +496,16 @@ public class Jugador extends Personaje {
      */
     public void utilizarHabilidad() {
         if (this.getIdProximoAtaque() != -1) {
-            //quitar mp
-            this.mp -= this.getHabilidades().getCosto(this.getIdProximoAtaque());
+             int costo = this.getHabilidades().getCosto(this.getIdProximoAtaque());
+            if (this.mp >= costo) {
+                //tiene mp suficiente para ejecutar la habilidad
+                //quitar mp
+                aumentarDisminuirMp(-costo);
 
-            //bloqueo segun tiempo de espera
-            this.bloquear(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
+                //bloqueo segun tiempo de espera
+                this.bloquear(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
+            }else this.setIdProximoAtaque((short)-1);
         }
-
     }
 
     public void utilizarItem() {
@@ -539,17 +538,33 @@ public class Jugador extends Personaje {
             eng.setColor(JGColor.red);
             eng.drawRect(eng.viewXOfs() + 200, eng.viewYOfs() + 250, 300, 100, true, false);
             //interior
-             eng.setColor(JGColor.black);
+            eng.setColor(JGColor.black);
             eng.setFont(new JGFont("Arial", 0, 16));
-            eng.drawString("HP: "+this.getHp(), eng.viewWidth() / 2, eng.viewHeight() / 2 + 45, 0);
-        }else if (eng.inGameState("InDeath")){
+            eng.drawString("HP: " + this.getHp(), eng.viewWidth() / 2, eng.viewHeight() / 2 + 45, 0);
+        } else if (eng.inGameState("InDeath")) {
 
             eng.setColor(JGColor.white);
             eng.drawRect(eng.viewXOfs() + 205, eng.viewYOfs() + 255, 290, 90, true, false);
             eng.setColor(JGColor.red);
             eng.setFont(new JGFont("Arial", 0, 16));
             eng.drawString("HAS MUErTOOOOOOOOO: ", eng.viewWidth() / 2, eng.viewHeight() / 2 + 20, 0);
-            eng.drawString("HP: "+this.getHp(), eng.viewWidth() / 2, eng.viewHeight() / 2 + 45, 0);
+            eng.drawString("HP: " + this.getHp(), eng.viewWidth() / 2, eng.viewHeight() / 2 + 45, 0);
+        }
+    }
+
+    public void regenerarMp(int porcentaje, int seg) {
+        if (seg % 3 == 0) {
+           aumentarDisminuirMp(this.mpMax * (porcentaje/100));
+        }
+    }
+
+    public void aumentarDisminuirMp(int cant) {
+        if (this.mpMax >= this.getMp() + cant && this.getMp() + cant > 0) {
+            this.mp += cant;
+        } else if (this.mpMax <= this.getMp() + cant) {
+            this.mp = this.mpMax;
+        } else {
+            this.mp = 0;
         }
     }
 }

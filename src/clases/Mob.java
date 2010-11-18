@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.JGObject;
 import jgame.JGPoint;
+import jgame.JGTimer;
 
 /**
  *
@@ -29,6 +30,7 @@ public class Mob extends Personaje {
     private short destreza;
     private short experiencia;
     private int hpMax;
+    private int mpMax;
     private boolean muerto;
 
     public Mob(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, JGObject home_in, boolean avoid, double random_proportion, int cid) /*throws SQLException*/ {
@@ -305,8 +307,8 @@ System.out.println(StrSql);
             if (this.mp >= costo) {
                 //tiene mp suficiente para ejecutar la habilidad
                 //quitar mp
-                this.mp = this.mp - costo;
-
+                aumentarDisminuirMp(-costo);
+                
                 //bloqueo segun tiempo de espera
                 this.bloquear(4);
             }else this.setIdProximoAtaque((short)-1);
@@ -333,12 +335,13 @@ System.out.println(StrSql);
     }
 
     private void setHp() {
-        this.hp = ((getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 10) + getNivel()) * 1000;
+        this.hp = ((getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 100) + getNivel()) ;
         this.hpMax = this.hp;
     }
 
     private void setMp() {
-        this.mp = (((getSabiduria() / 7) * 50) + (getSabiduria() / 30) + getNivel() * 10 + getNivel())* 100;
+        this.mp = (((getSabiduria() / 7) * 50) + (getSabiduria() / 30) + getNivel() * 100 + getNivel());
+        this.mpMax = this.mp;
     }
 
     public short getIdProximoAtaque() {
@@ -365,7 +368,7 @@ System.out.println(StrSql);
         // y se ofrezca los item al jugador, seleccionandoel icono correspondiente
         
         this.setMuerto(true);
-        eng.setGameState("InCommerce");
+        eng.setGameState("InReward");
     }
 
     private void setMuerto(boolean b) {
@@ -376,4 +379,21 @@ System.out.println(StrSql);
         return muerto;
     }
 
+    public void regenerarMp(int porcentaje, int seg) {
+        System.out.println("MANA MAXIMO: "+this.mpMax);
+       if  (seg%3 == 0){
+           aumentarDisminuirMp((int)(mpMax*((double)(porcentaje/100))));
+           System.out.println("ENTRE A REGENERAR MANA VIOLENTAMENTE A :"+(int)(mpMax*((double)(porcentaje/100))));
+       }
+    }
+
+     public void aumentarDisminuirMp(int cant) {
+        if (this.mpMax >= this.getMp() + cant && this.getMp() + cant > 0) {
+            this.mp += cant;
+        } else if (this.mpMax <= this.getMp() + cant) {
+            this.mp = this.mpMax;
+        } else {
+            this.mp = 0;
+        }
+    }
 }
