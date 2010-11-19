@@ -11,6 +11,7 @@ import jgame.JGTimer;
 import jgame.JGObject;
 import java.util.Iterator;
 import java.util.Map;
+import jgame.JGRectangle;
 
 /**
  *
@@ -54,7 +55,7 @@ public class Manager extends JGEngine {
     public Seccion seccion = new Seccion();
     public Seccion seccionNpc = new Seccion();
     public Habilidad hab = new Habilidad();
-    Objeto obj = new Objeto();
+    Objeto obje = new Objeto();
     /*
      * Objetos de combate
      */
@@ -127,6 +128,7 @@ public class Manager extends JGEngine {
 
     @Override
     public void initGame() {
+        dbgShowBoundingBox(true);
         setFrameRate(60, 2);
         dbgShowGameState(true);
         try {
@@ -267,9 +269,11 @@ public class Manager extends JGEngine {
     }
     /** View offset. */
     int xofs = 0, yofs = 0;
+
     public Icono getIconoPresionado() {
         return this.icon;
     }
+
     public void paintFrameTitle() {
         drawString("Trabajo de título blah blah", 100, 100, 0);
     }
@@ -570,7 +574,7 @@ public class Manager extends JGEngine {
     public void doFrameInDeath() {
         pj.setPos(CIUDAD_X, CIUDAD_Y);
         pj.suspend();
-        
+
         //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
         if (getMouseButton(1)) {
             clearMouseButton(1);
@@ -603,9 +607,9 @@ public class Manager extends JGEngine {
         drawRect(viewWidth() * 10 / 100 + viewXOfs(), 437 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 400, JGColor.blue);
 
         setColor(JGColor.yellow);
-        drawString(mob.getNombre() + "---" + (float) (mob.getHp() * 100 / mob.getHpMax()), ((viewWidth() * 60) / 100), (double) 405, 0);
-        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 422 + viewYOfs(), (float) (mob.getHp() * 100 / mob.getHpMax()), 10, true, false, 400, JGColor.green);
-        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 437 + viewYOfs(), (float) (mob.getMp() * 100 / mob.getMpMax()), 10, true, false, 400, JGColor.blue);
+        drawString(mob.getNombre() + "---" + (float) (mob.getHp() * 100 / mob.getHpMax()), ((viewWidth() * 70) / 100), (double) 405, 0);
+        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 422 + viewYOfs(), (float) (mob.getHp() * 100 / mob.getHpMax()), 10, true, false, 400, JGColor.green);
+        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 437 + viewYOfs(), (float) (mob.getMp() * 100 / mob.getMpMax()), 10, true, false, 400, JGColor.blue);
     }
 
     public void doFrameInCombat() {
@@ -638,9 +642,9 @@ public class Manager extends JGEngine {
             setIcon(null);
         } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
             //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
-            obj = new Objeto();
-            obj.setObjeto(this.getIconoPresionado().getIdObjeto());
-            if (obj.isUsoCombate()) {
+            obje = new Objeto();
+            obje.setObjeto(this.getIconoPresionado().getIdObjeto());
+            if (obje.isUsoCombate()) {
                 pj.setProximoItem(this.getIconoPresionado().getIdObjeto());
             }
             if (pj.getIdProximoItem() != -1) {
@@ -673,9 +677,9 @@ public class Manager extends JGEngine {
         }
         mob.regenerarMp(4, seg);
         pj.regenerarMp(6, seg);
-        if (mob.getHp() <= 0){
-            System.out.println("SE CTM" );
-            seccionNpc.setSeccion(new JGPoint(10,10), new JGPoint(3, 4));
+        if (mob.getHp() <= 0) {
+            System.out.println("SE CTM");
+            seccionNpc.setSeccion(new JGPoint(10, 10), new JGPoint(3, 4));
         }
         System.out.println("hp mob: " + mob.getHp());
         System.out.println("hp pj : " + pj.getHp());
@@ -690,17 +694,18 @@ public class Manager extends JGEngine {
     public void doFrameInReward() {
         seccionNpc.generaSeccion(mob, 1);
         //desactivar enemigo por 3 minutos
-        if (getMouseButton(1)){
+        if (getMouseButton(1)) {
             clearMouseButton(1);
             setGameState("InWorld");
         }
     }
 
-    public void paintFrameInReward(){
+    public void paintFrameInReward() {
         new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
         seccionNpc.generaSeccion(mob, 1);
 
     }
+
     public void paintFrameInCommerce() {
     }
 
@@ -1132,12 +1137,12 @@ public class Manager extends JGEngine {
 //    public void procesaItem(Jugador pj, double x, double y) {
 //        Inventario inv = pj.getInventario();
 //        Iterator it = inv.getObjetos().entrySet().iterator();
-//        Objeto obj = new Objeto();
+//        Objeto obje = new Objeto();
 //        int i = 0;
 //        while (it.hasNext()) {
 //            Map.Entry e = (Map.Entry) it.next();
-//            obj.setObjeto(Short.parseShort(e.getKey().toString()));
-//                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)0);
+//            obje.setObjeto(Short.parseShort(e.getKey().toString()));
+//                new Icono("item", x+10, y+i*10, obje.getNombreGrafico(),obje.getIdObjeto(),(short)0);
 //
 //            System.out.println("Item: "+i);
 //            i++;
@@ -1147,12 +1152,12 @@ public class Manager extends JGEngine {
 //    public void procesaItem(Npc npc, double x, double y) {
 //        Inventario inv = npc.getInventario();
 //        Iterator it = inv.getObjetos().entrySet().iterator();
-//        Objeto obj = new Objeto();
+//        Objeto obje = new Objeto();
 //        int i = 0;
 //        while (it.hasNext()) {
 //            Map.Entry e = (Map.Entry) it.next();
-//            obj.setObjeto(Short.parseShort(e.getKey().toString()));
-//                new Icono("item", x+10, y+i*10, obj.getNombreGrafico(),obj.getIdObjeto(),(short)1);
+//            obje.setObjeto(Short.parseShort(e.getKey().toString()));
+//                new Icono("item", x+10, y+i*10, obje.getNombreGrafico(),obje.getIdObjeto(),(short)1);
 //
 //            System.out.println("Item: "+i);
 //            i++;
@@ -1219,6 +1224,16 @@ public class Manager extends JGEngine {
         private double ejex = eng.getMouseX() + eng.viewXOfs();
         private double ejey = eng.getMouseY() + eng.viewYOfs();
         private byte ventana = 0;
+        private String mensajeIcon;
+        private JGPoint puntos;
+
+        public JGPoint getPuntos() {
+            return puntos;
+        }
+
+        public void setPuntos(JGPoint puntos) {
+            this.puntos = puntos;
+        }
 
         public byte getVentana() {
             return ventana;
@@ -1276,9 +1291,20 @@ public class Manager extends JGEngine {
         @Override
         public void hit(JGObject obj) {
 
-            System.out.println(obj.getGraphic());
-            System.out.println("Nombre: " + obj.getName());
-
+            if ((obj.colid == (int) Math.pow(2, 4))) {//es icono
+                Icono iconito = (Icono) obj;
+                if (iconito.getTipo() == 0) {//es de habilidades
+                    hab.setHabilidad(iconito.getIdObjeto());
+                    this.setMensajeIcon(hab.getNombre());
+                } else {//es de inventario
+                    obje.setObjeto(iconito.getIdObjeto());
+                    this.setMensajeIcon(obje.getNombre());
+                }
+                puntos = new JGPoint((int) iconito.x, (int) iconito.y);
+            } else if (!obj.getBBox().intersects(new JGRectangle(cursor.getBBox()))){
+                this.setMensajeIcon(null);
+                puntos = null;
+            }
 
             if (obj.getGraphic().equals("mario")) {
                 setMensaje("Soy " + obj.getGraphic());
@@ -1300,10 +1326,10 @@ public class Manager extends JGEngine {
                 System.out.println(getMensaje() + "Nada");
                 System.out.println(getMouseButton(3) + " boton derecho del mouse");
             }
-//            if ((obj.colid == Math.pow(2, 4)) && (getMouseButton(3))) {
-//                obj.x = cursor.x;
-//                obj.y = cursor.y;
-//                obj.snapToGrid();
+//            if ((obje.colid == Math.pow(2, 4)) && (getMouseButton(3))) {
+//                obje.x = cursor.x;
+//                obje.y = cursor.y;
+//                obje.snapToGrid();
 //            }
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
                 setIcon((Icono) obj);
@@ -1321,6 +1347,35 @@ public class Manager extends JGEngine {
                     System.out.println("Todos los item************************" + pj.getInventario().contarTodosItems());
                 }
             }
+        }
+
+        @Override
+        public void paint() {
+            setFont(new JGFont("Arial", 0, 20));
+            setColor(JGColor.white);
+            if (mensajeIcon != null) {
+                int desplazamientox = 0, desplazamientoy=0;
+                if (getPuntos().x - 16 < 0) {
+                    desplazamientox = 16;
+                } else if (getPuntos().x + getMensajeIcon().length() * 5 > viewWidth()) {
+                    desplazamientox = -(getMensajeIcon().length() * 5);
+                }
+                if (getPuntos().y - 16 < 0) {
+                    desplazamientoy = 16;
+                } else if (getPuntos().y + 20 > viewHeight()) {
+                    desplazamientoy = -20;
+                }
+
+                drawString("Icono: "+this.getMensajeIcon(), viewWidth()/2, viewHeight()-50,0);
+            }
+        }
+
+        public String getMensajeIcon() {
+            return mensajeIcon;
+        }
+
+        public void setMensajeIcon(String mensajeIcon) {
+            this.mensajeIcon = mensajeIcon;
         }
     }
 
@@ -1384,13 +1439,13 @@ public class Manager extends JGEngine {
                             while (this.tabla.x > 0) {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
-                                    obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, inv.contarItem(obj.getIdObjeto()), personaje.getTipo());
+                                    obje.setObjeto(Short.parseShort(e.getKey().toString()));
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo());
                                     setFont(new JGFont("Arial", 0, 24));
-                                    drawString("Cantidad" + inv.contarItem(obj.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                    System.out.println("Nombre objeto                      = " + obj.getNombre());
-                                    System.out.println("Id objeto                      = " + obj.getIdObjeto());
-                                    System.out.println("Cantidad: " + inv.contarItem(obj.getIdObjeto()));
+                                    drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
+                                    System.out.println("Nombre objeto                      = " + obje.getNombre());
+                                    System.out.println("Id objeto                      = " + obje.getIdObjeto());
+                                    System.out.println("Cantidad: " + inv.contarItem(obje.getIdObjeto()));
                                     this.recorrido.x += 37;
                                 }
                                 this.tabla.x--;
