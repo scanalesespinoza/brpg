@@ -369,21 +369,16 @@ public class Mob extends Personaje {
         // si por algún motivo el mob muere, debe ser redireccionado
         // a UNA ventana en donde se lea el inventario del mob (mob.getInventario()
         // y se ofrezca los item al jugador, seleccionandoel icono correspondiente
-        new JGTimer((int) (eng.getFrameRate() * 5 * 1), true) {
-
-                @Override
-                public void alarm() {
-                    System.out.println("ENTRE ACA WEON2");
-                    resume();
-
-                }
-            };
+        
         this.setMuerto(true);
         eng.setGameState("InReward");
+        
+        
     }
 
     private void setMuerto(boolean b) {
         this.muerto = b;
+        
     }
 
     public boolean isMuerto() {
@@ -397,11 +392,6 @@ public class Mob extends Personaje {
     }
 
     public void aumentarDisminuirMp(int cant) {
-        System.out.println("VALORES: ");
-        System.out.println("this.mpMax : " + this.mpMax);
-        System.out.println("this.getMp(): " + this.getMp());
-        System.out.println("cant: " + cant);
-
         if (this.mpMax >= this.getMp() + cant && this.getMp() + cant > 0) {
             this.mp += cant;
         } else if (this.mpMax <= this.getMp() + cant) {
@@ -410,12 +400,12 @@ public class Mob extends Personaje {
             this.mp = 0;
         }
     }
-        public Integer getHpMax() {
+
+    public Integer getHpMax() {
         return hpMax;
     }
 
     public Integer getMpMax() {
         return mpMax;
     }
-    
 }
