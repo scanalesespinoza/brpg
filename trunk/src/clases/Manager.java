@@ -183,7 +183,6 @@ public class Manager extends JGEngine {
             arbol1 = new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
             arbol2 = new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
             pileta = new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-            cursor = new Cursor();
             vendedor = new Npc(1040, 416, "vendedor", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
             vendedor.cargarDatos((short) 22);
             System.out.println("ID vendedor: " + vendedor.getIdPersonaje() + "---" + vendedor.getIdNpc());
@@ -403,6 +402,12 @@ public class Manager extends JGEngine {
 //                removeObjects("cerrar", 2^6);
 //                cursor.setVentana((byte)0);
 //            }
+            if(cursor.getVentana()==1){
+                setGameState("InCommerce");
+                seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
+                seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
+            }
+            System.out.println("CURSOR VALOR VENTANA: "+cursor.getVentana());
 
         if (isSalir()) {
             System.exit(0);
@@ -724,6 +729,7 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre iconos  + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
+        System.out.println("getVentana:"+cursor.getVentana());
         if (cursor.getVentana() == 1) {
             pj.colid = 0;
             //grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int) Math.pow(2, 5));
@@ -741,7 +747,7 @@ public class Manager extends JGEngine {
             cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
             pj.bloquear();
             cursor.setVentana((byte) 2);
-        } else if (cursor.getVentana() == 3) {
+        } else if ((cursor.getVentana() == 3)||(cursor.getVentana() == 4)) {
             //Remueve todos los objetos que forman la ventana de comerciar
 //            removeObjects("ventana trade", 0);
 //            removeObjects("grilla npc", (int) Math.pow(2, 5));
@@ -756,8 +762,13 @@ public class Manager extends JGEngine {
 //            }
             pj.desbloquear();
             pj.colid = 2;
-            cursor.setVentana((byte) 0);
+//            cursor.setVentana((byte) 0);
+            if(cursor.getVentana()== 4){
+                cursor.setVentana((byte)1);
+                System.out.println("setVentana antes InWorld:"+cursor.getVentana());
+            }
             setGameState("InWorld");
+
         }
     }
 
@@ -1135,74 +1146,7 @@ public class Manager extends JGEngine {
             this.mensajes = mensajes;
         }
     }
-    /*
-     *Procesa la lista de objetos del inventario del jugador para generar sus representaciones gráficas
-     */
-
-//    public void procesaItem(Jugador pj, double x, double y) {
-//        Inventario inv = pj.getInventario();
-//        Iterator it = inv.getObjetos().entrySet().iterator();
-//        Objeto obje = new Objeto();
-//        int i = 0;
-//        while (it.hasNext()) {
-//            Map.Entry e = (Map.Entry) it.next();
-//            obje.setObjeto(Short.parseShort(e.getKey().toString()));
-//                new Icono("item", x+10, y+i*10, obje.getNombreGrafico(),obje.getIdObjeto(),(short)0);
-//
-//            System.out.println("Item: "+i);
-//            i++;
-//
-//        }
-//    }
-//    public void procesaItem(Npc npc, double x, double y) {
-//        Inventario inv = npc.getInventario();
-//        Iterator it = inv.getObjetos().entrySet().iterator();
-//        Objeto obje = new Objeto();
-//        int i = 0;
-//        while (it.hasNext()) {
-//            Map.Entry e = (Map.Entry) it.next();
-//            obje.setObjeto(Short.parseShort(e.getKey().toString()));
-//                new Icono("item", x+10, y+i*10, obje.getNombreGrafico(),obje.getIdObjeto(),(short)1);
-//
-//            System.out.println("Item: "+i);
-//            i++;
-//
-//        }
-//    }
-//    public void procesaHabilidad(Jugador pj, double x, double y) {
-//        ContrincanteHabilidad listHab = pj.getHabilidades();
-//        Iterator it = listHab.getHabilidades().entrySet().iterator();
-//        Habilidad hab = new Habilidad();
-//        int i = 1;
-//        while (it.hasNext()) {
-//            Map.Entry e = (Map.Entry) it.next();
-//            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-//                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
-//
-//            System.out.println("Item: "+i);
-//            i++;
-//
-//        }
-//    }
-//    public void procesaHabilidad(Mob mob, double x, double y) {
-//        ContrincanteHabilidad listHab = mob.getHabilidades();
-//        Iterator it = listHab.getHabilidades().entrySet().iterator();
-//        Habilidad hab = new Habilidad();
-//        int i = 1;
-//        while (it.hasNext()) {
-//            Map.Entry e = (Map.Entry) it.next();
-//            hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-//                new Icono("item", x+10, y+40*i+10, hab.getNombreGrafico(),hab.getIdHabilidad(),(short)0);
-//
-//            System.out.println("Item: "+i);
-//            i++;
-//
-//        }
-//    }
-
-    /*
-     * Clases anidadas
-     */
+  
     public class Boton extends JGObject {
 
         public Boton(String nombre, String graf, double x, double y, int cid) {
@@ -1228,7 +1172,7 @@ public class Manager extends JGEngine {
         private String mensaje = new String();
         private double ejex = eng.getMouseX() + eng.viewXOfs();
         private double ejey = eng.getMouseY() + eng.viewYOfs();
-        private byte ventana = 0;
+        private byte ventana;
         private String mensajeIcon;
         private JGPoint puntos;
 
@@ -1309,7 +1253,7 @@ public class Manager extends JGEngine {
                     setVentana((byte) 1);
                     seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
                     seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
-                    setGameState("InCommerce");
+//                    setGameState("InCommerce");
                 }
             }
             if ((obj.getGraphic().equals("cerrar")) && (getMouseButton(3))) {
@@ -1328,14 +1272,16 @@ public class Manager extends JGEngine {
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
                 setIcon((Icono) obj);
             }
+
+
+
             if (obj.colid == (int) Math.pow(2, 4)) {
                 System.out.println("choka item");
                 Icono icon = (Icono) obj;
                 if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())) {
                     clearMouseButton(3);
                     pj.getInventario().agregarItem(icon.getIdObjeto());
-                    seccion.setWorking(false);
-                    seccion.generaSeccion(pj, 1);
+                    cursor.setVentana((byte)4);
                 }
             }
 
