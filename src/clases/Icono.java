@@ -79,9 +79,6 @@ public class Icono extends JGObject {
     public void paint() {
         x = xAnt + eng.viewXOfs();
         y = yAnt + eng.viewYOfs();
-        System.out.println("Cantidad: " + this.cantidad);
-        System.out.println("X: " + x);
-        System.out.println("Y: " + y);
         eng.setFont(new JGFont("Arial", 0, 24));
         eng.setColor(JGColor.blue);
         eng.drawString("" + this.cantidad, xAnt, yAnt, 0);

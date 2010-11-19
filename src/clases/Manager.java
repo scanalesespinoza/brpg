@@ -274,7 +274,7 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameTitle() {
-        drawString("Trabajo de título blah blah", 100, 100, 0);
+        drawString("Trabajo de título", 100, 100, 0);
     }
 
     public void doFrameTitle() {
@@ -428,18 +428,10 @@ public class Manager extends JGEngine {
             }
         }
         if (interactuar > 0) {
-            // ventanaDialogo(pj.npcInterac.obtieneDialogo());
             asd.avanzarTexto();
-
         }
-//        if (isPresionada(KeyCtrl)) {
-//            setGameState("Title");
-//            new Ventana("presionaste crtl");
-//        }
-        //prueba de captura de teclas
 
-
-        /*
+        /**
          * Detecta si has encontrado un hongo para la mision
          */
 
@@ -448,9 +440,7 @@ public class Manager extends JGEngine {
             tiempoMensaje = 120;
             try {
                 //agrego el hongo al inventario del jugador
-                //Inventario[] tempInv = pj.getInv();
                 pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
                 //pj.cargaInventario(pj.getIdJugador());
                 menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
             } catch (Exception ex) {
@@ -569,10 +559,10 @@ public class Manager extends JGEngine {
             //seccion.removerIconos();
             //removeObjects("icono", (int) Math.pow(2, 4));
         }
-        if (checkCollision((int)Math.pow(2, 4), cursor) != Math.pow(2, 4)){
+        if (checkCollision((int) Math.pow(2, 4), cursor) != Math.pow(2, 4)) {
             cursor.setMensajeIcon(null);
         }
-        
+
 
     }
 
@@ -598,10 +588,7 @@ public class Manager extends JGEngine {
                     setGameState("InWorld");
                 }
             };
-
         }
-
-
     }
 
     public void paintFrameInCombat() {
@@ -641,11 +628,9 @@ public class Manager extends JGEngine {
                 if (dañoBeneficio < 0) {
                     dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa())) / 50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
-                    System.out.println("DAÑ0 HACIA MOB: " + dañoBeneficio);
-                    mob.recibirDañoBeneficio(dañoBeneficio);
+                    mob.recibirDañoBeneficio(-mob.getHpMax());
                     //si no es beneficio al jugador
                 } else {
-                    System.out.println("Sanacion hacia pj: " + dañoBeneficio);
                     pj.recibirDañoBeneficio(dañoBeneficio);
                 }
             }
@@ -670,9 +655,7 @@ public class Manager extends JGEngine {
         /**************************ENEMIGO MOB*********************************/
         //MOB utilizara una habilidad
         mob.generarProximoAtaque();
-        System.out.println("mob.getIdProximoAtaque(): " + mob.getIdProximoAtaque());
         if (mob.getIdProximoAtaque() != -1) {
-            System.out.println("mob.getIdProximoAtaque()xxxxxxxxxxxxxxxx: " + mob.getIdProximoAtaque());
             //el MOB puede atacar por que no está bloqueado
             dañoBeneficio = mob.getHabilidades().getDañoBeneficio(mob.getIdProximoAtaque());
             if (dañoBeneficio < 0) {
@@ -683,16 +666,25 @@ public class Manager extends JGEngine {
             } else {
                 mob.recibirDañoBeneficio(0);
             }
-            System.out.println("DAÑO BENEFICIO: " + dañoBeneficio);
         }
         mob.regenerarMp(4, seg);
         pj.regenerarMp(6, seg);
         if (mob.getHp() <= 0) {
-            System.out.println("SE CTM");
+            mob.recibirDañoBeneficio(mob.getHpMax());
+            mob.aumentarDisminuirMp(mob.getMpMax());
             seccionNpc.setSeccion(new JGPoint(10, 10), new JGPoint(3, 4));
+            setGameState("InReward");
+            mob.suspend();
+            new JGTimer((int) (getFrameRate() * 5 * 1), true) {
+
+                @Override
+                public void alarm() {
+                    mob.resume();
+                    System.out.println("2222222222222222222222222222222222222222222222");
+
+                }
+            };
         }
-        System.out.println("hp mob: " + mob.getHp());
-        System.out.println("hp pj : " + pj.getHp());
     }
 
     public void paintFrameInInteraction() {
@@ -1243,7 +1235,7 @@ public class Manager extends JGEngine {
                 Icono iconito = (Icono) obj;
                 this.setMensajeIcon(iconito.getNombreLogico());
             }
-            
+
             if (obj.getGraphic().equals("mario")) {
                 setMensaje("Soy " + obj.getGraphic());
             }
@@ -1330,27 +1322,16 @@ public class Manager extends JGEngine {
             if (!isWorking()) {
                 switch (tipo) {
                     case 0:
-                        System.out.println(">>>>>>>>>>>>>>>>>>>> " + personaje.getNombre() + "<<<<<<<<<<<<<<<<<<<<<");
-                        System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
                         ContrincanteHabilidad listHab = personaje.getHabilidades();
                         it = listHab.getHabilidades().entrySet().iterator();
                         while (this.tabla.y > 0) {
-                            System.out.println(">>>>>>>>>>>>>>>>>>>>tabla CIclo while y<<<<<<<<<<<<<<<<<<<<<");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + tabla.x + "<<<<<<<<<<<<<<<<<<<<<");
-                            System.out.println(">>>>>>>>>>>>>>>>>>>> valor tabla x" + pos_inicial_x + "<<<<<<<<<<<<<<<<<<<<<");
                             while (this.tabla.x > 0) {
-                                System.out.println(">>>>>>>>>>>>>>>>>>>> ciclo While X<<<<<<<<<<<<<<<<<<<<<");
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre());
-
-                                    System.out.println("habilidad                      = " + hab.getNombre());
                                     this.recorrido.x += 37;
                                 }
-                                System.out.println("recorrido : " + tabla.x);
-//                                    System.out.println(">>>>>>>>>>>>>>>>>>>>tabla x"+tabla.x+"<<<<<<<<<<<<<<<<<<<<<");
-//                                   System.out.println(">>>>>>>>>>>>>>>>>>>> tabla y"+ tabla.y+"<<<<<<<<<<<<<<<<<<<<<");
                                 this.tabla.x--;
                             }
                             this.recorrido.x = pos_inicial_x;
@@ -1367,12 +1348,9 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obje.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(),obje.getNombre());
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre());
                                     setFont(new JGFont("Arial", 0, 24));
                                     drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                    System.out.println("Nombre objeto                      = " + obje.getNombre());
-                                    System.out.println("Id objeto                      = " + obje.getIdObjeto());
-                                    System.out.println("Cantidad: " + inv.contarItem(obje.getIdObjeto()));
                                     this.recorrido.x += 37;
                                 }
                                 this.tabla.x--;
