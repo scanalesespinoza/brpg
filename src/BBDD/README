@@ -1,0 +1,10 @@
+Mantener este SCRIPT con la base de datos volcada incluyendo estructuras y datos.
+Si hay cambios, indicar cuales son.
+
+
+
+/**CAMBIOS*********************************************************************/
+-Agregado campo Habilidad.tiempoEspera predeinido = 2
+
+
+/******************************************************************************/

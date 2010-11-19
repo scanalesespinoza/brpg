@@ -59,6 +59,7 @@ public class Manager extends JGEngine {
      * Objetos de combate
      */
     private Icono icon;
+    private boolean unJGTimer = false;
 
     public Icono getIcon() {
         return icon;
@@ -131,7 +132,7 @@ public class Manager extends JGEngine {
         try {
             defineMedia("/media/rpg-basico.tbl");
             setBGImage("bgimage");
-            playAudio("music", "musicaciudad", true);
+            // playAudio("music", "musicaciudad", true);
             setMouseCursor(pj);
         } catch (Exception ex) {
             System.out.println("Error al cargar medios: " + ex);
@@ -150,7 +151,6 @@ public class Manager extends JGEngine {
 
         //Objeto cursor, imágen que sigue las coordenadas del mouse
         cursor = new Cursor();
-        dbgShowBoundingBox(true);
         //cargaJugador(0,0); reemplazamos por el metodo nuevo
         this.pj = new Jugador();
         this.pj.cargarDatos(this.idJugador);
@@ -267,7 +267,9 @@ public class Manager extends JGEngine {
     }
     /** View offset. */
     int xofs = 0, yofs = 0;
-
+    public Icono getIconoPresionado() {
+        return this.icon;
+    }
     public void paintFrameTitle() {
         drawString("Trabajo de título blah blah", 100, 100, 0);
     }
@@ -295,7 +297,7 @@ public class Manager extends JGEngine {
         }
         if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
 
-            pj.y=pj.y+10;
+            pj.y = pj.y + 10;
             pj.desbloquear();
             removeObjects(getNomNpcInteractuar(), (int) Math.pow(2, 3));
             pj.setInteractuarNpc(false);
@@ -546,26 +548,15 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
-        setFont(new JGFont("Arial",0,15));
-        setColor(JGColor.orange);
-        // aca graficar todas las wes hermosas y lindas de la warifaifa
-        drawString(pj.getNombre(),((viewWidth()*10)/100) , (double)405,0);
-        drawRect(viewWidth()*10/100 + viewXOfs(), 422+  viewYOfs(), pj.getHp(), 10, true,false, 400, JGColor.green);
-        drawRect(viewWidth()*10/100 + viewXOfs(), 437+  viewYOfs(), pj.getMp(), 10, true,false, 400, JGColor.blue);
-
-        setColor(JGColor.yellow);
-        drawString(mob.getNombre(),((viewWidth()*60)/100) , (double)405,0);
-        drawRect(viewWidth()*60/100 + viewXOfs(), 422+  viewYOfs(), mob.getHp(), 10, true,false, 400, JGColor.green);
-        drawRect(viewWidth()*60/100 + viewXOfs(), 437+  viewYOfs(), mob.getMp(), 10, true,false, 400, JGColor.blue);
-        menu.getSeccion().setSeccion(new JGPoint(400,30), new JGPoint(2,6));
-        menu.menuActual(getTeclaMenu(),pj);
+        menu.getSeccion().setSeccion(new JGPoint(400, 30), new JGPoint(2, 6));
+        menu.menuActual(getTeclaMenu(), pj);
         moveObjects(null, 1);
 
     }
 
     @Override
     public void doFrame() {
-        if ((inGameStateNextFrame("InWorld") && !inGameState("InWorld")) ) {
+        if ((inGameStateNextFrame("InWorld") && !inGameState("InWorld"))) {
             //seccion.removerIconos();
             //removeObjects("icono", (int) Math.pow(2, 4));
         }
@@ -573,28 +564,48 @@ public class Manager extends JGEngine {
 
     public void paintFrameInDeath() {
         //Avisar de que el jugador perdio y debe recuperarse terriblemente
+        new Ventana("Te encuentras exahusto despues del combate, vé a la ciudad para recuperarte");
     }
 
     public void doFrameInDeath() {
-        //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
-
+        pj.setPos(CIUDAD_X, CIUDAD_Y);
         pj.suspend();
-        new JGTimer(60 * 3, true) {
+        
+        //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
+        if (getMouseButton(1)) {
+            clearMouseButton(1);
+            new JGTimer(60 * 3, true) {
 
-            @Override
-            public void alarm() {
-                removeObjects("icono", (int) Math.pow(2, 4));
-                setGameState("InWorld");
-            }
-        };
-        //aplicar alguna sancion xD!!!!
+                @Override
+                public void alarm() {
+                    seccion.removerIconos();
+                    pj.aumentarDisminuirMp(pj.getMpMax() / 2);
+                    pj.recibirDañoBeneficio(pj.getHpMax() / 2);
+                    setGameState("InWorld");
+                }
+            };
+
+        }
+
+
     }
 
     public void paintFrameInCombat() {
-        dbgPrint("HP MOB: "+mob.getHp());
-        
         seccion.setSeccion(new JGPoint(16, 416), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
+//(mpMax * ((float) (porcentaje / 100.0)))
+        setFont(new JGFont("Arial", 0, 15));
+
+        setColor(JGColor.orange);
+        // aca graficar todas las wes hermosas y lindas de la warifaifa
+        drawString(pj.getNombre() + " --- " + (float) (pj.getHp() * 100 / pj.getHpMax()), ((viewWidth() * 10) / 100), (double) 405, 0);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 422 + viewYOfs(), (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 400, JGColor.green);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 437 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 400, JGColor.blue);
+
+        setColor(JGColor.yellow);
+        drawString(mob.getNombre() + "---" + (float) (mob.getHp() * 100 / mob.getHpMax()), ((viewWidth() * 60) / 100), (double) 405, 0);
+        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 422 + viewYOfs(), (float) (mob.getHp() * 100 / mob.getHpMax()), 10, true, false, 400, JGColor.green);
+        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 437 + viewYOfs(), (float) (mob.getMp() * 100 / mob.getMpMax()), 10, true, false, 400, JGColor.blue);
     }
 
     public void doFrameInCombat() {
@@ -607,7 +618,6 @@ public class Manager extends JGEngine {
         //QUE ESA HABILIDAD SE VA A OCUPAR, LE ENTREGO COMO PARAMETRO LA HABILIDAD DEL ICONO
         //PONER EN VARIABLES AL WEON CON CUAL EL QLIO DEL JUGADOR PELEA (nombre = Enemigo)
         /**************************PERSONAJE**********************************/
-        
         if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 0) {
             //personaje utilizara una habilidad
             pj.setProximoAtaque(this.getIconoPresionado().getIdObjeto());
@@ -615,13 +625,13 @@ public class Manager extends JGEngine {
                 //el personaje puede atacar por que no está bloqueado
                 dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
                 if (dañoBeneficio < 0) {
-                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa()))/50 - pj.getAtaque();
+                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa())) / 50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
-                    System.out.println("DAÑ0 HACIA MOB: "+dañoBeneficio);
+                    System.out.println("DAÑ0 HACIA MOB: " + dañoBeneficio);
                     mob.recibirDañoBeneficio(dañoBeneficio);
                     //si no es beneficio al jugador
                 } else {
-                    System.out.println("Sanacion hacia pj: "+dañoBeneficio);
+                    System.out.println("Sanacion hacia pj: " + dañoBeneficio);
                     pj.recibirDañoBeneficio(dañoBeneficio);
                 }
             }
@@ -652,19 +662,23 @@ public class Manager extends JGEngine {
             //el MOB puede atacar por que no está bloqueado
             dañoBeneficio = mob.getHabilidades().getDañoBeneficio(mob.getIdProximoAtaque());
             if (dañoBeneficio < 0) {
-                dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa()))/50 - mob.getAtaque();
+                dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) / 50 - mob.getAtaque();
                 //se convierte en daño hacia el jugador
-                pj.recibirDañoBeneficio(dañoBeneficio);
+                pj.recibirDañoBeneficio(0);//dañoBeneficio
                 //si no es beneficio al MOB
             } else {
-                mob.recibirDañoBeneficio(dañoBeneficio);
+                mob.recibirDañoBeneficio(0);
             }
             System.out.println("DAÑO BENEFICIO: " + dañoBeneficio);
         }
         mob.regenerarMp(4, seg);
-        pj.regenerarMp(6,seg);
-        System.out.println("hp mob: "+mob.getHp());
-        System.out.println("hp pj : "+pj.getHp());
+        pj.regenerarMp(6, seg);
+        if (mob.getHp() <= 0){
+            System.out.println("SE CTM" );
+            seccionNpc.setSeccion(new JGPoint(10,10), new JGPoint(3, 4));
+        }
+        System.out.println("hp mob: " + mob.getHp());
+        System.out.println("hp pj : " + pj.getHp());
     }
 
     public void paintFrameInInteraction() {
@@ -673,13 +687,23 @@ public class Manager extends JGEngine {
     public void doFrameInInteraction() {
     }
 
+    public void doFrameInReward() {
+        seccionNpc.generaSeccion(mob, 1);
+        //desactivar enemigo por 3 minutos
+        if (getMouseButton(1)){
+            clearMouseButton(1);
+            setGameState("InWorld");
+        }
+    }
+
+    public void paintFrameInReward(){
+        new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
+        seccionNpc.generaSeccion(mob, 1);
+
+    }
     public void paintFrameInCommerce() {
-
-
     }
-    public Icono getIconoPresionado(){
-        return this.icon;
-    }
+
     public void doFrameInCommerce() {
 
         checkCollision(
@@ -1253,7 +1277,7 @@ public class Manager extends JGEngine {
         public void hit(JGObject obj) {
 
             System.out.println(obj.getGraphic());
-            System.out.println("Nombre: "+obj.getName());
+            System.out.println("Nombre: " + obj.getName());
 
 
             if (obj.getGraphic().equals("mario")) {
@@ -1264,7 +1288,7 @@ public class Manager extends JGEngine {
                 if (getMouseButton(3)) {
                     setVentana((byte) 1);
                     seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
-                    seccionNpc.setSeccion(new JGPoint(250,10), new JGPoint(3,4));
+                    seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
                     setGameState("InCommerce");
                 }
             }
@@ -1287,14 +1311,14 @@ public class Manager extends JGEngine {
             if (obj.colid == (int) Math.pow(2, 4)) {
                 System.out.println("choka item");
                 Icono icon = (Icono) obj;
-                if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())){
+                if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())) {
                     clearMouseButton(3);
                     System.out.println("Agregar item");
-                    System.out.println("ICON ID OBJETO *******************"+icon.getIdObjeto());
+                    System.out.println("ICON ID OBJETO *******************" + icon.getIdObjeto());
                     pj.getInventario().agregarItem(icon.getIdObjeto());
                     seccion.setWorking(false);
                     seccion.generaSeccion(pj, 1);
-                    System.out.println("Todos los item************************"+pj.getInventario().contarTodosItems());
+                    System.out.println("Todos los item************************" + pj.getInventario().contarTodosItems());
                 }
             }
         }
@@ -1362,11 +1386,11 @@ public class Manager extends JGEngine {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obj.setObjeto(Short.parseShort(e.getKey().toString()));
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, inv.contarItem(obj.getIdObjeto()), personaje.getTipo());
-                                    setFont(new JGFont("Arial",0,24));
-                                    drawString("Cantidad"+inv.contarItem(obj.getIdObjeto()), viewHeight()/2,viewWidth()/2, 0);
+                                    setFont(new JGFont("Arial", 0, 24));
+                                    drawString("Cantidad" + inv.contarItem(obj.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                     System.out.println("Nombre objeto                      = " + obj.getNombre());
                                     System.out.println("Id objeto                      = " + obj.getIdObjeto());
-                                    System.out.println("Cantidad: "+inv.contarItem(obj.getIdObjeto()));
+                                    System.out.println("Cantidad: " + inv.contarItem(obj.getIdObjeto()));
                                     this.recorrido.x += 37;
                                 }
                                 this.tabla.x--;
