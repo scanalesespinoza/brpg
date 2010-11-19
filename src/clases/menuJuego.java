@@ -233,7 +233,7 @@ public class SeccionMenu {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(),hab.getNombre());
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(),hab.getNombre(), hab);
                                     System.out.println("habilidad                      = " + hab.getNombre());
                                     this.recorrido.x += 37;
                                 }
@@ -254,7 +254,7 @@ public class SeccionMenu {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, inv.contarItem(obj.getIdObjeto()),personaje.getTipo(),obj.getNombre());
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, inv.contarItem(obj.getIdObjeto()),personaje.getTipo(),obj.getNombre(),obj);
                                     System.out.println("objeto                      = " + obj.getNombre());
                                     this.recorrido.x += 37;
                                 }

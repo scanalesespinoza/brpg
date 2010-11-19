@@ -5,6 +5,7 @@ Si hay cambios, indicar cuales son.
 
 /**CAMBIOS*********************************************************************/
 -Agregado campo Habilidad.tiempoEspera predeinido = 2
+-Agregado campo Jugador.dinero predefinido = 0
 
 
 /******************************************************************************/
