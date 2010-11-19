@@ -21,7 +21,28 @@ public class Icono extends JGObject {
     private short pertenece;
     private int cantidad = 0;
     private String nombreLogico;
+    private Objeto item = new Objeto();
+    private Habilidad habilidad = new Habilidad();
 
+    public Habilidad getHabilidad() {
+        return habilidad;
+    }
+
+    public void setHabilidad(Habilidad habilidad) {
+        this.habilidad = habilidad;
+    }
+
+    
+
+    public Objeto getItem() {
+        return item;
+    }
+
+    public void setItem(Objeto item) {
+        this.item = item;
+    }
+
+    
     public String getNombreLogico() {
         return nombreLogico;
     }
@@ -54,7 +75,7 @@ public class Icono extends JGObject {
         this.tipo = tipo;
     }
 
-    public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono, int cantidad, short pertenece, String nombreLogico) {
+    public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono, int cantidad, short pertenece, String nombreLogico, Habilidad habilidad) {
         //tipo icono :
         // 0 = habilidades (habilidad)
         // 1 = inventario (objeto)
@@ -66,7 +87,70 @@ public class Icono extends JGObject {
         this.pertenece = pertenece;
         this.cantidad = cantidad;
         this.nombreLogico = nombreLogico;
+        this.habilidad=habilidad;
     }
+
+    public Icono(String nombre, double x, double y, String graf, short id, short tipoIcono, int cantidad, short pertenece, String nombreLogico, Objeto item) {
+        //tipo icono :
+        // 0 = habilidades (habilidad)
+        // 1 = inventario (objeto)
+        super(nombre, true, x, y, (int) Math.pow(2, 4), graf);
+        this.setIdObjeto(id);
+        this.setTipo(tipoIcono);
+        xAnt = x;
+        yAnt = y;
+        this.pertenece = pertenece;
+        this.cantidad = cantidad;
+        this.nombreLogico = nombreLogico;
+        this.item=item;
+    }
+
+    /**
+     * Constructor de iconos para Items
+     * @param nombre : Nombre JGObject
+     * @param x : Posición x
+     * @param y : Posición y
+     * @param graf : Nombre del archivo grafico descrito en tbl
+     * @param cantidad : Cantidad de ese item
+     * @param pertenece : Referencia para el caso comerciar donde se muestra los item del Jugador y Npc
+     * @param item : Objeto que representa al item respectivo con todos sus datos.
+     */
+    public Icono(String nombre, double x, double y, String graf, int cantidad, short pertenece, Objeto item) {
+        //tipo icono :
+        // 0 = habilidades (habilidad)
+        // 1 = inventario (objeto)
+        super(nombre, true, x, y, (int) Math.pow(2, 4), graf);
+        this.item = item;
+        this.tipo= 0;
+        this.cantidad = cantidad;
+
+        xAnt = x;
+        yAnt = y;
+    }
+
+
+    /**
+     * Contructor para habilidades
+     * @param nombre
+     * @param x
+     * @param y
+     * @param graf
+     * @param cantidad
+     * @param pertenece
+     * @param habilidad
+     */
+    public Icono(String nombre, double x, double y, String graf, int cantidad, short pertenece, Habilidad habilidad) {
+        //tipo icono :
+        // 0 = habilidades (habilidad)
+        // 1 = inventario (objeto)
+        super(nombre, true, x, y, (int) Math.pow(2, 4), graf);
+        this.habilidad = habilidad;
+        this.tipo= 1;
+        this.cantidad = cantidad;
+        xAnt = x;
+        yAnt = y;
+    }
+
 
     public boolean belongTo(short tipo) {
         if (this.pertenece == tipo) {

@@ -35,6 +35,7 @@ public class Jugador extends Personaje {
     private int pesoSoportado;
     private Date fechaCreacion;
     private boolean esBaneado;
+    private int dinero;
     private boolean haComprado;
     //Determina si un npc esta activo (se ha colisionado con el desencadenando un dialogo con el jugador)
     private boolean interactuarNpc = false;
@@ -53,7 +54,7 @@ public class Jugador extends Personaje {
                 + " pjdos.totalPuntosHabilidad ptosHab, pjdos.totalPuntosEstadistica ptosEst,"
                 + " pjdos.limiteSuperiorExperiencia limExp, pjdos.experiencia experiencia,"
                 + " pjdos.pesoSoportado peso, pjdos.fechaCreacion, pjdos.estaBaneado ban,"
-                + " pjdos.Cuenta_id cuenta FROM personaje pjuno, jugador pjdos "
+                + " pjdos.Cuenta_id cuenta, pjdos.dinero dinero FROM personaje pjuno, jugador pjdos "
                 + "WHERE pjuno.id=" + id
                 + "  AND pjdos.Personaje_id=" + id;
 
@@ -78,6 +79,7 @@ public class Jugador extends Personaje {
                 this.setPesoSoportado(res.getInt("peso"));
                 this.setFechaCreacion(res.getDate("fechaCreacion"));
                 this.setEsBaneado(res.getBoolean("ban"));
+                this.setDinero(res.getInt("dinero"));
 
             }
         } catch (SQLException ex) {
@@ -92,6 +94,15 @@ public class Jugador extends Personaje {
         setMp();
     }
 
+    public int getDinero() {
+        return dinero;
+    }
+
+    public void setDinero(int dinero) {
+        this.dinero = dinero;
+    }
+
+    
     public Integer getAtaque() {
         return getFuerza() * 2 + getFuerza() / 5 + getNivel(); //+ dañoArma
     }
@@ -427,6 +438,12 @@ public class Jugador extends Personaje {
         if (puedellevarItem(idItem, (short) 1)) {
             this.getInventario().agregarItem(idItem, (short) 1);
         }
+    }
+
+    public boolean validarDinero(int dinerorequerido){
+        boolean tiene = false;
+        if(dinero>=dinerorequerido) tiene = true;
+        return tiene;
     }
 
     private boolean puedellevarItem(short idItem, short cantidad) {

@@ -1268,9 +1268,23 @@ public class Manager extends JGEngine {
                 Icono icon = (Icono) obj;
                 if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())) {
                     clearMouseButton(3);
-                    pj.getInventario().agregarItem(icon.getIdObjeto());
-                    cursor.setVentana((byte) 4);
+                    if(pj.validarDinero(icon.getItem().getValorDinero())){
+                        pj.getInventario().agregarItem(icon.getIdObjeto());
+                        pj.setDinero(pj.getDinero()-icon.getItem().getValorDinero());
+                        cursor.setVentana((byte)4);
+                    }else{
+                        setMensaje("No tienes suficiente dinero");
+                    }
+                    
                 }
+                if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(pj.getTipo())) {
+                    clearMouseButton(3);
+                        pj.getInventario().eliminarItem(icon.getIdObjeto(),(short)1);
+                        pj.setDinero(pj.getDinero()+icon.getItem().getValorDinero());
+                        cursor.setVentana((byte)4);
+                }
+
+                
             }
 
 
@@ -1283,6 +1297,7 @@ public class Manager extends JGEngine {
             if (mensajeIcon != null) {
                 drawString("Icono: " + this.getMensajeIcon(), viewWidth() / 2, viewHeight() - 50, 0);
             }
+            drawString("Dinero: " + pj.getDinero(), viewWidth() / 2+20, viewHeight() - 50+20, 0);
         }
 
         public String getMensajeIcon() {
@@ -1326,7 +1341,8 @@ public class Manager extends JGEngine {
                                     Map.Entry e = (Map.Entry) it.next();
                                     Habilidad hab = listHab.getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad();
                                     System.out.println("DATO QLIO: " + hab.getDescripcion()                                            );
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre());
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab);
+
                                     this.recorrido.x += 37;
                                 }
                                 this.tabla.x--;
@@ -1347,17 +1363,24 @@ public class Manager extends JGEngine {
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
                                     
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre());
+                                    System.out.println("Cantidad: ");
+                                    if(inv.tieneItem(obje.getIdObjeto())){
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
                                     setFont(new JGFont("Arial", 0, 24));
                                     drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                     this.recorrido.x += 37;
+                                    }
                                 }
+//                                if(inv.tieneItem(obje.getIdObjeto())){
                                 this.tabla.x--;
+//                                }
                             }
+//                            if(inv.tieneItem(obje.getIdObjeto())){
                             this.recorrido.x = pos_inicial_x;
                             this.tabla.x = tabla_inicial_x;
                             this.tabla.y--;
                             this.recorrido.y += 37;
+//                            }
                         }
                         break;
                 }
