@@ -47,6 +47,8 @@ public class Inventario {
                 item.setCantidad(res.getShort("cantidad"));
                 item.setEstaEquipado(res.getShort("estaequipado"));
                 item.setNewItem(false);
+                obj.setObjeto(item.getIdObjeto());
+                item.setObjeto(obj);
                 this.objetos.put(item.getIdObjeto(), item);
                 System.out.println("EL personaje con id "+ id + "Tiene hasta el momento "+ i +"Items");
                 i += 1;
@@ -140,7 +142,7 @@ public class Inventario {
         }
     }
 
-    private Item getItem(short idItem) {
+    public Item getItem(short idItem) {
         return this.getObjetos().get(idItem);
     }
 
@@ -327,6 +329,7 @@ public class Inventario {
         private short estaEquipado;
         private boolean newItem;
         private boolean eliminarItem;
+        private Objeto objeto = new Objeto();
 
         public Item() {
         }
@@ -336,6 +339,16 @@ public class Inventario {
             this.idObjeto = idObjeto;
             this.cantidad = cantidad;
             this.estaEquipado = estaEquipado;
+            this.objeto.setObjeto(idObjeto);
+
+        }
+
+        public Objeto getObjeto() {
+            return objeto;
+        }
+
+        public void setObjeto(Objeto objeto) {
+            this.objeto = objeto;
         }
 
         public boolean isEliminarItem() {
@@ -402,5 +415,7 @@ public class Inventario {
             }
             this.setCantidad(valor);
         }
+
+
     }
 }

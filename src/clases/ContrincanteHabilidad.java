@@ -55,6 +55,10 @@ public class ContrincanteHabilidad {
                 habilidad.setIdPersonaje(res.getShort("personaje_id"));
                 habilidad.setNivelHabilidad(res.getShort("nivelhabilidad"));
                 habilidad.setNewHabilidad(false);
+                hab.setHabilidad(habilidad.getIdHabilidad());
+                
+                habilidad.setHabilidad(hab);
+                
                 this.getHabilidades().put(habilidad.getIdHabilidad(), habilidad);
                 i += 1;
             }
@@ -184,12 +188,23 @@ public class ContrincanteHabilidad {
         private short idHabilidad;
         private short nivelHabilidad;
         private boolean newHabilidad;
+        private Habilidad habilidad;
 
         public UnaHabilidad(short idHabilidad, short nivelHabilidad, boolean newHabilidad) {
             this.idHabilidad = idHabilidad;
             this.nivelHabilidad = nivelHabilidad;
             this.newHabilidad = newHabilidad;
+            this.habilidad.setHabilidad(idHabilidad);
         }
+
+        public Habilidad getHabilidad() {
+            return habilidad;
+        }
+
+        public void setHabilidad(Habilidad habilidad) {
+            this.habilidad = habilidad;
+        }
+
 
         public UnaHabilidad() {
         }

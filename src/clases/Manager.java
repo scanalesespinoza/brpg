@@ -1328,7 +1328,9 @@ public class Manager extends JGEngine {
                             while (this.tabla.x > 0) {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
-                                    hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+                                   hab.setHabilidad(Short.parseShort(e.getKey().toString()));
+
+                                    System.out.println("DATO QLIO: "+hab.getNombre());
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre());
                                     this.recorrido.x += 37;
                                 }
@@ -1347,7 +1349,8 @@ public class Manager extends JGEngine {
                             while (this.tabla.x > 0) {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
-                                    obje.setObjeto(Short.parseShort(e.getKey().toString()));
+                                    obje = inv.getItem(Short.parseShort(e.getKey().toString())).getObjeto();
+                                    System.out.println("DATO QLIO: "+obje.getDescripcion());
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre());
                                     setFont(new JGFont("Arial", 0, 24));
                                     drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
