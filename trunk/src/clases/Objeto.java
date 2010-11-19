@@ -33,9 +33,10 @@ private Short idObjeto;
     private dbDelegate conexion;
 
 
-    /*
+    /**
      * Busca los valores en la base de datos y los mapea para que queden disponible
      * de manera objetual para el sistema
+     * 
      */
     public void setObjeto(short id){
         this.conexion = new dbDelegate();
