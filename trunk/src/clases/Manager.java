@@ -54,8 +54,6 @@ public class Manager extends JGEngine {
     public Npc vendedor;
     public Seccion seccion = new Seccion();
     public Seccion seccionNpc = new Seccion();
-    public Habilidad hab = new Habilidad();
-    Objeto obje = new Objeto();
     /*
      * Objetos de combate
      */
@@ -402,12 +400,12 @@ public class Manager extends JGEngine {
 //                removeObjects("cerrar", 2^6);
 //                cursor.setVentana((byte)0);
 //            }
-            if(cursor.getVentana()==1){
-                setGameState("InCommerce");
-                seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
-                seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
-            }
-            System.out.println("CURSOR VALOR VENTANA: "+cursor.getVentana());
+        if (cursor.getVentana() == 1) {
+            setGameState("InCommerce");
+            seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
+            seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
+        }
+        System.out.println("CURSOR VALOR VENTANA: " + cursor.getVentana());
 
         if (isSalir()) {
             System.exit(0);
@@ -434,7 +432,6 @@ public class Manager extends JGEngine {
         /**
          * Detecta si has encontrado un hongo para la mision
          */
-
         if ((pj.x == 880.0) && (pj.y == 400.0) && (!hongo1)) {
             hongo1 = true;
             tiempoMensaje = 120;
@@ -637,10 +634,10 @@ public class Manager extends JGEngine {
             setIcon(null);
         } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
             //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
-            obje = new Objeto();
-            obje.setObjeto(this.getIconoPresionado().getIdObjeto());
+            Objeto obje = pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
             if (obje.isUsoCombate()) {
                 pj.setProximoItem(this.getIconoPresionado().getIdObjeto());
+                pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).restarCantidad((short)1);
             }
             if (pj.getIdProximoItem() != -1) {
                 //el personaje puede usar un item
@@ -721,7 +718,7 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre iconos  + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
-        System.out.println("getVentana:"+cursor.getVentana());
+        System.out.println("getVentana:" + cursor.getVentana());
         if (cursor.getVentana() == 1) {
             pj.colid = 0;
             //grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int) Math.pow(2, 5));
@@ -739,7 +736,7 @@ public class Manager extends JGEngine {
             cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
             pj.bloquear();
             cursor.setVentana((byte) 2);
-        } else if ((cursor.getVentana() == 3)||(cursor.getVentana() == 4)) {
+        } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
             //Remueve todos los objetos que forman la ventana de comerciar
 //            removeObjects("ventana trade", 0);
 //            removeObjects("grilla npc", (int) Math.pow(2, 5));
@@ -755,9 +752,9 @@ public class Manager extends JGEngine {
             pj.desbloquear();
             pj.colid = 2;
 //            cursor.setVentana((byte) 0);
-            if(cursor.getVentana()== 4){
-                cursor.setVentana((byte)1);
-                System.out.println("setVentana antes InWorld:"+cursor.getVentana());
+            if (cursor.getVentana() == 4) {
+                cursor.setVentana((byte) 1);
+                System.out.println("setVentana antes InWorld:" + cursor.getVentana());
             }
             setGameState("InWorld");
 
@@ -1138,7 +1135,7 @@ public class Manager extends JGEngine {
             this.mensajes = mensajes;
         }
     }
-  
+
     public class Boton extends JGObject {
 
         public Boton(String nombre, String graf, double x, double y, int cid) {
@@ -1268,12 +1265,11 @@ public class Manager extends JGEngine {
 
 
             if (obj.colid == (int) Math.pow(2, 4)) {
-                System.out.println("choka item");
                 Icono icon = (Icono) obj;
                 if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())) {
                     clearMouseButton(3);
                     pj.getInventario().agregarItem(icon.getIdObjeto());
-                    cursor.setVentana((byte)4);
+                    cursor.setVentana((byte) 4);
                 }
             }
 
@@ -1328,9 +1324,8 @@ public class Manager extends JGEngine {
                             while (this.tabla.x > 0) {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
-                                   hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-
-                                    System.out.println("DATO QLIO: "+hab.getNombre());
+                                    Habilidad hab = listHab.getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad();
+                                    System.out.println("DATO QLIO: " + hab.getDescripcion()                                            );
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre());
                                     this.recorrido.x += 37;
                                 }
@@ -1348,9 +1343,10 @@ public class Manager extends JGEngine {
                         while (this.tabla.y > 0) {
                             while (this.tabla.x > 0) {
                                 if (it.hasNext()) {
-                                    Map.Entry e = (Map.Entry) it.next();
-                                    obje = inv.getItem(Short.parseShort(e.getKey().toString())).getObjeto();
-                                    System.out.println("DATO QLIO: "+obje.getDescripcion());
+                                    Map.Entry en = (Map.Entry) it.next();
+                                    Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
+                                    //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
+                                    
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre());
                                     setFont(new JGFont("Arial", 0, 24));
                                     drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
