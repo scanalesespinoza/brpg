@@ -564,6 +564,11 @@ public class Manager extends JGEngine {
             //seccion.removerIconos();
             //removeObjects("icono", (int) Math.pow(2, 4));
         }
+        if (checkCollision((int)Math.pow(2, 4), cursor) != Math.pow(2, 4)){
+            cursor.setMensajeIcon(null);
+        }
+        
+
     }
 
     public void paintFrameInDeath() {
@@ -1290,22 +1295,11 @@ public class Manager extends JGEngine {
 
         @Override
         public void hit(JGObject obj) {
-
             if ((obj.colid == (int) Math.pow(2, 4))) {//es icono
                 Icono iconito = (Icono) obj;
-                if (iconito.getTipo() == 0) {//es de habilidades
-                    hab.setHabilidad(iconito.getIdObjeto());
-                    this.setMensajeIcon(hab.getNombre());
-                } else {//es de inventario
-                    obje.setObjeto(iconito.getIdObjeto());
-                    this.setMensajeIcon(obje.getNombre());
-                }
-                puntos = new JGPoint((int) iconito.x, (int) iconito.y);
-            } else if (!obj.getBBox().intersects(new JGRectangle(cursor.getBBox()))){
-                this.setMensajeIcon(null);
-                puntos = null;
+                this.setMensajeIcon(iconito.getNombreLogico());
             }
-
+            
             if (obj.getGraphic().equals("mario")) {
                 setMensaje("Soy " + obj.getGraphic());
             }
@@ -1339,14 +1333,13 @@ public class Manager extends JGEngine {
                 Icono icon = (Icono) obj;
                 if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())) {
                     clearMouseButton(3);
-                    System.out.println("Agregar item");
-                    System.out.println("ICON ID OBJETO *******************" + icon.getIdObjeto());
                     pj.getInventario().agregarItem(icon.getIdObjeto());
                     seccion.setWorking(false);
                     seccion.generaSeccion(pj, 1);
-                    System.out.println("Todos los item************************" + pj.getInventario().contarTodosItems());
                 }
             }
+
+
         }
 
         @Override
@@ -1354,19 +1347,7 @@ public class Manager extends JGEngine {
             setFont(new JGFont("Arial", 0, 20));
             setColor(JGColor.white);
             if (mensajeIcon != null) {
-                int desplazamientox = 0, desplazamientoy=0;
-                if (getPuntos().x - 16 < 0) {
-                    desplazamientox = 16;
-                } else if (getPuntos().x + getMensajeIcon().length() * 5 > viewWidth()) {
-                    desplazamientox = -(getMensajeIcon().length() * 5);
-                }
-                if (getPuntos().y - 16 < 0) {
-                    desplazamientoy = 16;
-                } else if (getPuntos().y + 20 > viewHeight()) {
-                    desplazamientoy = -20;
-                }
-
-                drawString("Icono: "+this.getMensajeIcon(), viewWidth()/2, viewHeight()-50,0);
+                drawString("Icono: " + this.getMensajeIcon(), viewWidth() / 2, viewHeight() - 50, 0);
             }
         }
 
@@ -1416,7 +1397,7 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo());
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre());
 
                                     System.out.println("habilidad                      = " + hab.getNombre());
                                     this.recorrido.x += 37;
@@ -1440,7 +1421,7 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obje.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo());
+                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(),obje.getNombre());
                                     setFont(new JGFont("Arial", 0, 24));
                                     drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                     System.out.println("Nombre objeto                      = " + obje.getNombre());
