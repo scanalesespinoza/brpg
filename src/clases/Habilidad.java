@@ -31,8 +31,7 @@ public class Habilidad {
      * de manera objetual para el sistema
      */
     public void setHabilidad(short id) {
-        if (id != this.getIdHabilidad()) {
-            this.conexion = new dbDelegate();
+        this.conexion = new dbDelegate();
             System.out.println("Inicio obtiene datos personaje");
             String StrSql = "SELECT * FROM habilidad "
                     + "WHERE id = " + id;
@@ -52,7 +51,7 @@ public class Habilidad {
             } catch (SQLException ex) {
                 System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
             }
-        }
+        
     }
 
 

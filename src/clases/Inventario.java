@@ -19,7 +19,7 @@ public class Inventario {
     private short idPersonaje;
     private dbDelegate conexion;
     private HashMap<Short, Item> objetos;//contiene los objetos del personaje
-    private Objeto obj = new Objeto();
+
     public Inventario() {
         this.objetos = new HashMap<Short, Item>();
     }
@@ -38,8 +38,10 @@ public class Inventario {
                 + "   AND inv.Objeto_id=obj.id";
         System.out.println(StrSql);
         try {
+            
             ResultSet res = conexion.Consulta(StrSql);
             byte i = 0;
+            
             while (res.next()) {
                 Item item = new Item();
                 item.setIdObjeto(res.getShort("idObjeto"));
@@ -47,6 +49,7 @@ public class Inventario {
                 item.setCantidad(res.getShort("cantidad"));
                 item.setEstaEquipado(res.getShort("estaequipado"));
                 item.setNewItem(false);
+                Objeto obj = new Objeto();
                 obj.setObjeto(item.getIdObjeto());
                 item.setObjeto(obj);
                 this.objetos.put(item.getIdObjeto(), item);
@@ -168,8 +171,6 @@ public class Inventario {
      * @param idItem
      */
     public void agregarItem(short idItem) {
-        obj.setObjeto(idItem);
-        System.out.println("VOY A AGREGAR : "+obj.getNombre());
         Item item = creaItem(idItem, (short) 1, (short) 0);
         if (this.comprobarItem(idItem)) {
             this.getObjetos().get(idItem).sumarCantidad((short) 1);
@@ -245,11 +246,9 @@ public class Inventario {
     public int getPesoUsado() {
         int pesoTotal = 0;
         Iterator it = this.getObjetos().entrySet().iterator();
-        Objeto obj = new Objeto();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
-            obj.setObjeto(Short.parseShort(e.getKey().toString()));
-            pesoTotal += obj.getPeso() * this.getObjetos().get(Short.parseShort(e.getKey().toString())).getCantidad();
+            pesoTotal += getItem(Short.parseShort(e.getKey().toString())).getObjeto().getPeso() * getItem(Short.parseShort(e.getKey().toString())).getCantidad();
         }
         return pesoTotal;
     }
@@ -262,11 +261,9 @@ public class Inventario {
         //objeto la lista de objetos
         int dineroTotal = 0;
         Iterator it = this.getObjetos().entrySet().iterator();
-        Objeto obj = new Objeto();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
-            obj.setObjeto(Short.parseShort(e.getKey().toString()));
-            dineroTotal += obj.getValorDinero() * this.getObjetos().get(Short.parseShort(e.getKey().toString())).getCantidad();
+            dineroTotal += getItem(Short.parseShort(e.getKey().toString())).getObjeto().getValorDinero() * getItem(Short.parseShort(e.getKey().toString())).getCantidad();
         }
         return dineroTotal;
     }
@@ -340,7 +337,7 @@ public class Inventario {
             this.cantidad = cantidad;
             this.estaEquipado = estaEquipado;
             this.objeto.setObjeto(idObjeto);
-
+            
         }
 
         public Objeto getObjeto() {

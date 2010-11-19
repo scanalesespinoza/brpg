@@ -20,11 +20,11 @@ public class ContrincanteHabilidad {
     private short idPersonaje;
     private HashMap<Short, UnaHabilidad> habilidades;//contiene las habilidades del personaje
     private dbDelegate conexion;
-    private Habilidad hab;
+
 
     public ContrincanteHabilidad() {
         this.habilidades = new HashMap<Short, UnaHabilidad>();
-        this.hab  = new Habilidad();
+       
     }
 
     public short getIdPersonaje() {
@@ -55,6 +55,7 @@ public class ContrincanteHabilidad {
                 habilidad.setIdPersonaje(res.getShort("personaje_id"));
                 habilidad.setNivelHabilidad(res.getShort("nivelhabilidad"));
                 habilidad.setNewHabilidad(false);
+                Habilidad hab = new Habilidad();
                 hab.setHabilidad(habilidad.getIdHabilidad());
                 
                 habilidad.setHabilidad(hab);
@@ -150,19 +151,16 @@ public class ContrincanteHabilidad {
 
     public Integer getCosto(short idHabilidad) {
         Short nivel = this.getHabilidades().get(idHabilidad).getNivelHabilidad();
-        hab.setHabilidad(idHabilidad);
-        return (nivel * hab.getCostoBasico()) / 2;
+        return (nivel * getHabilidad(idHabilidad).getHabilidad().getCostoBasico()) / 2;
     }
 
     public Integer getDañoBeneficio(short idHabilidad) {
         Short nivel = this.getHabilidades().get(idHabilidad).getNivelHabilidad();
-        hab.setHabilidad(idHabilidad);
-        return Math.round((int) (hab.getDanoBeneficio() * (1 + (0.1 * nivel))));
+        return Math.round((int) (getHabilidad(idHabilidad).getHabilidad().getDanoBeneficio() * (1 + (0.1 * nivel))));
     }
 
     public int getTiempoEspera(short idHabilidad) {
-        hab.setHabilidad(idHabilidad);
-        return hab.getTiempoEspera();
+        return getHabilidad(idHabilidad).getHabilidad().getTiempoEspera();
     }
 
     public short getHabilidadAlAzar() {
