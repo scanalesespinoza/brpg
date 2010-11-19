@@ -254,7 +254,7 @@ public class SeccionMenu {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 0, inv.contarItem(obj.getIdObjeto()),personaje.getTipo());
+                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, inv.contarItem(obj.getIdObjeto()),personaje.getTipo());
                                     System.out.println("objeto                      = " + obj.getNombre());
                                     this.recorrido.x += 37;
                                 }
