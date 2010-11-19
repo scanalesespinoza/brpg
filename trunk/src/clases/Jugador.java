@@ -216,71 +216,71 @@ public class Jugador extends Personaje {
         setbRightkey(false);
         setbUpkey(false);
 
-        if(!isBlocked()){
+        if (!isBlocked()) {
 
 
-        int entorno = 16; //variable para formar cuadrados a partir de un punto.
-        if (eng.getMouseButton(1)) {
-            //Obtengo posicion del mouse
-            mouseX = eng.getMouseX() + eng.viewXOfs();
-            mouseY = eng.getMouseY() + eng.viewYOfs();
+            int entorno = 16; //variable para formar cuadrados a partir de un punto.
+            if (eng.getMouseButton(1)) {
+                //Obtengo posicion del mouse
+                mouseX = eng.getMouseX() + eng.viewXOfs();
+                mouseY = eng.getMouseY() + eng.viewYOfs();
 
-            if (interactuarNpc) {
-                return;
+                if (interactuarNpc) {
+                    return;
+                }
+
+                //creo objeto JGRectangle para ver si llegó al punto deseado
+                rClick = new JGRectangle((int) mouseX, (int) mouseY, entorno, entorno);
+
+                this.estadoClick = true;
+                eng.clearMouseButton(1);
             }
+            if (estadoClick) {
 
-            //creo objeto JGRectangle para ver si llegó al punto deseado
-            rClick = new JGRectangle((int) mouseX, (int) mouseY, entorno, entorno);
+                if (this.x < mouseX - entorno) {
+                    setbRightkey(true);
+                }
+                if (this.x > mouseX + entorno) {
+                    setbLeftkey(true);
+                }
+                if (this.y < mouseY - entorno) {
+                    setbDownkey(true);
+                }
+                if (this.y > mouseY + entorno) {
+                    setbUpkey(true);
+                }
 
-            this.estadoClick = true;
-            eng.clearMouseButton(1);
-        }
-        if (estadoClick) {
+                if (rClick.intersects(this.getTileBBox()) || eng.getMouseButton(3) || eng.getKey(eng.KeyLeft)
+                        || eng.getKey(eng.KeyDown) || eng.getKey(eng.KeyUp) || eng.getKey(eng.KeyRight)) {
+                    setbDownkey(false);
+                    setbLeftkey(false);
+                    setbRightkey(false);
+                    setbUpkey(false);
+                    eng.clearMouseButton(3);
+                    estadoClick = false;
+                }
 
-            if (this.x < mouseX - entorno) {
-                setbRightkey(true);
             }
-            if (this.x > mouseX + entorno) {
-                setbLeftkey(true);
-            }
-            if (this.y < mouseY - entorno) {
-                setbDownkey(true);
-            }
-            if (this.y > mouseY + entorno) {
-                setbUpkey(true);
-            }
-
-            if (rClick.intersects(this.getTileBBox()) || eng.getMouseButton(3) || eng.getKey(eng.KeyLeft)
-                    || eng.getKey(eng.KeyDown) || eng.getKey(eng.KeyUp) || eng.getKey(eng.KeyRight)) {
+            if (!estadoClick) {
                 setbDownkey(false);
                 setbLeftkey(false);
                 setbRightkey(false);
                 setbUpkey(false);
-                eng.clearMouseButton(3);
-                estadoClick = false;
+                if (eng.getKey(eng.KeyUp)) {
+                    setbUpkey(true);
+                }   //else {eng.clearKey(eng.KeyUp);}
+                if (eng.getKey(eng.KeyDown)) {
+                    setbDownkey(true);
+                } //else {eng.clearKey(eng.KeyDown);}
+                if (eng.getKey(eng.KeyLeft)) {
+                    setbLeftkey(true);
+                } //else {eng.clearKey(eng.KeyLeft);}
+                if (eng.getKey(eng.KeyRight)) {
+                    setbRightkey(true);
+                }//else {eng.clearKey(eng.KeyRight);}
+
             }
-
-        }
-        if (!estadoClick) {
-            setbDownkey(false);
-            setbLeftkey(false);
-            setbRightkey(false);
-            setbUpkey(false);
-            if (eng.getKey(eng.KeyUp)) {
-                setbUpkey(true);
-            }   //else {eng.clearKey(eng.KeyUp);}
-            if (eng.getKey(eng.KeyDown)) {
-                setbDownkey(true);
-            } //else {eng.clearKey(eng.KeyDown);}
-            if (eng.getKey(eng.KeyLeft)) {
-                setbLeftkey(true);
-            } //else {eng.clearKey(eng.KeyLeft);}
-            if (eng.getKey(eng.KeyRight)) {
-                setbRightkey(true);
-            }//else {eng.clearKey(eng.KeyRight);}
-
-        }
-        player_move();
+            player_move();
 
 
         }
@@ -293,8 +293,8 @@ public class Jugador extends Personaje {
 //        } catch (Exception ex) {
 //            System.out.println("Error al conectar la DB #Jugador.Hit: " + ex);
 //        }
-        
-        ydir=0;
+
+        ydir = 0;
         bloquear();
         suspend();
 
@@ -496,7 +496,7 @@ public class Jugador extends Personaje {
      */
     public void utilizarHabilidad() {
         if (this.getIdProximoAtaque() != -1) {
-             int costo = this.getHabilidades().getCosto(this.getIdProximoAtaque());
+            int costo = this.getHabilidades().getCosto(this.getIdProximoAtaque());
             if (this.mp >= costo) {
                 //tiene mp suficiente para ejecutar la habilidad
                 //quitar mp
@@ -504,7 +504,9 @@ public class Jugador extends Personaje {
 
                 //bloqueo segun tiempo de espera
                 this.bloquear(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
-            }else this.setIdProximoAtaque((short)-1);
+            } else {
+                this.setIdProximoAtaque((short) -1);
+            }
         }
     }
 
@@ -554,7 +556,7 @@ public class Jugador extends Personaje {
 
     public void regenerarMp(int porcentaje, int seg) {
         if (seg % 3 == 0) {
-           aumentarDisminuirMp(this.mpMax * (porcentaje/100));
+            aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
         }
     }
 
@@ -567,4 +569,14 @@ public class Jugador extends Personaje {
             this.mp = 0;
         }
     }
+
+    public Integer getHpMax() {
+        return hpMax;
+    }
+
+    public Integer getMpMax() {
+        return mpMax;
+    }
+
+
 }

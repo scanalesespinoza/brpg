@@ -21,7 +21,7 @@ public class Habilidad {
     private short nivelMaximo;
     private String nombreGrafico;
     private dbDelegate conexion;
-    private int tiempoEspera = 3;
+    private int tiempoEspera;
 
     public Habilidad(){
         this.idHabilidad = -1;
@@ -47,13 +47,14 @@ public class Habilidad {
                     this.setNivelMaximo(res.getShort("nivelMaximo"));
                     this.setCostoBasico(res.getShort("costoBasico"));
                     this.setNombreGrafico(res.getString("nom_grafico"));
-
+                    this.setTiempoEspera(res.getInt("tiempoEspera"));
                 }
             } catch (SQLException ex) {
                 System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
             }
         }
     }
+
 
     public short getCostoBasico() {
         return costoBasico;
@@ -113,7 +114,13 @@ public class Habilidad {
         this.nombreGrafico = nombreGrafico;
     }
 
-    int getTiempoEspera() {
+    public int getTiempoEspera() {
         return this.tiempoEspera;
     }
+
+    public void setTiempoEspera(int tiempoEspera) {
+        this.tiempoEspera = tiempoEspera;
+    }
+
+
 }

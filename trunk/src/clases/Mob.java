@@ -57,7 +57,7 @@ public class Mob extends Personaje {
                 + " FROM personaje pjuno, mob pjdos "
                 + "WHERE pjuno.id=" + id
                 + "  AND pjdos.Personaje_id=" + id;
-System.out.println(StrSql);
+        System.out.println(StrSql);
         try {
 
             ResultSet res = conexion.Consulta(StrSql);
@@ -87,6 +87,7 @@ System.out.println(StrSql);
         this.setHp();
         this.setMp();
     }
+
     @Override
     public void move() {
 
@@ -308,15 +309,16 @@ System.out.println(StrSql);
                 //tiene mp suficiente para ejecutar la habilidad
                 //quitar mp
                 aumentarDisminuirMp(-costo);
-                
+
                 //bloqueo segun tiempo de espera
-                this.bloquear(4);
-            }else this.setIdProximoAtaque((short)-1);
-            System.out.println("MAAAAAAAAAAANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaa : "+this.mp);
+                this.bloquear(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
+            } else {
+                this.setIdProximoAtaque((short) -1);
+            }
+            System.out.println("MAAAAAAAAAAANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaa : " + this.mp);
         }
 
     }
-
 
     public Integer getAtaque() {
         return getFuerza() * 2 + getFuerza() / 5 + getNivel(); //+ dañoArma
@@ -335,7 +337,7 @@ System.out.println(StrSql);
     }
 
     private void setHp() {
-        this.hp = ((getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 100) + getNivel()) ;
+        this.hp = ((getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 100) + getNivel());
         this.hpMax = this.hp;
     }
 
@@ -358,6 +360,7 @@ System.out.println(StrSql);
         } else if (this.hpMax <= this.getHp() + daño) {
             this.hp = this.hpMax;
         } else {
+            this.hp = 0;
             muerte();
         }
     }
@@ -366,7 +369,15 @@ System.out.println(StrSql);
         // si por algún motivo el mob muere, debe ser redireccionado
         // a UNA ventana en donde se lea el inventario del mob (mob.getInventario()
         // y se ofrezca los item al jugador, seleccionandoel icono correspondiente
-        
+        new JGTimer((int) (eng.getFrameRate() * 5 * 1), true) {
+
+                @Override
+                public void alarm() {
+                    System.out.println("ENTRE ACA WEON2");
+                    resume();
+
+                }
+            };
         this.setMuerto(true);
         eng.setGameState("InReward");
     }
@@ -380,14 +391,17 @@ System.out.println(StrSql);
     }
 
     public void regenerarMp(int porcentaje, int seg) {
-        System.out.println("MANA MAXIMO: "+this.mpMax);
-       if  (seg%3 == 0){
-           aumentarDisminuirMp((int)(mpMax*((double)(porcentaje/100))));
-           System.out.println("ENTRE A REGENERAR MANA VIOLENTAMENTE A :"+(int)(mpMax*((double)(porcentaje/100))));
-       }
+        if (seg % 3 == 0) {
+            aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
+        }
     }
 
-     public void aumentarDisminuirMp(int cant) {
+    public void aumentarDisminuirMp(int cant) {
+        System.out.println("VALORES: ");
+        System.out.println("this.mpMax : " + this.mpMax);
+        System.out.println("this.getMp(): " + this.getMp());
+        System.out.println("cant: " + cant);
+
         if (this.mpMax >= this.getMp() + cant && this.getMp() + cant > 0) {
             this.mp += cant;
         } else if (this.mpMax <= this.getMp() + cant) {
@@ -396,4 +410,12 @@ System.out.println(StrSql);
             this.mp = 0;
         }
     }
+        public Integer getHpMax() {
+        return hpMax;
+    }
+
+    public Integer getMpMax() {
+        return mpMax;
+    }
+    
 }
