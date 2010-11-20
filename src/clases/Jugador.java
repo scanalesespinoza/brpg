@@ -559,6 +559,7 @@ public class Jugador extends Personaje {
     public void paint() {}
 
     public void regenerarMp(int porcentaje, int seg) {
+        System.out.println(seg % 3);
         if (seg % 3 == 0) {
             aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
         }

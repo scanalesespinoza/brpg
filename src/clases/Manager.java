@@ -105,17 +105,12 @@ public class Manager extends JGEngine {
     /** Application constructor. */
     public Manager(JGPoint size) {
         initEngine(size.x, size.y);
-        setProgressMessage("Iniciando la aplicación, espere...");
-        setAuthorMessage("Sergio Canales Espinoza ||                    -JGame-                    || Gerald Schmidt Padilla");
-
-
     }
 
     /** Applet constructor. */
     public Manager() {
         initEngineApplet();
-        setProgressMessage("Iniciando la aplicación, espere...");
-        setAuthorMessage("Sergio Canales Espinoza ||                    -JGame-                    || Gerald Schmidt Padilla");
+
     }
 
     @Override
@@ -127,7 +122,11 @@ public class Manager extends JGEngine {
 
     @Override
     public void initGame() {
-        dbgShowBoundingBox(true);
+        setProgressMessage("Iniciando la aplicación, espere...");
+        setAuthorMessage("Sergio Canales Espinoza ||                    -JGame-                    || Gerald Schmidt Padilla");
+        if (isApplet()) {
+            idJugador = Short.parseShort(getParameter("id_personaje"));
+        }
         setFrameRate(60, 2);
         dbgShowGameState(true);
         try {
@@ -186,7 +185,7 @@ public class Manager extends JGEngine {
             vendedor.cargarDatos((short) 22);
             System.out.println("ID vendedor: " + vendedor.getIdPersonaje() + "---" + vendedor.getIdNpc());
             //instancia mob y define como objeto home a pj
-            this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, (int)Math.pow(2, 2));
+            this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2));
             this.mob.cargarDatos((short) 40);
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
@@ -383,6 +382,9 @@ public class Manager extends JGEngine {
         1600 + 2 ^ 11, // cids of objects that our objects should collide with
         2 ^ 11 // cids of the objects whose hit() should be called
         );*/
+        if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
+            setGameState("InCombat");
+        }
         int posX = (int) pj.x;
         int posY = (int) pj.y;
 
@@ -561,10 +563,6 @@ public class Manager extends JGEngine {
             cursor.setMensajeIcon(null);
         }
         moveObjects(null, (int) Math.pow(2, 7));
-        
-        if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
-            setGameState("InCombat");
-        }
     }
 
     public void paintFrameInDeath() {
@@ -574,6 +572,7 @@ public class Manager extends JGEngine {
 
     public void doFrameInDeath() {
         pj.setPos(CIUDAD_X, CIUDAD_Y);
+        pj.setDir(0, 0);
         pj.suspend();
 
         //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
@@ -630,11 +629,11 @@ public class Manager extends JGEngine {
                     dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa())) / 50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
                     mob.recibirDañoBeneficio(dañoBeneficio);
-                    new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.red, JGColor.orange, JGColor.yellow}, 5);
+                    new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                     //si no es beneficio al jugador
                 } else {
                     pj.recibirDañoBeneficio(dañoBeneficio);
-                    new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.green, JGColor.yellow}, 5);
+                    new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
                 }
             }
             setIcon(null);
@@ -643,13 +642,13 @@ public class Manager extends JGEngine {
             Objeto obje = pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
             if (obje.isUsoCombate()) {
                 pj.setProximoItem(this.getIconoPresionado().getIdObjeto());
-                pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).restarCantidad((short)1);
+                pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).restarCantidad((short) 1);
             }
             if (pj.getIdProximoItem() != -1) {
                 //el personaje puede usar un item
                 dañoBeneficio = random(pj.getNivel() * 2, pj.getNivel() * 5, 10);
                 pj.recibirDañoBeneficio(dañoBeneficio);
-                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.green, JGColor.yellow}, 5);
+                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
             }
             setIcon(null);
 
@@ -666,22 +665,22 @@ public class Manager extends JGEngine {
                 dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) / 50 - mob.getAtaque();
                 //se convierte en daño hacia el jugador
                 pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
-                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.red, JGColor.orange, JGColor.yellow}, 5);
+                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                 //si no es beneficio al MOB
             } else {
                 mob.recibirDañoBeneficio(dañoBeneficio);
-                new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.green, JGColor.yellow}, 5);
+                new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
             }
         }
         mob.regenerarMp(4, seg);
-        pj.regenerarMp(6, seg);
+        pj.regenerarMp(3, seg);
         if (mob.getHp() <= 0) {
             //personaje recibe experiencia
             pj.aumentarExperiencia(mob.getExperiencia());
             mob.recibirDañoBeneficio(mob.getHpMax());
             mob.aumentarDisminuirMp(mob.getMpMax());
             seccionNpc.setSeccion(new JGPoint(10, 10), new JGPoint(3, 4));
-            
+
             new JGTimer((int) (getFrameRate() * 5 * 1), true) {
 
                 @Override
@@ -1281,23 +1280,23 @@ public class Manager extends JGEngine {
                 Icono icon = (Icono) obj;
                 if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(vendedor.getTipo())) {
                     clearMouseButton(3);
-                    if(pj.validarDinero(icon.getItem().getValorDinero())){
+                    if (pj.validarDinero(icon.getItem().getValorDinero())) {
                         pj.getInventario().agregarItem(icon.getIdObjeto());
-                        pj.setDinero(pj.getDinero()-icon.getItem().getValorDinero());
-                        cursor.setVentana((byte)4);
-                    }else{
+                        pj.setDinero(pj.getDinero() - icon.getItem().getValorDinero());
+                        cursor.setVentana((byte) 4);
+                    } else {
                         setMensaje("No tienes suficiente dinero");
                     }
-                    
+
                 }
                 if ((getMouseButton(3)) && (inGameState("InCommerce")) && icon.belongTo(pj.getTipo())) {
                     clearMouseButton(3);
-                        pj.getInventario().eliminarItem(icon.getIdObjeto(),(short)1);
-                        pj.setDinero(pj.getDinero()+icon.getItem().getValorDinero());
-                        cursor.setVentana((byte)4);
+                    pj.getInventario().eliminarItem(icon.getIdObjeto(), (short) 1);
+                    pj.setDinero(pj.getDinero() + icon.getItem().getValorDinero());
+                    cursor.setVentana((byte) 4);
                 }
 
-                
+
             }
 
 
@@ -1310,7 +1309,7 @@ public class Manager extends JGEngine {
             if (mensajeIcon != null) {
                 drawString("Icono: " + this.getMensajeIcon(), viewWidth() / 2, viewHeight() - 50, 0);
             }
-            drawString("Dinero: " + pj.getDinero(), viewWidth() / 2+20, viewHeight() - 50+20, 0);
+            drawString("Dinero: " + pj.getDinero(), viewWidth() / 2 + 20, viewHeight() - 50 + 20, 0);
         }
 
         public String getMensajeIcon() {
@@ -1353,7 +1352,7 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     Habilidad hab = listHab.getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad();
-                                    System.out.println("DATO QLIO: " + hab.getDescripcion()                                            );
+                                    System.out.println("DATO QLIO: " + hab.getDescripcion());
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab);
 
                                     this.recorrido.x += 37;
@@ -1375,13 +1374,13 @@ public class Manager extends JGEngine {
                                     Map.Entry en = (Map.Entry) it.next();
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
-                                    
+
                                     System.out.println("Cantidad: ");
-                                    if(inv.tieneItem(obje.getIdObjeto())){
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
-                                    setFont(new JGFont("Arial", 0, 24));
-                                    drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                    this.recorrido.x += 37;
+                                    if (inv.tieneItem(obje.getIdObjeto())) {
+                                        new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                        setFont(new JGFont("Arial", 0, 24));
+                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
+                                        this.recorrido.x += 37;
                                     }
                                 }
 //                                if(inv.tieneItem(obje.getIdObjeto())){
