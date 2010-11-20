@@ -132,7 +132,8 @@ public class Manager extends JGEngine {
         try {
             defineMedia("/media/rpg-basico.tbl");
             setBGImage("bgimage");
-            // playAudio("music", "musicaciudad", true);
+            playAudio("ambiental", "muerte", true);
+            
             setMouseCursor(pj);
         } catch (Exception ex) {
             System.out.println("Error al cargar medios: " + ex);
@@ -422,7 +423,8 @@ public class Manager extends JGEngine {
         drawImage(cursor.x, cursor.y, "cursor");
         if (getKey(KeyEsc)) {
             menu.ventanaSalida();
-            pj.bloquear(60);
+            playAudio("eventos","mensaje",false);
+            pj.bloquear(0);
             if (getKey(KeyEnter)) {
                 menu.setTeclaEscape(false);
                 setSalir(true);
@@ -508,6 +510,7 @@ public class Manager extends JGEngine {
         }
         if (tiempoMensaje > 0) {
             new Ventana("wena choro pillaste una callapampa!");
+            
             // new Ventana(300, 300, textoPrueba);
         }
         tiempoMensaje--;
