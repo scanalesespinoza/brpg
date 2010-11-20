@@ -1,7 +1,21 @@
 ﻿//imagen loading
 splash_image	a	1	/media/look/loading.png	-	0	0	505	335
 //define musica
-musicaciudad	/media/sonidos/menu/juego01.mid
+ciudad	/media/sonidos/ambiental/ciudad.mid
+ciudad2	/media/sonidos/ambiental/ciudad_2.mid
+pantano	/media/sonidos/ambiental/pantano.mid
+combate	/media/sonidos/ambiental/combate.mid
+muerte	/media/sonidos/ambiental/muerte.mid
+permitido	/media/sonidos/eventos/permitido.mid
+no_permitido    /media/sonidos/eventos/no_permitido.mid
+hallar_algo	/media/sonidos/eventos/hallar_algo.mid
+mensaje	/media/sonidos/eventos/mensaje.mid
+subir_nivel	/media/sonidos/eventos/subir_nivel.mid
+
+golpe	/media/sonidos/personaje/golpe_epico.mid
+heal	/media/sonidos/personaje/heal.mid
+heal2	/media/sonidos/personaje/heal_2.mid
+golpe2	/media/sonidos/personaje/rebote.wav
 
 //define fondo del escenario
 bgimage	-	0	/media/imagenes/tiles/Adoquin_16_base.png	-
