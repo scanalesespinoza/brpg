@@ -198,7 +198,12 @@ public class Jugador extends Personaje {
     }
 
     public void aumentarExperiencia(short exp) {
+        if (this.getExperiencia()+ exp >= this.getLimiteSuperiorExperiencia()){//persoanje subió de nivel
+           short resto = (short) (this.getLimiteSuperiorExperiencia() - (this.getExperiencia() + exp));
+           subirNivel();
+        }
         this.setExperiencia(this.getExperiencia() + exp);
+
     }
 
     private void aumentarPuntos() {
