@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.JGObject;
 import jgame.JGPoint;
-import jgame.JGTimer;
 
 /**
  *
@@ -90,7 +89,6 @@ public class Mob extends Personaje {
 
     @Override
     public void move() {
-
         if (occupied == null
                 || (xspeed == 0 && yspeed == 0)
                 || (xdir == 0 && ydir == 0 && (!isXAligned() || !isYAligned()))) {

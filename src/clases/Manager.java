@@ -1,5 +1,6 @@
 package clases;
 
+import extensiones.StdScoring;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.JGColor;
@@ -185,7 +186,7 @@ public class Manager extends JGEngine {
             vendedor.cargarDatos((short) 22);
             System.out.println("ID vendedor: " + vendedor.getIdPersonaje() + "---" + vendedor.getIdNpc());
             //instancia mob y define como objeto home a pj
-            this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, 192);
+            this.mob = new Mob(100, 300, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, (int)Math.pow(2, 2));
             this.mob.cargarDatos((short) 40);
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
@@ -336,10 +337,10 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 3) + (int) Math.pow(2, 0), // Colisión entre Npc + Cursor
                 (int) Math.pow(2, 0) // ejecuta hit Cursor
                 );
-        checkCollision(
-                (int) Math.pow(2, 2) + (int) Math.pow(2, 1), // Colisión entre Mob + Jugador
-                (int) Math.pow(2, 1) // ejecuta hit Jugador
-                );
+//        checkCollision(
+//                (int) Math.pow(2, 2) + (int) Math.pow(2, 1), // Colisión entre Mob + Jugador
+//                (int) Math.pow(2, 1) // ejecuta hit Jugador
+//                );
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 5), // Colisión entre Iconos + botones
                 (int) Math.pow(2, 5) // ejecuta hit botones
@@ -559,8 +560,11 @@ public class Manager extends JGEngine {
         if (checkCollision((int) Math.pow(2, 4), cursor) != Math.pow(2, 4)) {
             cursor.setMensajeIcon(null);
         }
-
-
+        moveObjects(null, (int) Math.pow(2, 7));
+        
+        if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
+            setGameState("InCombat");
+        }
     }
 
     public void paintFrameInDeath() {
@@ -625,10 +629,12 @@ public class Manager extends JGEngine {
                 if (dañoBeneficio < 0) {
                     dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa())) / 50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
-                    mob.recibirDañoBeneficio(-mob.getHpMax());
+                    mob.recibirDañoBeneficio(dañoBeneficio);
+                    new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                     //si no es beneficio al jugador
                 } else {
                     pj.recibirDañoBeneficio(dañoBeneficio);
+                    new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.green, JGColor.yellow}, 5);
                 }
             }
             setIcon(null);
@@ -643,6 +649,7 @@ public class Manager extends JGEngine {
                 //el personaje puede usar un item
                 dañoBeneficio = random(pj.getNivel() * 2, pj.getNivel() * 5, 10);
                 pj.recibirDañoBeneficio(dañoBeneficio);
+                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.green, JGColor.yellow}, 5);
             }
             setIcon(null);
 
@@ -658,20 +665,23 @@ public class Manager extends JGEngine {
             if (dañoBeneficio < 0) {
                 dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) / 50 - mob.getAtaque();
                 //se convierte en daño hacia el jugador
-                pj.recibirDañoBeneficio(0);//dañoBeneficio
+                pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
+                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                 //si no es beneficio al MOB
             } else {
-                mob.recibirDañoBeneficio(0);
+                mob.recibirDañoBeneficio(dañoBeneficio);
+                new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, ""+dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{ JGColor.green, JGColor.yellow}, 5);
             }
         }
         mob.regenerarMp(4, seg);
         pj.regenerarMp(6, seg);
         if (mob.getHp() <= 0) {
+            //personaje recibe experiencia
+            pj.aumentarExperiencia(mob.getExperiencia());
             mob.recibirDañoBeneficio(mob.getHpMax());
             mob.aumentarDisminuirMp(mob.getMpMax());
             seccionNpc.setSeccion(new JGPoint(10, 10), new JGPoint(3, 4));
-            setGameState("InReward");
-            mob.suspend();
+            
             new JGTimer((int) (getFrameRate() * 5 * 1), true) {
 
                 @Override
@@ -681,6 +691,9 @@ public class Manager extends JGEngine {
 
                 }
             };
+
+            mob.suspend();
+            setGameState("InReward");
         }
     }
 
