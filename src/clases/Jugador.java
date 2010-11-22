@@ -102,7 +102,6 @@ public class Jugador extends Personaje {
         this.dinero = dinero;
     }
 
-    
     public Integer getAtaque() {
         return getFuerza() * 2 + getFuerza() / 5 + getNivel(); //+ dañoArma
     }
@@ -198,9 +197,9 @@ public class Jugador extends Personaje {
     }
 
     public void aumentarExperiencia(short exp) {
-        if (this.getExperiencia()+ exp >= this.getLimiteSuperiorExperiencia()){//persoanje subió de nivel
-           short resto = (short) (this.getLimiteSuperiorExperiencia() - (this.getExperiencia() + exp));
-           subirNivel();
+        if (this.getExperiencia() + exp >= this.getLimiteSuperiorExperiencia()) {//persoanje subió de nivel
+            short resto = (short) (this.getLimiteSuperiorExperiencia() - (this.getExperiencia() + exp));
+            subirNivel();
         }
         this.setExperiencia(this.getExperiencia() + exp);
 
@@ -445,9 +444,11 @@ public class Jugador extends Personaje {
         }
     }
 
-    public boolean validarDinero(int dinerorequerido){
+    public boolean validarDinero(int dinerorequerido) {
         boolean tiene = false;
-        if(dinero>=dinerorequerido) tiene = true;
+        if (dinero >= dinerorequerido) {
+            tiene = true;
+        }
         return tiene;
     }
 
@@ -552,17 +553,16 @@ public class Jugador extends Personaje {
     }
 
     public void muerte() {
+        this.aumentarDisminuirDinero((int) (this.getDinero() * ((float) (0.2))));
         eng.setGameState("InDeath");
     }
 
     @Override
-    public void paint() {}
+    public void paint() {
+    }
 
-    public void regenerarMp(int porcentaje, int seg) {
-        System.out.println(seg % 3);
-        if (seg % 3 == 0) {
-            aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
-        }
+    public void regenerarMp(int porcentaje) {
+        aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
     }
 
     public void aumentarDisminuirMp(int cant) {
@@ -583,5 +583,9 @@ public class Jugador extends Personaje {
         return mpMax;
     }
 
-
+    public void aumentarDisminuirDinero(int dinero){
+        if (this.getDinero()+dinero < 0){
+            this.setDinero(0);
+        }else this.setDinero(this.getDinero()+dinero);
+    }
 }

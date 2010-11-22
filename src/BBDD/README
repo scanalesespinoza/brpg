@@ -6,6 +6,8 @@ Si hay cambios, indicar cuales son.
 /**CAMBIOS*********************************************************************/
 -Agregado campo Habilidad.tiempoEspera predeinido = 2
 -Agregado campo Jugador.dinero predefinido = 0
-
+-SERGIO REVISA EL MOTOR DE MYSQL, MYISAM BORRA LAS REFERENCIAS..
+ PUSE MI BASE DE DATOS CON INNODB..LE FALTA EL CAMPO DINERO AL MOB Y AL JUGADOR
+ (PARA QUE MOB LE ENTREGUE DINERO)
 
 /******************************************************************************/

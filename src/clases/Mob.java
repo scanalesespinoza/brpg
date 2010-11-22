@@ -383,10 +383,9 @@ public class Mob extends Personaje {
         return muerto;
     }
 
-    public void regenerarMp(int porcentaje, int seg) {
-        if (seg % 3 == 0) {
-            aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
-        }
+    public void regenerarMp(int porcentaje) {
+       aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
+       
     }
 
     public void aumentarDisminuirMp(int cant) {

@@ -4,6 +4,7 @@
  */
 package clases;
 
+import java.awt.Color;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGObject;
@@ -26,6 +27,7 @@ public class menuJuego extends JGObject {
     private Habilidad hab = new Habilidad();
     private Objeto obj = new Objeto();
     private SeccionMenu seccion = new SeccionMenu();
+    private Jugador pjTest;
 
     public SeccionMenu getSeccion() {
         return seccion;
@@ -75,10 +77,15 @@ public class menuJuego extends JGObject {
             switch(menu){
                 case 0/*"main"*/:
                     eng.setFont(new JGFont("Arial",0,14));//fuente titulo
+                    pjTest = (Jugador) eng.getObject("player");
+
                     eng.drawString("General", eng.viewWidth()-45, 10, 0);
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
-                    eng.drawString("Nombre: "+pj.getNombre().toString(), eng.viewWidth()-45, 30, 0);
-                    eng.drawString("Nivel: "+pj.getNivel(), eng.viewWidth()-45, 40, 0);
+                    eng.drawString("Nombre: "+pjTest.getNombre(), eng.viewWidth()-45, 30, 0);
+                    eng.drawString("Nivel: "+pjTest.getNivel(), eng.viewWidth()-45, 40, 0);
+                    eng.drawString("Experiencia :"+pjTest.getExperiencia(), eng.viewWidth()-45, 50, 0);
+                    eng.drawRect(eng.viewWidth()-45 + eng.viewXOfs(), 60 + eng.viewYOfs(), (float) (pj.getExperiencia() * 100 / pj.getLimiteSuperiorExperiencia()), 10, true, false, 0, JGColor.orange );
+
                     seccion.removerIconos();
                     break;
                 case 1/*"habilidad"*/:
