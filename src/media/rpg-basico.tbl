@@ -35,8 +35,30 @@ cuadro	!	20	/media/imagenes/tiles/nulo_16x16.png	-
 ppantano	(	0	/media/imagenes/tiles/pasto_oscuro.png	-
 ppantano1	)	0	/media/imagenes/tiles/pasto_oscuro1.png	-
 pentradaciudad	[	0	/media/imagenes/tiles/pasto_oscuro2.png	-
-**********************************************************************define mob
+******************************************************************define mob/npc
 mario	-	0	/media/imagenes/mobs/mario.gif	-
+guardia	-	0	/media/imagenes/npc/guard.gif	-
+viajero	-	0	/media/imagenes/npc/npc_traveler.gif	x
+mono	-	0	/media/imagenes/npc/npc_animal.gif	-
+people	-	0	/media/imagenes/npc/npc_people.gif	-
+people2	-	0	/media/imagenes/npc/npc_people2.gif	-
+people3	-	0	/media/imagenes/npc/npc_people3.png	-
+people4	-	0	/media/imagenes/npc/npc_people4.png	-
+perdido	-	0	/media/imagenes/npc/npc_perdido.gif	x
+escultura	-	0	/media/imagenes/npc/npc_escultura.png	x
+mob_1	-	0	/media/imagenes/mobs/mob_aura.gif	-
+//npc's
+alcaldiaNpc	-	0	/media/imagenes/npc/npc4.png	-
+//npc's
+casa1Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa2Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa3Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa4Npc	-	0	/media/imagenes/npc/npc1.png	-
+//npc's
+casa5Npc	-	0	/media/imagenes/npc/npc4.png	-
 *************************************************************define imagenes GUI
 cursor	-	0	/media/imagenes/menu/banana-con-capa.gif	-
 //define imagen del npc vendedor
@@ -77,18 +99,7 @@ casa3	-	0	/media/imagenes/tiles/Terrible_Casa_HechaMier2.png	-
 
 //casa5
 casa5	-	0	/media/imagenes/tiles/Terrible_Casa_Trasparente_2.png	-
-//npc's
-alcaldiaNpc	-	0	/media/imagenes/npc/npc4.png	-
-//npc's
-casa1Npc	-	0	/media/imagenes/npc/npc1.png	-
-//npc's
-casa2Npc	-	0	/media/imagenes/npc/npc1.png	-
-//npc's
-casa3Npc	-	0	/media/imagenes/npc/npc1.png	-
-//npc's
-casa4Npc	-	0	/media/imagenes/npc/npc1.png	-
-//npc's
-casa5Npc	-	0	/media/imagenes/npc/npc4.png	-
+
 //separacion cuadro por cuadro del movimiento del pj a la izquierda
 human_f0	p	0	pj_front_map	0		-	0	0	21	64
 human_f1	p	0	pj_front_map	1		-	0	0	21	64

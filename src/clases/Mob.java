@@ -32,6 +32,7 @@ public class Mob extends Personaje {
     private int mpMax;
     private boolean muerto;
 
+
     public Mob(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, JGObject home_in, boolean avoid, double random_proportion, int cid) /*throws SQLException*/ {
         super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
         this.setIdPersonaje(idPj);
@@ -405,4 +406,6 @@ public class Mob extends Personaje {
     public Integer getMpMax() {
         return mpMax;
     }
+
+   
 }
