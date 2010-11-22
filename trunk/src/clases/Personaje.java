@@ -39,11 +39,15 @@ public class Personaje extends extensiones.StdDungeon {
     private String nombre;
     private short nivel;
     private short tipo;
-    protected  dbDelegate conexion;
+    protected dbDelegate conexion;
     public JGRectangle rClick;
     public boolean estadoClick = false;
     double mouseX;
     double mouseY;
+    private double xAnt;
+    private double yAnt;
+    private double xSpeedAnt;
+    private double ySpeedAnt;
     //factor es para convertir el punto del mouse de 800*600 a 1280*960
     //proporcionalmente para que se desplace de forma correcta
     double factor = 1.6;
@@ -51,11 +55,11 @@ public class Personaje extends extensiones.StdDungeon {
     private ContrincanteHabilidad habilidades;
     private Encargo misiones;
     private Boolean bloqueo;
+    private int cidAnt;
 
     public Personaje(String name, boolean unique_id, double x, double y, int cid, String graphic, int occupy_mask) {
         super(name, unique_id, x, y, cid, graphic, occupy_mask);
     }
-
 
     public Personaje(double x, double y, double speed, short idPersonaje, String nombre, String graf, short nivel, short tipo, int cid) {
         super(nombre, x, y, cid, graf, true, false,
@@ -104,7 +108,6 @@ public class Personaje extends extensiones.StdDungeon {
     public void setMisiones(Encargo misiones) {
         this.misiones = misiones;
     }
-
 
     public short getIdPersonaje() {
         return idPersonaje;
@@ -186,10 +189,11 @@ public class Personaje extends extensiones.StdDungeon {
         }
 
     }
-   /**
-    * Bloquea al personaje según el tiempo indicado
-    * @param tiempo en segundos
-    */
+
+    /**
+     * Bloquea al personaje según el tiempo indicado
+     * @param tiempo en segundos
+     */
     public void bloquear(int tiempo) {
         this.setBloqueo(true);
         new JGTimer((int) (eng.getFrameRate() * tiempo), true) {
@@ -202,9 +206,9 @@ public class Personaje extends extensiones.StdDungeon {
         };
     }
 
-     public void bloquear() {
+    public void bloquear() {
         this.setBloqueo(true);
-        
+
     }
 
     public void setBloqueo(Boolean bloqueo) {
@@ -243,11 +247,35 @@ public class Personaje extends extensiones.StdDungeon {
         this.conexion = new dbDelegate();
         String StrSql = "UPDATE Personaje"
                 + "   SET posicionx = " + this.x + ","
-                + "       posiciony  = " + this.y +","
+                + "       posiciony  = " + this.y + ","
                 + "       nivel = " + this.getNivel() + ","
                 + "       posiciony  = " + this.y
                 + " WHERE personaje_id = " + this.getIdPersonaje();
         conexion.Ejecutar(StrSql);
 
+    }
+
+    public void desaparecer() {
+        xAnt = this.x;
+        yAnt = this.y;
+        xSpeedAnt = this.xspeed;
+        ySpeedAnt = this.yspeed;
+        System.out.println("XSPEED "+ xSpeedAnt);
+        System.out.println("YSPEED "+ ySpeedAnt);
+
+        cidAnt = this.colid;
+        colid = 0;
+        x = -30;
+        y = -30;
+        setSpeed(0);
+    }
+
+    public void aparecer() {
+        this.x = this.xAnt;
+        this.y = this.yAnt;
+        setSpeed(this.xSpeedAnt, this.ySpeedAnt);
+        this.colid = cidAnt;
+        System.out.println("XSPEEDaparecer "+ xSpeedAnt);
+        System.out.println("YSPEEDaparecer "+ ySpeedAnt);
     }
 }
