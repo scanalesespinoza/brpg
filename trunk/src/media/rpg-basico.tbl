@@ -1,6 +1,6 @@
 ﻿//imagen loading
 splash_image	a	1	/media/look/loading.png	-	0	0	505	335
-//define musica
+*******************************************************************define musica
 ciudad	/media/sonidos/ambiental/ciudad.mid
 ciudad2	/media/sonidos/ambiental/ciudad_2.mid
 pantano	/media/sonidos/ambiental/pantano.mid
@@ -16,7 +16,7 @@ golpe	/media/sonidos/personaje/golpe_epico.mid
 heal	/media/sonidos/personaje/heal.mid
 heal2	/media/sonidos/personaje/heal_2.mid
 golpe2	/media/sonidos/personaje/rebote.wav
-
+********************************************************************define tiles
 //define fondo del escenario
 bgimage	-	0	/media/imagenes/tiles/Adoquin_16_base.png	-
 //define cuadro calle
@@ -30,10 +30,14 @@ piedra_os	^	16	/media/imagenes/tiles/Rock_Gray_1.png	-
 //define pasto
 pasto	%	0	/media/imagenes/tiles/pasto_oscuro.png	-
 //define tile bloquedo
-cuadro	!	20	/media/imagenes/tiles/vacio.png	-
-//define mob
+cuadro	!	20	/media/imagenes/tiles/nulo_16x16.png	-
+//define pasto pantano
+ppantano	(	0	/media/imagenes/tiles/pasto_oscuro.png	-
+ppantano1	)	0	/media/imagenes/tiles/pasto_oscuro1.png	-
+pentradaciudad	[	0	/media/imagenes/tiles/pasto_oscuro2.png	-
+**********************************************************************define mob
 mario	-	0	/media/imagenes/mobs/mario.gif	-
-//define imagen del cursor
+*************************************************************define imagenes GUI
 cursor	-	0	/media/imagenes/menu/banana-con-capa.gif	-
 //define imagen del npc vendedor
 vendedor	-	0	/media/imagenes/npc/vendedor.png	-
