@@ -18,6 +18,7 @@ public class Jugador extends Personaje {
 
     private short idJugador;
     private HashMap<Short, Integer> preCompra = new HashMap<Short, Integer>();
+    private Mob enemigo;
 
     public Jugador(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, int cid) throws SQLException {
         super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
@@ -94,6 +95,15 @@ public class Jugador extends Personaje {
         setMp();
     }
 
+    public Mob getEnemigo() {
+        return enemigo;
+    }
+
+    public void setEnemigo(Mob enemigo) {
+        this.enemigo = enemigo;
+    }
+
+    
     public int getDinero() {
         return dinero;
     }
@@ -198,10 +208,10 @@ public class Jugador extends Personaje {
 
     public void aumentarExperiencia(short exp) {
         if (this.getExperiencia() + exp >= this.getLimiteSuperiorExperiencia()) {//persoanje subió de nivel
-            short resto = (short) (this.getLimiteSuperiorExperiencia() - (this.getExperiencia() + exp));
+            short resto = (short) ((this.getExperiencia() + exp)-(this.getLimiteSuperiorExperiencia())) ;
             subirNivel();
-        }
-        this.setExperiencia(this.getExperiencia() + exp);
+            this.setExperiencia(resto);
+        }else this.setExperiencia(this.getExperiencia() + exp);
 
     }
 
@@ -303,21 +313,27 @@ public class Jugador extends Personaje {
 
     @Override
     public void hit(JGObject obj) {
-//        try {
-//            conect.actualizaPosicionJugador(this.getIdPersonaje(), (int) this.getLastX(), (int) this.getLastY() + 5);
-//        } catch (Exception ex) {
-//            System.out.println("Error al conectar la DB #Jugador.Hit: " + ex);
-//        }
+         System.out.println("CHOQUE CON :"+obj.colid);
+        switch (obj.colid) {
+            case 2:
 
-        ydir = 0;
-        bloquear();
-        suspend();
+                ydir = 0;
+                bloquear();
+                suspend();
 
 
-        this.setInteractuarNpc(true);
-        System.out.println("Nombre del objeto colisionador: " + getGraphic() + getName());
+                this.setInteractuarNpc(true);
+                System.out.println("Nombre del objeto colisionador: " + getGraphic() + getName());
 
-        this.npcInterac = (Npc) obj;
+                this.npcInterac = (Npc) obj;
+                break;
+            case 4:
+                this.enemigo = (Mob) obj;
+               
+                break;
+            default:
+                break;
+        }
     }
 
     public short getDestreza() {
@@ -583,9 +599,11 @@ public class Jugador extends Personaje {
         return mpMax;
     }
 
-    public void aumentarDisminuirDinero(int dinero){
-        if (this.getDinero()+dinero < 0){
+    public void aumentarDisminuirDinero(int dinero) {
+        if (this.getDinero() + dinero < 0) {
             this.setDinero(0);
-        }else this.setDinero(this.getDinero()+dinero);
+        } else {
+            this.setDinero(this.getDinero() + dinero);
+        }
     }
 }

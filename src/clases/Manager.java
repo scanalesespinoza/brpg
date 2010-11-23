@@ -189,6 +189,7 @@ public class Manager extends JGEngine {
             //instancia mob y define como objeto home a pj
             this.mob = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2));
             this.mob.cargarDatos((short) 40);
+            this.mob.resume_in_view = false;
             new Npc(16 * 80, 16 * 12, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
             new Npc(16 * 80, 16 * 21, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
             new Npc(16 * 16, 16 * 12, "viajero", "viajero", 0, (short) 4, (short) 20, new String[]{"Viajero: "});
@@ -197,6 +198,9 @@ public class Manager extends JGEngine {
             new Npc(16 * 80, 16 * 8, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
             new Npc(16 * 80, 16 * 24, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
             this.mob2 = new Mob(140 * 16, 110 * 16, 0, (short) 100, "Boss_1", "mob_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2));
+            this.mob2.cargarDatos((short)40);
+            this.mob2.setPos(140 * 16, 110 * 16);
+            this.mob2.resume_in_view = false;
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
@@ -226,21 +230,7 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInWorld() {
-        if (mob != null && mob.getHp() <= 0) {
-            pj.aumentarExperiencia(mob.getExperiencia());
-            seccionNpc.setSeccion(new JGPoint(200, 200), new JGPoint(3, 4));
-            if (respawn_mob != null && !respawn_mob.running) {
-                respawn_mob = new JGTimer((int) (getFrameRate() * 5 * 1), true) {
 
-                    @Override
-                    public void alarm() {
-                        mob.resume();
-                        mob.recibirDañoBeneficio(mob.getHpMax());
-                        mob.aumentarDisminuirMp(mob.getMpMax());
-                    }
-                };
-            }
-        }
         if (pj.isSuspended()) {
             pj.setResumeMode(true);
         }
@@ -290,10 +280,10 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 3) + (int) Math.pow(2, 0), // Colisión entre Npc + Cursor
                 (int) Math.pow(2, 0) // ejecuta hit Cursor
                 );
-//        checkCollision(
-//                (int) Math.pow(2, 2) + (int) Math.pow(2, 1), // Colisión entre Mob + Jugador
-//                (int) Math.pow(2, 1) // ejecuta hit Jugador
-//                );
+        checkCollision(
+                (int) Math.pow(2, 2) + (int) Math.pow(2, 1), // Colisión entre Mob + Jugador
+                (int) Math.pow(2, 1) // ejecuta hit Jugador
+                );
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 5), // Colisión entre Iconos + botones
                 (int) Math.pow(2, 5) // ejecuta hit botones
@@ -337,6 +327,7 @@ public class Manager extends JGEngine {
         2 ^ 11 // cids of the objects whose hit() should be called
         );*/
         if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
+            mob = pj.getEnemigo();
             setGameState("InCombat");
         }
         int posX = (int) pj.x;
@@ -362,7 +353,6 @@ public class Manager extends JGEngine {
             seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
             seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
         }
-        System.out.println("CURSOR VALOR VENTANA: " + cursor.getVentana());
 
         if (isSalir()) {
             System.exit(0);
@@ -519,6 +509,30 @@ public class Manager extends JGEngine {
         if (checkCollision((int) Math.pow(2, 4), cursor) != Math.pow(2, 4)) {
             cursor.setMensajeIcon(null);
         }
+        if (inGameState("InCombat")) {
+            if (mob.getHp() <= 0) {
+                final Mob enemigo_procesar = (Mob) getObject(mob.getName());
+                if (respawn_mob == null) {
+                    System.out.println("CREO JGTIMER");
+                    
+                    respawn_mob = new JGTimer((int) (getFrameRate() *60* 1), true) {
+
+                        @Override
+                        public void alarm() {
+                            System.out.println("Alarmeban");
+                            enemigo_procesar.resume();
+                            enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
+                            enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
+                           
+                        }
+                    };
+                    respawn_mob = null;
+                }
+                mob.suspend();
+
+                setGameState("InReward");
+            }
+        }
 
 
         moveObjects(null, (int) Math.pow(2, 7));
@@ -633,11 +647,11 @@ public class Manager extends JGEngine {
             if (dañoBeneficio < 0) {
                 dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) / 50 - mob.getAtaque();
                 //se convierte en daño hacia el jugador
-                pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
+                pj.recibirDañoBeneficio(0);//dañoBeneficio
                 new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                 //si no es beneficio al MOB
             } else {
-                mob.recibirDañoBeneficio(dañoBeneficio);
+                mob.recibirDañoBeneficio(0);
                 new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
             }
         }
@@ -647,6 +661,7 @@ public class Manager extends JGEngine {
 
                 @Override
                 public void alarm() {
+                    System.out.println("as");
                     mob.regenerarMp(3);
                     pj.regenerarMp(5);
                 }
@@ -654,20 +669,18 @@ public class Manager extends JGEngine {
         }
 
         if (mob.getHp() <= 0) {
-            pj.aumentarExperiencia(mob.getExperiencia());
+            //personaje recibe experiencia
+
             seccionNpc.setSeccion(new JGPoint(200, 200), new JGPoint(3, 4));
-            respawn_mob = new JGTimer((int) (getFrameRate() * 5 * 1), true) {
-
-                @Override
-                public void alarm() {
-                    mob.aparecer();
-                    mob.recibirDañoBeneficio(mob.getHpMax());
-                    mob.aumentarDisminuirMp(mob.getMpMax());
-                }
-            };
-
-            mob.desaparecer();
-            setGameState("InReward");
+//            new JGTimer((int) (getFrameRate() * 5 * 1), true) {
+//
+//                @Override
+//                public void alarm() {
+//                    mob.resume();
+//                }
+//            };
+//            mob.suspend();
+            // setGameState("InReward");
         }
     }
 
@@ -681,9 +694,12 @@ public class Manager extends JGEngine {
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
-        seccionNpc.generaSeccion(mob, 1);
-        //desactivar enemigo por 3 minutos
         if (getMouseButton(1)) {
+            pj.aumentarExperiencia(mob.getExperiencia());
+            mob.recibirDañoBeneficio(mob.getHpMax());
+            mob.aumentarDisminuirMp(mob.getMpMax());
+            seccionNpc.generaSeccion(mob, 1);
+
             clearMouseButton(1);
             setGameState("InWorld");
         }
@@ -806,7 +822,7 @@ public class Manager extends JGEngine {
     public boolean isPresionada(int tecla) {
         if (teclas.containsKey(tecla)) {
             teclas.put(tecla, false);
-            System.out.println(teclas.get(tecla) + "##############################################################");
+
             return true;
         }
         return false;
@@ -1239,7 +1255,6 @@ public class Manager extends JGEngine {
             setColor(JGColor.black);
             setFont(new JGFont("Arial", 0, 10));
             int linea = (ventana_actual - 1) * LINEAS;
-            System.out.println("linea :----------------------- " + linea + " ----------------------------");
             if (mensajes.length > linea) {
                 desplegarMensaje(x + 60, y + separadorLinea * 1, mensajes[linea]);
                 linea++;
@@ -1253,13 +1268,11 @@ public class Manager extends JGEngine {
                 linea++;
             }
             if (espera == null || !espera.running) {
-                System.out.println("''''''''''''''''''''''''''''''''''''''''''''''''''''''");
                 espera = new JGTimer(60 * 1, true) {
 
                     @Override
                     public void alarm() {
                         setWait(false);
-                        System.out.println("mMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMmmmmm");
                     }
                 };
             }
@@ -1281,7 +1294,6 @@ public class Manager extends JGEngine {
                 if (getKey(KeyEnter) && !isWait()) {
                     setWait(true);
                     espera = null;
-                    System.out.println("00000000000000000000000000000000000000000000000000000000000");
                     ventana_actual++;
                 }
                 desplegarMensaje(x, y, mensajes);
@@ -1499,7 +1511,7 @@ public class Manager extends JGEngine {
                 setMensaje("Soy " + obj.getGraphic());
             }
             if (obj.getGraphic().equals("vendedor")) {
-                setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato?");
+                setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
                 if (getMouseButton(3)) {
                     setVentana((byte) 1);
                     seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
