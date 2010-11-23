@@ -32,7 +32,6 @@ public class Mob extends Personaje {
     private int mpMax;
     private boolean muerto;
 
-
     public Mob(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, JGObject home_in, boolean avoid, double random_proportion, int cid) /*throws SQLException*/ {
         super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
         this.setIdPersonaje(idPj);
@@ -288,7 +287,6 @@ public class Mob extends Personaje {
             if (!isBlocked()) {
                 //Genero una habilidad al azar
                 this.setIdProximoAtaque(this.getHabilidades().getHabilidadAlAzar());
-                System.out.println("CAMBIO DE HABILIDAD a " + getIdProximoAtaque());
                 this.utilizarHabilidad();
             } else {
                 this.setIdProximoAtaque((short) -1);
@@ -314,7 +312,6 @@ public class Mob extends Personaje {
             } else {
                 this.setIdProximoAtaque((short) -1);
             }
-            System.out.println("MAAAAAAAAAAANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaa : " + this.mp);
         }
 
     }
@@ -360,7 +357,6 @@ public class Mob extends Personaje {
             this.hp = this.hpMax;
         } else {
             this.hp = 0;
-            muerte();
         }
     }
 
@@ -368,16 +364,16 @@ public class Mob extends Personaje {
         // si por algún motivo el mob muere, debe ser redireccionado
         // a UNA ventana en donde se lea el inventario del mob (mob.getInventario()
         // y se ofrezca los item al jugador, seleccionandoel icono correspondiente
-        
+
         this.setMuerto(true);
-        eng.setGameState("InReward");
-        
-        
+        //eng.setGameState("InReward");
+
+
     }
 
     private void setMuerto(boolean b) {
         this.muerto = b;
-        
+
     }
 
     public boolean isMuerto() {
@@ -385,8 +381,8 @@ public class Mob extends Personaje {
     }
 
     public void regenerarMp(int porcentaje) {
-       aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
-       
+        aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
+
     }
 
     public void aumentarDisminuirMp(int cant) {
@@ -406,6 +402,4 @@ public class Mob extends Personaje {
     public Integer getMpMax() {
         return mpMax;
     }
-
-   
 }
