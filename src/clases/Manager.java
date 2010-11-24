@@ -354,8 +354,8 @@ public class Manager extends JGEngine {
 //            }
         if (cursor.getVentana() == 1) {
             setGameState("InCommerce");
-            seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
-            seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
+            seccion.setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
+            seccionNpc.setSeccion(new JGPoint(250, 25), new JGPoint(3, 4));
         }
 
         if (isSalir()) {
@@ -582,9 +582,9 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInCombat() {
-        seccion.setSeccion(new JGPoint(16, 416), new JGPoint(12, 1));
+        seccion.setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
-        menu.recibeHm(hmIcono,0);
+        menu.recibeHm(hmIcono,1);
 //(mpMax * ((float) (porcentaje / 100.0)))
         setFont(new JGFont("Arial", 0, 15));
 
@@ -699,6 +699,7 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInReward() {
+        seccion.removerIconos();
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
@@ -1530,8 +1531,8 @@ public class Manager extends JGEngine {
                 setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
                 if (getMouseButton(3)) {
                     setVentana((byte) 1);
-                    seccion.setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
-                    seccionNpc.setSeccion(new JGPoint(250, 10), new JGPoint(3, 4));
+                    seccion.setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
+                    seccionNpc.setSeccion(new JGPoint(250, 25), new JGPoint(3, 4));
 //                    setGameState("InCommerce");
                 }
             }
@@ -1629,6 +1630,7 @@ public class Manager extends JGEngine {
             if (!isWorking()) {
                 switch (tipo) {
                     case 0:
+                        hmIcono = new HashMap<Integer, Icono>();
                         cantidad = 0;
                         ContrincanteHabilidad listHab = personaje.getHabilidades();
                         it = listHab.getHabilidades().entrySet().iterator();
@@ -1639,7 +1641,7 @@ public class Manager extends JGEngine {
                                     Habilidad hab = listHab.getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad();
                                     System.out.println("DATO QLIO: " + hab.getDescripcion());
                                     cantidad++;
-                                    new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab);
+                                    hmIcono.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab));
 
                                     this.recorrido.x += 37;
                                 }

@@ -123,40 +123,40 @@ public class menuJuego extends JGObject {
                     eng.setFont(new JGFont("Arial",1,14));//fuente titulo
                     pjTest = (Jugador) eng.getObject("player");
 
-                    eng.drawString("General", eng.viewWidth()-45, 10, 0);
+                    eng.drawString("General", eng.viewWidth()-45, 10, -1);
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
-                    eng.drawString("Nombre: "+pjTest.getNombre(), eng.viewWidth()-45, 30, 0);
-                    eng.drawString("Nivel: "+pjTest.getNivel(), eng.viewWidth()-45, 40, 0);
-                    eng.drawString("Experiencia :"+pjTest.getExperiencia(), eng.viewWidth()-45, 50, 0);
+                    eng.drawString("Nombre: "+pjTest.getNombre(), eng.viewWidth()-45, 30, -1);
+                    eng.drawString("Nivel: "+pjTest.getNivel(), eng.viewWidth()-45, 40, -1);
+                    eng.drawString("Experiencia :"+pjTest.getExperiencia(), eng.viewWidth()-45, 50, -1);
                     eng.drawRect(eng.viewWidth()-45 + eng.viewXOfs(), 60 + eng.viewYOfs(), (float) (pj.getExperiencia() * 100 / pj.getLimiteSuperiorExperiencia()), 10, true, false, 0, JGColor.orange );
                     eng.setColor(JGColor.white);
                     seccion.removerIconos();
                     break;
                 case 1/*"habilidad"*/:
                     eng.setFont(new JGFont("Arial",0,14));//fuente titulo
-                    eng.drawString("Habilidades", eng.viewWidth()-45, 10, 0);
+                    eng.drawString("Habilidades", eng.viewWidth()-45, 10, -1);
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
-                    eng.drawString("Ataque Basico"+" (+)", eng.viewWidth()-45, 30, 0);
-                    eng.drawString("Curaciones"+" (+)", eng.viewWidth()-45, 40, 0);
-                    eng.drawString("Reparar"+" (+)", eng.viewWidth()-45, 50, 0);
-                    eng.drawString("Abrir cerraduras"+" (+)", eng.viewWidth()-45, 60, 0);
-                    eng.drawString("Vista aguda"+" (+)", eng.viewWidth()-45, 70, 0);
+                    eng.drawString("Ataque Basico"+" (+)", eng.viewWidth()-45, 30, -1);
+                    eng.drawString("Curaciones"+" (+)", eng.viewWidth()-45, 40, -1);
+                    eng.drawString("Reparar"+" (+)", eng.viewWidth()-45, 50, -1);
+                    eng.drawString("Abrir cerraduras"+" (+)", eng.viewWidth()-45, 60, -1);
+                    eng.drawString("Vista aguda"+" (+)", eng.viewWidth()-45, 70, -1);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Adherir puntos", eng.viewWidth()-45, 100, 0);
-                    eng.drawString("(+)", eng.viewWidth()-45, 120, 0);
+                    eng.drawString("Adherir puntos", eng.viewWidth()-45, 100, -1);
+                    eng.drawString("(+)", eng.viewWidth()-45, 120, -1);
                     break;
                 case 2/*"mision"*/:
                     eng.setFont(new JGFont("Arial",0,14));//fuente titulo
-                    eng.drawString("Misiones", eng.viewWidth()-45, 10, 0);
+                    eng.drawString("Misiones", eng.viewWidth()-45, 10, -1);
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
-                    eng.drawString("La aventura       ", eng.viewWidth()-45, 30, 0);
-                    eng.drawString("Despejar la plaza ", eng.viewWidth()-45, 40, 0);
-                    eng.drawString("La torre          ", eng.viewWidth()-45, 50, 0);
-                    eng.drawString("El Alcalde        ", eng.viewWidth()-45, 60, 0);
-                    eng.drawString("Las provisiones   ", eng.viewWidth()-45, 70, 0);
+                    eng.drawString("La aventura       ", eng.viewWidth()-45, 30, -1);
+                    eng.drawString("Despejar la plaza ", eng.viewWidth()-45, 40, -1);
+                    eng.drawString("La torre          ", eng.viewWidth()-45, 50, -1);
+                    eng.drawString("El Alcalde        ", eng.viewWidth()-45, 60, -1);
+                    eng.drawString("Las provisiones   ", eng.viewWidth()-45, 70, -1);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("[-Descripción:    ]", eng.viewWidth()-45, 100, 0);
-                    eng.drawString("[-Eliminar mision:]", eng.viewWidth()-45, 120, 0);
+                    eng.drawString("[-Descripción:    ]", eng.viewWidth()-45, 100, -1);
+                    eng.drawString("[-Eliminar mision:]", eng.viewWidth()-45, 120, -1);
                     break;
                 case 3/*"inventario"*/:
                     
@@ -166,36 +166,36 @@ public class menuJuego extends JGObject {
                     eng.setFont(new JGFont("Arial",0,14));
                     eng.drawString("Estadisticas", eng.viewWidth()-45, 10, 0);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Fuerza:    "+pj.getFuerza()+" (+)", eng.viewWidth()-45, 30, 0);
-                    eng.drawString("Destreza:  "+pj.getDestreza()+" (+)", eng.viewWidth()-45, 40, 0);
-                    eng.drawString("Sabiduria: "+pj.getSabiduria()+" (+)", eng.viewWidth()-45, 50, 0);
-                    eng.drawString("Vitalidad: "+pj.getVitalidad()+" (+)", eng.viewWidth()-45, 60, 0);
+                    eng.drawString("Fuerza:    "+pj.getFuerza()+" (+)", eng.viewWidth()-45, 30, -1);
+                    eng.drawString("Destreza:  "+pj.getDestreza()+" (+)", eng.viewWidth()-45, 40, -1);
+                    eng.drawString("Sabiduria: "+pj.getSabiduria()+" (+)", eng.viewWidth()-45, 50, -1);
+                    eng.drawString("Vitalidad: "+pj.getVitalidad()+" (+)", eng.viewWidth()-45, 60, -1);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Adherir puntos", eng.viewWidth()-45, 100, 0);
-                    eng.drawString("(+)", eng.viewWidth()-45, 120, 0);
+                    eng.drawString("Adherir puntos", eng.viewWidth()-45, 100, -1);
+                    eng.drawString("(+)", eng.viewWidth()-45, 120, -1);
                     break;
                 case 5/*"Opciones"*/:
                     eng.setFont(new JGFont("Arial",0,14));
-                    eng.drawString("Opciones", eng.viewWidth()-45, 10, 0);
+                    eng.drawString("Opciones", eng.viewWidth()-45, 10, -1);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Teclas", eng.viewWidth()-45, 30, 0);
-                    eng.drawString("Musica", eng.viewWidth()-45, 40, 0);
+                    eng.drawString("Teclas", eng.viewWidth()-45, 30, -1);
+                    eng.drawString("Musica", eng.viewWidth()-45, 40, -1);
                     break;
 
 
             }
             eng.setFont(new JGFont("Arial",1,14));
-            eng.drawString("Menu[Tecla]", eng.viewWidth()-45, 320, 0);
+            eng.drawString("Menu[Tecla]", eng.viewWidth()-45, 320, -1);
             eng.setFont(new JGFont("Arial",0,10));
-            eng.drawString("General     ", eng.viewWidth()-45, 340, 0);
-            eng.drawString("Habilidades [H]", eng.viewWidth()-45, 350, 0);
-            eng.drawString("Misiones     [M]", eng.viewWidth()-45, 360, 0);
-            eng.drawString("Inventario    [ I ]  ", eng.viewWidth()-45, 370, 0);
-            eng.drawString("Estadisticas[E]", eng.viewWidth()-45, 380, 0);
-            eng.drawString("Opciones    [O]", eng.viewWidth()-45, 390, 0);
+            eng.drawString("General     ", eng.viewWidth()-45, 340, -1);
+            eng.drawString("Habilidades [H]", eng.viewWidth()-45, 350, -1);
+            eng.drawString("Misiones     [M]", eng.viewWidth()-45, 360, -1);
+            eng.drawString("Inventario    [ I ]  ", eng.viewWidth()-45, 370, -1);
+            eng.drawString("Estadisticas[E]", eng.viewWidth()-45, 380, -1);
+            eng.drawString("Opciones    [O]", eng.viewWidth()-45, 390, -1);
             eng.setFont(new JGFont("Arial",0,10));
-            eng.drawString("Salir del Juego", eng.viewWidth()-45, 430, 0);
-            eng.drawString("[Escape]", eng.viewWidth()-45, 450, 0);
+            eng.drawString("Salir del Juego", eng.viewWidth()-45, 430, -1);
+            eng.drawString("[Escape]", eng.viewWidth()-45, 450, -1);
 
 
 
@@ -219,21 +219,27 @@ public class menuJuego extends JGObject {
 //    }
 
     public void paintB(){
+            if(eng.inGameState("InCombat")){
+                eng.drawImage(0, 0, "combate", false);
+            }
+            
             eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
             eng.drawImage(0, eng.viewHeight()-90, "monitor", false);
             eng.drawImage(eng.viewWidth()-90, 0, "lateral", false);
             eng.drawImage(eng.viewWidth()-90, 315, "titulo", false);
             eng.drawImage(eng.viewWidth()-90, 5, "titulo", false);
 
-            if(eng.inGameState("InCombat"))
-                eng.drawImage(0, 0, "combate", false);
+            if(eng.inGameState("InCombat")){
+                setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
+                generaSeccion(1);
+            }
             if(eng.inGameState("InCommerce")){
 
                 eng.drawImage(20, 20, "trade", false);
                 eng.drawImage(200, 20, "trade", false);
-                setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
+                setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
                 generaSeccion(1);
-                setSeccion(new JGPoint(250, 10), new JGPoint(2, 4));
+                setSeccion(new JGPoint(250, 25), new JGPoint(3, 4));
                 generaSeccion(0);
                 
             }
