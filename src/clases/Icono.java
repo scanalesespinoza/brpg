@@ -159,8 +159,8 @@ public class Icono extends JGObject {
         return false;
     }
 
-    @Override
-    public void paint() {
+
+    public void paintB() {
         x = xAnt + eng.viewXOfs();
         y = yAnt + eng.viewYOfs();
         eng.setFont(new JGFont("Arial", 0, 24));

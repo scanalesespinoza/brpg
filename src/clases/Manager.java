@@ -94,6 +94,10 @@ public class Manager extends JGEngine {
     private boolean salir = false;
     private int seg = 0;
     private HashMap<Integer, Boolean> teclas;
+    private HashMap<Integer, Icono> hmIcono = new HashMap<Integer, Icono>();
+
+
+
     private Ventana asd;
     public String[] textoPrueba;
 
@@ -101,8 +105,8 @@ public class Manager extends JGEngine {
         new Manager(new JGPoint(800, 540));
 
     }
-    public Boton grillaNpc;
-    public Boton grillaPj;
+//    public Boton grillaNpc;
+//    public Boton grillaPj;
 
     /** Application constructor. */
     public Manager(JGPoint size) {
@@ -136,7 +140,7 @@ public class Manager extends JGEngine {
             setBGImage("bgimage");
             // playAudio("ambiental", "muerte", true);
 
-            setMouseCursor(pj);
+//            setMouseCursor(pj);
         } catch (Exception ex) {
             System.out.println("Error al cargar medios: " + ex);
         }
@@ -157,7 +161,7 @@ public class Manager extends JGEngine {
         //cargaJugador(0,0); reemplazamos por el metodo nuevo
         this.pj = new Jugador();
         this.pj.cargarDatos(this.idJugador);
-        setCursor(null);
+//        setCursor(null);
         inicializarTeclas();
         try {
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
@@ -363,7 +367,7 @@ public class Manager extends JGEngine {
         drawString("SEGUNDO: " + seg, viewXOfs() + 200 / 2, viewHeight() / 2, 1);
         drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
 
-        drawImage(cursor.x, cursor.y, "cursor");
+        //drawImage(cursor.x, cursor.y, "cursor");
         if (getKey(KeyEsc)) {
             menu.ventanaSalida();
             //playAudio("eventos","mensaje",false);
@@ -493,6 +497,9 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
+        menu.paintB();
+
+//        seccion.pintaSeccion();
         menu.getSeccion().setSeccion(new JGPoint(400, 30), new JGPoint(2, 6));
         menu.menuActual(getTeclaMenu(), pj);
         moveObjects(null, 1);
@@ -577,6 +584,7 @@ public class Manager extends JGEngine {
     public void paintFrameInCombat() {
         seccion.setSeccion(new JGPoint(16, 416), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
+        menu.recibeHm(hmIcono,0);
 //(mpMax * ((float) (porcentaje / 100.0)))
         setFont(new JGFont("Arial", 0, 15));
 
@@ -699,6 +707,7 @@ public class Manager extends JGEngine {
             mob.recibirDañoBeneficio(mob.getHpMax());
             mob.aumentarDisminuirMp(mob.getMpMax());
             seccionNpc.generaSeccion(mob, 1);
+            menu.recibeHm(hmIcono,0);
 
             clearMouseButton(1);
             setGameState("InWorld");
@@ -708,10 +717,12 @@ public class Manager extends JGEngine {
     public void paintFrameInReward() {
         new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
         seccionNpc.generaSeccion(mob, 1);
+        menu.recibeHm(hmIcono,0);
 
     }
 
     public void paintFrameInCommerce() {
+        cursor.paintB();
     }
 
     public void doFrameInCommerce() {
@@ -724,6 +735,7 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre iconos  + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
+
         System.out.println("getVentana:" + cursor.getVentana());
         if (cursor.getVentana() == 1) {
             pj.colid = 0;
@@ -737,8 +749,10 @@ public class Manager extends JGEngine {
             seccionNpc.setWorking(false);
 
             seccion.generaSeccion(pj, 1);
+            menu.recibeHm(hmIcono,1);
             seccionNpc.generaSeccion(vendedor, 1);
-
+            menu.recibeHm(hmIcono,0);
+            
             cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
             pj.bloquear();
             cursor.setVentana((byte) 2);
@@ -765,6 +779,8 @@ public class Manager extends JGEngine {
             setGameState("InWorld");
 
         }
+        
+
     }
 
     public void capturarTeclas() {
@@ -1480,7 +1496,7 @@ public class Manager extends JGEngine {
         }
 
         public Cursor() {
-            super("cursor", false, 0, 0, (int) Math.pow(2, 0), "cursor");
+            super("cursor", false, 0, 0, (int) Math.pow(2, 0), "cuadro");
         }
         int oldmousex = 0, oldmousey = 0;
         boolean scissors_c = false;
@@ -1569,8 +1585,8 @@ public class Manager extends JGEngine {
 
         }
 
-        @Override
-        public void paint() {
+
+        public void paintB() {
             setFont(new JGFont("Arial", 0, 20));
             setColor(JGColor.white);
             if (mensajeIcon != null) {
@@ -1609,9 +1625,11 @@ public class Manager extends JGEngine {
 
         public void generaSeccion(Personaje personaje, int tipo) {
             Iterator it;
+            int cantidad = 0;
             if (!isWorking()) {
                 switch (tipo) {
                     case 0:
+                        cantidad = 0;
                         ContrincanteHabilidad listHab = personaje.getHabilidades();
                         it = listHab.getHabilidades().entrySet().iterator();
                         while (this.tabla.y > 0) {
@@ -1620,6 +1638,7 @@ public class Manager extends JGEngine {
                                     Map.Entry e = (Map.Entry) it.next();
                                     Habilidad hab = listHab.getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad();
                                     System.out.println("DATO QLIO: " + hab.getDescripcion());
+                                    cantidad++;
                                     new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab);
 
                                     this.recorrido.x += 37;
@@ -1633,34 +1652,46 @@ public class Manager extends JGEngine {
                         }
                         break;
                     case 1:
+                        hmIcono = new HashMap<Integer, Icono>();
                         Inventario inv = personaje.getInventario();
                         it = inv.getObjetos().entrySet().iterator();
-                        while (this.tabla.y > 0) {
-                            while (this.tabla.x > 0) {
+                        boolean fin = false;
+                        cantidad = 0;
+                        while ((this.tabla.y > 0) && (!fin)) {
+                            while ((this.tabla.x > 0) && (!fin)) {
+                                
                                 if (it.hasNext()) {
+                                    
                                     Map.Entry en = (Map.Entry) it.next();
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
 
                                     System.out.println("Cantidad: ");
                                     if (inv.tieneItem(obje.getIdObjeto())) {
-                                        new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                        cantidad++;
+                                        hmIcono.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
                                         setFont(new JGFont("Arial", 0, 24));
                                         drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                         this.recorrido.x += 37;
+                                        this.tabla.x--;
+
                                     }
+
+                                } else {
+                                    fin = true;
                                 }
-//                                if(inv.tieneItem(obje.getIdObjeto())){
-                                this.tabla.x--;
-//                                }
+
+
+
                             }
-//                            if(inv.tieneItem(obje.getIdObjeto())){
+
                             this.recorrido.x = pos_inicial_x;
                             this.tabla.x = tabla_inicial_x;
                             this.tabla.y--;
                             this.recorrido.y += 37;
-//                            }
+
                         }
+                        
                         break;
                 }
                 setWorking(true);

@@ -4,6 +4,7 @@
  */
 package clases;
 
+import java.util.HashMap;
 import java.awt.Color;
 import jgame.JGColor;
 import jgame.JGFont;
@@ -15,6 +16,7 @@ import jgame.JGPoint;
 
 
 
+
 /**
  *
  * @author GetWay
@@ -22,12 +24,54 @@ import jgame.JGPoint;
 public class menuJuego extends JGObject {
 
     private Jugador pj;
+
     private boolean teclaEscape=false;
     private boolean teclaEnter=false;
     private Habilidad hab = new Habilidad();
     private Objeto obj = new Objeto();
     private SeccionMenu seccion = new SeccionMenu();
     private Jugador pjTest;
+    private HashMap<Integer, Icono> hmPj = new HashMap<Integer, Icono>();
+    private HashMap<Integer, Icono> hmNpc = new HashMap<Integer, Icono>();
+    private int pos_inicial_x, pos_inicial_y;
+    private JGPoint recorrido;
+    private int tabla_inicial_x, tabla_inicial_y;
+    private JGPoint tabla;
+
+
+    public HashMap<Integer, Icono> getHmNpc() {
+        return hmNpc;
+    }
+
+    public void setHmNpc(HashMap<Integer, Icono> hmNpc) {
+        this.hmNpc = hmNpc;
+    }
+
+
+    public JGPoint getRecorrido() {
+        return recorrido;
+    }
+
+    public void setRecorrido(JGPoint recorrido) {
+        this.recorrido = recorrido;
+    }
+
+    public JGPoint getTabla() {
+        return tabla;
+    }
+
+    public void setTabla(JGPoint tabla) {
+        this.tabla = tabla;
+    }
+
+
+    public HashMap<Integer, Icono> getHm() {
+        return hmPj;
+    }
+
+    public void setHm(HashMap<Integer, Icono> hm) {
+        this.hmPj = hm;
+    }
 
     public SeccionMenu getSeccion() {
         return seccion;
@@ -65,8 +109,8 @@ public class menuJuego extends JGObject {
 //
 
 
-            eng.setColor(JGColor.black);
-            eng.setFont(new JGFont("Arial",0,20));
+            eng.setColor(JGColor.white);
+            eng.setFont(new JGFont("Arial",2,20));
 
             //eng.drawString("Coordenada X: "+pj.x+" Coordenada Y: "+pj.y, eng.viewWidth()/2, 420, 0);
 ////            eng.drawString("Bienvenido al Mundo de BRPG(Demo)", eng.viewWidth()/2, 420, 0);
@@ -76,7 +120,7 @@ public class menuJuego extends JGObject {
 
             switch(menu){
                 case 0/*"main"*/:
-                    eng.setFont(new JGFont("Arial",0,14));//fuente titulo
+                    eng.setFont(new JGFont("Arial",1,14));//fuente titulo
                     pjTest = (Jugador) eng.getObject("player");
 
                     eng.drawString("General", eng.viewWidth()-45, 10, 0);
@@ -85,7 +129,7 @@ public class menuJuego extends JGObject {
                     eng.drawString("Nivel: "+pjTest.getNivel(), eng.viewWidth()-45, 40, 0);
                     eng.drawString("Experiencia :"+pjTest.getExperiencia(), eng.viewWidth()-45, 50, 0);
                     eng.drawRect(eng.viewWidth()-45 + eng.viewXOfs(), 60 + eng.viewYOfs(), (float) (pj.getExperiencia() * 100 / pj.getLimiteSuperiorExperiencia()), 10, true, false, 0, JGColor.orange );
-
+                    eng.setColor(JGColor.white);
                     seccion.removerIconos();
                     break;
                 case 1/*"habilidad"*/:
@@ -140,7 +184,7 @@ public class menuJuego extends JGObject {
 
 
             }
-            eng.setFont(new JGFont("Arial",0,14));
+            eng.setFont(new JGFont("Arial",1,14));
             eng.drawString("Menu[Tecla]", eng.viewWidth()-45, 320, 0);
             eng.setFont(new JGFont("Arial",0,10));
             eng.drawString("General     ", eng.viewWidth()-45, 340, 0);
@@ -156,6 +200,153 @@ public class menuJuego extends JGObject {
 
 
     }
+
+//    @Override
+//   public void paint(){
+//
+//            if(eng.inGameState("InCombat"))
+//                eng.drawImage(0, 0, "combate", false);
+//            if(eng.inGameState("InCommerce")){
+//                eng.drawImage(20, 20, "trade", false);
+//                eng.drawImage(200, 20, "trade", false);
+//            }
+//            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
+//            eng.drawImage(0, eng.viewHeight()-90, "monitor", false);
+//            eng.drawImage(eng.viewWidth()-90, 0, "lateral", false);
+//            eng.drawImage(eng.viewWidth()-90, 320, "titulo", false);
+//            eng.drawImage(eng.viewWidth()-90, 10, "titulo", false);
+//
+//    }
+
+    public void paintB(){
+            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
+            eng.drawImage(0, eng.viewHeight()-90, "monitor", false);
+            eng.drawImage(eng.viewWidth()-90, 0, "lateral", false);
+            eng.drawImage(eng.viewWidth()-90, 315, "titulo", false);
+            eng.drawImage(eng.viewWidth()-90, 5, "titulo", false);
+
+            if(eng.inGameState("InCombat"))
+                eng.drawImage(0, 0, "combate", false);
+            if(eng.inGameState("InCommerce")){
+
+                eng.drawImage(20, 20, "trade", false);
+                eng.drawImage(200, 20, "trade", false);
+                setSeccion(new JGPoint(10, 10), new JGPoint(2, 4));
+                generaSeccion(1);
+                setSeccion(new JGPoint(250, 10), new JGPoint(2, 4));
+                generaSeccion(0);
+                
+            }
+
+
+            
+    }
+    public void recibeHm(HashMap<Integer, Icono> hm, int tipo){
+//        System.out.println("HM vacio: "+hm.isEmpty());
+//        System.out.println("HM vacio: "+this.hm.isEmpty());
+        if(tipo==1)
+        setHm(hm);
+        if(tipo==0)
+            setHmNpc(hm);
+//        System.out.println("HM vacio: "+this.hm.isEmpty());
+    }
+
+    public void generaSeccion(int tipo){
+
+        switch(tipo){
+
+            case 1:
+                System.out.println("HM vacio: "+this.hmPj.isEmpty());
+                if (!hmPj.isEmpty()) {
+
+                    Iterator iter = hmPj.entrySet().iterator();
+                    boolean fin = false;
+
+                        while ((this.tabla.y > 0) && (!fin)) {
+                            while ((this.tabla.x > 0) && (!fin)) {
+                                System.out.println("dibuja tabla");
+                                if (iter.hasNext()) {
+                                System.out.println("Has next");
+                                Map.Entry en = (Map.Entry) iter.next();
+                                Icono drawIcon = (Icono) en.getValue();
+                                eng.drawImage(this.recorrido.x, this.recorrido.y, drawIcon.getGraphic(), false);
+                                drawIcon.paintB();
+                                this.recorrido.x += 37;
+                                this.tabla.x--;
+                                } else {
+                                    fin = true;
+                                }
+                            }
+                            this.recorrido.x = pos_inicial_x;
+                            this.tabla.x = tabla_inicial_x;
+                            this.tabla.y--;
+                            this.recorrido.y += 37;
+                        }
+
+
+//                    Iterator iter = hm.entrySet().iterator();
+//                    while (iter.hasNext()) {
+//                        Map.Entry en = (Map.Entry) iter.next();
+//                        Icono drawIcon = (Icono) en.getValue();
+//
+//                        eng.drawImage(drawIcon.x, drawIcon.y, drawIcon.getGraphic(), false);
+//
+//                    }
+
+                }
+                break;
+           case 0:
+                System.out.println("HM vacio: "+this.hmNpc.isEmpty());
+                if (!hmNpc.isEmpty()) {
+
+                    Iterator iter = hmNpc.entrySet().iterator();
+                    boolean fin = false;
+
+                        while ((this.tabla.y > 0) && (!fin)) {
+                            while ((this.tabla.x > 0) && (!fin)) {
+                                System.out.println("dibuja tabla");
+                                if (iter.hasNext()) {
+                                System.out.println("Has next");
+                                Map.Entry en = (Map.Entry) iter.next();
+                                Icono drawIcon = (Icono) en.getValue();
+                                eng.drawImage(this.recorrido.x, this.recorrido.y, drawIcon.getGraphic(), false);
+                                drawIcon.paintB();
+                                this.recorrido.x += 37;
+                                this.tabla.x--;
+                                } else {
+                                    fin = true;
+                                }
+                            }
+                            this.recorrido.x = pos_inicial_x;
+                            this.tabla.x = tabla_inicial_x;
+                            this.tabla.y--;
+                            this.recorrido.y += 37;
+                        }
+
+
+//                    Iterator iter = hm.entrySet().iterator();
+//                    while (iter.hasNext()) {
+//                        Map.Entry en = (Map.Entry) iter.next();
+//                        Icono drawIcon = (Icono) en.getValue();
+//
+//                        eng.drawImage(drawIcon.x, drawIcon.y, drawIcon.getGraphic(), false);
+//
+//                    }
+
+                }
+               break;
+           }
+    }
+
+    public void setSeccion(JGPoint posicion, JGPoint tabla) {
+        setRecorrido(posicion);
+        setTabla(tabla);
+        this.pos_inicial_x = posicion.x;
+        this.pos_inicial_y = posicion.y;
+        this.tabla_inicial_x = tabla.x;
+        this.tabla_inicial_y = tabla.y;
+    }
+
     public void ventanaSalida(){
             eng.setColor(JGColor.red);
             eng.drawRect(eng.viewXOfs()+200,eng.viewYOfs()+250,300,100, true, false);
@@ -308,6 +499,7 @@ public class SeccionMenu {
         public void setTabla(JGPoint tabla) {
             this.tabla = tabla;
         }
+
     }
 
 }
