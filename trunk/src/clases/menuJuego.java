@@ -29,7 +29,6 @@ public class menuJuego extends JGObject {
     private boolean teclaEnter=false;
     private Habilidad hab = new Habilidad();
     private Objeto obj = new Objeto();
-    private SeccionMenu seccion = new SeccionMenu();
     private Jugador pjTest;
     private HashMap<Integer, Icono> hmPj = new HashMap<Integer, Icono>();
     private HashMap<Integer, Icono> hmNpc = new HashMap<Integer, Icono>();
@@ -73,9 +72,6 @@ public class menuJuego extends JGObject {
         this.hmPj = hm;
     }
 
-    public SeccionMenu getSeccion() {
-        return seccion;
-    }
 
     public menuJuego(String string, boolean bln, double d, double d1, int i, String string1, Jugador pj) {
         super(string, bln, d, d1, i, string1);
@@ -123,79 +119,89 @@ public class menuJuego extends JGObject {
                     eng.setFont(new JGFont("Arial",1,14));//fuente titulo
                     pjTest = (Jugador) eng.getObject("player");
 
-                    eng.drawString("General", eng.viewWidth()-45, 10, -1);
+                    eng.drawString("General", eng.viewWidth()-80, 10, -1);
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
-                    eng.drawString("Nombre: "+pjTest.getNombre(), eng.viewWidth()-45, 30, -1);
-                    eng.drawString("Nivel: "+pjTest.getNivel(), eng.viewWidth()-45, 40, -1);
-                    eng.drawString("Experiencia :"+pjTest.getExperiencia(), eng.viewWidth()-45, 50, -1);
+                    eng.drawString("Nombre: "+pjTest.getNombre(), eng.viewWidth()-75, 30, -1);
+                    eng.drawString("Nivel: "+pjTest.getNivel(), eng.viewWidth()-75, 40, -1);
+                    eng.drawString("Experiencia :"+pjTest.getExperiencia(), eng.viewWidth()-75, 50, -1);
                     eng.drawRect(eng.viewWidth()-45 + eng.viewXOfs(), 60 + eng.viewYOfs(), (float) (pj.getExperiencia() * 100 / pj.getLimiteSuperiorExperiencia()), 10, true, false, 0, JGColor.orange );
                     eng.setColor(JGColor.white);
-                    seccion.removerIconos();
+                    removerIconos();
                     break;
                 case 1/*"habilidad"*/:
-                    eng.setFont(new JGFont("Arial",0,14));//fuente titulo
-                    eng.drawString("Habilidades", eng.viewWidth()-45, 10, -1);
+                    eng.setFont(new JGFont("Arial",1,14));//fuente titulo
+                    eng.setColor(JGColor.yellow);
+                    eng.drawString("Habilidades", eng.viewWidth()-75, 10, -1);
+                    eng.setColor(JGColor.white);
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
-                    eng.drawString("Ataque Basico"+" (+)", eng.viewWidth()-45, 30, -1);
-                    eng.drawString("Curaciones"+" (+)", eng.viewWidth()-45, 40, -1);
-                    eng.drawString("Reparar"+" (+)", eng.viewWidth()-45, 50, -1);
-                    eng.drawString("Abrir cerraduras"+" (+)", eng.viewWidth()-45, 60, -1);
-                    eng.drawString("Vista aguda"+" (+)", eng.viewWidth()-45, 70, -1);
+                    eng.drawString("Ataque Basico"+" (+)", eng.viewWidth()-75, 30, -1);
+                    eng.drawString("Curaciones"+" (+)", eng.viewWidth()-75, 40, -1);
+                    eng.drawString("Reparar"+" (+)", eng.viewWidth()-75, 50, -1);
+                    eng.drawString("Abrir cerraduras"+" (+)", eng.viewWidth()-75, 60, -1);
+                    eng.drawString("Vista aguda"+" (+)", eng.viewWidth()-75, 70, -1);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Adherir puntos", eng.viewWidth()-45, 100, -1);
-                    eng.drawString("(+)", eng.viewWidth()-45, 120, -1);
+                    eng.drawString("Adherir puntos", eng.viewWidth()-755, 100, -1);
+                    eng.drawString("(+)", eng.viewWidth()-75, 120, -1);
                     break;
                 case 2/*"mision"*/:
-                    eng.setFont(new JGFont("Arial",0,14));//fuente titulo
-                    eng.drawString("Misiones", eng.viewWidth()-45, 10, -1);
+                    eng.setFont(new JGFont("Arial",1,14));//fuente titulo
+                    eng.setColor(JGColor.yellow);
+                    eng.drawString("Misiones", eng.viewWidth()-75, 10, -1);
+                    eng.setColor(JGColor.white);
                     eng.setFont(new JGFont("Arial",0,10));//fuente parrafo
-                    eng.drawString("La aventura       ", eng.viewWidth()-45, 30, -1);
-                    eng.drawString("Despejar la plaza ", eng.viewWidth()-45, 40, -1);
-                    eng.drawString("La torre          ", eng.viewWidth()-45, 50, -1);
-                    eng.drawString("El Alcalde        ", eng.viewWidth()-45, 60, -1);
-                    eng.drawString("Las provisiones   ", eng.viewWidth()-45, 70, -1);
+                    eng.drawString("La aventura       ", eng.viewWidth()-75, 30, -1);
+                    eng.drawString("Despejar la plaza ", eng.viewWidth()-75, 40, -1);
+                    eng.drawString("La torre          ", eng.viewWidth()-75, 50, -1);
+                    eng.drawString("El Alcalde        ", eng.viewWidth()-75, 60, -1);
+                    eng.drawString("Las provisiones   ", eng.viewWidth()-75, 70, -1);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("[-Descripción:    ]", eng.viewWidth()-45, 100, -1);
-                    eng.drawString("[-Eliminar mision:]", eng.viewWidth()-45, 120, -1);
+                    eng.drawString("[-Descripción:    ]", eng.viewWidth()-75, 100, -1);
+                    eng.drawString("[-Eliminar mision:]", eng.viewWidth()-75, 120, -1);
                     break;
-                case 3/*"inventario"*/:
-                    
-                    seccion.generaSeccion(pj, 1);
-                    break;
+//                case 3/*"inventario"*/:
+//                    /*
+//                     * Es llamada desde manager y pintada en menuJuego.paintB
+//                     */
+//
+//                    break;
                 case 4/*"estadistica"*/:
-                    eng.setFont(new JGFont("Arial",0,14));
-                    eng.drawString("Estadisticas", eng.viewWidth()-45, 10, 0);
+                    eng.setFont(new JGFont("Arial",1,14));
+                    eng.setColor(JGColor.yellow);
+                    eng.drawString("Estadisticas", eng.viewWidth()-75, 10, 0);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Fuerza:    "+pj.getFuerza()+" (+)", eng.viewWidth()-45, 30, -1);
-                    eng.drawString("Destreza:  "+pj.getDestreza()+" (+)", eng.viewWidth()-45, 40, -1);
-                    eng.drawString("Sabiduria: "+pj.getSabiduria()+" (+)", eng.viewWidth()-45, 50, -1);
-                    eng.drawString("Vitalidad: "+pj.getVitalidad()+" (+)", eng.viewWidth()-45, 60, -1);
+                    eng.setColor(JGColor.white);
+                    eng.drawString("Fuerza:    "+pj.getFuerza()+" (+)", eng.viewWidth()-75, 30, -1);
+                    eng.drawString("Destreza:  "+pj.getDestreza()+" (+)", eng.viewWidth()-75, 40, -1);
+                    eng.drawString("Sabiduria: "+pj.getSabiduria()+" (+)", eng.viewWidth()-75, 50, -1);
+                    eng.drawString("Vitalidad: "+pj.getVitalidad()+" (+)", eng.viewWidth()-75, 60, -1);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Adherir puntos", eng.viewWidth()-45, 100, -1);
-                    eng.drawString("(+)", eng.viewWidth()-45, 120, -1);
+                    eng.drawString("Adherir puntos", eng.viewWidth()-75, 100, -1);
+                    eng.drawString("(+)", eng.viewWidth()-75, 120, -1);
                     break;
                 case 5/*"Opciones"*/:
-                    eng.setFont(new JGFont("Arial",0,14));
-                    eng.drawString("Opciones", eng.viewWidth()-45, 10, -1);
+                    eng.setFont(new JGFont("Arial",1,14));
+                    eng.setColor(JGColor.yellow);
+                    eng.drawString("Opciones", eng.viewWidth()-75, 10, -1);
+                    eng.setColor(JGColor.white);
                     eng.setFont(new JGFont("Arial",0,10));
-                    eng.drawString("Teclas", eng.viewWidth()-45, 30, -1);
-                    eng.drawString("Musica", eng.viewWidth()-45, 40, -1);
+                    eng.drawString("Teclas", eng.viewWidth()-75, 30, -1);
+                    eng.drawString("Musica", eng.viewWidth()-75, 40, -1);
                     break;
 
 
             }
             eng.setFont(new JGFont("Arial",1,14));
-            eng.drawString("Menu[Tecla]", eng.viewWidth()-45, 320, -1);
+            eng.drawString("Menu[Tecla]", eng.viewWidth()-80, 320, -1);
             eng.setFont(new JGFont("Arial",0,10));
-            eng.drawString("General     ", eng.viewWidth()-45, 340, -1);
-            eng.drawString("Habilidades [H]", eng.viewWidth()-45, 350, -1);
-            eng.drawString("Misiones     [M]", eng.viewWidth()-45, 360, -1);
-            eng.drawString("Inventario    [ I ]  ", eng.viewWidth()-45, 370, -1);
-            eng.drawString("Estadisticas[E]", eng.viewWidth()-45, 380, -1);
-            eng.drawString("Opciones    [O]", eng.viewWidth()-45, 390, -1);
+            eng.drawString("General     ", eng.viewWidth()-75, 340, -1);
+            eng.drawString("Habilidades [H]", eng.viewWidth()-75, 350, -1);
+            eng.drawString("Misiones     [M]", eng.viewWidth()-75, 360, -1);
+            eng.drawString("Inventario    [ I ]  ", eng.viewWidth()-75, 370, -1);
+            eng.drawString("Estadisticas[E]", eng.viewWidth()-75, 380, -1);
+            eng.drawString("Opciones    [O]", eng.viewWidth()-75, 390, -1);
             eng.setFont(new JGFont("Arial",0,10));
-            eng.drawString("Salir del Juego", eng.viewWidth()-45, 430, -1);
-            eng.drawString("[Escape]", eng.viewWidth()-45, 450, -1);
+            eng.drawString("Salir del Juego", eng.viewWidth()-75, 430, -1);
+            eng.drawString("[Escape]", eng.viewWidth()-75, 450, -1);
 
 
 
@@ -223,7 +229,7 @@ public class menuJuego extends JGObject {
                 eng.drawImage(0, 0, "combate", false);
             }
             
-            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
+//            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
             eng.drawImage(0, eng.viewHeight()-90, "monitor", false);
             eng.drawImage(eng.viewWidth()-90, 0, "lateral", false);
             eng.drawImage(eng.viewWidth()-90, 315, "titulo", false);
@@ -232,6 +238,7 @@ public class menuJuego extends JGObject {
             if(eng.inGameState("InCombat")){
                 setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
                 generaSeccion(1);
+
             }
             if(eng.inGameState("InCommerce")){
 
@@ -243,7 +250,22 @@ public class menuJuego extends JGObject {
                 generaSeccion(0);
                 
             }
+            if((eng.inGameState("InWorld"))&&((eng.getKey(73))||(eng.getKey(105)))){
+                eng.setFont(new JGFont("Arial",1,14));
+                eng.setColor(JGColor.yellow);
+                eng.drawString("Inventario", eng.viewWidth()-60, 10, 0);
+                eng.setFont(new JGFont("Arial",0,10));
+                eng.setColor(JGColor.white);
 
+                setSeccion(new JGPoint(eng.viewWidth()-80, 40), new JGPoint(2, 10));
+                generaSeccion( 1);
+            }
+
+            if(eng.inGameState("InReward")){
+                removerIconos();
+                setSeccion(new JGPoint(eng.viewWidth()/2-100, eng.viewHeight()/2-45), new JGPoint(4, 4));
+                generaSeccion(0);
+            }
 
             
     }
@@ -406,106 +428,9 @@ public class menuJuego extends JGObject {
         this.teclaEscape = teclaEscape;
     }
 
-public class SeccionMenu {
-
-        private int pos_inicial_x, pos_inicial_y;
-        private JGPoint recorrido;
-        private int tabla_inicial_x, tabla_inicial_y;
-        private JGPoint tabla;
-        private boolean working = false;
-
-        public SeccionMenu() {
-        }
-
-        public boolean isWorking() {
-            return working;
-        }
-
-        public void setWorking(boolean working) {
-            this.working = working;
-        }
-
-        public void generaSeccion(Personaje personaje, int tipo) {
-            Iterator it;
-            if (!isWorking()) {
-                switch (tipo) {
-                    case 0:
-                        ContrincanteHabilidad listHab = personaje.getHabilidades();
-                        it = listHab.getHabilidades().entrySet().iterator();
-                        while (this.tabla.y > 0) {
-                            while (this.tabla.x > 0) {
-                                if (it.hasNext()) {
-                                    Map.Entry e = (Map.Entry) it.next();
-                                    hab.setHabilidad(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(),hab.getNombre(), hab);
-                                    System.out.println("habilidad                      = " + hab.getNombre());
-                                    this.recorrido.x += 37;
-                                }
-                                System.out.println("recorrido : " + tabla.x);
-                                this.tabla.x--;
-                            }
-                            this.recorrido.x = pos_inicial_x;
-                            this.tabla.x = tabla_inicial_x;
-                            this.tabla.y--;
-                            this.recorrido.y += 37;
-                        }
-                        break;
-                    case 1:
-                        Inventario inv = personaje.getInventario();
-                        it = inv.getObjetos().entrySet().iterator();
-                        while (this.tabla.y > 0) {
-                            while (this.tabla.x > 0) {
-                                if (it.hasNext()) {
-                                    Map.Entry e = (Map.Entry) it.next();
-                                    obj.setObjeto(Short.parseShort(e.getKey().toString()));
-                                    new Icono("iconoMenu", this.recorrido.x, this.recorrido.y, obj.getNombreGrafico(), obj.getIdObjeto(), (short) 1, inv.contarItem(obj.getIdObjeto()),personaje.getTipo(),obj.getNombre(),obj);
-                                    System.out.println("objeto                      = " + obj.getNombre());
-                                    this.recorrido.x += 37;
-                                }
-                                this.tabla.x--;
-                            }
-                            this.recorrido.x = pos_inicial_x;
-                            this.tabla.x = tabla_inicial_x;
-                            this.tabla.y--;
-                            this.recorrido.y += 37;
-                        }
-                        break;
-                }
-                setWorking(true);
-            }
-
-        }
-
-        public void setSeccion(JGPoint posicion, JGPoint tabla) {
-            setRecorrido(posicion);
-            setTabla(tabla);
-            this.pos_inicial_x = posicion.x;
-            this.pos_inicial_y = posicion.y;
-            this.tabla_inicial_x = tabla.x;
-            this.tabla_inicial_y = tabla.y;
-        }
-
-        public void removerIconos() {
-            setWorking(false);
+     public void removerIconos() {
             eng.removeObjects("iconoMenu", (int) Math.pow(2, 4));
         }
 
-        public JGPoint getRecorrido() {
-            return recorrido;
-        }
-
-        public void setRecorrido(JGPoint recorrido) {
-            this.recorrido = recorrido;
-        }
-
-        public JGPoint getTabla() {
-            return tabla;
-        }
-
-        public void setTabla(JGPoint tabla) {
-            this.tabla = tabla;
-        }
-
-    }
 
 }

@@ -95,9 +95,6 @@ public class Manager extends JGEngine {
     private int seg = 0;
     private HashMap<Integer, Boolean> teclas;
     private HashMap<Integer, Icono> hmIcono = new HashMap<Integer, Icono>();
-
-
-
     private Ventana asd;
     public String[] textoPrueba;
 
@@ -202,7 +199,7 @@ public class Manager extends JGEngine {
             new Npc(16 * 80, 16 * 8, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
             new Npc(16 * 80, 16 * 24, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
             this.mob2 = new Mob(140 * 16, 110 * 16, 0, (short) 100, "Boss_1", "mob_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2));
-            this.mob2.cargarDatos((short)40);
+            this.mob2.cargarDatos((short) 40);
             this.mob2.setPos(140 * 16, 110 * 16);
             this.mob2.resume_in_view = false;
         } catch (Exception ex) {
@@ -229,12 +226,14 @@ public class Manager extends JGEngine {
 
         } else if (getMouseButton(2)) { // start game
             clearMouseButton(1);
+            seccion.removerIconos();
             setGameState("InDeath");
         }
     }
 
     public void doFrameInWorld() {
 
+        pj.desbloquear();
         if (pj.isSuspended()) {
             pj.setResumeMode(true);
         }
@@ -364,6 +363,15 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInWorld() {
+        //Genera seccion para inventario InWorld
+        if ((inGameState("InWorld")) && ((getKey(73)) || (getKey(105)))) {
+            seccion.setSeccion(new JGPoint(viewWidth() - 85, 20), new JGPoint(2, 10));
+            seccion.generaSeccion(pj, 1);
+            menu.recibeHm(hmIcono, 1);
+        } else {
+            seccion.removerIconos();
+        }
+
         drawString("SEGUNDO: " + seg, viewXOfs() + 200 / 2, viewHeight() / 2, 1);
         drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
 
@@ -500,7 +508,7 @@ public class Manager extends JGEngine {
         menu.paintB();
 
 //        seccion.pintaSeccion();
-        menu.getSeccion().setSeccion(new JGPoint(400, 30), new JGPoint(2, 6));
+//        menu.getSeccion().setSeccion(new JGPoint(400, 30), new JGPoint(2, 6));
         menu.menuActual(getTeclaMenu(), pj);
         moveObjects(null, 1);
 
@@ -521,8 +529,8 @@ public class Manager extends JGEngine {
                 final Mob enemigo_procesar = (Mob) getObject(mob.getName());
                 if (respawn_mob == null) {
                     System.out.println("CREO JGTIMER");
-                    
-                    respawn_mob = new JGTimer((int) (getFrameRate() *60* 1), true) {
+
+                    respawn_mob = new JGTimer((int) (getFrameRate() * 60 * 1), true) {
 
                         @Override
                         public void alarm() {
@@ -530,13 +538,14 @@ public class Manager extends JGEngine {
                             enemigo_procesar.resume();
                             enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
                             enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
-                           
+
                         }
                     };
                     respawn_mob = null;
                 }
                 mob.suspend();
-
+                seccion.removerIconos();
+                cursor.setVentana((byte)(1));
                 setGameState("InReward");
             }
         }
@@ -582,9 +591,10 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInCombat() {
+        seccion.setWorking(false);
         seccion.setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
-        menu.recibeHm(hmIcono,1);
+        menu.recibeHm(hmIcono, 1);
 //(mpMax * ((float) (porcentaje / 100.0)))
         setFont(new JGFont("Arial", 0, 15));
 
@@ -688,6 +698,7 @@ public class Manager extends JGEngine {
 //                }
 //            };
 //            mob.suspend();
+            seccion.removerIconos();
             // setGameState("InReward");
         }
     }
@@ -699,7 +710,10 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInReward() {
-        seccion.removerIconos();
+        checkCollision(
+                (int) Math.pow(2, 5) + (int) Math.pow(2, 0), // Colisión entre botones  + cursor
+                (int) Math.pow(2, 0) // ejecuta hit cursor
+                );
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
@@ -708,17 +722,23 @@ public class Manager extends JGEngine {
             mob.recibirDañoBeneficio(mob.getHpMax());
             mob.aumentarDisminuirMp(mob.getMpMax());
             seccionNpc.generaSeccion(mob, 1);
-            menu.recibeHm(hmIcono,0);
+            menu.recibeHm(hmIcono, 0);
 
             clearMouseButton(1);
+            pj.bloquear();
+
             setGameState("InWorld");
         }
+
+        interacVentana(mob,"InReward");
     }
 
     public void paintFrameInReward() {
-        new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
+//        new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
+        
+        seccion.setSeccion(new JGPoint(viewWidth() / 2, viewHeight() / 2), new JGPoint(4, 4));
         seccionNpc.generaSeccion(mob, 1);
-        menu.recibeHm(hmIcono,0);
+        menu.recibeHm(hmIcono, 0);
 
     }
 
@@ -737,50 +757,8 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
 
-        System.out.println("getVentana:" + cursor.getVentana());
-        if (cursor.getVentana() == 1) {
-            pj.colid = 0;
-            //grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int) Math.pow(2, 5));
-            //grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int) Math.pow(2, 5));
-            //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
-//            procesaItem(pj, grillaPj.x, grillaPj.y);
-//            procesaItem(vendedor, grillaNpc.x, grillaNpc.y);
-            //seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
-            seccion.setWorking(false);
-            seccionNpc.setWorking(false);
 
-            seccion.generaSeccion(pj, 1);
-            menu.recibeHm(hmIcono,1);
-            seccionNpc.generaSeccion(vendedor, 1);
-            menu.recibeHm(hmIcono,0);
-            
-            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
-            pj.bloquear();
-            cursor.setVentana((byte) 2);
-        } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
-            //Remueve todos los objetos que forman la ventana de comerciar
-//            removeObjects("ventana trade", 0);
-//            removeObjects("grilla npc", (int) Math.pow(2, 5));
-//            removeObjects("grilla pj", (int) Math.pow(2, 5));
-            removeObjects("cerrar", (int) Math.pow(2, 5));
-//            for (int i = 0; i < 200; i++) {
-
-            //Renueve todos los objetos item
-            seccion.removerIconos();
-            //seccionNpc.setWorking(false);
-
-//            }
-            pj.desbloquear();
-            pj.colid = 2;
-//            cursor.setVentana((byte) 0);
-            if (cursor.getVentana() == 4) {
-                cursor.setVentana((byte) 1);
-                System.out.println("setVentana antes InWorld:" + cursor.getVentana());
-            }
-            setGameState("InWorld");
-
-        }
-        
+        interacVentana(pj, vendedor, "InWorld");
 
     }
 
@@ -1202,6 +1180,99 @@ public class Manager extends JGEngine {
                     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",});
     }
 
+    public void interacVentana(Jugador pj, Personaje vendedor, String estado) {
+        System.out.println("getVentana:" + cursor.getVentana());
+        clearKey(73);
+        if (cursor.getVentana() == 1) {
+
+            //grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int) Math.pow(2, 5));
+            //grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int) Math.pow(2, 5));
+            //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
+//            procesaItem(pj, grillaPj.x, grillaPj.y);
+//            procesaItem(vendedor, grillaNpc.x, grillaNpc.y);
+            //seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
+            seccion.setWorking(false);
+            seccionNpc.setWorking(false);
+
+            pj.colid = 0;
+            seccion.generaSeccion(pj, 1);
+            menu.recibeHm(hmIcono, 1);
+            pj.bloquear();
+
+
+            seccionNpc.generaSeccion(vendedor, 1);
+            menu.recibeHm(hmIcono, 0);
+
+            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
+
+            cursor.setVentana((byte) 2);
+        } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
+            //Remueve todos los objetos que forman la ventana de comerciar
+//            removeObjects("ventana trade", 0);
+//            removeObjects("grilla npc", (int) Math.pow(2, 5));
+//            removeObjects("grilla pj", (int) Math.pow(2, 5));
+            removeObjects("cerrar", (int) Math.pow(2, 5));
+//            for (int i = 0; i < 200; i++) {
+
+            //Renueve todos los objetos item
+            seccion.removerIconos();
+            //seccionNpc.setWorking(false);
+
+//            }
+
+            pj.desbloquear();
+            pj.colid = 2;
+
+
+
+//            cursor.setVentana((byte) 0);
+            if (cursor.getVentana() == 4) {
+                cursor.setVentana((byte) 1);
+                System.out.println("setVentana antes InWorld:" + cursor.getVentana());
+            }
+            setGameState(estado);
+
+        }
+
+    }
+
+    public void interacVentana(Personaje mob, String estado) {
+        System.out.println("getVentana:" + cursor.getVentana());
+        clearKey(73);
+        if (cursor.getVentana() == 1) {
+            //seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
+            seccion.setWorking(false);
+            seccionNpc.setWorking(false);
+
+            pj.colid = 0;
+            pj.bloquear();
+            seccion.setSeccion(new JGPoint(viewWidth()/2, viewHeight()/2), new JGPoint(4, 4));
+            seccionNpc.generaSeccion(mob, 1);
+            menu.recibeHm(hmIcono, 0);
+            cursor.setVentana((byte) 2);
+        } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
+            //Renueve todos los objetos item
+            seccion.removerIconos();
+            //seccionNpc.setWorking(false);
+
+            pj.desbloquear();
+            pj.colid = 2;
+
+//            cursor.setVentana((byte) 0);
+            if (cursor.getVentana() == 4) {
+                cursor.setVentana((byte) 1);
+                System.out.println("setVentana antes InWorld:" + cursor.getVentana());
+            }
+            if (cursor.getVentana() == 4) {
+                cursor.setVentana((byte) 0);
+
+            }
+            setGameState(estado);
+
+        }
+
+    }
+
     public class Ventana {
 
         private String[] mensajes;
@@ -1524,9 +1595,9 @@ public class Manager extends JGEngine {
                 this.setMensajeIcon(iconito.getNombreLogico());
             }
 
-            if (obj.getGraphic().equals("mario")) {
+//            if (obj.getGraphic().equals("mario")) {
                 setMensaje("Soy " + obj.getGraphic());
-            }
+//            }
             if (obj.getGraphic().equals("vendedor")) {
                 setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
                 if (getMouseButton(3)) {
@@ -1577,7 +1648,7 @@ public class Manager extends JGEngine {
                         clearMouseButton(3);
                         pj.getInventario().agregarItem(icon.getIdObjeto());
                         mob.getInventario().eliminarItem(icon.getIdObjeto(), (short) 1);
-                        seccionNpc.setWorking(false);
+                        cursor.setVentana((byte) 4);
                     }
                 }
 
@@ -1585,7 +1656,6 @@ public class Manager extends JGEngine {
 
 
         }
-
 
         public void paintB() {
             setFont(new JGFont("Arial", 0, 20));
@@ -1661,9 +1731,9 @@ public class Manager extends JGEngine {
                         cantidad = 0;
                         while ((this.tabla.y > 0) && (!fin)) {
                             while ((this.tabla.x > 0) && (!fin)) {
-                                
+
                                 if (it.hasNext()) {
-                                    
+
                                     Map.Entry en = (Map.Entry) it.next();
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
@@ -1693,7 +1763,7 @@ public class Manager extends JGEngine {
                             this.recorrido.y += 37;
 
                         }
-                        
+
                         break;
                 }
                 setWorking(true);
