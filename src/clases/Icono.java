@@ -159,13 +159,21 @@ public class Icono extends JGObject {
         return false;
     }
 
-
+//    @Override
+//    public void paint() {
+//        x = xAnt + eng.viewXOfs();
+//        y = yAnt + eng.viewYOfs();
+//        eng.setFont(new JGFont("Arial", 0, 24));
+//        eng.setColor(JGColor.blue);
+//        eng.drawString("" + this.cantidad, xAnt+10, yAnt+10, 0);
+//
+//    }
     public void paintB() {
         x = xAnt + eng.viewXOfs();
         y = yAnt + eng.viewYOfs();
         eng.setFont(new JGFont("Arial", 0, 24));
-        eng.setColor(JGColor.blue);
-        eng.drawString("" + this.cantidad, xAnt, yAnt, 0);
+        eng.setColor(JGColor.white);
+        eng.drawString("" + this.cantidad, xAnt+10, yAnt+10, 0);
 
     }
 }
