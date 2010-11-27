@@ -606,4 +606,28 @@ public class Jugador extends Personaje {
             this.setDinero(this.getDinero() + dinero);
         }
     }
+
+    public void aumentarFuerza(int i) {
+       this.setFuerza((short) (getFuerza() + 1));
+    }
+
+    public void aumentarDestreza(int i) {
+        this.setDestreza((short)(getDestreza() + 1));
+    }
+
+    void aumentarSabiduria(int i) {
+        this.setSabiduria((short)(getSabiduria() + 1));
+    }
+
+    void aumentarVitalidad(int i) {
+        this.setVitalidad((short) (getVitalidad() + 1));
+    }
+
+    void gastarPuntoEstadistica() {
+        this.setTotalPuntosEstadistica((short) (getTotalPuntosEstadistica() - 1));
+    }
+
+    void gastarPuntosHabilidad() {
+        this.setTotalPuntosHabilidad((short) (getTotalPuntosHabilidad() - 1));
+    }
 }
