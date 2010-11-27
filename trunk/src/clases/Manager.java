@@ -516,6 +516,7 @@ public class Manager extends JGEngine {
 
     @Override
     public void doFrame() {
+        moveObjects(null, (int) Math.pow(2, 5)); //muevo los botones que estan en el menu
         if ((inGameStateNextFrame("InWorld") && !inGameState("InWorld"))) {
             //seccion.removerIconos();
             //removeObjects("icono", (int) Math.pow(2, 4));
@@ -1203,7 +1204,7 @@ public class Manager extends JGEngine {
             seccionNpc.generaSeccion(vendedor, 1);
             menu.recibeHm(hmIcono, 0);
 
-            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5));
+            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5),0 , 0);
 
             cursor.setVentana((byte) 2);
         } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
@@ -1498,26 +1499,25 @@ public class Manager extends JGEngine {
         }
     }
 
-    public class Boton extends JGObject {
-
-        public Boton(String nombre, String graf, double x, double y, int cid) {
-            super(nombre, false, x, y, (int) Math.pow(2, 5), graf);
-        }
-
-        @Override
-        public void hit(JGObject obj) {
-            System.out.println("hit boton");
-            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla npc"))) {
-                System.out.println("Has vendido item");
-                new Ventana("Has vendido item");
-            }
-            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla pj"))) {
-                System.out.println("Has comprado item");
-                new Ventana("Has comprado item");
-            }
-        }
-    }
-
+//    public class Boton extends JGObject {
+//
+//        public Boton(String nombre, String graf, double x, double y, int cid) {
+//            super(nombre, false, x, y, (int) Math.pow(2, 5), graf);
+//        }
+//
+//        @Override
+//        public void hit(JGObject obj) {
+//            System.out.println("hit boton");
+//            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla npc"))) {
+//                System.out.println("Has vendido item");
+//                new Ventana("Has vendido item");
+//            }
+//            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla pj"))) {
+//                System.out.println("Has comprado item");
+//                new Ventana("Has comprado item");
+//            }
+//        }
+//    }
     public class Cursor extends JGObject {
 
         private String mensaje = new String();
@@ -1569,6 +1569,9 @@ public class Manager extends JGEngine {
 
         public Cursor() {
             super("cursor", false, 0, 0, (int) Math.pow(2, 0), "cuadro");
+            this.setTileBBox(0, 0, 2, 2);
+            this.setBBox(0, 0, 2,2);
+
         }
         int oldmousex = 0, oldmousey = 0;
         boolean scissors_c = false;
@@ -1615,8 +1618,62 @@ public class Manager extends JGEngine {
                 System.out.println(getMensaje() + "Nada");
                 System.out.println(getMouseButton(3) + " boton derecho del mouse");
             }
-
+            if (obj.colid == (int) Math.pow(2, 5) && getMouseButton(3)) {
+                clearMouseButton(3);
+                Boton boton = (Boton) obj;
+                System.out.println("sadasdadasd +"+ boton.getId() + "   "+menu.getMenuActual());
+                if (obj.x >= viewXOfs() + (viewWidth() - 180)) {//es del menu
+                    System.out.println("APRETE UNA BOTON QLIO..RQLI +"+ boton.getId() + "   "+menu.getMenuActual());
+                    switch (menu.getMenuActual()) {
+                        case 4://Menu esta en Estadisticas
+                            switch (boton.getId()) {
+                                /**
+                                 * ids para estadisticas
+                                 * 1 = fuerza
+                                 * 2 = destreza
+                                 * 3 = Sabiduria
+                                 * 4 = vitalidad
+                                 */
+                                case 1:
+                                    pj.aumentarFuerza(1);
+                                    pj.gastarPuntoEstadistica();
+                                    System.out.println("Fuerza");
+                                    break;//
+                                case 2:
+                                    pj.aumentarDestreza(1);
+                                    pj.gastarPuntoEstadistica();
+                                    System.out.println("Destreza");
+                                    break;
+                                case 3:
+                                    pj.aumentarSabiduria(1);
+                                    pj.gastarPuntoEstadistica();
+                                    System.out.println("Sabiduria");
+                                    break;
+                                case 4:
+                                    System.out.println("Vitalidad");
+                                    pj.gastarPuntoEstadistica();
+                                    pj.aumentarVitalidad(1);
+                                    break;
+                            }
+                            break;
+                        case 1://Menu esta en Habilidad
+                            if (!pj.getHabilidades().tieneHabilidad((short)boton.getId())){
+                                pj.getHabilidades().agregaHabilidad((short) boton.getId());
+                            }
+                            if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()){
+                                pj.getHabilidades().aumentarNivel((short) boton.getId());
+                                pj.gastarPuntosHabilidad();
+                            }
+                            
+                            System.out.println(pj.getHabilidades().getHabilidad((short)boton.getId()).getHabilidad().getNombre());
+                            System.out.println("Nivel: "+pj.getHabilidades().getHabilidad((short)boton.getId()).getNivelHabilidad());
+                            System.out.println("PTOS HAB " +pj.getTotalPuntosHabilidad());
+                            break;
+                    }
+                }
+            }
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
+                clearMouseButton(3);
                 setIcon((Icono) obj);
             }
 

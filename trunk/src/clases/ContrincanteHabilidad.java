@@ -133,7 +133,8 @@ public class ContrincanteHabilidad {
 
     public void aumentarNivel(short idHabilidad) {
         if (tieneHabilidad(idHabilidad)) {
-            aumentarNivel(idHabilidad);
+            this.habilidades.get(idHabilidad).aumentarNivel();
+            
         }
     }
 
@@ -186,7 +187,7 @@ public class ContrincanteHabilidad {
         private short idHabilidad;
         private short nivelHabilidad;
         private boolean newHabilidad;
-        private Habilidad habilidad;
+        private Habilidad habilidad = new Habilidad();
 
         public UnaHabilidad(short idHabilidad, short nivelHabilidad, boolean newHabilidad) {
             this.idHabilidad = idHabilidad;
@@ -245,14 +246,16 @@ public class ContrincanteHabilidad {
             }
         }
 
-        private boolean puedeAumentar() {
-            Habilidad hab = new Habilidad();
-            hab.setHabilidad(this.idHabilidad);
-            if (hab.getNivelMaximo() < this.getNivelHabilidad()) {
+        public boolean puedeAumentar() {
+            Habilidad hab = this.getHabilidad();
+            if (hab.getNivelMaximo() > this.getNivelHabilidad()) {
+                System.out.println("SI puede agregar");
                 return true;
             } else {
+                System.out.println("no puede agregar");
                 return false;
             }
         }
+
     }
 }
