@@ -251,6 +251,7 @@ public class Manager extends JGEngine {
                 mis.setNivelRequerido(res.getShort("nivelrequerido"));
                 mis.setRepetible(Boolean.parseBoolean(res.getString("repetible")));
                 mis.setRecompensaExp(res.getShort("recompensaexp"));
+                this.misiones.put(mis.getIdMision(), mis);
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->manager , método-Linea 255 " + ex);
@@ -578,6 +579,10 @@ public class Manager extends JGEngine {
         //el cursor no choca contra el icono
         if (checkCollision((int) Math.pow(2, 4), cursor) != Math.pow(2, 4)) {
             cursor.setMensajeIcon(null);
+        }
+        //el cursor no choca contra un boton del tipo ver
+        if (checkCollision((int) Math.pow(2, 5), cursor) != Math.pow(2, 5)) {
+            cursor.limpiarInformacion();
         }
         if (inGameState("InCombat")) {
             if (mob.getHp() <= 0) {
@@ -1778,7 +1783,8 @@ public class Manager extends JGEngine {
                                 setInformacionHabilidad(hab.getNombre(), hab.getDescripcion(), String.valueOf(hab.getDanoBeneficio()), String.valueOf(hab.getCostoBasico()), String.valueOf(hab.getNivelMaximo()));
                                 break;
                             case 2://Menú está en misión
-                                System.out.println("Mision Help");
+                                Mision mis = misiones.get((short) boton.getId());
+                                setInformacionMision(mis.getNombre(), mis.getDescripcion(), String.valueOf(mis.getRecompensaExp()), String.valueOf(mis.getIdPersonajeConcluyeMision()));
                                 break;
                         }
                     }
@@ -1822,48 +1828,49 @@ public class Manager extends JGEngine {
                 }
 
             }
-
-
         }
-
         public void desplegarInformacion() {
             setFont(new JGFont("Arial", 0, 10));
             setColor(JGColor.white);
             if (nombre != null) {
-                drawString("Nombre      : " + nombre, 16, viewHeight() - 80, -1);
+                drawString("Nombre : " + nombre, 16, viewHeight() - 80, -1);
             }
             if (descripcion != null) {
-                drawString("Descripción: " + descripcion, 16, viewHeight() - 70, -1);
+                drawString("Descripción : " + descripcion, 16, viewHeight() - 70, -1);
             }
             if (valor != null) {
-                drawString("Valor      : " + valor, viewWidth() / 2, viewHeight() - 80, -1);
+                drawString("Valor : " + valor, viewWidth() / 2, viewHeight() - 80, -1);
             }
             if (peso != null) {
-                drawString("Peso       : " + peso, viewWidth() / 2, viewHeight() - 70, -1);
+                drawString("Peso : " + peso, viewWidth() / 2, viewHeight() - 70, -1);
             }
             if (tipo != null) {
-                drawString("Tipo       : " + tipo, viewWidth() / 2, viewHeight() - 60, -1);
+                drawString("Tipo : " + tipo, viewWidth() / 2, viewHeight() - 60, -1);
             }
             if (usoCombat != null) {
-                drawString("Uso Combate: " + usoCombat, viewWidth() / 2, viewHeight() - 50, -1);
+                drawString("Uso Combate : " + usoCombat, viewWidth() / 2, viewHeight() - 50, -1);
             }
             if (danoBeneficio != null) {
-                drawString("Daño/Beneficio: " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
+                if (Integer.parseInt(danoBeneficio) > 0){
+                    drawString("Beneficio : " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
+                }else if (Integer.parseInt(danoBeneficio)< 0){
+                    drawString("Daño : " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
+                }
             }
             if (costo != null) {
-                drawString("Costo mp      : " + costo, viewWidth() / 2, viewHeight() - 70, -1);
+                drawString("Costo mp : " + costo, viewWidth() / 2, viewHeight() - 70, -1);
             }
             if (maxLvl != null) {
-                drawString("Nivel máx     : " + maxLvl, viewWidth() / 2, viewHeight() - 60, -1);
+                drawString("Nivel máx : " + maxLvl, viewWidth() / 2, viewHeight() - 60, -1);
             }
             if (recompensa != null) {
-                drawString("Recompensa      : " + recompensa, viewWidth() / 2, viewHeight() - 80, -1);
+                drawString("Recompensa exp : " + recompensa, viewWidth() / 2, viewHeight() - 80, -1);
             }
             if (pjEntregar != null) {
-                drawString("A quién entregar: " + pjEntregar, viewWidth() / 2, viewHeight() - 50, -1);
+                drawString("A quién entregar : " + pjEntregar, viewWidth() / 2, viewHeight() - 50, -1);
             }
             if (nota != null) {
-                drawString("Nota: " + nota, viewWidth() / 2, viewHeight() - 80, -1);
+                drawString("Nota : " + nota, viewWidth() / 2, viewHeight() - 10, -1);
             }
         }
 
@@ -1884,7 +1891,9 @@ public class Manager extends JGEngine {
             this.nota = not;
 
         }
-
+        public void limpiarInformacion(){
+            setInformacion(null, null, null, null, null, null, null, null, null, null, null, null, null);
+        }
         public void setInformacionHabilidad(String nom, String desc, String dano, String cos, String pmaxLvl) {
             setInformacion(nom, desc, null, null, null, null, dano, cos, null, pmaxLvl, null, null, null);
         }
