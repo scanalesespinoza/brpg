@@ -70,9 +70,9 @@ cerrar	-	0	/media/imagenes/menu/cerrar.png	-
 //define imagen boton suma habilidades/estadisticas
 suma	-	0	/media/imagenes/menu/suma.png	-
 //define imagen boton ver habilidades/estadisticas/mision
-ver	-	0	/media/imagenes/menu/?.png	-
+ver	-	0	/media/imagenes/menu/ver.png	-
 //define imagen boton abandonar mision
-abandonar	-	0	/media/imagenes/menu/x.png	-
+abandonar	-	0	/media/imagenes/menu/abandonar.png	-
 //******************************************************************************
 //                      Iconos
 //******************************************************************************

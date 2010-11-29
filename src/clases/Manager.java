@@ -65,6 +65,7 @@ public class Manager extends JGEngine {
     private boolean unJGTimer = false;
     private JGTimer tiempoRegenerar, respawn_mob, respawn_pj;
     private HashMap<Short, Habilidad> habilidades;
+    private HashMap<Short, Mision> misiones;
 
     public Icono getIcon() {
         return icon;
@@ -210,7 +211,7 @@ public class Manager extends JGEngine {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
         definirEscenario();
-        System.out.println("Inicio obtiene datos personaje");
+        System.out.println("Inicio obtiene habilidades");
         String StrSql = "SELECT * FROM habilidad ";
 
         this.habilidades = new HashMap<Short, Habilidad>();
@@ -233,6 +234,26 @@ public class Manager extends JGEngine {
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
+        }
+        System.out.println("Inicio obtiene misiones");
+        StrSql = "SELECT * FROM mision ";
+
+        this.misiones = new HashMap<Short, Mision>();
+        System.out.println("Inicio obtiene datos personaje");
+        try {
+            ResultSet res = conect.Consulta(StrSql);
+            if (res.next()) {
+                Mision mis = new Mision();
+                mis.setDescripcion(res.getString("descripcion"));
+                mis.setNombre(res.getString("nombre"));
+                mis.setIdMision(res.getShort("id"));
+                mis.setIdPersonajeConcluyeMision(res.getShort("personaje_id"));
+                mis.setNivelRequerido(res.getShort("nivelrequerido"));
+                mis.setRepetible(Boolean.parseBoolean(res.getString("repetible")));
+                mis.setRecompensaExp(res.getShort("recompensaexp"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problemas en: clase->manager , método-Linea 255 " + ex);
         }
 
 
@@ -2014,6 +2035,4 @@ public class Manager extends JGEngine {
             this.tabla = tabla;
         }
     }
-
-
 }

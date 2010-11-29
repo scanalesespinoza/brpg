@@ -311,18 +311,22 @@ public class menuJuego extends JGObject {
     }
 
     private void suspenderBotones(int i) {
-        HashMap<Short, Boton> boton = new HashMap<Short, Boton>();
+        HashMap<Short, Boton> boton= new HashMap<Short, Boton>(), boton2 = new HashMap<Short, Boton>();
         if (i == 4) {
             boton = this.botones_estadistica_aumentar;
+            boton2 = this.botones_estadistica_ver;
         } else if (i == 1) {
             boton = this.botones_habilidad_aumentar;
+            boton2 = this.botones_habilidad_ver;
         } else if (i == 2) {
             boton = this.botones_mision_ver;
+            boton2 = this.botones_mision_abandonar;
         }
         Iterator it = boton.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
             boton.get(Short.parseShort(e.getKey().toString())).suspend();
+            boton2.get(Short.parseShort(e.getKey().toString())).suspend();
         }
     }
 
