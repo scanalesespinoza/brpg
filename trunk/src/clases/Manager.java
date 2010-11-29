@@ -1,6 +1,8 @@
 package clases;
 
 import extensiones.StdScoring;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.JGColor;
@@ -62,6 +64,7 @@ public class Manager extends JGEngine {
     private Icono icon;
     private boolean unJGTimer = false;
     private JGTimer tiempoRegenerar, respawn_mob, respawn_pj;
+    private HashMap<Short, Habilidad> habilidades;
 
     public Icono getIcon() {
         return icon;
@@ -132,6 +135,7 @@ public class Manager extends JGEngine {
         }
         setFrameRate(60, 2);
         dbgShowGameState(true);
+        dbgShowBoundingBox(true);
         try {
             defineMedia("/media/rpg-basico.tbl");
             setBGImage("bgimage");
@@ -206,6 +210,32 @@ public class Manager extends JGEngine {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
         definirEscenario();
+        System.out.println("Inicio obtiene datos personaje");
+        String StrSql = "SELECT * FROM habilidad ";
+
+        this.habilidades = new HashMap<Short, Habilidad>();
+        System.out.println(StrSql);
+        double linea = 30;
+        try {
+            ResultSet res = conect.Consulta(StrSql);
+            while (res.next()) {
+                Habilidad habi = new Habilidad();
+                habi.setDescripcion(res.getString("descripcion"));
+                habi.setNombre(res.getString("nombre"));
+                habi.setIdHabilidad(res.getShort("id"));
+                habi.setDanoBeneficio(res.getShort("danoBeneficio"));
+                habi.setNivelMaximo(res.getShort("nivelMaximo"));
+                habi.setCostoBasico(res.getShort("costoBasico"));
+                habi.setNombreGrafico(res.getString("nom_grafico"));
+                habi.setTiempoEspera(res.getInt("tiempoEspera"));
+                this.habilidades.put(habi.getIdHabilidad(), habi);
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
+        }
+
+
         setGameState("Title");
     }
     /** View offset. */
@@ -505,12 +535,15 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
+
         menu.paintB();
+        cursor.desplegarInformacion();
 
 //        seccion.pintaSeccion();
 //        menu.getSeccion().setSeccion(new JGPoint(400, 30), new JGPoint(2, 6));
-        menu.menuActual(getTeclaMenu(), pj);
+
         moveObjects(null, 1);
+        menu.menuActual(getTeclaMenu(), pj);
 
     }
 
@@ -546,7 +579,7 @@ public class Manager extends JGEngine {
                 }
                 mob.suspend();
                 seccion.removerIconos();
-                cursor.setVentana((byte)(1));
+                cursor.setVentana((byte) (1));
                 setGameState("InReward");
             }
         }
@@ -731,12 +764,12 @@ public class Manager extends JGEngine {
             setGameState("InWorld");
         }
 
-        interacVentana(mob,"InReward");
+        interacVentana(mob, "InReward");
     }
 
     public void paintFrameInReward() {
 //        new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
-        
+
         seccion.setSeccion(new JGPoint(viewWidth() / 2, viewHeight() / 2), new JGPoint(4, 4));
         seccionNpc.generaSeccion(mob, 1);
         menu.recibeHm(hmIcono, 0);
@@ -744,7 +777,7 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInCommerce() {
-        cursor.paintB();
+        cursor.desplegarInformacion();
     }
 
     public void doFrameInCommerce() {
@@ -1204,7 +1237,7 @@ public class Manager extends JGEngine {
             seccionNpc.generaSeccion(vendedor, 1);
             menu.recibeHm(hmIcono, 0);
 
-            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5),0 , 0);
+            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int) Math.pow(2, 5), 0, 0);
 
             cursor.setVentana((byte) 2);
         } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
@@ -1247,7 +1280,7 @@ public class Manager extends JGEngine {
 
             pj.colid = 0;
             pj.bloquear();
-            seccion.setSeccion(new JGPoint(viewWidth()/2, viewHeight()/2), new JGPoint(4, 4));
+            seccion.setSeccion(new JGPoint(viewWidth() / 2, viewHeight() / 2), new JGPoint(4, 4));
             seccionNpc.generaSeccion(mob, 1);
             menu.recibeHm(hmIcono, 0);
             cursor.setVentana((byte) 2);
@@ -1526,6 +1559,20 @@ public class Manager extends JGEngine {
         private byte ventana;
         private String mensajeIcon;
         private JGPoint puntos;
+        private String nombre = null;
+        private String descripcion = null;
+        private String peso = null;
+        private String valor = null;
+        private String tipo = null;
+        private String usoCombat = null;
+        private String danoBeneficio = null;
+        private String costo = null;
+        private String lvl = null;
+        private String maxLvl = null;
+        private String recompensa = null;
+        private String pjEntregar = null;
+        private String nota = null;
+//        private String nombre, descripcion,
 
         public JGPoint getPuntos() {
             return puntos;
@@ -1568,9 +1615,9 @@ public class Manager extends JGEngine {
         }
 
         public Cursor() {
-            super("cursor", false, 0, 0, (int) Math.pow(2, 0), "cuadro");
+            super("cursor", false, 0, 0, (int) Math.pow(2, 0), "cursor");
             this.setTileBBox(0, 0, 2, 2);
-            this.setBBox(0, 0, 2,2);
+            this.setBBox(0, 0, 2, 2);
 
         }
         int oldmousex = 0, oldmousey = 0;
@@ -1599,7 +1646,7 @@ public class Manager extends JGEngine {
             }
 
 //            if (obj.getGraphic().equals("mario")) {
-                setMensaje("Soy " + obj.getGraphic());
+            setMensaje("Soy " + obj.getGraphic());
 //            }
             if (obj.getGraphic().equals("vendedor")) {
                 setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
@@ -1618,57 +1665,101 @@ public class Manager extends JGEngine {
                 System.out.println(getMensaje() + "Nada");
                 System.out.println(getMouseButton(3) + " boton derecho del mouse");
             }
-            if (obj.colid == (int) Math.pow(2, 5) && getMouseButton(3)) {
-                clearMouseButton(3);
+            //click en el menu algun boton del menu
+            if (obj.colid == (int) Math.pow(2, 5)) {
+
                 Boton boton = (Boton) obj;
-                System.out.println("sadasdadasd +"+ boton.getId() + "   "+menu.getMenuActual());
-                if (obj.x >= viewXOfs() + (viewWidth() - 180)) {//es del menu
-                    System.out.println("APRETE UNA BOTON QLIO..RQLI +"+ boton.getId() + "   "+menu.getMenuActual());
-                    switch (menu.getMenuActual()) {
-                        case 4://Menu esta en Estadisticas
-                            switch (boton.getId()) {
-                                /**
-                                 * ids para estadisticas
-                                 * 1 = fuerza
-                                 * 2 = destreza
-                                 * 3 = Sabiduria
-                                 * 4 = vitalidad
-                                 */
-                                case 1:
-                                    pj.aumentarFuerza(1);
-                                    pj.gastarPuntoEstadistica();
-                                    System.out.println("Fuerza");
-                                    break;//
-                                case 2:
-                                    pj.aumentarDestreza(1);
-                                    pj.gastarPuntoEstadistica();
-                                    System.out.println("Destreza");
-                                    break;
-                                case 3:
-                                    pj.aumentarSabiduria(1);
-                                    pj.gastarPuntoEstadistica();
-                                    System.out.println("Sabiduria");
-                                    break;
-                                case 4:
-                                    System.out.println("Vitalidad");
-                                    pj.gastarPuntoEstadistica();
-                                    pj.aumentarVitalidad(1);
-                                    break;
-                            }
-                            break;
-                        case 1://Menu esta en Habilidad
-                            if (!pj.getHabilidades().tieneHabilidad((short)boton.getId())){
-                                pj.getHabilidades().agregaHabilidad((short) boton.getId());
-                            }
-                            if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()){
-                                pj.getHabilidades().aumentarNivel((short) boton.getId());
+                if (obj.x >= viewXOfs() + (viewWidth() - 180)) {
+                    if (boton.getTipo_boton() != 3 && getMouseButton(3)) {
+                        clearMouseButton(3);
+                        //corresponde al menu y no es boton del tipo "ver"
+                        switch (menu.getMenuActual()) {
+                            case 4://Menú está en Estadísticas
+                                switch (boton.getId()) {
+                                    /**
+                                     * ids para estadisticas
+                                     * 1 = fuerza
+                                     * 2 = destreza
+                                     * 3 = Sabiduria
+                                     * 4 = vitalidad
+                                     */
+                                    case 1:
+                                        pj.aumentarFuerza(1);
+                                        pj.gastarPuntoEstadistica();
+                                        System.out.println("Fuerza");
+                                        break;//
+                                    case 2:
+                                        pj.aumentarDestreza(1);
+                                        pj.gastarPuntoEstadistica();
+                                        System.out.println("Destreza");
+                                        break;
+                                    case 3:
+                                        pj.aumentarSabiduria(1);
+                                        pj.gastarPuntoEstadistica();
+                                        System.out.println("Sabiduria");
+                                        break;
+                                    case 4:
+                                        System.out.println("Vitalidad");
+                                        pj.gastarPuntoEstadistica();
+                                        pj.aumentarVitalidad(1);
+                                        break;
+                                }
+                                break;
+                            case 1://Menú está en Habilidad
+                                if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
+                                    pj.getHabilidades().agregaHabilidad((short) boton.getId());
+                                } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
+                                    pj.getHabilidades().aumentarNivel((short) boton.getId());
+                                }
                                 pj.gastarPuntosHabilidad();
-                            }
-                            
-                            System.out.println(pj.getHabilidades().getHabilidad((short)boton.getId()).getHabilidad().getNombre());
-                            System.out.println("Nivel: "+pj.getHabilidades().getHabilidad((short)boton.getId()).getNivelHabilidad());
-                            System.out.println("PTOS HAB " +pj.getTotalPuntosHabilidad());
-                            break;
+                                System.out.println(pj.getHabilidades().getHabilidad((short) boton.getId()).getHabilidad().getNombre());
+                                System.out.println("Nivel: " + pj.getHabilidades().getHabilidad((short) boton.getId()).getNivelHabilidad());
+                                System.out.println("PTOS HAB " + pj.getTotalPuntosHabilidad());
+                                break;
+                            case 2://Menú está en misión
+                                System.out.println("ID: " + boton.getId());
+                                if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
+                                    pj.getMisiones().abandonaMision((short) boton.getId());
+                                    System.out.println("ELIMINE UNA MISION: " + boton.getId());
+                                }
+                                break;
+                        }
+                    } else if (boton.getTipo_boton() == 3) {
+                        //corresponde al menu y es boton del tipo "ver"
+                        //por comportamiento mouse over , se muestra información
+                        //en el monitor
+                        switch (menu.getMenuActual()) {
+                            case 4://Menú está en Estadísticas
+                                switch (boton.getId()) {
+                                    /**
+                                     * ids para estadisticas
+                                     * 1 = fuerza
+                                     * 2 = destreza
+                                     * 3 = Sabiduria
+                                     * 4 = vitalidad
+                                     */
+                                    case 1:
+                                        setInformacionEstadistica("Fuerza", "Aumenta el daño que causas", "La distribución de puntos no tiene restricción");
+                                        break;//
+                                    case 2:
+                                        setInformacionEstadistica("Destreza", "Aumenta el la sanación en ti", "La distribución de puntos no tiene restricción");
+                                        break;
+                                    case 3:
+                                        setInformacionEstadistica("Sabiduría", "Reduce el daño que recibes", "La distribución de puntos no tiene restricción");
+                                        break;
+                                    case 4:
+                                        setInformacionEstadistica("Vitalidad", "Aumenta el los puntos de vida que posees", "La distribución de puntos no tiene restricción");
+                                        break;
+                                }
+                                break;
+                            case 1://Menú está en Habilidad
+                                Habilidad hab = habilidades.get((short) boton.getId());
+                                setInformacionHabilidad(hab.getNombre(), hab.getDescripcion(), String.valueOf(hab.getDanoBeneficio()), String.valueOf(hab.getCostoBasico()), String.valueOf(hab.getNivelMaximo()));
+                                break;
+                            case 2://Menú está en misión
+                                System.out.println("Mision Help");
+                                break;
+                        }
                     }
                 }
             }
@@ -1714,13 +1805,79 @@ public class Manager extends JGEngine {
 
         }
 
-        public void paintB() {
-            setFont(new JGFont("Arial", 0, 20));
+        public void desplegarInformacion() {
+            setFont(new JGFont("Arial", 0, 10));
             setColor(JGColor.white);
-            if (mensajeIcon != null) {
-                drawString("Icono: " + this.getMensajeIcon(), viewWidth() / 2, viewHeight() - 50, 0);
+            if (nombre != null) {
+                drawString("Nombre      : " + nombre, 16, viewHeight() - 80, -1);
             }
-            drawString("Dinero: " + pj.getDinero(), viewWidth() / 2 + 20, viewHeight() - 50 + 20, 0);
+            if (descripcion != null) {
+                drawString("Descripción: " + descripcion, 16, viewHeight() - 70, -1);
+            }
+            if (valor != null) {
+                drawString("Valor      : " + valor, viewWidth() / 2, viewHeight() - 80, -1);
+            }
+            if (peso != null) {
+                drawString("Peso       : " + peso, viewWidth() / 2, viewHeight() - 70, -1);
+            }
+            if (tipo != null) {
+                drawString("Tipo       : " + tipo, viewWidth() / 2, viewHeight() - 60, -1);
+            }
+            if (usoCombat != null) {
+                drawString("Uso Combate: " + usoCombat, viewWidth() / 2, viewHeight() - 50, -1);
+            }
+            if (danoBeneficio != null) {
+                drawString("Daño/Beneficio: " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
+            }
+            if (costo != null) {
+                drawString("Costo mp      : " + costo, viewWidth() / 2, viewHeight() - 70, -1);
+            }
+            if (maxLvl != null) {
+                drawString("Nivel máx     : " + maxLvl, viewWidth() / 2, viewHeight() - 60, -1);
+            }
+            if (recompensa != null) {
+                drawString("Recompensa      : " + recompensa, viewWidth() / 2, viewHeight() - 80, -1);
+            }
+            if (pjEntregar != null) {
+                drawString("A quién entregar: " + pjEntregar, viewWidth() / 2, viewHeight() - 50, -1);
+            }
+            if (nota != null) {
+                drawString("Nota: " + nota, viewWidth() / 2, viewHeight() - 80, -1);
+            }
+        }
+
+        private void setInformacion(String nom, String desc, String val, String pes, String tip, String usoCom, String dano, String cos,
+                String lvl, String maxLvl, String rec, String pjEnt, String not) {
+            this.nombre = nom;
+            this.descripcion = desc;
+            this.valor = val;
+            this.peso = pes;
+            this.tipo = tip;
+            this.usoCombat = usoCom;
+            this.danoBeneficio = dano;
+            this.costo = cos;
+            this.lvl = lvl;
+            this.maxLvl = maxLvl;
+            this.recompensa = rec;
+            this.pjEntregar = pjEnt;
+            this.nota = not;
+
+        }
+
+        public void setInformacionHabilidad(String nom, String desc, String dano, String cos, String pmaxLvl) {
+            setInformacion(nom, desc, null, null, null, null, dano, cos, null, pmaxLvl, null, null, null);
+        }
+
+        public void setInformacionObjeto(String nom, String desc, String val, String tip, String pes, String usoCom) {
+            setInformacion(nom, desc, val, pes, tip, usoCom, null, null, null, null, null, null, null);
+        }
+
+        public void setInformacionMision(String nom, String desc, String rec, String pjEnt) {
+            setInformacion(nom, desc, null, null, null, null, null, null, null, null, rec, pjEnt, null);
+        }
+
+        public void setInformacionEstadistica(String nom, String desc, String not) {
+            setInformacion(nom, desc, null, null, null, null, null, null, null, null, null, null, not);
         }
 
         public String getMensajeIcon() {
@@ -1766,7 +1923,6 @@ public class Manager extends JGEngine {
                                 if (it.hasNext()) {
                                     Map.Entry e = (Map.Entry) it.next();
                                     Habilidad hab = listHab.getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad();
-                                    System.out.println("DATO QLIO: " + hab.getDescripcion());
                                     cantidad++;
                                     hmIcono.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab));
 
@@ -1858,4 +2014,6 @@ public class Manager extends JGEngine {
             this.tabla = tabla;
         }
     }
+
+
 }

@@ -13,6 +13,8 @@ public class Boton extends JGObject {
      * 0 = cerrar
      * 1 = sumar
      * 2 = continuar
+     * 3 = ver
+     * 4 = abandonar
      */
     private int tipo_boton;
     private boolean apretado;
@@ -62,6 +64,7 @@ public class Boton extends JGObject {
     public void move(){
         x = xAnt + eng.viewXOfs();
         y = yAnt + eng.viewYOfs();
+        
     }
 
     public void pintar(){
@@ -74,6 +77,14 @@ public class Boton extends JGObject {
 
     public void setTipo_boton(int tipo_boton) {
         this.tipo_boton = tipo_boton;
+    }
+
+    public void setxAnt(double xAnt) {
+        this.xAnt = xAnt;
+    }
+
+    public void setyAnt(double yAnt) {
+        this.yAnt = yAnt;
     }
 
 
