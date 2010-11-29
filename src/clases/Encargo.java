@@ -38,7 +38,7 @@ public class Encargo {
         this.idPersonaje = idPersonaje;
     }
 
-    private HashMap<Short, UnEncargo> getMisiones() {
+    public HashMap<Short, UnEncargo> getMisiones() {
         return misiones_activas;
     }
 
@@ -66,7 +66,7 @@ public class Encargo {
 
     /**
      * Elimina una mision, se setean los datos para 
-     * que sea eliminada en al base de datos
+     * que sea eliminada en al base de datos...rol personaje = -1 (invalido)
      * @param idMision
      */
     public void abandonaMision(short idMision) {
@@ -145,6 +145,7 @@ public class Encargo {
                 + " WHERE personaje_id = " + id
                 + " AND updated_at IS NULL";
         System.out.println(StrSql);
+        this.misiones_activas = new HashMap<Short, UnEncargo>();
         try {
             ResultSet res = conexion.Consulta(StrSql);
             while (res.next()) {
@@ -155,6 +156,9 @@ public class Encargo {
                 mision.setRolPersonaje(res.getShort("rolpersonaje"));
                 mision.setFechaFin(null);
                 mision.setNewEncargo(false);
+                Mision mis = new Mision();
+                mis.setMision(mision.getIdMision());
+                mision.setMision(mis);
                 this.misiones_activas.put(mision.getIdMision(), mision);
             }
         } catch (SQLException ex) {
@@ -280,7 +284,7 @@ public class Encargo {
             }
         }
     }
-    private class UnEncargo {
+    public class UnEncargo {
 
         private short idPersonaje;
         private short idMision;
@@ -288,7 +292,17 @@ public class Encargo {
         private short rolPersonaje;
         private Date fechaFin;
         private boolean newEncargo;
+        private Mision mision = new Mision();
 
+        public Mision getMision() {
+            return mision;
+        }
+
+        public void setMision(Mision mision) {
+            this.mision = mision;
+        }
+
+        
         public boolean isNewEncargo() {
             return newEncargo;
         }

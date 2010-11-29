@@ -60,15 +60,19 @@ casa4Npc	-	0	/media/imagenes/npc/npc1.png	-
 //npc's
 casa5Npc	-	0	/media/imagenes/npc/npc4.png	-
 *************************************************************define imagenes GUI
-cursor	-	0	/media/imagenes/menu/banana-con-capa.gif	-
+cursor	-	0	/media/imagenes/menu/cursor.png	-
 //define imagen del npc vendedor
 vendedor	-	0	/media/imagenes/npc/vendedor.png	-
 //define imagen de la ventana de trade
 ventana trade	-	0	/media/imagenes/npc/ventana_trade.png	-
 //define imagen boton cerrar
-cerrar	-	0	/media/imagenes/npc/cerrar.png	-
+cerrar	-	0	/media/imagenes/menu/cerrar.png	-
 //define imagen boton suma habilidades/estadisticas
-suma	-	0	/media/imagenes/npc/suma.png	-
+suma	-	0	/media/imagenes/menu/suma.png	-
+//define imagen boton ver habilidades/estadisticas/mision
+ver	-	0	/media/imagenes/menu/?.png	-
+//define imagen boton abandonar mision
+abandonar	-	0	/media/imagenes/menu/x.png	-
 //******************************************************************************
 //                      Iconos
 //******************************************************************************
