@@ -45,6 +45,10 @@ public class Mob extends Personaje {
     public Mob() {
     }
 
+
+public void cargarInventario(){
+
+}
     @Override
     public void cargarPersonaje(Short id) {
         conexion = new dbDelegate();
@@ -86,6 +90,8 @@ public class Mob extends Personaje {
         this.setHp();
         this.setMp();
     }
+
+
 
     @Override
     public void move() {

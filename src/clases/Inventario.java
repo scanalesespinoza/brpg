@@ -19,6 +19,17 @@ public class Inventario {
     private short idPersonaje;
     private dbDelegate conexion;
     private HashMap<Short, Item> objetos;//contiene los objetos del personaje
+    private HashMap<Short, Item> respaldoObjetos;
+
+    public HashMap<Short, Item> getRepaldoObjetos() {
+        return respaldoObjetos;
+    }
+
+    public void setRepaldoObjetos(HashMap<Short, Item> repaldoObjetos) {
+        this.respaldoObjetos = repaldoObjetos;
+    }
+
+    
 
     public Inventario() {
         this.objetos = new HashMap<Short, Item>();
@@ -61,6 +72,7 @@ public class Inventario {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }
 
+        repaldarInventario(objetos);
     }
 
     /************************IMPORTANTE*****************************************/
@@ -316,6 +328,20 @@ public class Inventario {
 
     public HashMap<Short, Item> getObjetos() {
         return objetos;
+    }
+
+    private void repaldarInventario(HashMap<Short, Item> objetos) {
+        this.respaldoObjetos = objetos;
+        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuoiuasodiuasdasdasdasd "+ respaldoObjetos.isEmpty());
+        
+    }
+    public void restablecerInventario(){
+        this.objetos = this.respaldoObjetos;
+        System.out.println("uuuusuuuuuuuuuuuuuuuuuuuuuuuuoiuasodiuasdasdasdasd "+ objetos.isEmpty());
+    }
+    public void respaldarInventario(){
+        this.respaldoObjetos = this.objetos;
+
     }
 
     public class Item {

@@ -4,6 +4,7 @@
  */
 package clases;
 
+import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -27,7 +28,8 @@ public class menuJuego extends JGObject {
     private Habilidad hab = new Habilidad();
     private Objeto obj = new Objeto();
     private Jugador pjTest;
-    private HashMap<Integer, Icono> hmPj = new HashMap<Integer, Icono>();
+    private HashMap<Integer, Icono> hmPjItem = new HashMap<Integer, Icono>();
+    private HashMap<Integer, Icono> hmPjHabilidades = new HashMap<Integer, Icono>();
     private HashMap<Integer, Icono> hmNpc = new HashMap<Integer, Icono>();
     private int pos_inicial_x, pos_inicial_y;
     private JGPoint recorrido;
@@ -39,6 +41,35 @@ public class menuJuego extends JGObject {
     private HashMap<Short, Habilidad> habilidades;
     private HashMap<Short, Boton> botones_mision_ver, botones_mision_abandonar;
     private int menuActual = 0;
+    private StdScoring stdScorePj ;
+    private StdScoring stdScoreNpc ;
+
+    public StdScoring getStdScoreNpc() {
+        return stdScoreNpc;
+    }
+
+    public void setStdScoreNpc(StdScoring stdScoreNpc) {
+        this.stdScoreNpc = stdScoreNpc;
+    }
+
+    public StdScoring getStdScorePj() {
+        return stdScorePj;
+    }
+
+    public void setStdScorePj(StdScoring stdScorePj) {
+        this.stdScorePj = stdScorePj;
+    }
+
+
+
+    public HashMap<Integer, Icono> getHmPjHabilidades() {
+        return hmPjHabilidades;
+    }
+
+    public void setHmPjHabilidades(HashMap<Integer, Icono> hmPjHabilidades) {
+        this.hmPjHabilidades = hmPjHabilidades;
+    }
+
 
     public HashMap<Integer, Icono> getHmNpc() {
         return hmNpc;
@@ -65,11 +96,11 @@ public class menuJuego extends JGObject {
     }
 
     public HashMap<Integer, Icono> getHm() {
-        return hmPj;
+        return hmPjItem;
     }
 
     public void setHm(HashMap<Integer, Icono> hm) {
-        this.hmPj = hm;
+        this.hmPjItem = hm;
     }
 
     public menuJuego(String string, boolean bln, double d, double d1, int i, String string1, Jugador pj) {
@@ -171,9 +202,7 @@ public class menuJuego extends JGObject {
                 //Dibujo todas las habilidades que el sistema posee
                 //si el personaje no tiene la habilidad o no la tiene al maximo nivel.. se muestra
                 //el boton =)
-                if (pj.getTotalPuntosHabilidad() > 0) {
-                    eng.drawString("Ptos. Restantes:" + pj.getTotalPuntosHabilidad(), eng.viewWidth() - 75, 20, -1);
-                }
+               
                 String linea_menu = "";
                 Iterator it = this.botones_habilidad_aumentar.entrySet().iterator();
                 linea = 30;
@@ -200,6 +229,9 @@ public class menuJuego extends JGObject {
                     eng.drawString(linea_menu, eng.viewWidth() - 75, linea, -1);
                     linea += 15;
                 }
+                 if (pj.getTotalPuntosHabilidad() > 0) {
+                    eng.drawString("Ptos. Restantes:" + pj.getTotalPuntosHabilidad(), eng.viewWidth() - 75, 20, -1);
+                } else suspenderBotones(1);
 
                 break;
             case 2/*"mision"*/:
@@ -339,45 +371,64 @@ public class menuJuego extends JGObject {
     }
 
     public void paintB() {
-        if (eng.inGameState("InCombat")) {
-            eng.drawImage(0, 0, "combate", false);
+
+
+        if ((eng.inGameState("InCombat")||(eng.inGameState("InReward")))) {
+//            eng.drawImage(0, 0, "combate", false);
+            if((stdScorePj!=null)){
+                
+                stdScorePj.paintB();
+            }else if((stdScoreNpc!=null)){
+                stdScoreNpc.paintB();
+            }
         }
 
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
         eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
+        eng.setFont(new JGFont("Arial", 1, 18));
+        eng.setColor(JGColor.white);
+        eng.drawString("Items", 20,eng.viewHeight() - 70, -1);
+        eng.drawString("Habilidades", 20,eng.viewHeight() - 40, -1);
+        eng.setFont(new JGFont("Arial", 1, 14));
+
         eng.drawImage(eng.viewWidth() - 90, 0, "lateral", false);
         eng.drawImage(eng.viewWidth() - 90, 315, "titulo", false);
         eng.drawImage(eng.viewWidth() - 90, 5, "titulo", false);
 
-        if (eng.inGameState("InCombat")) {
-            setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
-            generaSeccion(1);
+        setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
+        generaSeccion(2);
+        setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
+        generaSeccion(1);
 
-        }
+//        if (eng.inGameState("InCombat")) {
+//            setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
+//            generaSeccion(1);
+//
+//        }
         if (eng.inGameState("InCommerce")) {
 
-            eng.drawImage(20, 20, "trade", false);
-            eng.drawImage(200, 20, "trade", false);
-            setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
-            generaSeccion(1);
-            setSeccion(new JGPoint(250, 25), new JGPoint(3, 4));
+//            eng.drawImage(20, 20, "trade", false);
+            eng.drawImage(150, 200, "trade", false);
+            eng.drawImage(230, 320, "cerrar", false);
+//            setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
+//            generaSeccion(1);
+            setSeccion(new JGPoint(160, 210), new JGPoint(3, 4));
             generaSeccion(0);
 
         }
-        if ((eng.inGameState("InWorld")) && ((eng.getKey(73)) || (eng.getKey(105)))) {
-            eng.setFont(new JGFont("Arial", 1, 14));
-            eng.setColor(JGColor.yellow);
-            eng.drawString("Inventario", eng.viewWidth() - 60, 10, 0);
-            eng.setFont(new JGFont("Arial", 0, 10));
-            eng.setColor(JGColor.white);
-
-            setSeccion(new JGPoint(eng.viewWidth() - 80, 40), new JGPoint(2, 10));
-            generaSeccion(1);
-        }
+//        if ((eng.inGameState("InWorld")) && ((eng.getKey(73)) || (eng.getKey(105)))) {
+//            eng.setFont(new JGFont("Arial", 1, 14));
+//            eng.setColor(JGColor.yellow);
+//            eng.drawString("Inventario", eng.viewWidth() - 60, 10, 0);
+//            eng.setFont(new JGFont("Arial", 0, 10));
+//            eng.setColor(JGColor.white);
+//
+//            setSeccion(new JGPoint(eng.viewWidth() - 80, 40), new JGPoint(2, 10));
+//            generaSeccion(1);
+//        }
 
         if (eng.inGameState("InReward")) {
-            removerIconos();
-            setSeccion(new JGPoint(eng.viewWidth() / 2 - 100, eng.viewHeight() / 2 - 45), new JGPoint(4, 4));
+            setSeccion(new JGPoint(200,200), new JGPoint(4, 4));
             generaSeccion(0);
         }
 
@@ -390,21 +441,70 @@ public class menuJuego extends JGObject {
         if (tipo == 1) {
             setHm(hm);
         }
+        if (tipo == 2) {
+            setHmPjHabilidades(hm);
+        }
         if (tipo == 0) {
             setHmNpc(hm);
         }
 //        System.out.println("HM vacio: "+this.hm.isEmpty());
     }
 
+
+    /**
+     * Pinta iconos
+     * @param tipo Indica que HashMap debe cargarse 0 = NPC, 1 = Personaje
+     */
     public void generaSeccion(int tipo) {
 
         switch (tipo) {
 
             case 1:
-                System.out.println("HM vacio: " + this.hmPj.isEmpty());
-                if (!hmPj.isEmpty()) {
+//                System.out.println("HM vacio: " + this.hmPjItem.isEmpty());
+                if (!hmPjItem.isEmpty()) {
 
-                    Iterator iter = hmPj.entrySet().iterator();
+                    Iterator iter = hmPjItem.entrySet().iterator();
+                    boolean fin = false;
+
+                    while ((this.tabla.y > 0) && (!fin)) {
+                        while ((this.tabla.x > 0) && (!fin)) {
+                            System.out.println("dibuja tabla");
+                            if (iter.hasNext()) {
+                                System.out.println("Has next");
+                                Map.Entry en = (Map.Entry) iter.next();
+                                Icono drawIcon = (Icono) en.getValue();
+                                eng.drawImage(this.recorrido.x, this.recorrido.y, drawIcon.getGraphic(), false);
+                                drawIcon.paintB();
+                                this.recorrido.x += 37;
+                                this.tabla.x--;
+                            } else {
+                                fin = true;
+                            }
+                        }
+                        this.recorrido.x = pos_inicial_x;
+                        this.tabla.x = tabla_inicial_x;
+                        this.tabla.y--;
+                        this.recorrido.y += 37;
+                    }
+
+
+//                    Iterator iter = hm.entrySet().iterator();
+//                    while (iter.hasNext()) {
+//                        Map.Entry en = (Map.Entry) iter.next();
+//                        Icono drawIcon = (Icono) en.getValue();
+//
+//                        eng.drawImage(drawIcon.x, drawIcon.y, drawIcon.getGraphic(), false);
+//
+//                    }
+
+                }
+                break;
+
+            case 2:
+//                System.out.println("HM vacio: " + this.hmPjItem.isEmpty());
+                if (!hmPjHabilidades.isEmpty()) {
+
+                    Iterator iter = hmPjHabilidades.entrySet().iterator();
                     boolean fin = false;
 
                     while ((this.tabla.y > 0) && (!fin)) {
@@ -441,7 +541,7 @@ public class menuJuego extends JGObject {
                 }
                 break;
             case 0:
-                System.out.println("HM vacio: " + this.hmNpc.isEmpty());
+//                System.out.println("HM vacio: " + this.hmNpc.isEmpty());
                 if (!hmNpc.isEmpty()) {
 
                     Iterator iter = hmNpc.entrySet().iterator();
@@ -481,6 +581,13 @@ public class menuJuego extends JGObject {
                 }
                 break;
         }
+    }
+
+    public void recibeScore(StdScoring stdScorePj,StdScoring stdScoreNpc){
+        stdScorePj = null;
+        stdScoreNpc = null;
+        setStdScorePj(stdScorePj);
+        setStdScoreNpc(stdScoreNpc);
     }
 
     public void setSeccion(JGPoint posicion, JGPoint tabla) {

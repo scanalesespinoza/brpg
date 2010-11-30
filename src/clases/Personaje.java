@@ -156,6 +156,7 @@ public class Personaje extends extensiones.StdDungeon {
 
 
     }
+
     /*
      * Carga los datos del personaje desde la base de datos
      */
