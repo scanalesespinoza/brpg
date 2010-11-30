@@ -68,7 +68,7 @@ public class Boton extends JGObject {
     }
 
     public void pintar(){
-        eng.drawImage(x, y, this.getGraphic());
+        eng.drawImage(xAnt, yAnt, this.getGraphic(),false);
     }
 
     public int getTipo_boton() {
