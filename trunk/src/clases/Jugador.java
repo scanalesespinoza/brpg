@@ -210,7 +210,8 @@ public class Jugador extends Personaje {
         if (this.getExperiencia() + exp >= this.getLimiteSuperiorExperiencia()) {//persoanje subió de nivel
             short resto = (short) ((this.getExperiencia() + exp)-(this.getLimiteSuperiorExperiencia())) ;
             subirNivel();
-            this.setExperiencia(resto);
+            this.aumentarExperiencia(resto);
+            System.out.println("resto :"+resto);
         }else this.setExperiencia(this.getExperiencia() + exp);
 
     }
@@ -313,25 +314,23 @@ public class Jugador extends Personaje {
 
     @Override
     public void hit(JGObject obj) {
-         System.out.println("CHOQUE CON :"+obj.colid);
+        System.out.println("ME EJECUTE :");
         switch (obj.colid) {
-            case 2:
-
+            case 8:
                 ydir = 0;
                 bloquear();
                 suspend();
-
-
                 this.setInteractuarNpc(true);
-                System.out.println("Nombre del objeto colisionador: " + getGraphic() + getName());
-
+                System.out.println("Nombre del objeto colisionador: " + obj.getGraphic() + obj.getName());
                 this.npcInterac = (Npc) obj;
                 break;
             case 4:
                 this.enemigo = (Mob) obj;
+                System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrRRR: "+ obj.getGraphic());
                
                 break;
             default:
+                System.out.println("RRR: "+ obj.getGraphic());
                 break;
         }
     }

@@ -46,7 +46,13 @@ people3	-	0	/media/imagenes/npc/npc_people3.png	-
 people4	-	0	/media/imagenes/npc/npc_people4.png	-
 perdido	-	0	/media/imagenes/npc/npc_perdido.gif	x
 escultura	-	0	/media/imagenes/npc/npc_escultura.png	x
-mob_1	-	0	/media/imagenes/mobs/mob_aura.gif	-
+mob_1	-	0	/media/imagenes/mobs/mob_animal.png	-
+mob_2	-	0	/media/imagenes/mobs/mob_2.png	-
+mob_3	-	0	/media/imagenes/mobs/mob_3.gif	-
+mob_4	-	0	/media/imagenes/mobs/mob_4.gif	-
+mob_5	-	0	/media/imagenes/mobs/mob_5.PNG	-
+mob_6	-	0	/media/imagenes/mobs/mob_6.png	-
+boss_1	-	0	/media/imagenes/mobs/mob_1.gif	-
 //npc's
 alcaldiaNpc	-	0	/media/imagenes/npc/npc4.png	-
 //npc's

@@ -29,33 +29,29 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 1;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 13;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
     //Personajes del juego
     public Jugador pj;
     public Mob mob;
-    public Mob mob2;
-    public Mob mob3;
     public Npc casa1;
     public Npc casa1Npc;
     public Npc alcaldia;
     public Npc alcalde;
-    public Npc casa2;
-    public Npc casa2Npc;
-    public Npc casa3;
-    public Npc casa3Npc;
-    public Npc casa4;
-    public Npc casa4Npc;
-    public Npc casa5;
-    public Npc casa5Npc;
-    public Npc pasto1;
-    public Npc pasto2;
-    public Npc arbol1;
-    public Npc arbol2;
-    public Npc pileta;
-    public Npc vendedor;
+    public Npc npc_vendedor_1; // id = 1
+    public Npc npc_vendedor_2; // id = 2
+    public Npc npc_encargo_1; // id = 3
+    public Npc npc_encargo_2; // id = 4
+    public Npc npc_encargo_3; // id = 5
+    public Mob mob_facil_1; // id = 6
+    public Mob mob_facil_2; // id = 7
+    public Mob mob_medio_1; // id = 8
+    public Mob mob_medio_2; // id = 9
+    public Mob mob_dificil_1; // id = 10
+    public Mob mob_dificil_2; // id = 11
+    public Mob mob_jefe_final; // id = 12
     public Seccion seccion = new Seccion();
     public Seccion seccionNpc = new Seccion();
 
@@ -67,6 +63,7 @@ public class Manager extends JGEngine {
     private JGTimer tiempoRegenerar, respawn_mob, respawn_pj;
     private HashMap<Short, Habilidad> habilidades;
     private HashMap<Short, Mision> misiones;
+    private Npc npc_interaccion;
 
     public Icono getIcon() {
         return icon;
@@ -75,8 +72,6 @@ public class Manager extends JGEngine {
     public void setIcon(Icono icon) {
         this.icon = icon;
     }
-
-    
     /*
      * Objetos menú
      */
@@ -127,7 +122,6 @@ public class Manager extends JGEngine {
     public void initCanvas() {
         // we set the background colour to same colour as the splash background
         setCanvasSettings(40, 30, 16, 16, JGColor.black, new JGColor(255, 246, 199), null);
-
     }
 
     @Override
@@ -169,8 +163,36 @@ public class Manager extends JGEngine {
 //        setCursor(null);
         inicializarTeclas();
         try {
+            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
+            mob_facil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 7, "mob_facil_2", "mob_2", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 7
+
+            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
+            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
+
+            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
+            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
+
+            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
+
+            mob_facil_1.cargarDatos((short)6);
+            mob_facil_2.cargarDatos((short)7);
+            mob_medio_1.cargarDatos((short)8);
+            mob_medio_2.cargarDatos((short)9);
+            mob_dificil_1.cargarDatos((short)10);
+            mob_dificil_2.cargarDatos((short)11);
+            mob_jefe_final.cargarDatos((short) 12);
+            
+            mob_facil_1.resume_in_view = false;
+            mob_facil_2.resume_in_view = false;
+            mob_medio_1.resume_in_view = false;
+            mob_medio_2.resume_in_view = false;
+            mob_dificil_1.resume_in_view = false;
+            mob_dificil_2.resume_in_view = false;
+            mob_jefe_final.resume_in_view = false;
+            
+            dibujarObjetosEscenario();
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            casa1 = new Npc(680, 660, "casa1", "casa3", 2, 0, (short) 100,
+            casa1 = new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 3), 0, (short) 100,
                     new String[]{"Hola amigo",
                         "Miguel: Como estas, espero mejor que yo",
                         "Me doy cuenta que no eres de estos lados",
@@ -183,33 +205,14 @@ public class Manager extends JGEngine {
                         "20 serán suficientes, en la cuidad suelen",
                         "crecer en la humedad de las rocas."
                     });//casa superior
-            casa2 = new Npc(80, 400, "casa2", "casa2", 8, 0, (short) 101, new String[]{"Casa 2"});
-            casa3 = new Npc(350, 448, "casa3", "casa4", 8, 0, (short) 102, new String[]{"Casa 3"});
-            casa4 = new Npc(80, 634, "casa3", "casa3", 8, 0, (short) 103, new String[]{"Casa 3"});
-            casa5 = new Npc(350, 682, "casa3", "casa5", 8, 0, (short) 104, new String[]{"Casa 3"});
-            alcaldia = new Npc(700, 75, "alcaldia", "casa4", 2, 0, (short) 105, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
+
+            alcaldia = new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 3), 0, (short) 105, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
             //pasto1 = new Npc(192,128,"pasto","pasto",4,0,new String[]{"Hola amiguirijillo","soy pastillo1"});//pasto
-            arbol1 = new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-            arbol2 = new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-            pileta = new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-            vendedor = new Npc(1040, 416, "vendedor", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-            vendedor.cargarDatos((short) 22);
-            System.out.println("ID vendedor: " + vendedor.getIdPersonaje() + "---" + vendedor.getIdNpc());
-            //instancia mob y define como objeto home a pj
-            this.mob = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "Mario", "mario", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2));
-            this.mob.cargarDatos((short) 40);
-            this.mob.resume_in_view = false;
-            new Npc(16 * 80, 16 * 12, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
-            new Npc(16 * 80, 16 * 21, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
-            new Npc(16 * 16, 16 * 12, "viajero", "viajero", 0, (short) 4, (short) 20, new String[]{"Viajero: "});
-            new Npc(16 * 10, 16 * 17, "mono", "mono", 0, (short) 4, (short) 20, new String[]{"Mono: "});
-            new Npc(16 * 10, 16 * 110, "perdido", "perdido", 0, (short) 4, (short) 20, new String[]{"perdido: "});
-            new Npc(16 * 80, 16 * 8, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
-            new Npc(16 * 80, 16 * 24, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
-            this.mob2 = new Mob(140 * 16, 110 * 16, 0, (short) 100, "Boss_1", "mob_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2));
-            this.mob2.cargarDatos((short) 40);
-            this.mob2.setPos(140 * 16, 110 * 16);
-            this.mob2.resume_in_view = false;
+
+            npc_vendedor_1 = new Npc(1040, 416, "vendedor", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+            npc_vendedor_1.cargarDatos((short) 1);
+            System.out.println("ID vendedor: " + npc_vendedor_1.getIdPersonaje() + "---" + npc_vendedor_1.getIdNpc());
+
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
@@ -259,8 +262,6 @@ public class Manager extends JGEngine {
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->manager , método-Linea 255 " + ex);
         }
-
-
         setGameState("Title");
     }
     /** View offset. */
@@ -287,10 +288,9 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInWorld() {
-
-        if(cursor.isLimpiarIconos()){
+        if (cursor.isLimpiarIconos()) {
             seccion.removerIconos();
-            
+
         }
 
         pj.desbloquear();
@@ -315,7 +315,7 @@ public class Manager extends JGEngine {
             try {
                 casa1 = new Npc(viewXOfs() + 380, viewYOfs() + 120, pj.npcInterac.getNomNpc() + "Npc", pj.npcInterac.getNomNpc() + "Npc", 51, (short) (pj.npcInterac.getIdNpc()), (short) 1, (short) 1, pj.npcInterac.obtieneDialogo());
                 // casa1.realizaTarea(pj);
-                asd = new Ventana(300, 300, casa1.obtieneDialogo());//casa superior);
+                //asd = new Ventana(300, 300, casa1.obtieneDialogo());//casa superior);
             } catch (Exception ex) {
                 System.out.println("Extrae datos del HashMap: fsdfsdfsd" + ex);
             }
@@ -433,8 +433,8 @@ public class Manager extends JGEngine {
 //            seccion.removerIconos();
 //        }
 
-        drawString("SEGUNDO: " + seg, viewXOfs() + 200 / 2, viewHeight() / 2, 1);
-        drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
+        drawString("SEGUNDO: " + seg, +200 / 2, viewHeight() / 2, 1);
+        //drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
 
         //drawImage(cursor.x, cursor.y, "cursor");
         if (getKey(KeyEsc)) {
@@ -447,7 +447,7 @@ public class Manager extends JGEngine {
             }
         }
         if (interactuar > 0) {
-            asd.avanzarTexto();
+            //asd.avanzarTexto();
         }
 
         /**
@@ -567,18 +567,18 @@ public class Manager extends JGEngine {
     @Override
     public void paintFrame() {
 
-        
+
 
         seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
-        menu.recibeHm(hmIconoHabilidades,2);
+        menu.recibeHm(hmIconoHabilidades, 2);
 
-        
+
 
         seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
         menu.recibeHm(hmIconoItem, 1);
-        
+
         seccion.setWorking(true);
         menu.paintB();
         cursor.desplegarInformacion();
@@ -607,41 +607,7 @@ public class Manager extends JGEngine {
             cursor.limpiarInformacion();
         }
 
-
-
-
-        if (inGameState("InCombat")) {
-            if (mob.getHp() <= 0) {
-
-                final Mob enemigo_procesar = (Mob) getObject(mob.getName());
-                if (respawn_mob == null) {
-                    System.out.println("CREO JGTIMER");
-
-                    respawn_mob = new JGTimer((int) (getFrameRate() * 60 * 1), true) {
-
-                        @Override
-                        public void alarm() {
-                            System.out.println("Alarmeban");
-                            enemigo_procesar.resume();
-                            enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
-                            enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
-                            mob.getInventario().restablecerInventario();
-                            System.out.println("qweqweqweqwe"+mob.getInventario().getObjetos().get(1));
-
-                        }
-                    };
-                    respawn_mob = null;
-                }
-
-                mob.suspend();
-                seccion.removerIconos();
-                cursor.setVentana((byte) (1));
-                setGameState("InReward");
-            }
-        }
-
-
-        moveObjects(null, (int) Math.pow(2, 7));
+       moveObjects(null, (int) Math.pow(2, 7));
     }
 
     public void paintFrameInDeath() {
@@ -719,10 +685,10 @@ public class Manager extends JGEngine {
                     mob.recibirDañoBeneficio(-mob.getHpMax());
 
                     //si no es beneficio al jugador
-                    menu.recibeScore(null,new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
+                    menu.recibeScore(null, new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
                 } else {
                     pj.recibirDañoBeneficio(dañoBeneficio);
-                    menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5),null);
+                    menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5), null);
                 }
             }
             setIcon(null);
@@ -774,6 +740,29 @@ public class Manager extends JGEngine {
             };
         }
 
+        if (mob.getHp() <= 0) {
+                final Mob enemigo_procesar = (Mob) getObject(mob.getName());
+                if (respawn_mob == null) {
+                    System.out.println("CREO JGTIMER");
+                    respawn_mob = new JGTimer((int) (getFrameRate() * 60 * 1), true) {
+
+                        @Override
+                        public void alarm() {
+                            System.out.println("Alarmeban");
+                            enemigo_procesar.resume();
+                            enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
+                            enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
+                            mob.getInventario().restablecerInventario();
+                            System.out.println("qweqweqweqwe" + mob.getInventario().getObjetos().get(1));
+                        }
+                    };
+                    respawn_mob = null;
+                }
+                mob.suspend();
+                seccion.removerIconos();
+                cursor.setVentana((byte) (1));
+                setGameState("InReward");
+            }
 //        if (mob.getHp() <= 0) {
 //            //personaje recibe experiencia
 //
@@ -792,9 +781,11 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInInteraction() {
+        asd = new Ventana(300, 300, pj.npcInterac.obtieneDialogo());//casa superior);
     }
 
     public void doFrameInInteraction() {
+        asd.avanzarTexto();
     }
 
     public void doFrameInReward() {
@@ -815,21 +806,19 @@ public class Manager extends JGEngine {
             clearMouseButton(1);
             cursor.setLimpiarIconos(true);
             pj.bloquear();
-            System.out.println("asdasdasd"+mob.getInventario().getObjetos().get(1));
+            System.out.println("asdasdasd" + mob.getInventario().getObjetos().get(1));
             setGameState("InWorld");
-        }else{
+        } else {
 
-        interacVentana(mob, "InReward");
+            interacVentana(mob, "InReward");
         }
     }
 
     public void paintFrameInReward() {
 //        new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
-
 //        seccion.setSeccion(new JGPoint(viewWidth() / 2, viewHeight() / 2), new JGPoint(4, 4));
 //        seccionNpc.generaSeccion(mob, 1);
 //        menu.recibeHm(hmIconoItem, 0);
-
     }
 
     public void paintFrameInCommerce() {
@@ -837,7 +826,6 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInCommerce() {
-
         checkCollision(
                 (int) Math.pow(2, 5) + (int) Math.pow(2, 0), // Colisión entre botones  + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
@@ -846,10 +834,7 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre iconos  + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
-
-
-        interacVentana(pj, vendedor, "InWorld");
-
+        interacVentana(pj, npc_vendedor_1, "InWorld");
     }
 
     public void capturarTeclas() {
@@ -907,7 +892,6 @@ public class Manager extends JGEngine {
     public boolean isPresionada(int tecla) {
         if (teclas.containsKey(tecla)) {
             teclas.put(tecla, false);
-
             return true;
         }
         return false;
@@ -1284,7 +1268,7 @@ public class Manager extends JGEngine {
             seccion.setWorking(false);
             seccionNpc.setWorking(false);
 
-            pj.colid = 0;
+//            pj.colid = 0;
             seccion.generaSeccion(pj, 1);
             menu.recibeHm(hmIconoItem, 1);
             pj.bloquear();
@@ -1315,16 +1299,16 @@ public class Manager extends JGEngine {
             pj.colid = 2;
 
 
-
-            
             if (cursor.getVentana() == 4) {
                 cursor.setVentana((byte) 1);
                 System.out.println("setVentana antes InWorld:" + cursor.getVentana());
 
-            }else{cursor.setVentana((byte) 0);}
+            } else {
+                cursor.setVentana((byte) 0);
+            }
 //            cursor.setVentana((byte) 0);
             setGameState(estado);
-            }
+        }
 
 
     }
@@ -1343,12 +1327,12 @@ public class Manager extends JGEngine {
             seccion.setWorking(false);
             seccionNpc.setWorking(false);
 
-            pj.colid = 0;
+//            pj.colid = 0;
             seccion.generaSeccion(pj, 1);
             menu.recibeHm(hmIconoItem, 1);
             pj.bloquear();
 
-            seccionNpc.setSeccion(new JGPoint(200,200), new JGPoint(6, 1));
+            seccionNpc.setSeccion(new JGPoint(200, 200), new JGPoint(6, 1));
             seccionNpc.generaSeccion(mob, 1);
             seccionNpc.setWorking(true);
             menu.recibeHm(hmIconoItem, 0);
@@ -1381,11 +1365,30 @@ public class Manager extends JGEngine {
                 cursor.setVentana((byte) 1);
                 System.out.println("setVentana antes InWorld:" + cursor.getVentana());
 
-            }else{cursor.setVentana((byte) 0);}
+            } else {
+                cursor.setVentana((byte) 0);
+            }
 //            cursor.setVentana((byte) 0);
             setGameState(estado);
-            }
+        }
 
+    }
+
+    private void dibujarObjetosEscenario() throws SQLException {
+        new Npc(80, 400, "casa2", "casa2", 8, 0, (short) 101, new String[]{"Casa 2"});
+        new Npc(350, 448, "casa3", "casa4", 8, 0, (short) 102, new String[]{"Casa 3"});
+        new Npc(80, 634, "casa3", "casa3", 8, 0, (short) 103, new String[]{"Casa 3"});
+        new Npc(350, 682, "casa3", "casa5", 8, 0, (short) 104, new String[]{"Casa 3"});
+        new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+        new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+        new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
+        new Npc(16 * 80, 16 * 12, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 80, 16 * 21, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 16, 16 * 12, "viajero", "viajero", 0, (short) 4, (short) 20, new String[]{"Viajero: "});
+        new Npc(16 * 10, 16 * 17, "mono", "mono", 0, (short) 4, (short) 20, new String[]{"Mono: "});
+        new Npc(16 * 10, 16 * 110, "perdido", "perdido", 0, (short) 4, (short) 20, new String[]{"perdido: "});
+        new Npc(16 * 80, 16 * 8, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(16 * 80, 16 * 24, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
     }
 
     public class Ventana {
@@ -1613,25 +1616,6 @@ public class Manager extends JGEngine {
         }
     }
 
-//    public class Boton extends JGObject {
-//
-//        public Boton(String nombre, String graf, double x, double y, int cid) {
-//            super(nombre, false, x, y, (int) Math.pow(2, 5), graf);
-//        }
-//
-//        @Override
-//        public void hit(JGObject obj) {
-//            System.out.println("hit boton");
-//            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla npc"))) {
-//                System.out.println("Has vendido item");
-//                new Ventana("Has vendido item");
-//            }
-//            if ((obj.colid == (int) Math.pow(2, 4)) && (!getMouseButton(3)) && (obj.getGraphic().equals("grilla pj"))) {
-//                System.out.println("Has comprado item");
-//                new Ventana("Has comprado item");
-//            }
-//        }
-//    }
     public class Cursor extends JGObject {
 
         private String mensaje = new String();
@@ -1663,8 +1647,6 @@ public class Manager extends JGEngine {
             this.limpiarIconos = limpiarIconos;
         }
 //        private String nombre, descripcion,
-
-        
 
         public JGPoint getPuntos() {
             return puntos;
@@ -1738,7 +1720,8 @@ public class Manager extends JGEngine {
             }
 
 //            if (obj.getGraphic().equals("mario")) {
-            setMensaje("Soy " + obj.getGraphic());
+
+            setMensaje("Soy " + obj.getName());
 //            }
             if (obj.getGraphic().equals("vendedor")) {
                 setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
@@ -1868,7 +1851,7 @@ public class Manager extends JGEngine {
             if (obj.colid == (int) Math.pow(2, 4)) {
                 Icono icon = (Icono) obj;
                 if (inGameState("InCommerce")) {
-                    if ((getMouseButton(3)) && icon.belongTo(vendedor.getTipo())) {
+                    if ((getMouseButton(3)) && icon.belongTo(npc_vendedor_1.getTipo())) {
                         clearMouseButton(3);
                         if (pj.validarDinero(icon.getItem().getValorDinero())) {
                             pj.getInventario().agregarItem(icon.getIdObjeto());
@@ -1902,6 +1885,7 @@ public class Manager extends JGEngine {
             }
 
         }
+
         public void desplegarInformacion() {
             setFont(new JGFont("Arial", 0, 10));
             setColor(JGColor.white);
@@ -1924,9 +1908,9 @@ public class Manager extends JGEngine {
                 drawString("Uso Combate : " + usoCombat, viewWidth() / 2, viewHeight() - 50, -1);
             }
             if (danoBeneficio != null) {
-                if (Integer.parseInt(danoBeneficio) > 0){
+                if (Integer.parseInt(danoBeneficio) > 0) {
                     drawString("Beneficio : " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
-                }else if (Integer.parseInt(danoBeneficio)< 0){
+                } else if (Integer.parseInt(danoBeneficio) < 0) {
                     drawString("Daño : " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
                 }
             }
@@ -1964,9 +1948,11 @@ public class Manager extends JGEngine {
             this.nota = not;
 
         }
-        public void limpiarInformacion(){
+
+        public void limpiarInformacion() {
             setInformacion(null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
+
         public void setInformacionHabilidad(String nom, String desc, String dano, String cos, String pmaxLvl) {
             setInformacion(nom, desc, null, null, null, null, dano, cos, null, pmaxLvl, null, null, null);
         }
@@ -2028,7 +2014,7 @@ public class Manager extends JGEngine {
                                     Habilidad hab = listHab.getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad();
                                     cantidad++;
                                     hmIconoHabilidades.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab));
-                                    if(inGameState("InReward")){
+                                    if (inGameState("InReward")) {
                                         System.out.println("Item in reward");
                                     }
                                     this.recorrido.x += 37;
@@ -2059,7 +2045,7 @@ public class Manager extends JGEngine {
                                     System.out.println("Cantidad: ");
                                     if (inv.tieneItem(obje.getIdObjeto())) {
                                         cantidad++;
-                                        System.out.println("aquiiiii"+obje.getNombre()+obje.getIdObjeto());
+                                        System.out.println("aquiiiii" + obje.getNombre() + obje.getIdObjeto());
                                         hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
                                         setFont(new JGFont("Arial", 0, 24));
 //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);

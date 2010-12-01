@@ -7,6 +7,7 @@ package clases;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,7 +22,7 @@ public class Encargo {
     private short idPersonaje;
     private dbDelegate conexion;
     private HashMap<Short, UnEncargo> misiones_activas;//contiene las misiones del personaje
-    private UnEncargo[] misiones_finalizadas;
+    private ArrayList<UnEncargo> misiones_finalizadas;
 
     public Encargo(short idPj) {
         this.idPersonaje = idPj;
@@ -78,8 +79,8 @@ public class Encargo {
      * @param idMision
      */
     public void completarMision(short idMision) {
-        this.misiones_finalizadas[this.misiones_finalizadas.length] = this.getMisiones().get(idMision);
-        this.misiones_finalizadas[this.misiones_finalizadas.length].setFechaFin(Date.valueOf(getFecha()));
+        this.misiones_finalizadas.add(this.misiones_finalizadas.size(), this.getMisiones().get(idMision));
+        this.misiones_finalizadas.get(this.misiones_finalizadas.size()-1 ).setFechaFin(Date.valueOf(getFecha()));
         this.getMisiones().remove(idMision);
     }
 
@@ -114,7 +115,7 @@ public class Encargo {
         String StrSql = "SELECT * FROM encargo "
                 + " WHERE personaje_id = " + id
                 + " AND updated_at IS NOT NULL";
-        System.out.println(StrSql);
+        misiones_finalizadas = new ArrayList<UnEncargo>();
         try {
             ResultSet res = conexion.Consulta(StrSql);
             byte i = 0;
@@ -124,9 +125,9 @@ public class Encargo {
                 mision.setIdPersonaje(res.getShort("personaje_id"));
                 mision.setFechaComienzo(res.getDate("created_at"));
                 mision.setRolPersonaje(res.getShort("rolpersonaje"));
-                mision.setFechaFin(res.getDate("fechaFin"));
+                mision.setFechaFin(res.getDate("updated_at"));
                 mision.setNewEncargo(false);
-                misiones_finalizadas[i] = mision;
+                misiones_finalizadas.add(i, mision);
                 i += 1;
             }
         } catch (SQLException ex) {
@@ -168,10 +169,10 @@ public class Encargo {
 
     }
 
-    private boolean isHizoMision(short idMision) {
+    public boolean isHizoMision(short idMision) {
         byte i = 0;
-        while (i < this.misiones_finalizadas.length) {
-            if (this.misiones_finalizadas[i].getIdMision() == idMision) {
+        while (i < this.misiones_finalizadas.size()) {
+            if (this.misiones_finalizadas.get(i).getIdMision() == idMision) {
                 Mision mision = new Mision();
                 mision.setMision(idMision);
                 if (mision.isRepetible()) {
@@ -217,14 +218,14 @@ public class Encargo {
         //Seccion de misioens contenidas en el arreglo que representan las misiones
         //que el jugador ya ha hecho
         byte i = 0;
-        while (i < misiones_finalizadas.length) {
-            if (!misiones_finalizadas[i].isNewEncargo()) {
+        while (i < misiones_finalizadas.size()) {
+            if (!misiones_finalizadas.get(i).isNewEncargo()) {
                 String StrSql = "UPDATE Encargo"
-                        + "   SET rolpersonaje = " + misiones_finalizadas[i].getRolPersonaje() + ","
-                        + "       updated_At = " + misiones_finalizadas[i].getFechaFin()
+                        + "   SET rolpersonaje = " + misiones_finalizadas.get(i).getRolPersonaje() + ","
+                        + "       updated_At = " + misiones_finalizadas.get(i).getFechaFin()
                         + " WHERE personaje_id = " + this.getIdPersonaje()
-                        + "   AND mision_id = " + misiones_finalizadas[i].getIdMision()
-                        + "   AND created_at = '" + misiones_finalizadas[i].getFechaComienzo() + "'";
+                        + "   AND mision_id = " + misiones_finalizadas.get(i).getIdMision()
+                        + "   AND created_at = '" + misiones_finalizadas.get(i).getFechaComienzo() + "'";
                 conexion.Ejecutar(StrSql);
             }
             i++;
@@ -253,14 +254,14 @@ public class Encargo {
         //que el jugador ya ha hecho
         byte i = 0;
         while (i
-                < misiones_finalizadas.length) {
-            if (misiones_finalizadas[i].isNewEncargo()) {
+                < misiones_finalizadas.size()) {
+            if (misiones_finalizadas.get(i).isNewEncargo()) {
                String StrSql = "INSERT INTO Encargo "
                         + "   VALUES (" + this.getIdPersonaje() + ","
-                        + misiones_finalizadas[i].getIdMision() + ","
-                        + misiones_finalizadas[i].getFechaComienzo() + ","
-                        + misiones_finalizadas[i].getRolPersonaje() + ","
-                        + misiones_finalizadas[i].getFechaFin()
+                        + misiones_finalizadas.get(i).getIdMision() + ","
+                        + misiones_finalizadas.get(i).getFechaComienzo() + ","
+                        + misiones_finalizadas.get(i).getRolPersonaje() + ","
+                        + misiones_finalizadas.get(i).getFechaFin()
                         + ")";
                 conexion.Ejecutar(StrSql);
             }
