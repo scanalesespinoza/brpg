@@ -7,12 +7,11 @@ package clases;
 import jgame.JGObject;
 
 public class Boton extends JGObject {
-
     /**
      * Tipo de boton
      * 0 = cerrar
      * 1 = sumar
-     * 2 = continuar
+     * 2 = usar
      * 3 = ver
      * 4 = abandonar
      */

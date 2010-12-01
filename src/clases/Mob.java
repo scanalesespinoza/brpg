@@ -76,8 +76,7 @@ public void cargarInventario(){
                 this.setFuerza(res.getShort("fue"));
                 this.setSabiduria(res.getShort("sab"));
                 this.setExperiencia(res.getShort("experiencia"));
-
-
+                System.out.println("Cargue a tal weon : "+this.getNombre());
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->MOB , método->cargarPersonaje() " + ex);

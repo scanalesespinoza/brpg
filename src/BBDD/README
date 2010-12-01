@@ -8,6 +8,7 @@ Si hay cambios, indicar cuales son.
 -Agregado campo Jugador.dinero predefinido = 0
 -Agregado campo Mob.dinero predefinido = 5
 -DB_WEB_TT2 CON MOTOR INNODB
-
+-DB_WEB_TT2_V1.1 Contiene datos de producción respecto de las misiones,diálogos,
+personajes (npcs, mobs)... 
 
 /******************************************************************************/

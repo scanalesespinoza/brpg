@@ -35,7 +35,7 @@ public class menuJuego extends JGObject {
     private JGPoint recorrido;
     private int tabla_inicial_x, tabla_inicial_y;
     private JGPoint tabla;
-    private HashMap<Short, Boton> botones_estadistica_aumentar,botones_estadistica_ver;
+    private HashMap<Short, Boton> botones_estadistica_aumentar, botones_estadistica_ver;
     private dbDelegate conexion;
     private HashMap<Short, Boton> botones_habilidad_aumentar, botones_habilidad_ver;
     private HashMap<Short, Habilidad> habilidades;
@@ -43,6 +43,9 @@ public class menuJuego extends JGObject {
     private int menuActual = 0;
     private StdScoring stdScorePj ;
     private StdScoring stdScoreNpc ;
+    private final HashMap<Short, Boton> botones_objetos_abandonar;
+    private final HashMap<Short, Boton> botones_objetos_usar;
+    private final HashMap<Short, Boton> botones_objetos_ver;
 
     public StdScoring getStdScoreNpc() {
         return stdScoreNpc;
@@ -115,10 +118,10 @@ public class menuJuego extends JGObject {
          * 3 = Sabiduria
          * 4 = vitalidad
          */
-        this.botones_estadistica_aumentar.put((short) 1, new Boton("fuerza"+"_aumentar", "suma", eng.viewWidth() - 88, 30, (int) Math.pow(2, 5), 1, 1));
-        this.botones_estadistica_aumentar.put((short) 2, new Boton("destreza"+"_aumentar", "suma", eng.viewWidth() - 88, 45, (int) Math.pow(2, 5), 1, 2));
-        this.botones_estadistica_aumentar.put((short) 3, new Boton("sabiduria"+"_aumentar", "suma", eng.viewWidth() - 88, 60, (int) Math.pow(2, 5), 1, 3));
-        this.botones_estadistica_aumentar.put((short) 4, new Boton("vitalidad"+"_aumentar", "suma", eng.viewWidth() - 88, 75, (int) Math.pow(2, 5), 1, 4));
+        this.botones_estadistica_aumentar.put((short) 1, new Boton("fuerza" + "_aumentar", "suma", eng.viewWidth() - 88, 30, (int) Math.pow(2, 5), 1, 1));
+        this.botones_estadistica_aumentar.put((short) 2, new Boton("destreza" + "_aumentar", "suma", eng.viewWidth() - 88, 45, (int) Math.pow(2, 5), 1, 2));
+        this.botones_estadistica_aumentar.put((short) 3, new Boton("sabiduria" + "_aumentar", "suma", eng.viewWidth() - 88, 60, (int) Math.pow(2, 5), 1, 3));
+        this.botones_estadistica_aumentar.put((short) 4, new Boton("vitalidad" + "_aumentar", "suma", eng.viewWidth() - 88, 75, (int) Math.pow(2, 5), 1, 4));
         this.botones_estadistica_aumentar.get((short) 1).suspend();
         this.botones_estadistica_aumentar.get((short) 2).suspend();
         this.botones_estadistica_aumentar.get((short) 3).suspend();
@@ -152,10 +155,10 @@ public class menuJuego extends JGObject {
                 habi.setNombreGrafico(res.getString("nom_grafico"));
                 habi.setTiempoEspera(res.getInt("tiempoEspera"));
                 this.habilidades.put(habi.getIdHabilidad(), habi);
-                Boton btn = new Boton(habi.getNombre()+"_aumentar", "suma", eng.viewWidth() - 88, linea, (int) Math.pow(2, 5), 1, habi.getIdHabilidad());
+                Boton btn = new Boton(habi.getNombre() + "_aumentar", "suma", eng.viewWidth() - 88, linea, (int) Math.pow(2, 5), 1, habi.getIdHabilidad());
                 btn.suspend();
                 this.botones_habilidad_aumentar.put(habi.getIdHabilidad(), btn);
-                btn = new Boton(habi.getNombre()+"_ver", "ver", eng.viewWidth() - 8, linea, (int) Math.pow(2, 5), 3, habi.getIdHabilidad());
+                btn = new Boton(habi.getNombre() + "_ver", "ver", eng.viewWidth() - 8, linea, (int) Math.pow(2, 5), 3, habi.getIdHabilidad());
                 btn.suspend();
                 this.botones_habilidad_ver.put(habi.getIdHabilidad(), btn);
                 linea += 15;
@@ -166,12 +169,17 @@ public class menuJuego extends JGObject {
 
         this.botones_mision_ver = new HashMap<Short, Boton>();
         this.botones_mision_abandonar = new HashMap<Short, Boton>();
+        this.botones_objetos_abandonar = new HashMap<Short, Boton>();
+        this.botones_objetos_usar = new HashMap<Short, Boton>();
+        this.botones_objetos_ver = new HashMap<Short, Boton>();
+
     }
 
     public void menuActual(int menu, Jugador pj) {
         eng.setColor(JGColor.white);
         eng.setFont(new JGFont("Arial", 2, 20));
-        int linea;
+        int linea_y;
+        int linea_x;
 
         switch (menu) {
             case 0/*"main"*/:
@@ -183,14 +191,21 @@ public class menuJuego extends JGObject {
                 eng.drawString("Nombre: " + pjTest.getNombre(), eng.viewWidth() - 75, 30, -1);
                 eng.drawString("Nivel: " + pjTest.getNivel(), eng.viewWidth() - 75, 40, -1);
                 eng.drawString("Experiencia :" + pjTest.getExperiencia(), eng.viewWidth() - 75, 50, -1);
+                eng.drawString("cid :" + pj.colid, eng.viewWidth() - 75, 100, -1);
                 eng.drawRect(eng.viewWidth() - 75 + eng.viewXOfs(), 60 + eng.viewYOfs(), (float) (pj.getExperiencia() * 100 / pj.getLimiteSuperiorExperiencia()), 10, true, false, 0, JGColor.orange);
                 eng.setColor(JGColor.white);
                 eng.drawString("Dinero :" + pjTest.getDinero(), eng.viewWidth() - 75, 70, -1);
                 eng.setColor(JGColor.white);
+                eng.drawRect(eng.viewWidth() - 80 + eng.viewXOfs(), 263 + eng.viewYOfs(), 70, 52.5, true, false, 0, JGColor.orange);
+                eng.setColor(JGColor.red);
+                eng.drawOval(((pj.x * 70) / eng.pfWidth()) + (eng.viewWidth() - 80 + eng.viewXOfs()), ((pj.y * 52.5) / eng.pfHeight()) + (263 + eng.viewYOfs()), 8, 8, true, true);
+                eng.setColor(JGColor.white);
+                //Dibujar el personaje en el "mini..Mapa"
                 removerIconos();
                 suspenderBotones(1);
                 suspenderBotones(4);
                 suspenderBotones(2);
+                suspenderBotones(3);
                 break;
             case 1/*"habilidad"*/:
                 menuActual = 1;
@@ -205,7 +220,7 @@ public class menuJuego extends JGObject {
                
                 String linea_menu = "";
                 Iterator it = this.botones_habilidad_aumentar.entrySet().iterator();
-                linea = 30;
+                linea_y = 30;
                 while (it.hasNext()) {
                     Map.Entry e = (Map.Entry) it.next();
                     Boton boton = (Boton) e.getValue();
@@ -215,7 +230,6 @@ public class menuJuego extends JGObject {
                                 || ((pj.getHabilidades().tieneHabilidad(Short.parseShort(e.getKey().toString()))) && pj.getHabilidades().getHabilidad(Short.parseShort(e.getKey().toString())).getNivelHabilidad() < pj.getHabilidades().getHabilidad(Short.parseShort(e.getKey().toString())).getHabilidad().getNivelMaximo())) {
                             boton.resume();
                             boton.pintar();
-
                         }
                     }
                     linea_menu += " N: ";
@@ -224,10 +238,10 @@ public class menuJuego extends JGObject {
                     } else {
                         linea_menu += "0";
                     }
-                    this.botones_habilidad_ver.get((short)boton.getId()).resume();
-                    this.botones_habilidad_ver.get((short)boton.getId()).pintar();
-                    eng.drawString(linea_menu, eng.viewWidth() - 75, linea, -1);
-                    linea += 15;
+                    this.botones_habilidad_ver.get((short) boton.getId()).resume();
+                    this.botones_habilidad_ver.get((short) boton.getId()).pintar();
+                    eng.drawString(linea_menu, eng.viewWidth() - 75, linea_y, -1);
+                    linea_y += 15;
                 }
                  if (pj.getTotalPuntosHabilidad() > 0) {
                     eng.drawString("Ptos. Restantes:" + pj.getTotalPuntosHabilidad(), eng.viewWidth() - 75, 20, -1);
@@ -242,7 +256,7 @@ public class menuJuego extends JGObject {
                 eng.setColor(JGColor.white);
                 eng.setFont(new JGFont("Arial", 0, 10));//fuente parrafo
                 Iterator it1 = pj.getMisiones().getMisiones().entrySet().iterator();
-                linea = 30;
+                linea_y = 30;
                 while (it1.hasNext()) {
                     Map.Entry e = (Map.Entry) it1.next();
                     if (pj.getMisiones().getMisiones().get(Short.parseShort(e.getKey().toString())).getRolPersonaje() != -1) {
@@ -250,35 +264,86 @@ public class menuJuego extends JGObject {
                         Mision mi = pj.getMisiones().getMisiones().get(Short.parseShort(e.getKey().toString())).getMision();
                         if (this.botones_mision_ver.containsKey(mi.getIdMision())) {
                             this.botones_mision_ver.get(mi.getIdMision()).resume();
-                            this.botones_mision_ver.get(mi.getIdMision()).setyAnt(linea);
+                            this.botones_mision_ver.get(mi.getIdMision()).setyAnt(linea_y);
                             this.botones_mision_ver.get(mi.getIdMision()).pintar();
                             this.botones_mision_abandonar.get(mi.getIdMision()).resume();
-                            this.botones_mision_abandonar.get(mi.getIdMision()).setyAnt(linea);
+                            this.botones_mision_abandonar.get(mi.getIdMision()).setyAnt(linea_y);
                             this.botones_mision_abandonar.get(mi.getIdMision()).pintar();
                         } else {
-                            Boton btn = new Boton(mi.getNombre() + "_ver", "ver", eng.viewWidth() - 8, linea, (int) Math.pow(2, 5), 3, mi.getIdMision());
+                            Boton btn = new Boton(mi.getNombre() + "_ver", "ver", eng.viewWidth() - 8, linea_y, (int) Math.pow(2, 5), 3, mi.getIdMision());
                             btn.suspend();
                             this.botones_mision_ver.put(mi.getIdMision(), btn);
-                            btn = new Boton(mi.getNombre() + "_abandonar", "abandonar", eng.viewWidth() - 88, linea, (int) Math.pow(2, 5), 4, mi.getIdMision());
+                            btn = new Boton(mi.getNombre() + "_abandonar", "abandonar", eng.viewWidth() - 88, linea_y, (int) Math.pow(2, 5), 4, mi.getIdMision());
                             btn.suspend();
                             this.botones_mision_abandonar.put(mi.getIdMision(), btn);
                         }
-                        eng.drawString(mi.getNombre(), eng.viewWidth() - 75, linea, -1);
-                        linea += 15;
+                        eng.drawString(mi.getNombre(), eng.viewWidth() - 75, linea_y, -1);
+                        linea_y += 15;
                     }
                 }
 
                 break;
-//                case 3/*"inventario"*/:
-//                    /*
-//                     * Es llamada desde manager y pintada en menuJuego.paintB
-//                     */
-//
-//                    break;
+            case 3/*"inventario"*/:
+                eng.setFont(new JGFont("Arial", 1, 14));
+                eng.setColor(JGColor.yellow);
+                eng.drawString("Inventario", eng.viewWidth() - 75, 10, 0);
+                eng.setFont(new JGFont("Arial", 0, 10));
+                eng.setColor(JGColor.white);
+                menuActual = 3;
+                int cont = 0;
+                Iterator it3 = pj.getInventario().getObjetos().entrySet().iterator();
+                linea_y = 30;
+                linea_x = eng.viewWidth() - 80;
+                while (it3.hasNext()) {
+                    Map.Entry e = (Map.Entry) it3.next();
+                    //Si tiene almenos una cantidad de objetos lo dibujo
+                    if (pj.getInventario().tieneItem(Short.parseShort(e.getKey().toString()))) {
+                        Objeto ob = pj.getInventario().getObjetos().get(Short.parseShort(e.getKey().toString())).getObjeto();
+                        if (this.botones_objetos_ver.containsKey(ob.getIdObjeto())) {
+                            this.botones_objetos_ver.get(ob.getIdObjeto()).resume();
+                            this.botones_objetos_ver.get(ob.getIdObjeto()).setyAnt(linea_y + 32);
+                            this.botones_objetos_ver.get(ob.getIdObjeto()).setxAnt(linea_x + 8);
+                            this.botones_objetos_ver.get(ob.getIdObjeto()).pintar();
+                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).resume();
+                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).setyAnt(linea_y + 32);
+                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).setxAnt(linea_x + 16);
+                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).pintar();
+                            this.botones_objetos_usar.get(ob.getIdObjeto()).resume();
+                            this.botones_objetos_usar.get(ob.getIdObjeto()).setyAnt(linea_y);
+                            this.botones_objetos_usar.get(ob.getIdObjeto()).setxAnt(linea_x);
+                            this.botones_objetos_usar.get(ob.getIdObjeto()).pintar();
+                        } else {
+                            Boton btn = new Boton(ob.getNombre() + "_ver", "ver", linea_x + 8, linea_y + 32, (int) Math.pow(2, 5), 3, ob.getIdObjeto());
+                            btn.suspend();
+                            this.botones_objetos_ver.put(ob.getIdObjeto(), btn);
+
+                            btn = new Boton(ob.getNombre() + "_abandonar", "abandonar", linea_x + 16, linea_y + 32, (int) Math.pow(2, 5), 4, ob.getIdObjeto());
+                            btn.suspend();
+                            this.botones_objetos_abandonar.put(ob.getIdObjeto(), btn);
+                            
+                            btn = new Boton(ob.getNombre() + "_usar", ob.getNombreGrafico(), linea_x, linea_y, (int) Math.pow(2, 5), 2, ob.getIdObjeto());
+                            btn.suspend();
+                            this.botones_objetos_usar.put(ob.getIdObjeto(), btn);
+
+                        }
+                        linea_x += 37;
+                    }
+                    if (cont % 2 != 0) {//el numero es par se dibuja lo mas a la izquierda posible
+                        linea_x = eng.viewWidth() - 80;
+                        linea_y += 42;
+                    }
+
+                    if (linea_y > 42 * 6) {
+                        linea_y = 30;
+                    }
+                    cont++;
+                }
+
+                break;
             case 4/*"estadistica"*/:
                 eng.setFont(new JGFont("Arial", 1, 14));
                 eng.setColor(JGColor.yellow);
-                eng.drawString("Estadisticas", eng.viewWidth() - 75, 10, -1);
+                eng.drawString("Estad aisticas", eng.viewWidth() - 75, 10, -1);
                 eng.setFont(new JGFont("Arial", 0, 10));
                 menuActual = 4;
                 if (pj.getTotalPuntosEstadistica() > 0) {
@@ -291,18 +356,19 @@ public class menuJuego extends JGObject {
                     this.botones_estadistica_aumentar.get((short) 2).pintar();
                     this.botones_estadistica_aumentar.get((short) 3).pintar();
                     this.botones_estadistica_aumentar.get((short) 4).pintar();
-                    
+                   
+
                 } else {
                     this.suspenderBotones(4);
                 }
                 this.botones_estadistica_ver.get((short) 1).resume();
-                    this.botones_estadistica_ver.get((short) 2).resume();
-                    this.botones_estadistica_ver.get((short) 3).resume();
-                    this.botones_estadistica_ver.get((short) 4).resume();
-                    this.botones_estadistica_ver.get((short) 1).pintar();
-                    this.botones_estadistica_ver.get((short) 2).pintar();
-                    this.botones_estadistica_ver.get((short) 3).pintar();
-                    this.botones_estadistica_ver.get((short) 4).pintar();
+                this.botones_estadistica_ver.get((short) 2).resume();
+                this.botones_estadistica_ver.get((short) 3).resume();
+                this.botones_estadistica_ver.get((short) 4).resume();
+                this.botones_estadistica_ver.get((short) 1).pintar();
+                this.botones_estadistica_ver.get((short) 2).pintar();
+                this.botones_estadistica_ver.get((short) 3).pintar();
+                this.botones_estadistica_ver.get((short) 4).pintar();
                 eng.setColor(JGColor.white);
                 eng.drawString("Fuerza:    " + pj.getFuerza(), eng.viewWidth() - 75, 30, -1);
                 eng.drawString("Destreza:  " + pj.getDestreza(), eng.viewWidth() - 75, 45, -1);
@@ -337,13 +403,10 @@ public class menuJuego extends JGObject {
         eng.setFont(new JGFont("Arial", 0, 10));
         eng.drawString("Salir del Juego", eng.viewWidth() - 75, 430, -1);
         eng.drawString("[Escape]", eng.viewWidth() - 75, 450, -1);
-
-
-
     }
 
     private void suspenderBotones(int i) {
-        HashMap<Short, Boton> boton= new HashMap<Short, Boton>(), boton2 = new HashMap<Short, Boton>();
+        HashMap<Short, Boton> boton = new HashMap<Short, Boton>(), boton2 = new HashMap<Short, Boton>();
         if (i == 4) {
             boton = this.botones_estadistica_aumentar;
             boton2 = this.botones_estadistica_ver;
@@ -353,6 +416,14 @@ public class menuJuego extends JGObject {
         } else if (i == 2) {
             boton = this.botones_mision_ver;
             boton2 = this.botones_mision_abandonar;
+        } else if (i == 3) {
+            boton = this.botones_objetos_abandonar;
+            boton2 = this.botones_objetos_ver;
+            Iterator it = boton.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry e = (Map.Entry) it.next();
+                this.botones_objetos_usar.get(Short.parseShort(e.getKey().toString())).suspend();
+            }
         }
         Iterator it = boton.entrySet().iterator();
         while (it.hasNext()) {
@@ -382,7 +453,6 @@ public class menuJuego extends JGObject {
                 stdScoreNpc.paintB();
             }
         }
-
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
         eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
         eng.setFont(new JGFont("Arial", 1, 18));
@@ -399,7 +469,6 @@ public class menuJuego extends JGObject {
         generaSeccion(2);
         setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
         generaSeccion(1);
-
 //        if (eng.inGameState("InCombat")) {
 //            setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
 //            generaSeccion(1);
@@ -414,25 +483,17 @@ public class menuJuego extends JGObject {
 //            generaSeccion(1);
             setSeccion(new JGPoint(160, 210), new JGPoint(3, 4));
             generaSeccion(0);
-
         }
 //        if ((eng.inGameState("InWorld")) && ((eng.getKey(73)) || (eng.getKey(105)))) {
-//            eng.setFont(new JGFont("Arial", 1, 14));
-//            eng.setColor(JGColor.yellow);
-//            eng.drawString("Inventario", eng.viewWidth() - 60, 10, 0);
-//            eng.setFont(new JGFont("Arial", 0, 10));
-//            eng.setColor(JGColor.white);
+
 //
 //            setSeccion(new JGPoint(eng.viewWidth() - 80, 40), new JGPoint(2, 10));
 //            generaSeccion(1);
 //        }
-
         if (eng.inGameState("InReward")) {
             setSeccion(new JGPoint(200,200), new JGPoint(4, 4));
             generaSeccion(0);
         }
-
-
     }
 
     public void recibeHm(HashMap<Integer, Icono> hm, int tipo) {
