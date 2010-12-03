@@ -163,32 +163,32 @@ public class Manager extends JGEngine {
 //        setCursor(null);
         inicializarTeclas();
         try {
-            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
-            mob_facil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 7, "mob_facil_2", "mob_2", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 7
+//            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
+            mob_facil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 7, "mob_facil_2", "orc_stand_r", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 7
+//
+//            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
+//            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
+//
+//            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
+//            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
+//
+//            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
 
-            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
-            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
-
-            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
-            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
-
-            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
-
-            mob_facil_1.cargarDatos((short)6);
+//            mob_facil_1.cargarDatos((short)6);
             mob_facil_2.cargarDatos((short)7);
-            mob_medio_1.cargarDatos((short)8);
-            mob_medio_2.cargarDatos((short)9);
-            mob_dificil_1.cargarDatos((short)10);
-            mob_dificil_2.cargarDatos((short)11);
-            mob_jefe_final.cargarDatos((short) 12);
+//            mob_medio_1.cargarDatos((short)8);
+//            mob_medio_2.cargarDatos((short)9);
+//            mob_dificil_1.cargarDatos((short)10);
+//            mob_dificil_2.cargarDatos((short)11);
+//            mob_jefe_final.cargarDatos((short) 12);
             
-            mob_facil_1.resume_in_view = false;
+//            mob_facil_1.resume_in_view = false;
             mob_facil_2.resume_in_view = false;
-            mob_medio_1.resume_in_view = false;
-            mob_medio_2.resume_in_view = false;
-            mob_dificil_1.resume_in_view = false;
-            mob_dificil_2.resume_in_view = false;
-            mob_jefe_final.resume_in_view = false;
+//            mob_medio_1.resume_in_view = false;
+//            mob_medio_2.resume_in_view = false;
+//            mob_dificil_1.resume_in_view = false;
+//            mob_dificil_2.resume_in_view = false;
+//            mob_jefe_final.resume_in_view = false;
             
             dibujarObjetosEscenario();
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
