@@ -7,7 +7,7 @@ pantano	/media/sonidos/ambiental/pantano.mid
 combate	/media/sonidos/ambiental/combate.mid
 muerte	/media/sonidos/ambiental/muerte.mid
 permitido	/media/sonidos/eventos/permitido.mid
-no_permitido    /media/sonidos/eventos/no_permitido.mid
+no_permitido	/media/sonidos/eventos/no_permitido.mid
 hallar_algo	/media/sonidos/eventos/hallar_algo.mid
 mensaje	/media/sonidos/eventos/mensaje.mid
 subir_nivel	/media/sonidos/eventos/subir_nivel.mid
@@ -18,7 +18,7 @@ heal2	/media/sonidos/personaje/heal_2.mid
 golpe2	/media/sonidos/personaje/rebote.wav
 ********************************************************************define tiles
 //define fondo del escenario
-bgimage	-	0	/media/imagenes/tiles/Adoquin_16_base.png	-
+bgimage		-	0	/media/imagenes/tiles/Adoquin_16_base.png	-
 //define cuadro calle
 calle	*	0	/media/imagenes/tiles/marble16.gif	-
 //define cuadro fin de la calle
@@ -104,11 +104,16 @@ trade	-	0	/media/imagenes/menu/trade.jpg	-
 
 //define imagen por defecto de iconos
 singrafico	-	0	/media/imagenes/menu/not_found.png	-
-
+//***********************Mapas de personajes******************
+//************************Pj**********************************
 //gif-map de 11 cuadros que simulan el desplazar frontal del personaje
 pj_front_map		/media/imagenes/personaje/Animation_Front64.png		0	0	21	64	0	0
 pj_back_map		/media/imagenes/personaje/Animation_Back64.png		0	0	21	64	0	0
-pj_right_map		/media/imagenes/personaje/Animation_Right64.png		0	0	49	64	0	0
+pj_right_map	/media/imagenes/personaje/Animation_Right64.png		0	0	49	64	0	0
+//************************Orco**********************************
+orco_standing_lmap	/media/imagenes/mobs/orc_standing_map.png		0	0	46	64	0	0
+orco_walking_lmap	/media/imagenes/mobs/orc_walking_map.png		0	0	54	64	0	0
+
 //arbolMap
 arbol_map		/media/imagenes/tiles/secuenciarbol.png		0	0	64	128	0	0
 //piletaMap
@@ -124,7 +129,7 @@ casa3	-	0	/media/imagenes/tiles/Terrible_Casa_HechaMier2.png	-
 
 //casa5
 casa5	-	0	/media/imagenes/tiles/Terrible_Casa_Trasparente_2.png	-
-
+//******************************Pj Animap
 //separacion cuadro por cuadro del movimiento del pj a la izquierda
 human_f0	p	0	pj_front_map	0		-	0	0	21	64
 human_f1	p	0	pj_front_map	1		-	0	0	21	64
@@ -227,14 +232,78 @@ casa4_11	p	0	casa4_map	11		-	0	0	192	123
 casa4_12	p	0	casa4_map	12		-	0	0	192	123
 casa4_13	p	0	casa4_map	13		-	0	0	192	123
 
+//**********************************Orc Animap*************************************************
+//separacion cuadro por cuadro del movimiento del orco quieto mirando a la izquierda
+orc_stand_l0	p	0	orco_standing_lmap	0		-	0	0	46	64
+orc_stand_l1	p	0	orco_standing_lmap	1		-	0	0	46	64
+orc_stand_l2	p	0	orco_standing_lmap	2		-	0	0	46	64
+orc_stand_l3	p	0	orco_standing_lmap	3		-	0	0	46	64
+orc_stand_l4	p	0	orco_standing_lmap	4		-	0	0	46	64
+orc_stand_l5	p	0	orco_standing_lmap	5		-	0	0	46	64
+orc_stand_l6	p	0	orco_standing_lmap	6		-	0	0	46	64
+orc_stand_l7	p	0	orco_standing_lmap	7		-	0	0	46	64
+orc_stand_l8	p	0	orco_standing_lmap	8		-	0	0	46	64
+orc_stand_l9	p	0	orco_standing_lmap	9		-	0	0	46	64
+orc_stand_l10	p	0	orco_standing_lmap	10		-	0	0	46	64
+orc_stand_l11	p	0	orco_standing_lmap	11		-	0	0	46	64
+orc_stand_l12	p	0	orco_standing_lmap	12		-	0	0	46	64
+orc_stand_l13	p	0	orco_standing_lmap	13		-	0	0	46	64
+orc_stand_l14	p	0	orco_standing_lmap	14		-	0	0	46	64
+orc_stand_l15	p	0	orco_standing_lmap	15		-	0	0	46	64
+
+//separacion cuadro por cuadro del movimiento del orco quieto mirando a la derecha
+orc_stand_r0	p	0	orco_standing_lmap	0		x	0	0	46	64
+orc_stand_r1	p	0	orco_standing_lmap	1		x	0	0	46	64
+orc_stand_r2	p	0	orco_standing_lmap	2		x	0	0	46	64
+orc_stand_r3	p	0	orco_standing_lmap	3		x	0	0	46	64
+orc_stand_r4	p	0	orco_standing_lmap	4		x	0	0	46	64
+orc_stand_r5	p	0	orco_standing_lmap	5		x	0	0	46	64
+orc_stand_r6	p	0	orco_standing_lmap	6		x	0	0	46	64
+orc_stand_r7	p	0	orco_standing_lmap	7		x	0	0	46	64
+orc_stand_r8	p	0	orco_standing_lmap	8		x	0	0	46	64
+orc_stand_r9	p	0	orco_standing_lmap	9		x	0	0	46	64
+orc_stand_r10	p	0	orco_standing_lmap	10		x	0	0	46	64
+orc_stand_r11	p	0	orco_standing_lmap	11		x	0	0	46	64
+orc_stand_r12	p	0	orco_standing_lmap	12		x	0	0	46	64
+orc_stand_r13	p	0	orco_standing_lmap	13		x	0	0	46	64
+orc_stand_r14	p	0	orco_standing_lmap	14		x	0	0	46	64
+orc_stand_r15	p	0	orco_standing_lmap	15		x	0	0	46	64
+
+//separacion cuadro por cuadro del movimiento del orco caminando a la izquierda
+orc_walking_l0	p	0	orco_walking_lmap	0		-	0	0	54	64
+orc_walking_l1	p	0	orco_walking_lmap	1		-	0	0	54	64
+orc_walking_l2	p	0	orco_walking_lmap	2		-	0	0	54	64
+orc_walking_l3	p	0	orco_walking_lmap	3		-	0	0	54	64
+orc_walking_l4	p	0	orco_walking_lmap	4		-	0	0	54	64
+orc_walking_l5	p	0	orco_walking_lmap	5		-	0	0	54	64
+orc_walking_l6	p	0	orco_walking_lmap	6		-	0	0	54	64
+orc_walking_l7	p	0	orco_walking_lmap	7		-	0	0	54	64
+orc_walking_l8	p	0	orco_walking_lmap	8		-	0	0	54	64
+orc_walking_l9	p	0	orco_walking_lmap	9		-	0	0	54	64
+//separacion cuadro por cuadro del movimiento del orco caminando a la derecha
+orc_walking_r0	p	0	orco_walking_lmap	0		x	0	0	54	64
+orc_walking_r1	p	0	orco_walking_lmap	1		x	0	0	54	64
+orc_walking_r2	p	0	orco_walking_lmap	2		x	0	0	54	64
+orc_walking_r3	p	0	orco_walking_lmap	3		x	0	0	54	64
+orc_walking_r4	p	0	orco_walking_lmap	4		x	0	0	54	64
+orc_walking_r5	p	0	orco_walking_lmap	5		x	0	0	54	64
+orc_walking_r6	p	0	orco_walking_lmap	6		x	0	0	54	64
+orc_walking_r7	p	0	orco_walking_lmap	7		x	0	0	54	64
+orc_walking_r8	p	0	orco_walking_lmap	8		x	0	0	54	64
+orc_walking_r9	p	0	orco_walking_lmap	9		x	0	0	54	64
 //concatenacion de cuadros y tiempo por cuadro en una sola variable
 //simula el movimiento del pj recorriendo el gif-map del personaje
 
-human_		human_f0		0.0
+human_	human_f0		0.0
 human_d		human_f0;human_f1;human_f2;human_f3;human_f4;human_f5;human_f6;human_f7;human_f8;human_f9;human_f10;human_f11		0.3
 human_u		human_b0;human_b1;human_b2;human_b3;human_b4;human_b5;human_b6;human_b7;human_b8;human_b9;human_b10;human_b11		0.3
 human_l		human_l0;human_l1;human_l2;human_l3;human_l4;human_l5;human_l6;human_l7;human_l8;human_l9;human_l10;human_l11		0.3
 human_r		human_r0;human_r1;human_r2;human_r3;human_r4;human_r5;human_r6;human_r7;human_r8;human_r9;human_r10;human_r11		0.3		-
+
+orc_stand_l	orc_stand_l0;orc_stand_l1;orc_stand_l2;orc_stand_l3;orc_stand_l4;orc_stand_l5;orc_stand_l6;orc_stand_l7;orc_stand_l8;orc_stand_l9;orc_stand_l10;orc_stand_l11;orc_stand_l12;orc_stand_l13;orc_stand_l14;orc_stand_l15		0.2
+orc_stand_r	orc_stand_r0;orc_stand_r1;orc_stand_r2;orc_stand_r3;orc_stand_r4;orc_stand_r5;orc_stand_r6;orc_stand_r7;orc_stand_r8;orc_stand_r9;orc_stand_r10;orc_stand_r11;orc_stand_r12;orc_stand_r13;orc_stand_r14;orc_stand_r15		0.2
+orc_walk_l	orc_walking_l0;orc_walking_l1;orc_walking_l2;orc_walking_l3;orc_walking_l4;orc_walking_l5;orc_walking_l6;orc_walking_l7;orc_walking_l8;orc_walking_l9		0.3
+orc_walk_r	orc_walking_r0;orc_walking_r1;orc_walking_r2;orc_walking_r3;orc_walking_r4;orc_walking_r5;orc_walking_r6;orc_walking_r7;orc_walking_r8;orc_walking_r9		0.3
 
 arbol		arbol_00;arbol_01;arbol_02;arbol_03;arbol_04;arbol_05;arbol_06;arbol_07;arbol_08;arbol_09;arbol_10;arbol_11;arbol_12;arbol_13;arbol_14;arbol_15	0.1
 pileta		pileta_00;pileta_01;pileta_02;pileta_03;pileta_04;pileta_05;pileta_06;pileta_07;pileta_08	0.2
