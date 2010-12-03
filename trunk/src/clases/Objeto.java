@@ -43,7 +43,7 @@ private Short idObjeto;
         System.out.println("Inicio obtiene datos personaje");
         String StrSql = "SELECT * FROM objeto "+
                         "WHERE id = "+ id;
-        System.out.println(StrSql);
+        
         try {
             ResultSet res = conexion.Consulta(StrSql);
             if (res.next()) {

@@ -46,10 +46,9 @@ public class Mob extends Personaje {
     public Mob() {
     }
 
+    public void cargarInventario() {
+    }
 
-public void cargarInventario(){
-
-}
     @Override
     public void cargarPersonaje(Short id) {
         conexion = new dbDelegate();
@@ -61,7 +60,6 @@ public void cargarInventario(){
                 + " FROM personaje pjuno, mob pjdos "
                 + "WHERE pjuno.id=" + id
                 + "  AND pjdos.Personaje_id=" + id;
-        System.out.println(StrSql);
         try {
 
             ResultSet res = conexion.Consulta(StrSql);
@@ -77,7 +75,6 @@ public void cargarInventario(){
                 this.setFuerza(res.getShort("fue"));
                 this.setSabiduria(res.getShort("sab"));
                 this.setExperiencia(res.getShort("experiencia"));
-                System.out.println("Cargue a tal weon : "+this.getNombre());
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->MOB , método->cargarPersonaje() " + ex);
@@ -90,8 +87,6 @@ public void cargarInventario(){
         this.setHp();
         this.setMp();
     }
-
-
 
     @Override
     public void move() {

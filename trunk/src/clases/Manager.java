@@ -14,6 +14,7 @@ import jgame.JGTimer;
 import jgame.JGObject;
 import java.util.Iterator;
 import java.util.Map;
+import jgame.JGRectangle;
 
 /**
  *
@@ -35,11 +36,9 @@ public class Manager extends JGEngine {
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
     //Personajes del juego
     public Jugador pj;
-    public Mob mob;
-    public Npc casa1;
-    public Npc casa1Npc;
-    public Npc alcaldia;
-    public Npc alcalde;
+    public Mob mob_concurrente;
+    public Npc vendedor_concurrente;
+    public Npc npc_concurrente;
     public Npc npc_vendedor_1; // id = 1
     public Npc npc_vendedor_2; // id = 2
     public Npc npc_encargo_1; // id = 3
@@ -54,7 +53,7 @@ public class Manager extends JGEngine {
     public Mob mob_jefe_final; // id = 12
     public Seccion seccion = new Seccion();
     public Seccion seccionNpc = new Seccion();
-
+    public Ventana ventanaManager;
     /*
      * Objetos de combate
      */
@@ -99,6 +98,7 @@ public class Manager extends JGEngine {
     private HashMap<Integer, Icono> hmIconoHabilidades = new HashMap<Integer, Icono>();
     private Ventana asd;
     public String[] textoPrueba;
+    private boolean salirInInteracting = false;
 
     public static void main(String[] args) {
         new Manager(new JGPoint(800, 540));
@@ -134,6 +134,7 @@ public class Manager extends JGEngine {
         setFrameRate(60, 2);
         dbgShowGameState(true);
         dbgShowBoundingBox(false);
+
         try {
             defineMedia("/media/rpg-basico.tbl");
             setBGImage("bgimage");
@@ -163,59 +164,63 @@ public class Manager extends JGEngine {
 //        setCursor(null);
         inicializarTeclas();
         try {
-//            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
+            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
             mob_facil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 7, "mob_facil_2", "orc_stand_r", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 7
-//
-//            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
-//            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
-//
-//            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
-//            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
-//
-//            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
 
-//            mob_facil_1.cargarDatos((short)6);
-            mob_facil_2.cargarDatos((short)7);
-//            mob_medio_1.cargarDatos((short)8);
-//            mob_medio_2.cargarDatos((short)9);
-//            mob_dificil_1.cargarDatos((short)10);
-//            mob_dificil_2.cargarDatos((short)11);
-//            mob_jefe_final.cargarDatos((short) 12);
-            
-//            mob_facil_1.resume_in_view = false;
+            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
+            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
+
+            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
+            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
+
+            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
+
+            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
+            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
+
+            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
+            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
+
+            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
+
+            mob_facil_1.cargarDatos((short) 6);
+            mob_facil_2.cargarDatos((short) 7);
+            mob_medio_1.cargarDatos((short) 8);
+            mob_medio_2.cargarDatos((short) 9);
+            mob_dificil_1.cargarDatos((short) 10);
+            mob_dificil_2.cargarDatos((short) 11);
+            mob_jefe_final.cargarDatos((short) 12);
+
+            mob_facil_1.resume_in_view = false;
             mob_facil_2.resume_in_view = false;
-//            mob_medio_1.resume_in_view = false;
-//            mob_medio_2.resume_in_view = false;
-//            mob_dificil_1.resume_in_view = false;
-//            mob_dificil_2.resume_in_view = false;
-//            mob_jefe_final.resume_in_view = false;
-            
+            mob_medio_1.resume_in_view = false;
+            mob_medio_2.resume_in_view = false;
+            mob_dificil_1.resume_in_view = false;
+            mob_dificil_2.resume_in_view = false;
+            mob_jefe_final.resume_in_view = false;
+
             dibujarObjetosEscenario();
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            casa1 = new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 3), 0, (short) 100,
-                    new String[]{"Hola amigo",
-                        "Miguel: Como estas, espero mejor que yo",
-                        "Me doy cuenta que no eres de estos lados",
-                        "lamento no poder atenderte,",
-                        "pero me siento muy debil,",
-                        "tanto asi que no he podido salir por una cura.",
-                        "Estoy seguro que con una buena cantidad de hongos",
-                        "tendria para cuidarme por unos dias,",
-                        "te agradeceria mucho si los traes por mi.",
-                        "20 serán suficientes, en la cuidad suelen",
-                        "crecer en la humedad de las rocas."
-                    });//casa superior
 
-            alcaldia = new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 3), 0, (short) 105, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior
+
             //pasto1 = new Npc(192,128,"pasto","pasto",4,0,new String[]{"Hola amiguirijillo","soy pastillo1"});//pasto
 
-            npc_vendedor_1 = new Npc(1040, 416, "vendedor", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+            npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
             npc_vendedor_1.cargarDatos((short) 1);
-            System.out.println("ID vendedor: " + npc_vendedor_1.getIdPersonaje() + "---" + npc_vendedor_1.getIdNpc());
+            npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+            npc_vendedor_2.cargarDatos((short) 2);
+            npc_encargo_1 = new Npc(700, 75, "npc_encargo_1", "people", (int) Math.pow(2, 3), 0, (short) 3, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 3
+            npc_encargo_1.cargarDatos((short) 3);
+            npc_encargo_2 = new Npc(730, 75, "npc_encargo_2", "people2", (int) Math.pow(2, 3), 0, (short) 4, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 4
+            npc_encargo_2.cargarDatos((short) 4);
+            npc_encargo_3 = new Npc(760, 75, "npc_encargo_3", "people3", (int) Math.pow(2, 3), 0, (short) 5, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior;
+            npc_encargo_3.cargarDatos((short) 5);
+
 
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
+
         definirEscenario();
         System.out.println("Inicio obtiene habilidades");
         String StrSql = "SELECT * FROM habilidad ";
@@ -262,6 +267,7 @@ public class Manager extends JGEngine {
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->manager , método-Linea 255 " + ex);
         }
+        ventanaManager = new Ventana();
         setGameState("Title");
     }
     /** View offset. */
@@ -290,7 +296,6 @@ public class Manager extends JGEngine {
     public void doFrameInWorld() {
         if (cursor.isLimpiarIconos()) {
             seccion.removerIconos();
-
         }
 
         pj.desbloquear();
@@ -303,42 +308,40 @@ public class Manager extends JGEngine {
         } else if (isPresionada(KeyShift) && isPresionada(KeyTab)) {
             initGame();
         }
-        if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
-
-            pj.y = pj.y + 10;
-            pj.desbloquear();
-            removeObjects(getNomNpcInteractuar(), (int) Math.pow(2, 3));
-            pj.setInteractuarNpc(false);
-            setInteractuar(0);
-        } else if ((pj.isInteractuarNpc()) && (interactuar == 0)) {
-            System.out.println(pj.npcInterac.getNomNpc() + "Npc");
-            try {
-                casa1 = new Npc(viewXOfs() + 380, viewYOfs() + 120, pj.npcInterac.getNomNpc() + "Npc", pj.npcInterac.getNomNpc() + "Npc", 51, (short) (pj.npcInterac.getIdNpc()), (short) 1, (short) 1, pj.npcInterac.obtieneDialogo());
-                // casa1.realizaTarea(pj);
-                //asd = new Ventana(300, 300, casa1.obtieneDialogo());//casa superior);
-            } catch (Exception ex) {
-                System.out.println("Extrae datos del HashMap: fsdfsdfsd" + ex);
-            }
-            setNomNpcInteractuar(pj.npcInterac.getNomNpc() + "Npc");
-            setInteractuar(1);
-        } else if ((interactuar > 0) && (interactuar < casa1.obtieneDialogo().length) && (getKey(KeyEnter))) {
-
-            if (pausa == 10) {
-                interactuar += 3;
-            } else if (pausa > 10) {
-                pausa = 0;
-            }
-            pausa += 1;
-            //System.out.println("+3 interactuar");
-
-        }
+//        if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
+//            pj.y = pj.y + 10;
+//            pj.desbloquear();
+//            removeObjects(getNomNpcInteractuar(), (int) Math.pow(2, 3));
+//            pj.setInteractuarNpc(false);
+//            setInteractuar(0);
+//        } else if ((pj.isInteractuarNpc()) && (interactuar == 0)) {
+//            try {
+//
+//                // casa1.realizaTarea(pj);
+//                //asd = new Ventana(300, 300, casa1.obtieneDialogo());//casa superior);
+//            } catch (Exception ex) {
+//                System.out.println("Extrae datos del HashMap: fsdfsdfsd" + ex);
+//            }
+//            setNomNpcInteractuar(pj.npcInterac.getNomNpc() + "Npc");
+//            setInteractuar(1);
+//        } else if ((interactuar > 0) && (interactuar < casa1.obtieneDialogo().length) && (getKey(KeyEnter))) {
+//
+//            if (pausa == 10) {
+//                interactuar += 3;
+//            } else if (pausa > 10) {
+//                pausa = 0;
+//            }
+//            pausa += 1;
+//            //System.out.println("+3 interactuar");
+//
+//        }
         moveObjects(null, 0);
         // llamada al metodo de colision entre objetos con las siguientes id de colision
 
-        checkCollision(
-                (int) Math.pow(2, 3) + (int) Math.pow(2, 1), // Colisión entre Npc + Jugador
-                (int) Math.pow(2, 1) // ejecuta hit Jugador
-                );
+//        checkCollision(
+//                (int) Math.pow(2, 3) + (int) Math.pow(2, 1), // Colisión entre Npc + Jugador
+//                (int) Math.pow(2, 1) // ejecuta hit Jugador
+//                );
         checkCollision(
                 (int) Math.pow(2, 3) + (int) Math.pow(2, 0), // Colisión entre Npc + Cursor
                 (int) Math.pow(2, 0) // ejecuta hit Cursor
@@ -390,9 +393,9 @@ public class Manager extends JGEngine {
         2 ^ 11 // cids of the objects whose hit() should be called
         );*/
         if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
-            mob = pj.getEnemigo();
+            mob_concurrente = pj.getEnemigo();
             setGameState("InCombat");
-            mob.getInventario().respaldarInventario();
+            mob_concurrente.getInventario().respaldarInventario();
         }
         int posX = (int) pj.x;
         int posY = (int) pj.y;
@@ -403,15 +406,6 @@ public class Manager extends JGEngine {
                 xofs, yofs,
                 true);
 
-//            if(cursor.getVentana()==1){
-//                ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
-//                cerrar = new Boton("cerrar", "cerrar",viewXOfs()+300,viewYOfs()+150,2^6);
-//                cursor.setVentana((byte)2);
-//            }else if(cursor.getVentana()==3){
-//                removeObjects("ventana trade", 0);
-//                removeObjects("cerrar", 2^6);
-//                cursor.setVentana((byte)0);
-//            }
         if (cursor.getVentana() == 1) {
             setGameState("InCommerce");
             seccion.setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
@@ -424,156 +418,122 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInWorld() {
-        //Genera seccion para inventario InWorld
-//        if ((inGameState("InWorld")) && ((getKey(73)) || (getKey(105)))) {
-//            seccion.setSeccion(new JGPoint(viewWidth() - 85, 20), new JGPoint(2, 10));
-//            seccion.generaSeccion(pj, 1);
-//            menu.recibeHm(hmIconoItem, 1);
-//        } else {
-//            seccion.removerIconos();
+//        //Genera seccion para inventario InWorld
+////        if ((inGameState("InWorld")) && ((getKey(73)) || (getKey(105)))) {
+////            seccion.setSeccion(new JGPoint(viewWidth() - 85, 20), new JGPoint(2, 10));
+////            seccion.generaSeccion(pj, 1);
+////            menu.recibeHm(hmIconoItem, 1);
+////        } else {
+////            seccion.removerIconos();
+////        }
+//
+//        drawString("SEGUNDO: " + seg, +200 / 2, viewHeight() / 2, 1);
+//        //drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
+//
+//        //drawImage(cursor.x, cursor.y, "cursor");
+//        if (getKey(KeyEsc)) {
+//            menu.ventanaSalida();
+//            //playAudio("eventos","mensaje",false);
+//            pj.bloquear(0);
+//            if (getKey(KeyEnter)) {
+//                menu.setTeclaEscape(false);
+//                setSalir(true);
+//            }
 //        }
-
-        drawString("SEGUNDO: " + seg, +200 / 2, viewHeight() / 2, 1);
-        //drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
-
-        //drawImage(cursor.x, cursor.y, "cursor");
-        if (getKey(KeyEsc)) {
-            menu.ventanaSalida();
-            //playAudio("eventos","mensaje",false);
-            pj.bloquear(0);
-            if (getKey(KeyEnter)) {
-                menu.setTeclaEscape(false);
-                setSalir(true);
-            }
-        }
-        if (interactuar > 0) {
-            //asd.avanzarTexto();
-        }
-
-        /**
-         * Detecta si has encontrado un hongo para la mision
-         */
-        if ((pj.x == 880.0) && (pj.y == 400.0) && (!hongo1)) {
-            hongo1 = true;
-            tiempoMensaje = 120;
-            try {
-                //agrego el hongo al inventario del jugador
-                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-                //pj.cargaInventario(pj.getIdJugador());
-                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            } catch (Exception ex) {
-                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if ((pj.x == 928) && (pj.y == 144) && (!hongo2)) {
-            hongo2 = true;
-            tiempoMensaje = 120;
-            try {
-                //agrego el hongo al inventario del jugador
-                //Inventario[] tempInv = pj.getInv();
-                pj.getInventario().agregarItem((short) 1000, (short) 1);
-                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-                //pj.cargaInventario(pj.getIdJugador());
-                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            } catch (Exception ex) {
-                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if ((pj.x == 80) && (pj.y == 48) && (!hongo3)) {
-            hongo3 = true;
-            tiempoMensaje = 120;
-            try {
-                //agrego el hongo al inventario del jugador
-                //Inventario[] tempInv = pj.getInv();
-                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-                //pj.cargaInventario(pj.getIdJugador());
-                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            } catch (Exception ex) {
-                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if ((pj.x == 416) && (pj.y == 624) && (!hongo4)) {
-            hongo4 = true;
-            tiempoMensaje = 120;
-            try {
-                //agrego el hongo al inventario del jugador
-                //Inventario[] tempInv = pj.getInv();
-                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-                //pj.cargaInventario(pj.getIdJugador());
-                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            } catch (Exception ex) {
-                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if ((pj.x == 64) && (pj.y == 800) && (!hongo5)) {
-            hongo5 = true;
-            tiempoMensaje = 120;
-            try {
-                //agrego el hongo al inventario del jugador
-                //Inventario[] tempInv = pj.getInv();
-                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-                //pj.cargaInventario(pj.getIdJugador());
-                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-            } catch (Exception ex) {
-                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if ((hongo1) && (hongo2) && (hongo3) && (hongo4) && (hongo5) && (!finHongos)) {
-            finHongos = true;
-        }
-        if (tiempoMensaje > 0) {
-            new Ventana("wena choro pillaste una callapampa!");
-
-            // new Ventana(300, 300, textoPrueba);
-        }
-        tiempoMensaje--;
-
-
+//        if (interactuar > 0) {
+//            //asd.avanzarTexto();
+//        }
+//
+//        /**
+//         * Detecta si has encontrado un hongo para la mision
+//         */
+//        if ((pj.x == 880.0) && (pj.y == 400.0) && (!hongo1)) {
+//            hongo1 = true;
+//            tiempoMensaje = 120;
+//            try {
+//                //agrego el hongo al inventario del jugador
+//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
+//                //pj.cargaInventario(pj.getIdJugador());
+//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
+//            } catch (Exception ex) {
+//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        if ((pj.x == 928) && (pj.y == 144) && (!hongo2)) {
+//            hongo2 = true;
+//            tiempoMensaje = 120;
+//            try {
+//                //agrego el hongo al inventario del jugador
+//                //Inventario[] tempInv = pj.getInv();
+//                pj.getInventario().agregarItem((short) 1000, (short) 1);
+//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
+//                //pj.cargaInventario(pj.getIdJugador());
+//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
+//            } catch (Exception ex) {
+//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        if ((pj.x == 80) && (pj.y == 48) && (!hongo3)) {
+//            hongo3 = true;
+//            tiempoMensaje = 120;
+//            try {
+//                //agrego el hongo al inventario del jugador
+//                //Inventario[] tempInv = pj.getInv();
+//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
+//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
+//                //pj.cargaInventario(pj.getIdJugador());
+//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
+//            } catch (Exception ex) {
+//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        if ((pj.x == 416) && (pj.y == 624) && (!hongo4)) {
+//            hongo4 = true;
+//            tiempoMensaje = 120;
+//            try {
+//                //agrego el hongo al inventario del jugador
+//                //Inventario[] tempInv = pj.getInv();
+//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
+//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
+//                //pj.cargaInventario(pj.getIdJugador());
+//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
+//            } catch (Exception ex) {
+//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        if ((pj.x == 64) && (pj.y == 800) && (!hongo5)) {
+//            hongo5 = true;
+//            tiempoMensaje = 120;
+//            try {
+//                //agrego el hongo al inventario del jugador
+//                //Inventario[] tempInv = pj.getInv();
+//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
+//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
+//                //pj.cargaInventario(pj.getIdJugador());
+//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
+//            } catch (Exception ex) {
+//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        if ((hongo1) && (hongo2) && (hongo3) && (hongo4) && (hongo5) && (!finHongos)) {
+//            finHongos = true;
+//        }
+//        if (tiempoMensaje > 0) {
+//            new Ventana("wena choro pillaste una callapampa!");
+//        }
+//        tiempoMensaje--;
         if (cursor.getMensaje().length() > 0) {
             new Ventana(cursor.getMensaje());
             cursor.setMensaje("");
         }
-//        if (cursor.getVentana() == 1) {
-//            pj.colid = 0;
-//            grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int)Math.pow(2, 5));
-//            grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int)Math.pow(2, 5));
-//            //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
-//            procesaItem(pj,grillaPj.x,grillaPj.y);
-//            procesaItem(vendedor,grillaNpc.x,grillaNpc.y);
-//            cerrar = new Boton("cerrar", "cerrar", viewXOfs() + 300, viewYOfs() + 200, (int)Math.pow(2, 5));
-//            pj.bloquear();
-//            cursor.setVentana((byte) 2);
-//        } else if (cursor.getVentana() == 3) {
-//            //Remueve todos los objetos que forman la ventana de comerciar
-//            removeObjects("ventana trade", 0);
-//            removeObjects("grilla npc", (int)Math.pow(2, 5));
-//            removeObjects("grilla pj", (int)Math.pow(2, 5));
-//            removeObjects("cerrar", (int)Math.pow(2, 5));
-////            for (int i = 0; i < 200; i++) {
-//
-//                //Renueve todos los objetos item
-//                removeObjects("item",(int)Math.pow(2, 4));
-//
-////            }
-//            pj.desbloquear();
-//            pj.colid = 2;
-//            cursor.setVentana((byte) 0);
-//        }
     }
 
     @Override
     public void paintFrame() {
 
-
-
         seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
         menu.recibeHm(hmIconoHabilidades, 2);
-
-
 
         seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
@@ -582,9 +542,6 @@ public class Manager extends JGEngine {
         seccion.setWorking(true);
         menu.paintB();
         cursor.desplegarInformacion();
-
-//        seccion.pintaSeccion();
-//        menu.getSeccion().setSeccion(new JGPoint(400, 30), new JGPoint(2, 6));
 
         moveObjects(null, 1);
         menu.menuActual(getTeclaMenu(), pj);
@@ -607,7 +564,7 @@ public class Manager extends JGEngine {
             cursor.limpiarInformacion();
         }
 
-       moveObjects(null, (int) Math.pow(2, 7));
+        moveObjects(null, (int) Math.pow(2, 7));
     }
 
     public void paintFrameInDeath() {
@@ -623,7 +580,7 @@ public class Manager extends JGEngine {
                 public void alarm() {
                     pj.setPos(CIUDAD_X, CIUDAD_Y);
                     pj.setDir(0, 0);
-                    pj.desaparecer();
+                    pj.suspend();
                 }
             };
         }
@@ -640,7 +597,7 @@ public class Manager extends JGEngine {
                     pj.aumentarDisminuirMp(pj.getMpMax() / 2);
                     pj.recibirDañoBeneficio(pj.getHpMax() / 2);
                     setGameState("InWorld");
-                    pj.aparecer();
+                    pj.resume();
                 }
             };
         }
@@ -658,9 +615,9 @@ public class Manager extends JGEngine {
         drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 400, JGColor.blue);
 
         setColor(JGColor.yellow);
-        drawString(mob.getNombre() + "---" + (float) (mob.getHp() * 100 / mob.getHpMax()), ((viewWidth() * 70) / 100), (double) 305, 0);
-        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (mob.getHp() * 100 / mob.getHpMax()), 10, true, false, 400, JGColor.green);
-        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (mob.getMp() * 100 / mob.getMpMax()), 10, true, false, 400, JGColor.blue);
+        drawString(mob_concurrente.getNombre() + "---" + (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), ((viewWidth() * 70) / 100), (double) 305, 0);
+        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
+        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
     }
 
     public void doFrameInCombat() {
@@ -680,12 +637,12 @@ public class Manager extends JGEngine {
                 //el personaje puede atacar por que no está bloqueado
                 dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
                 if (dañoBeneficio < 0) {
-                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob.getDefensa())) / 50 - pj.getAtaque();
+                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
-                    mob.recibirDañoBeneficio(-mob.getHpMax());
+                    mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
 
                     //si no es beneficio al jugador
-                    menu.recibeScore(null, new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
+                    menu.recibeScore(null, new StdScoring("scoring", mob_concurrente.x, mob_concurrente.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
                 } else {
                     pj.recibirDañoBeneficio(dañoBeneficio);
                     menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5), null);
@@ -712,19 +669,19 @@ public class Manager extends JGEngine {
         dañoBeneficio = 0;
         /**************************ENEMIGO MOB*********************************/
         //MOB utilizara una habilidad
-        mob.generarProximoAtaque();
-        if (mob.getIdProximoAtaque() != -1) {
+        mob_concurrente.generarProximoAtaque();
+        if (mob_concurrente.getIdProximoAtaque() != -1) {
             //el MOB puede atacar por que no está bloqueado
-            dañoBeneficio = mob.getHabilidades().getDañoBeneficio(mob.getIdProximoAtaque());
+            dañoBeneficio = mob_concurrente.getHabilidades().getDañoBeneficio(mob_concurrente.getIdProximoAtaque());
             if (dañoBeneficio < 0) {
-                dañoBeneficio -= ((mob.getAtaque()) * (100 - pj.getDefensa())) / 50 - mob.getAtaque();
+                dañoBeneficio -= ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
                 //se convierte en daño hacia el jugador
-                pj.recibirDañoBeneficio(0);//dañoBeneficio
+                pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
                 new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                 //si no es beneficio al MOB
             } else {
-                mob.recibirDañoBeneficio(0);
-                new StdScoring("scoring", mob.x, mob.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
+                new StdScoring("scoring", mob_concurrente.x, mob_concurrente.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
             }
         }
         //regenero mana cada 4 segundos y que desaparezca cuando no esté en estado INCOMBAT
@@ -733,59 +690,68 @@ public class Manager extends JGEngine {
 
                 @Override
                 public void alarm() {
-                    System.out.println("as");
-                    mob.regenerarMp(3);
+                    mob_concurrente.regenerarMp(3);
                     pj.regenerarMp(5);
                 }
             };
         }
 
-        if (mob.getHp() <= 0) {
-                final Mob enemigo_procesar = (Mob) getObject(mob.getName());
-                if (respawn_mob == null) {
-                    System.out.println("CREO JGTIMER");
-                    respawn_mob = new JGTimer((int) (getFrameRate() * 60 * 1), true) {
+        if (mob_concurrente.getHp() <= 0) {
+            final Mob enemigo_procesar = (Mob) getObject(mob_concurrente.getName());
+            if (respawn_mob == null) {
+                respawn_mob = new JGTimer((int) (getFrameRate() * 60 * 1), true) {
 
-                        @Override
-                        public void alarm() {
-                            System.out.println("Alarmeban");
-                            enemigo_procesar.resume();
-                            enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
-                            enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
-                            mob.getInventario().restablecerInventario();
-                            System.out.println("qweqweqweqwe" + mob.getInventario().getObjetos().get(1));
-                        }
-                    };
-                    respawn_mob = null;
-                }
-                mob.suspend();
-                seccion.removerIconos();
-                cursor.setVentana((byte) (1));
-                setGameState("InReward");
+                    @Override
+                    public void alarm() {
+                        enemigo_procesar.resume();
+                        enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
+                        enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
+                        mob_concurrente.getInventario().restablecerInventario();
+                    }
+                };
+                respawn_mob = null;
             }
-//        if (mob.getHp() <= 0) {
-//            //personaje recibe experiencia
-//
-//            seccionNpc.setSeccion(new JGPoint(200, 200), new JGPoint(3, 4));
-////            new JGTimer((int) (getFrameRate() * 5 * 1), true) {
-////
-////                @Override
-////                public void alarm() {
-////                    mob.resume();
-////                }
-////            };
-////            mob.suspend();
-//            seccion.removerIconos();
-//            // setGameState("InReward");
-//        }
+            mob_concurrente.suspend();
+            seccion.removerIconos();
+            cursor.setVentana((byte) (1));
+            setGameState("InReward");
+        }
     }
 
     public void paintFrameInInteraction() {
-        asd = new Ventana(300, 300, pj.npcInterac.obtieneDialogo());//casa superior);
+        if (!salirInInteracting) {
+            System.out.print("inicio paint frame");
+            Boton btn1;
+            //dibujo las lineas del parrafo
+            ventanaManager.mostrarTexto();
+            if (ventanaManager.terminoDialogo) {//genero el boton siguiente
+                btn1 = new Boton("cerrar", "cerrar", 430, 330, (int) (Math.pow(2, 5)), 0, 0);
+                btn1.pintar();
+            } else {//termino el dialogo //aun podria estar leyendo el ultimo parrafo = new Boton("cerrar", "suma", 430, 330, (int) (Math.pow(2, 5)), 0, 0);
+                btn1 = new Boton("siguiente", "cerrar", 430, 330, (int) (Math.pow(2, 5)), 5, 0);
+                btn1.pintar();
+//            if (ventanaManager.terminoDialogo) {
+//                new JGTimer((int) (this.getFrameRate() * 5), true, "InInteraction") {
+//
+//                    @Override
+//                    public void alarm() {
+//                        setGameState("InWorld");
+//                    }
+//                };
+            }
+           
+        }
     }
+    //avanzo al siguiente dialogo
+//            npc_concurrente.getDialogo().nextTexto();
 
     public void doFrameInInteraction() {
-        asd.avanzarTexto();
+        moveObjects(null, (int) (Math.pow(2, 5)));
+        checkCollision(
+                (int) Math.pow(2, 5) + (int) Math.pow(2, 0), // Colisión entre botones  + cursor
+                (int) Math.pow(2, 0) // ejecuta hit cursor
+                );
+
     }
 
     public void doFrameInReward() {
@@ -798,27 +764,20 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
         if (getMouseButton(1)) {
-            pj.aumentarExperiencia(mob.getExperiencia());
-            mob.recibirDañoBeneficio(mob.getHpMax());
-            mob.aumentarDisminuirMp(mob.getMpMax());
-//            seccionNpc.generaSeccion(mob, 1);
-//            menu.recibeHm(hmIconoItem, 0);
+            pj.aumentarExperiencia(mob_concurrente.getExperiencia());
+            mob_concurrente.recibirDañoBeneficio(mob_concurrente.getHpMax());
+            mob_concurrente.aumentarDisminuirMp(mob_concurrente.getMpMax());
             clearMouseButton(1);
             cursor.setLimpiarIconos(true);
             pj.bloquear();
-            System.out.println("asdasdasd" + mob.getInventario().getObjetos().get(1));
             setGameState("InWorld");
         } else {
 
-            interacVentana(mob, "InReward");
+            interacVentana(mob_concurrente, "InReward");
         }
     }
 
     public void paintFrameInReward() {
-//        new Ventana("Bien, has conseguido ganar, recoge los item del monstruo");
-//        seccion.setSeccion(new JGPoint(viewWidth() / 2, viewHeight() / 2), new JGPoint(4, 4));
-//        seccionNpc.generaSeccion(mob, 1);
-//        menu.recibeHm(hmIconoItem, 0);
     }
 
     public void paintFrameInCommerce() {
@@ -834,7 +793,7 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre iconos  + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
-        interacVentana(pj, npc_vendedor_1, "InWorld");
+        interacVentana(pj, vendedor_concurrente, "InWorld");
     }
 
     public void capturarTeclas() {
@@ -895,42 +854,6 @@ public class Manager extends JGEngine {
             return true;
         }
         return false;
-    }
-
-    public void ventanaDialogo(String[] texto) {
-        //System.out.println("Ventana dialogo: "+texto[0]);
-        setColor(JGColor.blue);
-        //drawRect(viewXOfs()+430,viewYOfs()+160,100,viewHeight()/2, true, false);
-        drawRect(viewXOfs() + 250, viewYOfs() + 300, viewWidth() / 2 - 50, 81, true, false);
-        setColor(JGColor.white);
-        //drawRect(viewXOfs()+435,viewYOfs()+165,90,viewHeight()/2-10, true, false);
-        drawRect(viewXOfs() + 255, viewYOfs() + 305, viewWidth() / 2 - 60, 71, true, false);
-
-        setColor(JGColor.black);
-        setFont(new JGFont("Arial", 0, 10));
-
-        //System.out.println("Ventana dialogo pintada ");
-        try {
-            int cont = 0;
-            while (cont < 3) {
-                //System.out.println("cont: "+cont);
-                //System.out.println("casa1.obtieneDialogo().length: "+casa1.obtieneDialogo().length);
-                if ((interactuar + cont) < casa1.obtieneDialogo().length) {
-                    final int i = 320;
-                    drawString(texto[interactuar + cont], viewWidth() - 250, i + (cont + 1) * 10, 0);
-
-                }
-                cont += 1;
-            }
-        } catch (Exception ex) {
-            System.out.println("Error al cargar ventana de dialogo: " + ex);
-        }
-        setColor(JGColor.red);
-        drawString("Presiona [ENTER]", viewWidth() - 180, 365, 0);
-
-        //System.out.println("Se cargaron 3 filas de dialogo");
-        //System.out.println("Interactuar: "+interactuar);
-
     }
 
     public int getTeclaMenu() {
@@ -1255,7 +1178,6 @@ public class Manager extends JGEngine {
     }
 
     public void interacVentana(Jugador pj, Personaje vendedor, String estado) {
-        System.out.println("getVentana:" + cursor.getVentana());
         clearKey(73);
         if (cursor.getVentana() == 1) {
 
@@ -1314,7 +1236,6 @@ public class Manager extends JGEngine {
     }
 
     public void interacVentana(Personaje mob, String estado) {
-        System.out.println("getVentana:" + cursor.getVentana());
         clearKey(73);
         if (cursor.getVentana() == 1) {
 
@@ -1363,7 +1284,6 @@ public class Manager extends JGEngine {
 
             if (cursor.getVentana() == 4) {
                 cursor.setVentana((byte) 1);
-                System.out.println("setVentana antes InWorld:" + cursor.getVentana());
 
             } else {
                 cursor.setVentana((byte) 0);
@@ -1375,20 +1295,22 @@ public class Manager extends JGEngine {
     }
 
     private void dibujarObjetosEscenario() throws SQLException {
-        new Npc(80, 400, "casa2", "casa2", 8, 0, (short) 101, new String[]{"Casa 2"});
-        new Npc(350, 448, "casa3", "casa4", 8, 0, (short) 102, new String[]{"Casa 3"});
-        new Npc(80, 634, "casa3", "casa3", 8, 0, (short) 103, new String[]{"Casa 3"});
-        new Npc(350, 682, "casa3", "casa5", 8, 0, (short) 104, new String[]{"Casa 3"});
-        new Npc(352, 64, "arbol1", "arbol", 4, 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-        new Npc(288, 32, "arbol2", "arbol", 4, 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-        new Npc(128, 64, "arbol2", "pileta", 4, 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-        new Npc(16 * 80, 16 * 12, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
-        new Npc(16 * 80, 16 * 21, "guardia", "guardia", 0, (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
-        new Npc(16 * 16, 16 * 12, "viajero", "viajero", 0, (short) 4, (short) 20, new String[]{"Viajero: "});
-        new Npc(16 * 10, 16 * 17, "mono", "mono", 0, (short) 4, (short) 20, new String[]{"Mono: "});
-        new Npc(16 * 10, 16 * 110, "perdido", "perdido", 0, (short) 4, (short) 20, new String[]{"perdido: "});
-        new Npc(16 * 80, 16 * 8, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(16 * 80, 16 * 24, "escultura", "escultura", 0, (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 6), 0, (short) 105, new String[]{});
+        new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 6), 0, (short) 100, new String[]{});
+        new Npc(80, 400, "casa2", "casa2", (int) Math.pow(2, 6), 0, (short) 101, new String[]{"Casa 2"});
+        new Npc(350, 448, "casa3", "casa4", (int) Math.pow(2, 6), 0, (short) 102, new String[]{"Casa 3"});
+        new Npc(80, 634, "casa3", "casa3", (int) Math.pow(2, 6), 0, (short) 103, new String[]{"Casa 3"});
+        new Npc(350, 682, "casa3", "casa5", (int) Math.pow(2, 6), 0, (short) 104, new String[]{"Casa 3"});
+        new Npc(352, 64, "arbol1", "arbol", (int) Math.pow(2, 6), 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+        new Npc(288, 32, "arbol2", "arbol", (int) Math.pow(2, 6), 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+        new Npc(128, 64, "arbol2", "pileta", (int) Math.pow(2, 6), 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
+        new Npc(16 * 80, 16 * 12, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 80, 16 * 21, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 16, 16 * 12, "viajero", "viajero", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Viajero: "});
+        new Npc(16 * 10, 16 * 17, "mono", "mono", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Mono: "});
+        new Npc(16 * 10, 16 * 110, "perdido", "perdido", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"perdido: "});
+        new Npc(16 * 80, 16 * 8, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(16 * 80, 16 * 24, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
     }
 
     public class Ventana {
@@ -1404,6 +1326,15 @@ public class Manager extends JGEngine {
         private int ventana_actual;
         private boolean wait;
         private JGTimer espera;
+        private String dialogo;
+        private byte tamanoLinea;
+        private int lineasTotal;
+        private int linea_concurrente;
+        private int separadorLinea;
+        private int indiceUltimaLetra;
+        private int indice_concurrente;
+        private String dialogo_restante, dialogo_mostrar, linea_1, linea_2, linea_3;
+        private boolean terminoDialogo;
 
         /**
          * Muestra una ventana del tipo alerta usada para mostrar mensajes flash
@@ -1415,8 +1346,8 @@ public class Manager extends JGEngine {
             this.y = 305;
             this.esAlerta = true;
             this.segundos = 3;
-            this.desplegarVentana();
-            this.desplegarMensaje(mensaje);
+            this.desplegarVentana(100, 100);
+            this.desplegarMensaje(130, 130, mensaje);
             new JGTimer(
                     (int) (getFrameRate() * this.getSegundos()), //calculo los frames
                     true // true indica que la alarma solo se dispara una vez
@@ -1444,9 +1375,15 @@ public class Manager extends JGEngine {
             this.ventanas++;
             this.ventana_actual = 1;
             //remove();
-            System.out.println("Ventanas: " + this.ventanas);
-            System.out.println("Ventana_actual: " + this.ventana_actual);
 
+        }
+
+        public void setDialogo(String dia) {
+            this.dialogo = dia;
+            this.dialogo_restante = dia;
+        }
+
+        private Ventana() {
         }
 
         /**
@@ -1456,7 +1393,7 @@ public class Manager extends JGEngine {
          * @param y coordenada Y donde se ubica la ventana
          */
         public void desplegarMensaje(double x, double y, String[] mensajes) {
-            byte separadorLinea = 16;
+            separadorLinea = 16;
             desplegarVentana(x, y);
             setColor(JGColor.black);
             setFont(new JGFont("Arial", 0, 10));
@@ -1494,8 +1431,6 @@ public class Manager extends JGEngine {
         }
 
         public void avanzarTexto() {
-            System.out.println("Ventanas: " + this.ventanas);
-            System.out.println("Ventana_actual: " + this.ventana_actual);
             if (ventana_actual <= ventanas) {
                 if (getKey(KeyEnter) && !isWait()) {
                     setWait(true);
@@ -1528,9 +1463,9 @@ public class Manager extends JGEngine {
          * @param mensaje
          */
         public void desplegarMensaje(double x, double y, String mensaje) {
-            //eng.setColor(JGColor.red);
+            setColor(JGColor.red);
             //eng.setFont(new JGFont("Arial", 0, 16));
-            drawString(mensaje, x, y + 45, 0);
+            drawString(mensaje, x, y, 0);
 
         }
 
@@ -1613,6 +1548,88 @@ public class Manager extends JGEngine {
 
         public void setMensajes(String[] mensajes) {
             this.mensajes = mensajes;
+        }
+
+        /**
+         * Setea la cantidad de lineas totales del dialogo total
+         * 
+         * @param txt
+         * @param ventaniwi
+         */
+        public void activarParametrosFormateoTexto(String txt, JGRectangle ventaniwi) {
+            byte pixelLetra = 5;
+            this.tamanoLinea = (byte) (ventaniwi.width / pixelLetra);
+            this.lineasTotal = txt.length() / tamanoLinea;
+            this.linea_concurrente = 1;
+            terminoDialogo = false;
+            linea_1 = this.generarLinea();
+            linea_2 = this.generarLinea();
+            linea_3 = this.generarLinea();
+        }
+
+        public void activarParametrosFormateoTexto() {
+            byte pixelLetra = 5;
+            this.tamanoLinea = (byte) (300 / pixelLetra);
+            this.lineasTotal = dialogo.length() / tamanoLinea;
+            this.linea_concurrente = 1;
+            terminoDialogo = false;
+            linea_1 = this.generarLinea();
+            linea_2 = this.generarLinea();
+            linea_3 = this.generarLinea();
+        }
+
+        private void mostrarTexto() {
+            dibujarVentana();
+            desplegarMensaje(350, 260 + 16, this.linea_1);
+            desplegarMensaje(350, 260 + 32, this.linea_2);
+            desplegarMensaje(350, 260 + 48, this.linea_3);
+        }
+
+        public void siguiente() {
+            this.siguientesLineas();
+        }
+
+        private String generarLinea() {
+            if (!terminoDialogo) {
+                if (dialogo_restante.length() > tamanoLinea) {
+                    //corto la cadena de la linea
+                    String subStr = this.dialogo_restante.substring(1, tamanoLinea);
+
+                    //busco el ultimo espacio dentro del subString
+                    indiceUltimaLetra = subStr.lastIndexOf(" ");
+                    //corto el String real hacia el ultimo espacio blanco
+                    String subStr2 = this.dialogo_restante.substring(1, indiceUltimaLetra);
+
+                    //guardo las oraciones qlias ctm de la mierda
+                    dialogo_mostrar = subStr2;
+                    dialogo_restante = this.dialogo_restante.substring(indiceUltimaLetra + 1);
+                    //aumenta la linea
+                    linea_concurrente++;
+                } else {
+                    dialogo_mostrar = dialogo_restante;
+                    linea_concurrente = lineasTotal;
+                    this.terminoDialogo = true;
+                }
+                return dialogo_mostrar;
+            } else {
+                return "";
+            }
+        }
+
+        public void siguientesLineas() {
+            linea_1 = this.generarLinea();
+            linea_2 = this.generarLinea();
+            linea_3 = this.generarLinea();
+
+        }
+
+        private void dibujarVentana() {
+            //borde externo
+            setColor(JGColor.green);
+            drawRect(viewXOfs() + 200, viewYOfs() + 250, 300, 100, true, false);
+            //interior
+            setColor(JGColor.white);
+            drawRect(viewXOfs() + 205, viewYOfs() + 255, 290, 90, true, false);
         }
     }
 
@@ -1718,33 +1735,55 @@ public class Manager extends JGEngine {
                 Icono iconito = (Icono) obj;
                 this.setMensajeIcon(iconito.getNombreLogico());
             }
-
-//            if (obj.getGraphic().equals("mario")) {
-
             setMensaje("Soy " + obj.getName());
-//            }
-            if (obj.getGraphic().equals("vendedor")) {
-                setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
-                if (getMouseButton(3)) {
-                    setVentana((byte) 1);
-//                    seccion.setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
-//                    seccionNpc.setSeccion(new JGPoint(150, 210), new JGPoint(3, 4));
-//                    setGameState("InCommerce");
+            if ((obj.getGraphic().equals("cerrar")) && (getMouseButton(3))) {
+                setVentana((byte) 3);
+            }
+            //click en NPC
+            if (obj.colid == (int) Math.pow(2, 3)) {
+                Npc npc_procesar = (Npc) obj;
+                switch (npc_procesar.getTipo()) {
+                    case 2://npc de misiones
+                        setMensaje("jajaja, agarrame el 1313... soy " + npc_procesar.getNombre() + " y que wea!");
+                        if (getMouseButton(3)) {
+                            npc_concurrente = npc_procesar;
+                            ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
+                            ventanaManager.activarParametrosFormateoTexto();
+                            npc_concurrente.getDialogo().nextTexto();
+                            setGameState("InInteraction");
+                            salirInInteracting = false;
+                        }
+                        break;
+                    case 1://npc vendedor
+                        setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
+                        if (getMouseButton(3)) {
+                            vendedor_concurrente = (Npc) obj;
+                            setVentana((byte) 1);
+                        }
                 }
             }
-            if ((obj.getGraphic().equals("cerrar")) && (getMouseButton(3))) {
-//                System.out.println("----------cerrar trade");
-//                setMensaje("");
-                setVentana((byte) 3);
-//                System.out.println("getVentana: " + getVentana());
-//                System.out.println(getMensaje() + "Nada");
-//                System.out.println(getMouseButton(3) + " boton derecho del mouse");
-            }
-            //click en el menu algun boton del menu
+            //click en algun boton
             if (obj.colid == (int) Math.pow(2, 5)) {
-
                 Boton boton = (Boton) obj;
-                if (obj.x >= viewXOfs() + (viewWidth() - 180)) {
+                if (inGameState("InInteraction")) {
+                    if (getMouseButton(3)) {
+                        clearMouseButton(3);
+                        Boton btn = (Boton) obj;
+                        switch (btn.getTipo_boton()) {
+                            case 0: //Presiono boton cerrar en un dialogo
+                                salirInInteracting = true;
+                                npc_concurrente = null;
+                                setGameState("InWorld");
+                                removeObject(obj);
+                                break;
+                            case 5: //presiono boton siguiente para las siguientes lineas del dialogo
+                                ventanaManager.siguiente();
+                                removeObject(obj);
+                                break;
+                        }
+                    }
+                }
+                if (obj.x >= viewXOfs() + (viewWidth() - 180)) {// es del menu
                     if (boton.getTipo_boton() != 3 && getMouseButton(3)) {
                         clearMouseButton(3);
                         //corresponde al menu y no es boton del tipo "ver"
@@ -1761,20 +1800,16 @@ public class Manager extends JGEngine {
                                     case 1:
                                         pj.aumentarFuerza(1);
                                         pj.gastarPuntoEstadistica();
-                                        System.out.println("Fuerza");
                                         break;//
                                     case 2:
                                         pj.aumentarDestreza(1);
                                         pj.gastarPuntoEstadistica();
-                                        System.out.println("Destreza");
                                         break;
                                     case 3:
                                         pj.aumentarSabiduria(1);
                                         pj.gastarPuntoEstadistica();
-                                        System.out.println("Sabiduria");
                                         break;
                                     case 4:
-                                        System.out.println("Vitalidad");
                                         pj.gastarPuntoEstadistica();
                                         pj.aumentarVitalidad(1);
                                         break;
@@ -1789,15 +1824,10 @@ public class Manager extends JGEngine {
                                 pj.gastarPuntosHabilidad();
                                 seccion.setWorking(false);
                                 setLimpiarIconos(true);
-                                System.out.println(pj.getHabilidades().getHabilidad((short) boton.getId()).getHabilidad().getNombre());
-                                System.out.println("Nivel: " + pj.getHabilidades().getHabilidad((short) boton.getId()).getNivelHabilidad());
-                                System.out.println("PTOS HAB " + pj.getTotalPuntosHabilidad());
                                 break;
                             case 2://Menú está en misión
-                                System.out.println("ID: " + boton.getId());
                                 if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
                                     pj.getMisiones().abandonaMision((short) boton.getId());
-                                    System.out.println("ELIMINE UNA MISION: " + boton.getId());
                                 }
                                 break;
                         }
@@ -1840,18 +1870,16 @@ public class Manager extends JGEngine {
                         }
                     }
                 }
+
             }
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
                 clearMouseButton(3);
                 setIcon((Icono) obj);
             }
-
-
-
             if (obj.colid == (int) Math.pow(2, 4)) {
                 Icono icon = (Icono) obj;
                 if (inGameState("InCommerce")) {
-                    if ((getMouseButton(3)) && icon.belongTo(npc_vendedor_1.getTipo())) {
+                    if ((getMouseButton(3)) && icon.belongTo(vendedor_concurrente.getTipo())) {
                         clearMouseButton(3);
                         if (pj.validarDinero(icon.getItem().getValorDinero())) {
                             pj.getInventario().agregarItem(icon.getIdObjeto());
@@ -1860,7 +1888,6 @@ public class Manager extends JGEngine {
                         } else {
                             setMensaje("No tienes suficiente dinero");
                         }
-
                     }
                     if ((getMouseButton(3)) && icon.belongTo(pj.getTipo())) {
                         clearMouseButton(3);
@@ -1871,19 +1898,14 @@ public class Manager extends JGEngine {
 
                 }
                 if (inGameState("InReward")) {
-                    if ((getMouseButton(3)) && icon.belongTo(mob.getTipo())) {
+                    if ((getMouseButton(3)) && icon.belongTo(mob_concurrente.getTipo())) {
                         clearMouseButton(3);
                         pj.getInventario().agregarItem(icon.getIdObjeto());
-                        mob.getInventario().eliminarItem(icon.getIdObjeto(), (short) 1);
+                        mob_concurrente.getInventario().eliminarItem(icon.getIdObjeto(), (short) 1);
                         cursor.setVentana((byte) 4);
                     }
-
-
                 }
-
-
             }
-
         }
 
         public void desplegarInformacion() {
@@ -2015,7 +2037,6 @@ public class Manager extends JGEngine {
                                     cantidad++;
                                     hmIconoHabilidades.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, hab.getNombreGrafico(), hab.getIdHabilidad(), (short) 0, listHab.getHabilidad(hab.getIdHabilidad()).getNivelHabilidad(), personaje.getTipo(), hab.getNombre(), hab));
                                     if (inGameState("InReward")) {
-                                        System.out.println("Item in reward");
                                     }
                                     this.recorrido.x += 37;
                                 }
@@ -2042,14 +2063,11 @@ public class Manager extends JGEngine {
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
 
-                                    System.out.println("Cantidad: ");
                                     if (inv.tieneItem(obje.getIdObjeto())) {
                                         cantidad++;
-                                        System.out.println("aquiiiii" + obje.getNombre() + obje.getIdObjeto());
                                         hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
                                         setFont(new JGFont("Arial", 0, 24));
 //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                        System.out.println("ITEMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
                                         this.recorrido.x += 37;
                                         this.tabla.x--;
 

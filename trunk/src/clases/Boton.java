@@ -14,6 +14,7 @@ public class Boton extends JGObject {
      * 2 = usar
      * 3 = ver
      * 4 = abandonar
+     * 5 = siguiente dialogo
      */
     private int tipo_boton;
     private boolean apretado;
@@ -68,6 +69,8 @@ public class Boton extends JGObject {
 
     public void pintar(){
         eng.drawImage(xAnt, yAnt, this.getGraphic(),false);
+        
+
     }
 
     public int getTipo_boton() {

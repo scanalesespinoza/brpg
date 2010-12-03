@@ -17,11 +17,11 @@ import jgame.*;
  */
 public class Npc extends Personaje {
 
+    private dialogo_personaje dialogo;
     private short idNpc;
     private String grafNpc;
     private String nomNpc;
     private int colId;
-    public String[] dialogo;
     private dbDelegate conect = new dbDelegate();
     public Calendar c1;
     public boolean cargado = false;
@@ -29,48 +29,28 @@ public class Npc extends Personaje {
 
     public Npc(double x, double y, String name, String mediaName, int colId, int tamano, short idNpc, String[] dialogo) throws SQLException {
         super(name, true, x, y, colId, mediaName, tamano);
-        this.dialogo = dialogo;
         this.idNpc = idNpc;
         this.grafNpc = mediaName;
         this.nomNpc = name;
         this.colId = colId;
-        System.out.println("contruye NPC");
-        //cargaInventario(idNpc);
-        System.out.println("Inventario Npc Cargado");
+        this.dialogo = new dialogo_personaje();
     }
 
     public Npc(double x, double y, String name, String mediaName, int tamano, short idNpc, short nivel, short tipo, String[] dialogo) throws SQLException {
         super(x, y, 1, idNpc, name, mediaName, nivel, tipo, (int) Math.pow(2, 3));
-        this.dialogo = dialogo;
+        this.dialogo = new dialogo_personaje();
         this.idNpc = idNpc;
         this.grafNpc = mediaName;
         this.nomNpc = name;
-        System.out.println("contruye NPC " + name);
     }
 
     public Npc() {
+        this.dialogo = new dialogo_personaje();
     }
 
-    public String[] obtieneDialogo() {
-        /*
-        String[] dialogo = {"Hola amigo",
-        "como estas",
-        "Me doy cuenta que no eres de estos lados",
-        "te advierto que es muy peligroso salir de la cuidad",
-        "hay muchas criaturas peligrosas",
-        "si no tienes donde ir puedes quedarte",
-        "mientras ayudes a mantener la cuidad en pie",
-        "todos te aceptaran sin problema",
-        "pensadolo hay mucho trabajo que hacer",
-        "acomapañame a la plaza y danos una mano",
-        "podras conocer al resto de la gente."
-        };
-         * 
-         */
-
-        return dialogo;
+    public String obtieneDialogo() {
+        return dialogo.getParrafo() +  " y mi nombre eh "+this.getNombre();
     }
-
     public void comerciar() {
     }
 
@@ -79,6 +59,7 @@ public class Npc extends Personaje {
 
     public void dialogar() {
     }
+
     @Override
     public void hit(JGObject obj) {
         //System.out.println("Hit NPC!"+obj.getName());
@@ -107,9 +88,24 @@ public class Npc extends Personaje {
     public void setNomNpc(String nomNpc) {
         this.nomNpc = nomNpc;
     }
+
     @Override
-    public void move(){
-       
+    public void move() {
     }
+
+    @Override
+    public void cargarDatos(Short id) {
+        super.cargarDatos(id);
+        dialogo.cargarDialogos(this.getIdPersonaje());
+    }
+
+    public dialogo_personaje getDialogo() {
+        return dialogo;
+    }
+
+    public void setDialogo(dialogo_personaje dialogo) {
+        this.dialogo = dialogo;
+    }
+
 
 }
