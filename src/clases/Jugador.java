@@ -131,7 +131,6 @@ public class Jugador extends Personaje {
     private void setHp() {
         this.hp = (getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 100) + getNivel();
         this.hpMax = this.hp;
-        System.out.println("hp: " + this.hp);
     }
 
     private void setMp() {
@@ -211,7 +210,6 @@ public class Jugador extends Personaje {
             short resto = (short) ((this.getExperiencia() + exp)-(this.getLimiteSuperiorExperiencia())) ;
             subirNivel();
             this.aumentarExperiencia(resto);
-            System.out.println("resto :"+resto);
         }else this.setExperiencia(this.getExperiencia() + exp);
 
     }
@@ -304,33 +302,26 @@ public class Jugador extends Personaje {
                 if (eng.getKey(eng.KeyRight)) {
                     setbRightkey(true);
                 }//else {eng.clearKey(eng.KeyRight);}
-
             }
             player_move();
-
-
         }
     }
 
     @Override
     public void hit(JGObject obj) {
-        System.out.println("ME EJECUTE :");
         switch (obj.colid) {
             case 8:
                 ydir = 0;
                 bloquear();
                 suspend();
                 this.setInteractuarNpc(true);
-                System.out.println("Nombre del objeto colisionador: " + obj.getGraphic() + obj.getName());
                 this.npcInterac = (Npc) obj;
                 break;
             case 4:
                 this.enemigo = (Mob) obj;
-                System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrRRR: "+ obj.getGraphic());
                
                 break;
             default:
-                System.out.println("RRR: "+ obj.getGraphic());
                 break;
         }
     }

@@ -29,8 +29,6 @@ public class Inventario {
         this.respaldoObjetos = repaldoObjetos;
     }
 
-    
-
     public Inventario() {
         this.objetos = new HashMap<Short, Item>();
     }
@@ -41,18 +39,15 @@ public class Inventario {
      */
     public void cargarInventario(short id) {
         this.conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos personaje");
         String StrSql = "SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto,"
                 + " inv.cantidad cantidad, obj.nombre nombre, inv.estaEquipado estaEquipado "
                 + "  FROM inventario inv, objeto obj "
                 + " WHERE inv.Personaje_id=" + id
                 + "   AND inv.Objeto_id=obj.id";
-        System.out.println(StrSql);
         try {
-            
             ResultSet res = conexion.Consulta(StrSql);
             byte i = 0;
-            
+
             while (res.next()) {
                 Item item = new Item();
                 item.setIdObjeto(res.getShort("idObjeto"));
@@ -64,7 +59,6 @@ public class Inventario {
                 obj.setObjeto(item.getIdObjeto());
                 item.setObjeto(obj);
                 this.objetos.put(item.getIdObjeto(), item);
-                System.out.println("EL personaje con id "+ id + "Tiene hasta el momento "+ i +"Items");
                 i += 1;
 
             }
@@ -119,6 +113,7 @@ public class Inventario {
             }
         }
     }
+
     /**
      * Si el item es nuevo y no ha sido eliminado (cantidad == 0)
      * insertar en la base de datos
@@ -139,6 +134,7 @@ public class Inventario {
             }
         }
     }
+
     /**
      * si el item no tiene cantidad , se borra de la base de datos
      */
@@ -186,13 +182,11 @@ public class Inventario {
         Item item = creaItem(idItem, (short) 1, (short) 0);
         if (this.comprobarItem(idItem)) {
             this.getObjetos().get(idItem).sumarCantidad((short) 1);
-            System.out.println("YA LO TENGO..TENIA : "+(this.getObjetos().get(idItem).getCantidad() -1));
         } else {
             //si el item es nuevo en el hashmap, se debe ingresar en la base de datos
             //para eso  se pone el valor newItem como true
             item.setNewItem(true);
             this.getObjetos().put(idItem, item);
-             System.out.println("NO LO TENGO..AHORA TENGO: "+(this.getObjetos().get(idItem).getCantidad()));
         }
     }
 
@@ -298,7 +292,6 @@ public class Inventario {
         int cuenta = 0;
         if (tieneItem(idItem)) {
             cuenta = this.getObjetos().get(idItem).getCantidad();
-            System.out.println("Contar item"+this.getObjetos().get(idItem).getCantidad());
         }
         return cuenta;
     }
@@ -332,14 +325,14 @@ public class Inventario {
 
     private void repaldarInventario(HashMap<Short, Item> objetos) {
         this.respaldoObjetos = objetos;
-        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuoiuasodiuasdasdasdasd "+ respaldoObjetos.isEmpty());
-        
+
     }
-    public void restablecerInventario(){
+
+    public void restablecerInventario() {
         this.objetos = this.respaldoObjetos;
-        System.out.println("uuuusuuuuuuuuuuuuuuuuuuuuuuuuoiuasodiuasdasdasdasd "+ objetos.isEmpty());
     }
-    public void respaldarInventario(){
+
+    public void respaldarInventario() {
         this.respaldoObjetos = this.objetos;
 
     }
@@ -363,7 +356,7 @@ public class Inventario {
             this.cantidad = cantidad;
             this.estaEquipado = estaEquipado;
             this.objeto.setObjeto(idObjeto);
-            
+
         }
 
         public Objeto getObjeto() {
@@ -438,7 +431,5 @@ public class Inventario {
             }
             this.setCantidad(valor);
         }
-
-
     }
 }

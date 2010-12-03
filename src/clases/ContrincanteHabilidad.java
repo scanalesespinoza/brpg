@@ -41,13 +41,10 @@ public class ContrincanteHabilidad {
      */
     public void cargarHabilidades(Short id) {
         this.conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos personaje");
         String StrSql = "SELECT * FROM contrincante_habilidad "
                 + "WHERE personaje_id = " + id;
-        System.out.println(StrSql);
         try {
             ResultSet res = conexion.Consulta(StrSql);
-            System.out.println(StrSql);
             byte i = 0;
             while (res.next()) {
                 UnaHabilidad habilidad = new UnaHabilidad();
@@ -167,7 +164,6 @@ public class ContrincanteHabilidad {
     public short getHabilidadAlAzar() {
         short result = -1;
         if (this.getHabilidades().size() > 0) {
-            System.out.println("ENTRE A SACAR HABILIDAD ");
             Random tope = new Random();
             int num = tope.nextInt(this.getHabilidades().size()+1);
             int i = 0;
@@ -249,10 +245,8 @@ public class ContrincanteHabilidad {
         public boolean puedeAumentar() {
             Habilidad hab = this.getHabilidad();
             if (hab.getNivelMaximo() > this.getNivelHabilidad()) {
-                System.out.println("SI puede agregar");
                 return true;
             } else {
-                System.out.println("no puede agregar");
                 return false;
             }
         }

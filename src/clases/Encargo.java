@@ -145,7 +145,6 @@ public class Encargo {
         String StrSql = "SELECT * FROM encargo "
                 + " WHERE personaje_id = " + id
                 + " AND updated_at IS NULL";
-        System.out.println(StrSql);
         this.misiones_activas = new HashMap<Short, UnEncargo>();
         try {
             ResultSet res = conexion.Consulta(StrSql);

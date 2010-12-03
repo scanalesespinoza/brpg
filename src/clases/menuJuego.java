@@ -135,12 +135,10 @@ public class menuJuego extends JGObject {
         this.botones_estadistica_ver.get((short) 3).suspend();
         this.botones_estadistica_ver.get((short) 4).suspend();
         this.conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos personaje");
         String StrSql = "SELECT * FROM habilidad ";
         this.botones_habilidad_aumentar = new HashMap<Short, Boton>();
         this.botones_habilidad_ver = new HashMap<Short, Boton>();
         this.habilidades = new HashMap<Short, Habilidad>();
-        System.out.println(StrSql);
         double linea = 30;
         try {
             ResultSet res = conexion.Consulta(StrSql);
@@ -529,9 +527,7 @@ public class menuJuego extends JGObject {
 
                     while ((this.tabla.y > 0) && (!fin)) {
                         while ((this.tabla.x > 0) && (!fin)) {
-                            System.out.println("dibuja tabla");
                             if (iter.hasNext()) {
-                                System.out.println("Has next");
                                 Map.Entry en = (Map.Entry) iter.next();
                                 Icono drawIcon = (Icono) en.getValue();
                                 eng.drawImage(this.recorrido.x, this.recorrido.y, drawIcon.getGraphic(), false);
@@ -570,9 +566,7 @@ public class menuJuego extends JGObject {
 
                     while ((this.tabla.y > 0) && (!fin)) {
                         while ((this.tabla.x > 0) && (!fin)) {
-                            System.out.println("dibuja tabla");
                             if (iter.hasNext()) {
-                                System.out.println("Has next");
                                 Map.Entry en = (Map.Entry) iter.next();
                                 Icono drawIcon = (Icono) en.getValue();
                                 eng.drawImage(this.recorrido.x, this.recorrido.y, drawIcon.getGraphic(), false);
@@ -610,9 +604,7 @@ public class menuJuego extends JGObject {
 
                     while ((this.tabla.y > 0) && (!fin)) {
                         while ((this.tabla.x > 0) && (!fin)) {
-                            System.out.println("dibuja tabla");
                             if (iter.hasNext()) {
-                                System.out.println("Has next");
                                 Map.Entry en = (Map.Entry) iter.next();
                                 Icono drawIcon = (Icono) en.getValue();
                                 eng.drawImage(this.recorrido.x, this.recorrido.y, drawIcon.getGraphic(), false);

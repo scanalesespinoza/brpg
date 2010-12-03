@@ -84,7 +84,7 @@ public class StdDungeon extends JGObject {
 		this.key_downright=key_downright;
                  */
                 occupy_mask=block_mask;
-		this.block_mask=block_mask;
+                this.block_mask=block_mask;
 		this.occupy_mask=occupy_mask;
 		setSpeed(speed,speed);
 	}

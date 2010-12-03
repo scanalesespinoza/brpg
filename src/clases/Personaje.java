@@ -17,23 +17,6 @@ import jgame.JGTimer;
  * @author gerald
  */
 public class Personaje extends extensiones.StdDungeon {
-    // object cids: 1=player 2=monster 4=bullet 8=monsterbullet
-
-    public static final int WALL_T = 1;
-    public static final int SHWALL_T = 2; // shootable wall
-    public static final int DOOR_T = 4;
-    public static final int PLAYER_T = 16;
-    public static final int MONSTER_T = 32;
-    public static final int GEN_T = 64; // generator
-    public static final int BONUS_T = 128;
-    public static final int KEY_T = 256;
-    public static final int HEALTH_T = 512;
-    public static final int PLAYERBLOCK_T =
-            WALL_T | SHWALL_T | DOOR_T | GEN_T;
-    public static final int MONSTERBLOCK_T =
-            WALL_T | SHWALL_T | DOOR_T | BONUS_T | MONSTER_T | GEN_T | BONUS_T | KEY_T | HEALTH_T;
-    public static final int BULLETBLOCK_T =
-            WALL_T | DOOR_T | BONUS_T | BONUS_T | KEY_T | HEALTH_T;
     //Variables de juego de Personaje
     private short idPersonaje;
     private String nombre;
@@ -59,6 +42,10 @@ public class Personaje extends extensiones.StdDungeon {
 
     public Personaje(String name, boolean unique_id, double x, double y, int cid, String graphic, int occupy_mask) {
         super(name, unique_id, x, y, cid, graphic, occupy_mask);
+        this.inventario = new Inventario();
+        this.habilidades = new ContrincanteHabilidad();
+        this.misiones = new Encargo();
+        this.bloqueo = false;
     }
 
     public Personaje(double x, double y, double speed, short idPersonaje, String nombre, String graf, short nivel, short tipo, int cid) {
@@ -167,18 +154,14 @@ public class Personaje extends extensiones.StdDungeon {
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo FROM personaje pjuno "
                 + "WHERE pjuno.id=" + id;
-
         try {
-
             ResultSet res = conexion.Consulta(StrSql);
-
             if (res.next()) {
                 this.setIdPersonaje(res.getShort("id"));
                 this.setNombre(res.getString("nombre"));
                 this.setNivel(res.getShort("nivel"));
                 this.setPos(res.getInt("posx"), res.getInt("posy"));
                 this.setTipo(res.getShort("tipo"));
-
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->personaje , método->cargarPersonaje() " + ex);
@@ -261,9 +244,6 @@ public class Personaje extends extensiones.StdDungeon {
         yAnt = this.y;
         xSpeedAnt = this.xspeed;
         ySpeedAnt = this.yspeed;
-        System.out.println("XSPEED "+ xSpeedAnt);
-        System.out.println("YSPEED "+ ySpeedAnt);
-
         cidAnt = this.colid;
         colid = 0;
         x = -30;
@@ -276,7 +256,5 @@ public class Personaje extends extensiones.StdDungeon {
         this.y = this.yAnt;
         setSpeed(this.xSpeedAnt, this.ySpeedAnt);
         this.colid = cidAnt;
-        System.out.println("XSPEEDaparecer "+ xSpeedAnt);
-        System.out.println("YSPEEDaparecer "+ ySpeedAnt);
     }
 }
