@@ -232,6 +232,14 @@ public class Jugador extends Personaje {
         this.setPesoSoportado(this.getPesoSoportado() + 50);
     }
 
+    public void usarItem(Objeto objeto){
+            if(objeto.getTipo()==0){
+                if(this.hp+objeto.getBeneficio()<this.hpMax){
+                    this.hp+=objeto.getBeneficio();
+                }else{this.hp=this.hpMax;}
+            }
+    }
+
     @Override
     public void move() {
         /*limpio todas las  teclas que han sido presionadas*/
@@ -509,11 +517,11 @@ public class Jugador extends Personaje {
         }
     }
 
-    public void setProximoItem(Short idItem) {
+    public void setProximoItem(Objeto obj) {
         if (eng.inGameState("InCombat")) {
             if (!isBlocked()) {
-                this.setIdProximoItem(idItem);
-                this.utilizarItem();
+//                this.setIdProximoItem(idItem);
+                this.usarItem(obj);
             } else {
                 this.setIdProximoItem((short) -1);
             }
@@ -541,6 +549,7 @@ public class Jugador extends Personaje {
 
     public void utilizarItem() {
         if (this.getIdProximoItem() != -1) {
+
             //bloqueo 1 tiempo de espera
             this.bloquear(2);
         }
