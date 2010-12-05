@@ -19,13 +19,15 @@ private Short idObjeto;
 
     private String descripcion;
 
-    private boolean tipo;
+    private int tipo;
 
     private short peso;
 
     private short valorDinero;
 
     private boolean usoCombate;
+
+    private int beneficio;
 
     private String nombreGrafico;
 
@@ -51,8 +53,14 @@ private Short idObjeto;
                 this.setNombre(res.getString("nombre"));
                 this.setIdObjeto(res.getShort("id"));
                 this.setPeso(res.getShort("peso"));
-                this.setTipo(Boolean.valueOf(res.getString("tipo")));
-                this.setUsoCombate(Boolean.parseBoolean(res.getString("usocombate")));
+                this.setTipo(res.getInt("tipo"));
+                this.setBeneficio(res.getInt("beneficio"));
+                if(res.getInt("usocombate")==0){
+                    this.setUsoCombate(false);
+                }else{
+                    this.setUsoCombate(true);
+                }
+
                 this.setValorDinero(res.getShort("valordinero"));
                 this.setNombreGrafico(res.getString("nom_grafico"));
             }
@@ -61,6 +69,24 @@ private Short idObjeto;
         }
     }
 
+    public int getBeneficio() {
+        return beneficio;
+    }
+
+    public void setBeneficio(int beneficio) {
+        this.beneficio = beneficio;
+    }
+
+    
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -93,13 +119,7 @@ private Short idObjeto;
         this.peso = peso;
     }
 
-    public boolean isTipo() {
-        return tipo;
-    }
 
-    public void setTipo(boolean tipo) {
-        this.tipo = tipo;
-    }
 
     public boolean isUsoCombate() {
         return usoCombate;

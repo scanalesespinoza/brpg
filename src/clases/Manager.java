@@ -63,6 +63,7 @@ public class Manager extends JGEngine {
     private HashMap<Short, Habilidad> habilidades;
     private HashMap<Short, Mision> misiones;
     private Npc npc_interaccion;
+    private boolean salirInInteracting;
 
     public Icono getIcon() {
         return icon;
@@ -98,7 +99,7 @@ public class Manager extends JGEngine {
     private HashMap<Integer, Icono> hmIconoHabilidades = new HashMap<Integer, Icono>();
     private Ventana asd;
     public String[] textoPrueba;
-    private boolean salirInInteracting = false;
+    public int filtro = 0;
 
     public static void main(String[] args) {
         new Manager(new JGPoint(800, 540));
@@ -533,17 +534,19 @@ public class Manager extends JGEngine {
 
         seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
-        menu.recibeHm(hmIconoHabilidades, 2);
+        menu.recibeHm(hmIconoHabilidades, 2,filtro);
 
         seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
-        menu.recibeHm(hmIconoItem, 1);
+        menu.recibeHm(hmIconoItem, 1,filtro);
 
         seccion.setWorking(true);
-        menu.paintB();
+        
         cursor.desplegarInformacion();
 
         moveObjects(null, 1);
+        
+        menu.paintB();
         menu.menuActual(getTeclaMenu(), pj);
 
     }
@@ -651,10 +654,14 @@ public class Manager extends JGEngine {
             setIcon(null);
         } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
             //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
-            Objeto obje = pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
+            Objeto obje = icon.getItem();//pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
+            System.out.println("Es--------->"+obje.getNombre());
+            System.out.println("EsUsoCombate--------->"+obje.isUsoCombate());
             if (obje.isUsoCombate()) {
-                pj.setProximoItem(this.getIconoPresionado().getIdObjeto());
+                pj.setProximoItem(obje);
                 pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).restarCantidad((short) 1);
+                seccion.removerIconos();
+                seccion.setWorking(false);
             }
             if (pj.getIdProximoItem() != -1) {
                 //el personaje puede usar un item
@@ -858,9 +865,7 @@ public class Manager extends JGEngine {
 
     public int getTeclaMenu() {
         int teclaPres = 0;
-        if ((getKey(105)) || (getKey(73))) {
-            teclaPres = 3;
-        } else if ((getKey(101)) || (getKey(69))) {
+        if ((getKey(101)) || (getKey(69))) {
             teclaPres = 4;
         } else if ((getKey(109)) || (getKey(77))) {
             teclaPres = 2;
@@ -1192,12 +1197,12 @@ public class Manager extends JGEngine {
 
 //            pj.colid = 0;
             seccion.generaSeccion(pj, 1);
-            menu.recibeHm(hmIconoItem, 1);
+            menu.recibeHm(hmIconoItem, 1,filtro);
             pj.bloquear();
 
             seccionNpc.setSeccion(new JGPoint(160, 210), new JGPoint(3, 4));
             seccionNpc.generaSeccion(vendedor, 1);
-            menu.recibeHm(hmIconoItem, 0);
+            menu.recibeHm(hmIconoItem, 0,filtro);
 
             cerrar = new Boton("cerrar", "cerrar", 230, 320, (int) Math.pow(2, 5), 0, 0);
             cerrar.pintar();
@@ -1250,13 +1255,13 @@ public class Manager extends JGEngine {
 
 //            pj.colid = 0;
             seccion.generaSeccion(pj, 1);
-            menu.recibeHm(hmIconoItem, 1);
+            menu.recibeHm(hmIconoItem, 1,filtro);
             pj.bloquear();
 
             seccionNpc.setSeccion(new JGPoint(200, 200), new JGPoint(6, 1));
             seccionNpc.generaSeccion(mob, 1);
             seccionNpc.setWorking(true);
-            menu.recibeHm(hmIconoItem, 0);
+            menu.recibeHm(hmIconoItem, 0,filtro);
 
 //            cerrar = new Boton("cerrar", "cerrar", 230, 320, (int) Math.pow(2, 5), 0, 0);
 //            cerrar.pintar();
@@ -1731,6 +1736,7 @@ public class Manager extends JGEngine {
 
         @Override
         public void hit(JGObject obj) {
+            
             if ((obj.colid == (int) Math.pow(2, 4))) {//es icono
                 Icono iconito = (Icono) obj;
                 this.setMensajeIcon(iconito.getNombreLogico());
@@ -1825,16 +1831,31 @@ public class Manager extends JGEngine {
                                 seccion.setWorking(false);
                                 setLimpiarIconos(true);
                                 break;
+                            case 0://Menú menu principal inventario
+                                if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
+                                    pj.getHabilidades().agregaHabilidad((short) boton.getId());
+                                } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
+                                    pj.getHabilidades().aumentarNivel((short) boton.getId());
+                                }
+                                pj.gastarPuntosHabilidad();
+                                seccion.setWorking(false);
+                                setLimpiarIconos(true);
+                                System.out.println(pj.getHabilidades().getHabilidad((short) boton.getId()).getHabilidad().getNombre());
+                                System.out.println("Nivel: " + pj.getHabilidades().getHabilidad((short) boton.getId()).getNivelHabilidad());
+                                System.out.println("PTOS HAB " + pj.getTotalPuntosHabilidad());
+                                break;
                             case 2://Menú está en misión
                                 if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
                                     pj.getMisiones().abandonaMision((short) boton.getId());
                                 }
                                 break;
                         }
+
                     } else if (boton.getTipo_boton() == 3) {
                         //corresponde al menu y es boton del tipo "ver"
                         //por comportamiento mouse over , se muestra información
                         //en el monitor
+                        System.out.println("menuActual---------->"+menu.getMenuActual());
                         switch (menu.getMenuActual()) {
                             case 4://Menú está en Estadísticas
                                 switch (boton.getId()) {
@@ -1867,10 +1888,44 @@ public class Manager extends JGEngine {
                                 Mision mis = misiones.get((short) boton.getId());
                                 setInformacionMision(mis.getNombre(), mis.getDescripcion(), String.valueOf(mis.getRecompensaExp()), String.valueOf(mis.getIdPersonajeConcluyeMision()));
                                 break;
+
                         }
                     }
                 }
 
+
+                if(obj.y >= viewYOfs() + (viewHeight() - 180)){
+                    if((getMouseButton(3)&&(getKey(66)))||(getMouseButton(3)&&(getKey(98)))){
+                        seccion.removerIconos();
+                        pj.getInventario().eliminarItem((short)boton.getId());
+                        seccion.setWorking(false);
+                    }
+                    if (boton.getTipo_boton() == 3 && getMouseButton(3)) {
+                            System.out.println("aquiiii->>>>>>>>>>");
+                           Objeto item = pj.getInventario().getObjetos().get((short)boton.getId()).getObjeto();
+                           setInformacionObjeto(item.getNombre(), item.getDescripcion(), String.valueOf(item.getValorDinero()), String.valueOf(item.getPeso()), String.valueOf(item.getTipo()), String.valueOf(item.isUsoCombate()));
+                    }                    
+                }
+                
+                if(obj.getName().equals("usable")&&(getMouseButton(3))){
+                    System.out.println("Nombre del objeto-------->"+obj.getName());
+//                    seccion.removerIconos();
+                        cursor.setLimpiarIconos(true);
+                    filtro=0;
+                    seccion.setWorking(false);
+                }else if(obj.getName().equals("equipo")&&(getMouseButton(3))){
+                    System.out.println("Nombre del objeto-------->"+obj.getName());
+//                    seccion.removerIconos();
+                    cursor.setLimpiarIconos(true);
+                    filtro=1;
+                    seccion.setWorking(false);
+                }else if(obj.getName().equals("colec")&&(getMouseButton(3))){
+                    System.out.println("Nombre del objeto-------->"+obj.getName());
+//                    seccion.removerIconos();
+                    cursor.setLimpiarIconos(true);
+                    filtro=2;
+                    seccion.setWorking(false);
+                }
             }
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
                 clearMouseButton(3);
@@ -1889,7 +1944,7 @@ public class Manager extends JGEngine {
                             setMensaje("No tienes suficiente dinero");
                         }
                     }
-                    if ((getMouseButton(3)) && icon.belongTo(pj.getTipo())) {
+                    if ((getMouseButton(3)) && icon.belongTo(pj.getTipo()) && icon.getItem().getTipo()==filtro) {
                         clearMouseButton(3);
                         pj.getInventario().eliminarItem(icon.getIdObjeto(), (short) 1);
                         pj.setDinero(pj.getDinero() + icon.getItem().getValorDinero());
@@ -1912,44 +1967,44 @@ public class Manager extends JGEngine {
             setFont(new JGFont("Arial", 0, 10));
             setColor(JGColor.white);
             if (nombre != null) {
-                drawString("Nombre : " + nombre, 16, viewHeight() - 80, -1);
+                drawString("Nombre : " + nombre, 16, viewHeight() - 180, -1);
             }
             if (descripcion != null) {
-                drawString("Descripción : " + descripcion, 16, viewHeight() - 70, -1);
+                drawString("Descripción : " + descripcion, 16, viewHeight() - 170, -1);
             }
             if (valor != null) {
-                drawString("Valor : " + valor, viewWidth() / 2, viewHeight() - 80, -1);
+                drawString("Valor : " + valor, viewWidth() / 2, viewHeight() - 180, -1);
             }
             if (peso != null) {
-                drawString("Peso : " + peso, viewWidth() / 2, viewHeight() - 70, -1);
+                drawString("Peso : " + peso, viewWidth() / 2, viewHeight() - 170, -1);
             }
             if (tipo != null) {
-                drawString("Tipo : " + tipo, viewWidth() / 2, viewHeight() - 60, -1);
+                drawString("Tipo : " + tipo, viewWidth() / 2, viewHeight() - 160, -1);
             }
             if (usoCombat != null) {
-                drawString("Uso Combate : " + usoCombat, viewWidth() / 2, viewHeight() - 50, -1);
+                drawString("Uso Combate : " + usoCombat, viewWidth() / 2, viewHeight() - 150, -1);
             }
             if (danoBeneficio != null) {
                 if (Integer.parseInt(danoBeneficio) > 0) {
-                    drawString("Beneficio : " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
+                    drawString("Beneficio : " + danoBeneficio, viewWidth() / 2, viewHeight() - 180, -1);
                 } else if (Integer.parseInt(danoBeneficio) < 0) {
-                    drawString("Daño : " + danoBeneficio, viewWidth() / 2, viewHeight() - 80, -1);
+                    drawString("Daño : " + danoBeneficio, viewWidth() / 2, viewHeight() - 180, -1);
                 }
             }
             if (costo != null) {
-                drawString("Costo mp : " + costo, viewWidth() / 2, viewHeight() - 70, -1);
+                drawString("Costo mp : " + costo, viewWidth() / 2, viewHeight() - 170, -1);
             }
             if (maxLvl != null) {
-                drawString("Nivel máx : " + maxLvl, viewWidth() / 2, viewHeight() - 60, -1);
+                drawString("Nivel máx : " + maxLvl, viewWidth() / 2, viewHeight() - 160, -1);
             }
             if (recompensa != null) {
-                drawString("Recompensa exp : " + recompensa, viewWidth() / 2, viewHeight() - 80, -1);
+                drawString("Recompensa exp : " + recompensa, viewWidth() / 2, viewHeight() - 180, -1);
             }
             if (pjEntregar != null) {
-                drawString("A quién entregar : " + pjEntregar, viewWidth() / 2, viewHeight() - 50, -1);
+                drawString("A quién entregar : " + pjEntregar, viewWidth() / 2, viewHeight() - 150, -1);
             }
             if (nota != null) {
-                drawString("Nota : " + nota, viewWidth() / 2, viewHeight() - 10, -1);
+                drawString("Nota : " + nota, viewWidth() / 2, viewHeight() - 110, -1);
             }
         }
 
@@ -2008,8 +2063,12 @@ public class Manager extends JGEngine {
         private JGPoint tabla;
         private boolean working = false;
 
+
         public Seccion() {
         }
+
+
+
 
         public boolean isWorking() {
             return working;
@@ -2065,12 +2124,29 @@ public class Manager extends JGEngine {
 
                                     if (inv.tieneItem(obje.getIdObjeto())) {
                                         cantidad++;
-                                        hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
-                                        setFont(new JGFont("Arial", 0, 24));
-//                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                        this.recorrido.x += 37;
-                                        this.tabla.x--;
 
+
+                                        if(personaje.getTipo()==0){
+                                            
+                                            if(obje.getTipo()==filtro){
+                                                System.out.println("Numero de filtro-------->"+filtro);
+                                                hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
+
+                                                setFont(new JGFont("Arial", 0, 24));
+        //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
+                                                System.out.println("ITEMMMMMMMMMMMMMMMMMMMMMMMM Filtrado");
+                                                this.recorrido.x += 37;
+                                                this.tabla.x--;
+                                            }
+                                        }else{
+                                            hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
+
+                                            setFont(new JGFont("Arial", 0, 24));
+    //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
+                                            System.out.println("ITEMMMMMMMMMMMMMMMMMMMMMMMMM Sin filtro");
+                                            this.recorrido.x += 37;
+                                            this.tabla.x--;
+                                        }
                                     }
 
                                 } else {

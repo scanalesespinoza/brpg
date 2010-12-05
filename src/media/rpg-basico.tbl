@@ -101,6 +101,12 @@ lateral	-	0	/media/imagenes/menu/lateral.png	-
 monitor	-	0	/media/imagenes/menu/monitor.png	-
 titulo	-	0	/media/imagenes/menu/titulo.png	-
 trade	-	0	/media/imagenes/menu/trade.jpg	-
+tab_usable	-	0	/media/imagenes/menu/usable.png	-
+tab_colec	-	0	/media/imagenes/menu/colec.png	-
+tab_equipo	-	0	/media/imagenes/menu/equipo.png	-
+tab_usable_dest	-	0	/media/imagenes/menu/usable_dest.png	-
+tab_colec_dest	-	0	/media/imagenes/menu/colec_dest.png	-
+tab_equipo_dest	-	0	/media/imagenes/menu/equipo_dest.png	-
 
 //define imagen por defecto de iconos
 singrafico	-	0	/media/imagenes/menu/not_found.png	-
