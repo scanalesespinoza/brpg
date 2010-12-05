@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package clases;
 
 import java.sql.ResultSet;
@@ -15,23 +14,35 @@ import java.sql.SQLException;
 public class Mision {
 
     private Short idMision;
-
     private String nombre;
-
     private String descripcion;
-
     private short nivelRequerido;
-
     private short recompensaExp;
-
     private boolean repetible;
-
     private short idPersonajeConcluyeMision;
-
     private dbDelegate conexion;
+    private dialogo_mision dialogo = new dialogo_mision();
+    private ObjetoMision requerimientos = new ObjetoMision();
+    private boolean bool;
 
-    public void Mision(){
+    public ObjetoMision getRequerimientos() {
+        return requerimientos;
+    }
 
+    public void setRequerimientos(ObjetoMision requerimientos) {
+        this.requerimientos = requerimientos;
+    }
+
+    
+    public void Mision() {
+    }
+
+    public dialogo_mision getDialogo() {
+        return dialogo;
+    }
+
+    public void setDialogo(dialogo_mision dialogo) {
+        this.dialogo = dialogo;
     }
 
     public String getDescripcion() {
@@ -90,11 +101,10 @@ public class Mision {
         this.repetible = repetible;
     }
 
-    public void setMision(short id){
+    public void setMision(short id) {
         this.conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos personaje");
-        String StrSql = "SELECT * FROM mision "+
-                        "WHERE id = "+ id;
+        String StrSql = "SELECT * FROM mision "
+                + "WHERE id = " + id;
         try {
             ResultSet res = conexion.Consulta(StrSql);
             if (res.next()) {
@@ -103,13 +113,18 @@ public class Mision {
                 this.setIdMision(res.getShort("id"));
                 this.setIdPersonajeConcluyeMision(res.getShort("personaje_id"));
                 this.setNivelRequerido(res.getShort("nivelrequerido"));
-                this.setRepetible(Boolean.parseBoolean(res.getString("repetible")));
+                if (res.getShort("repetible") == 0) bool = false;
+                else bool = true;
+                this.setRepetible(bool);
                 this.setRecompensaExp(res.getShort("recompensaexp"));
+                
+                    
+                
             }
         } catch (SQLException ex) {
-            System.out.println("Problemas en: clase->Objeto , método->setObjeto() " + ex);
+            System.out.println("Problemas en: clase->Mision, método->setMision() " + ex);
         }
+        this.dialogo.cargarDialogos(this.idMision);
+        this.requerimientos.cargarRequerimientos(this.idMision);
     }
-
-    
 }

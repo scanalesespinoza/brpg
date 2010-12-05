@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package clases;
 
 import java.sql.ResultSet;
@@ -13,39 +12,31 @@ import java.sql.SQLException;
  * @author gerald
  */
 public class Objeto {
-private Short idObjeto;
 
+    private Short idObjeto;
     private String nombre;
-
     private String descripcion;
 
     private int tipo;
 
     private short peso;
-
     private short valorDinero;
-
     private boolean usoCombate;
-
     private int beneficio;
 
     private String nombreGrafico;
-
-
     private dbDelegate conexion;
-
 
     /**
      * Busca los valores en la base de datos y los mapea para que queden disponible
      * de manera objetual para el sistema
      * 
      */
-    public void setObjeto(short id){
+    public void setObjeto(short id) {
         this.conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos personaje");
-        String StrSql = "SELECT * FROM objeto "+
-                        "WHERE id = "+ id;
-        
+        String StrSql = "SELECT * FROM objeto obj"
+                + " WHERE obj.id = " + id;
+
         try {
             ResultSet res = conexion.Consulta(StrSql);
             if (res.next()) {
@@ -63,6 +54,7 @@ private Short idObjeto;
 
                 this.setValorDinero(res.getShort("valordinero"));
                 this.setNombreGrafico(res.getString("nom_grafico"));
+
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->Objeto , método->setObjeto() " + ex);
@@ -136,6 +128,7 @@ private Short idObjeto;
     public void setValorDinero(short valorDinero) {
         this.valorDinero = valorDinero;
     }
+
     public String getNombreGrafico() {
         return nombreGrafico;
     }
@@ -143,5 +136,4 @@ private Short idObjeto;
     public void setNombreGrafico(String nombreGrafico) {
         this.nombreGrafico = nombreGrafico;
     }
-
 }

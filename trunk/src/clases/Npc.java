@@ -6,9 +6,13 @@ package clases;
 
 /*import extensiones.StdDungeonMonster;
 import java.sql.ResultSet;*/
+import clases.Encargo.UnEncargo;
 import java.sql.SQLException;
 import java.util.Calendar;
 //import java.util.HashMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import jgame.*;
 
 /**
@@ -49,8 +53,9 @@ public class Npc extends Personaje {
     }
 
     public String obtieneDialogo() {
-        return dialogo.getParrafo() +  " y mi nombre eh "+this.getNombre();
+        return dialogo.getParrafo() + " y mi nombre eh " + this.getNombre();
     }
+
     public void comerciar() {
     }
 
@@ -106,6 +111,31 @@ public class Npc extends Personaje {
     public void setDialogo(dialogo_personaje dialogo) {
         this.dialogo = dialogo;
     }
+    /**
+     * Solo para personajes del tipo mision
+     * Retorna si hay misiones asignadas
+     * @return
+     */
+    public boolean tieneMisiones() {
+        if (getTipo() == 2) {
+            if (this.getMisiones().getMisiones().size() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    public void getDialogoConcurrente(HashMap<Short,Encargo.UnEncargo> misiones ){
+        //busco si tiene las misiones el personaje
+        Iterator it = misiones.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            UnEncargo mision = (UnEncargo) e.getValue();
+            
+            }
+        }
+    }
 
 
-}

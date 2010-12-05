@@ -3,8 +3,7 @@ package clases;
 import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGPoint;
@@ -63,7 +62,6 @@ public class Manager extends JGEngine {
     private HashMap<Short, Habilidad> habilidades;
     private HashMap<Short, Mision> misiones;
     private Npc npc_interaccion;
-    private boolean salirInInteracting;
 
     public Icono getIcon() {
         return icon;
@@ -99,7 +97,8 @@ public class Manager extends JGEngine {
     private HashMap<Integer, Icono> hmIconoHabilidades = new HashMap<Integer, Icono>();
     private Ventana asd;
     public String[] textoPrueba;
-    public int filtro = 0;
+    private boolean salirInInteracting = false;
+public int filtro = 0;
 
     public static void main(String[] args) {
         new Manager(new JGPoint(800, 540));
@@ -118,7 +117,6 @@ public class Manager extends JGEngine {
         initEngineApplet();
 
     }
-
     @Override
     public void initCanvas() {
         // we set the background colour to same colour as the splash background
@@ -203,9 +201,6 @@ public class Manager extends JGEngine {
             dibujarObjetosEscenario();
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
 
-
-            //pasto1 = new Npc(192,128,"pasto","pasto",4,0,new String[]{"Hola amiguirijillo","soy pastillo1"});//pasto
-
             npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
             npc_vendedor_1.cargarDatos((short) 1);
             npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
@@ -223,11 +218,9 @@ public class Manager extends JGEngine {
         }
 
         definirEscenario();
-        System.out.println("Inicio obtiene habilidades");
         String StrSql = "SELECT * FROM habilidad ";
 
         this.habilidades = new HashMap<Short, Habilidad>();
-        System.out.println(StrSql);
         double linea = 30;
         try {
             ResultSet res = conect.Consulta(StrSql);
@@ -242,32 +235,11 @@ public class Manager extends JGEngine {
                 habi.setNombreGrafico(res.getString("nom_grafico"));
                 habi.setTiempoEspera(res.getInt("tiempoEspera"));
                 this.habilidades.put(habi.getIdHabilidad(), habi);
-
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
         }
-        System.out.println("Inicio obtiene misiones");
-        StrSql = "SELECT * FROM mision ";
 
-        this.misiones = new HashMap<Short, Mision>();
-        System.out.println("Inicio obtiene datos personaje");
-        try {
-            ResultSet res = conect.Consulta(StrSql);
-            if (res.next()) {
-                Mision mis = new Mision();
-                mis.setDescripcion(res.getString("descripcion"));
-                mis.setNombre(res.getString("nombre"));
-                mis.setIdMision(res.getShort("id"));
-                mis.setIdPersonajeConcluyeMision(res.getShort("personaje_id"));
-                mis.setNivelRequerido(res.getShort("nivelrequerido"));
-                mis.setRepetible(Boolean.parseBoolean(res.getString("repetible")));
-                mis.setRecompensaExp(res.getShort("recompensaexp"));
-                this.misiones.put(mis.getIdMision(), mis);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Problemas en: clase->manager , método-Linea 255 " + ex);
-        }
         ventanaManager = new Ventana();
         setGameState("Title");
     }
@@ -309,33 +281,7 @@ public class Manager extends JGEngine {
         } else if (isPresionada(KeyShift) && isPresionada(KeyTab)) {
             initGame();
         }
-//        if (((pj.isInteractuarNpc()) && ((getMouseButton(1)) || (getKey(KeyDown)))) || (interactuar > casa1.obtieneDialogo().length)) {
-//            pj.y = pj.y + 10;
-//            pj.desbloquear();
-//            removeObjects(getNomNpcInteractuar(), (int) Math.pow(2, 3));
-//            pj.setInteractuarNpc(false);
-//            setInteractuar(0);
-//        } else if ((pj.isInteractuarNpc()) && (interactuar == 0)) {
-//            try {
-//
-//                // casa1.realizaTarea(pj);
-//                //asd = new Ventana(300, 300, casa1.obtieneDialogo());//casa superior);
-//            } catch (Exception ex) {
-//                System.out.println("Extrae datos del HashMap: fsdfsdfsd" + ex);
-//            }
-//            setNomNpcInteractuar(pj.npcInterac.getNomNpc() + "Npc");
-//            setInteractuar(1);
-//        } else if ((interactuar > 0) && (interactuar < casa1.obtieneDialogo().length) && (getKey(KeyEnter))) {
-//
-//            if (pausa == 10) {
-//                interactuar += 3;
-//            } else if (pausa > 10) {
-//                pausa = 0;
-//            }
-//            pausa += 1;
-//            //System.out.println("+3 interactuar");
-//
-//        }
+//       
         moveObjects(null, 0);
         // llamada al metodo de colision entre objetos con las siguientes id de colision
 
@@ -419,109 +365,6 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInWorld() {
-//        //Genera seccion para inventario InWorld
-////        if ((inGameState("InWorld")) && ((getKey(73)) || (getKey(105)))) {
-////            seccion.setSeccion(new JGPoint(viewWidth() - 85, 20), new JGPoint(2, 10));
-////            seccion.generaSeccion(pj, 1);
-////            menu.recibeHm(hmIconoItem, 1);
-////        } else {
-////            seccion.removerIconos();
-////        }
-//
-//        drawString("SEGUNDO: " + seg, +200 / 2, viewHeight() / 2, 1);
-//        //drawRect(viewXOfs() + 700, viewYOfs(), 100, viewHeight(), true, false);
-//
-//        //drawImage(cursor.x, cursor.y, "cursor");
-//        if (getKey(KeyEsc)) {
-//            menu.ventanaSalida();
-//            //playAudio("eventos","mensaje",false);
-//            pj.bloquear(0);
-//            if (getKey(KeyEnter)) {
-//                menu.setTeclaEscape(false);
-//                setSalir(true);
-//            }
-//        }
-//        if (interactuar > 0) {
-//            //asd.avanzarTexto();
-//        }
-//
-//        /**
-//         * Detecta si has encontrado un hongo para la mision
-//         */
-//        if ((pj.x == 880.0) && (pj.y == 400.0) && (!hongo1)) {
-//            hongo1 = true;
-//            tiempoMensaje = 120;
-//            try {
-//                //agrego el hongo al inventario del jugador
-//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-//                //pj.cargaInventario(pj.getIdJugador());
-//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        if ((pj.x == 928) && (pj.y == 144) && (!hongo2)) {
-//            hongo2 = true;
-//            tiempoMensaje = 120;
-//            try {
-//                //agrego el hongo al inventario del jugador
-//                //Inventario[] tempInv = pj.getInv();
-//                pj.getInventario().agregarItem((short) 1000, (short) 1);
-//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-//                //pj.cargaInventario(pj.getIdJugador());
-//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        if ((pj.x == 80) && (pj.y == 48) && (!hongo3)) {
-//            hongo3 = true;
-//            tiempoMensaje = 120;
-//            try {
-//                //agrego el hongo al inventario del jugador
-//                //Inventario[] tempInv = pj.getInv();
-//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-//                //pj.cargaInventario(pj.getIdJugador());
-//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        if ((pj.x == 416) && (pj.y == 624) && (!hongo4)) {
-//            hongo4 = true;
-//            tiempoMensaje = 120;
-//            try {
-//                //agrego el hongo al inventario del jugador
-//                //Inventario[] tempInv = pj.getInv();
-//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-//                //pj.cargaInventario(pj.getIdJugador());
-//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        if ((pj.x == 64) && (pj.y == 800) && (!hongo5)) {
-//            hongo5 = true;
-//            tiempoMensaje = 120;
-//            try {
-//                //agrego el hongo al inventario del jugador
-//                //Inventario[] tempInv = pj.getInv();
-//                pj.getInventario().agregarItem(pj.getIdPersonaje(), (short) 1);
-//                //tempInv[0].agregarItem(pj.getIdJugador(),(short)1000,(short)1);
-//                //pj.cargaInventario(pj.getIdJugador());
-//                menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        if ((hongo1) && (hongo2) && (hongo3) && (hongo4) && (hongo5) && (!finHongos)) {
-//            finHongos = true;
-//        }
-//        if (tiempoMensaje > 0) {
-//            new Ventana("wena choro pillaste una callapampa!");
-//        }
 //        tiempoMensaje--;
         if (cursor.getMensaje().length() > 0) {
             new Ventana(cursor.getMensaje());
@@ -584,6 +427,7 @@ public class Manager extends JGEngine {
                     pj.setPos(CIUDAD_X, CIUDAD_Y);
                     pj.setDir(0, 0);
                     pj.suspend();
+                    respawn_pj = null;
                 }
             };
         }
@@ -670,7 +514,6 @@ public class Manager extends JGEngine {
                 new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
             }
             setIcon(null);
-
         }
 
         dañoBeneficio = 0;
@@ -727,7 +570,6 @@ public class Manager extends JGEngine {
 
     public void paintFrameInInteraction() {
         if (!salirInInteracting) {
-            System.out.print("inicio paint frame");
             Boton btn1;
             //dibujo las lineas del parrafo
             ventanaManager.mostrarTexto();
@@ -735,7 +577,7 @@ public class Manager extends JGEngine {
                 btn1 = new Boton("cerrar", "cerrar", 430, 330, (int) (Math.pow(2, 5)), 0, 0);
                 btn1.pintar();
             } else {//termino el dialogo //aun podria estar leyendo el ultimo parrafo = new Boton("cerrar", "suma", 430, 330, (int) (Math.pow(2, 5)), 0, 0);
-                btn1 = new Boton("siguiente", "cerrar", 430, 330, (int) (Math.pow(2, 5)), 5, 0);
+                btn1 = new Boton("siguiente", "ver", 430, 330, (int) (Math.pow(2, 5)), 5, 0);
                 btn1.pintar();
 //            if (ventanaManager.terminoDialogo) {
 //                new JGTimer((int) (this.getFrameRate() * 5), true, "InInteraction") {
@@ -746,7 +588,7 @@ public class Manager extends JGEngine {
 //                    }
 //                };
             }
-           
+
         }
     }
     //avanzo al siguiente dialogo
@@ -1603,7 +1445,7 @@ public class Manager extends JGEngine {
                     //busco el ultimo espacio dentro del subString
                     indiceUltimaLetra = subStr.lastIndexOf(" ");
                     //corto el String real hacia el ultimo espacio blanco
-                    String subStr2 = this.dialogo_restante.substring(1, indiceUltimaLetra);
+                    String subStr2 = this.dialogo_restante.substring(0, indiceUltimaLetra + 1);
 
                     //guardo las oraciones qlias ctm de la mierda
                     dialogo_mostrar = subStr2;
@@ -1736,7 +1578,6 @@ public class Manager extends JGEngine {
 
         @Override
         public void hit(JGObject obj) {
-            
             if ((obj.colid == (int) Math.pow(2, 4))) {//es icono
                 Icono iconito = (Icono) obj;
                 this.setMensajeIcon(iconito.getNombreLogico());
@@ -1750,12 +1591,109 @@ public class Manager extends JGEngine {
                 Npc npc_procesar = (Npc) obj;
                 switch (npc_procesar.getTipo()) {
                     case 2://npc de misiones
-                        setMensaje("jajaja, agarrame el 1313... soy " + npc_procesar.getNombre() + " y que wea!");
+                        npc_concurrente = npc_procesar;
+                        setMensaje("El es " + npc_procesar.getNombre() + npc_procesar.getIdPersonaje());
                         if (getMouseButton(3)) {
-                            npc_concurrente = npc_procesar;
-                            ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
+                            clearMouseButton(3);
+                            //veo qué misión tiene el npc que el personaje no tenga (también veo el
+                            Iterator it = npc_procesar.getMisiones().getMisiones().entrySet().iterator();
+                            short mision_id = -1;
+                            short accion = 0;
+                            /**
+                             * -1 = invalido
+                             *  0 = agregar
+                             *  1 = agregar
+                             *  2 = comprobar
+                             *
+                             */
+                            while (it.hasNext() && accion == 0) {
+                                Map.Entry e = (Map.Entry) it.next();
+                                Mision mis = npc_procesar.getMisiones().getMisiones().get(Short.parseShort(e.getKey().toString())).getMision();
+                                if (!mis.isRepetible()) {//no es repetible
+                                    if (!pj.getMisiones().isHizoMision(mis.getIdMision())) {//nunca ha hecho la mision
+                                        if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
+                                            //si llega hasta acá, el pj nunca en su vida  ha tomado la misión
+                                            accion = 1;//agregar
+                                            //Validar que el personaje tenga nivel necesario
+
+                                        } else {
+                                            //comprobar si cumple la misión
+                                            accion = 2;
+                                        }
+                                    }
+                                } else {
+                                    if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
+                                        System.out.println("me meti aca po choro!!" + npc_concurrente.getNombre());
+                                        accion = 1;//agregar
+                                    } else {
+                                        //comprobar si cumple la misión
+                                        accion = 2;
+                                    }
+                                }
+                                mision_id = mis.getIdMision();
+                                if (mis.getNivelRequerido() > pj.getNivel())
+                                    accion = 0;
+                            }
+                            System.out.println("mision " + mision_id);
+                            System.out.println("accion " + accion);
+                            switch (accion) {
+                                case 0://el personaje hizo todas las misiones o no tiene ninguna
+                                    //aca se pone el dialogo normal
+                                    ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
+                                    break;
+                                case 1: //el personaje no tiene la misión.. agregar
+                                    
+                                    pj.getMisiones().agregarMision(mision_id, (short) 1);
+                                    //pasamos al segundo dialogo (Comprobación)
+                                    ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoIniciarMision());
+                                    break;
+                                case 2://Comprobar Mision
+                                    //Busco si el PJ tiene los objetos que la mision requiere
+                                    //recorro el hashmap de la lista de objetos asociados A LA MISION
+                                    /**Iterator **/
+                                    it = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().entrySet().iterator();
+                                    boolean fail = false;
+                                    int cont = 0;
+                                    while (it.hasNext() && !fail) {
+                                        Map.Entry e = (Map.Entry) it.next();
+                                        short objeto_id = Short.parseShort(e.getKey().toString());
+                                        short cantidad = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().get(objeto_id).getCantidad();
+                                        if (!pj.getInventario().tieneItem(objeto_id, cantidad)) {
+                                            fail = true;
+                                        }
+
+                                        cont++;
+                                    }
+                                    String stringRelleno = "...                                                      ...";//30 espacios
+
+                                    if (fail) {//no tiene los requerimientos para cumplir la mision
+                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoFalloMision());
+                                    } else {
+                                        //cumplio los requerimientos...
+                                        Mision misi = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision();
+
+                                        //Se da la experiencia
+                                        pj.aumentarExperiencia(misi.getRecompensaExp());
+
+                                        interacVentana(npc_concurrente, "InInteraction");
+                                        pj.getMisiones().completarMision(misi.getIdMision());
+                                        //se da los item que tiene asociado el personaje que le dio la misión (NPC_CONCURRENTE)
+                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoCumplirMision());
+                                        //se restan de su inventario
+                                        for (Map.Entry id : misi.getRequerimientos().getObjetos().entrySet()) {
+                                            short objeto_id = Short.parseShort(id.getKey().toString());
+                                            short cantidad = misi.getRequerimientos().getObjetos().get(objeto_id).getCantidad();
+                                            pj.getInventario().eliminarItem(objeto_id, cantidad);
+                                        }
+                                    }
+
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
                             ventanaManager.activarParametrosFormateoTexto();
-                            npc_concurrente.getDialogo().nextTexto();
                             setGameState("InInteraction");
                             salirInInteracting = false;
                         }
@@ -1775,9 +1713,11 @@ public class Manager extends JGEngine {
                     if (getMouseButton(3)) {
                         clearMouseButton(3);
                         Boton btn = (Boton) obj;
+                        //Comportamiento de los botones al momento de interactuar...
                         switch (btn.getTipo_boton()) {
                             case 0: //Presiono boton cerrar en un dialogo
                                 salirInInteracting = true;
+                                npc_concurrente.getDialogo().nextTexto();
                                 npc_concurrente = null;
                                 setGameState("InWorld");
                                 removeObject(obj);
@@ -1831,31 +1771,16 @@ public class Manager extends JGEngine {
                                 seccion.setWorking(false);
                                 setLimpiarIconos(true);
                                 break;
-                            case 0://Menú menu principal inventario
-                                if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
-                                    pj.getHabilidades().agregaHabilidad((short) boton.getId());
-                                } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
-                                    pj.getHabilidades().aumentarNivel((short) boton.getId());
-                                }
-                                pj.gastarPuntosHabilidad();
-                                seccion.setWorking(false);
-                                setLimpiarIconos(true);
-                                System.out.println(pj.getHabilidades().getHabilidad((short) boton.getId()).getHabilidad().getNombre());
-                                System.out.println("Nivel: " + pj.getHabilidades().getHabilidad((short) boton.getId()).getNivelHabilidad());
-                                System.out.println("PTOS HAB " + pj.getTotalPuntosHabilidad());
-                                break;
                             case 2://Menú está en misión
                                 if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
                                     pj.getMisiones().abandonaMision((short) boton.getId());
                                 }
                                 break;
                         }
-
                     } else if (boton.getTipo_boton() == 3) {
                         //corresponde al menu y es boton del tipo "ver"
                         //por comportamiento mouse over , se muestra información
                         //en el monitor
-                        System.out.println("menuActual---------->"+menu.getMenuActual());
                         switch (menu.getMenuActual()) {
                             case 4://Menú está en Estadísticas
                                 switch (boton.getId()) {
@@ -1885,10 +1810,9 @@ public class Manager extends JGEngine {
                                 setInformacionHabilidad(hab.getNombre(), hab.getDescripcion(), String.valueOf(hab.getDanoBeneficio()), String.valueOf(hab.getCostoBasico()), String.valueOf(hab.getNivelMaximo()));
                                 break;
                             case 2://Menú está en misión
-                                Mision mis = misiones.get((short) boton.getId());
+                                Mision mis = pj.getMisiones().getMisiones().get((short) boton.getId()).getMision();
                                 setInformacionMision(mis.getNombre(), mis.getDescripcion(), String.valueOf(mis.getRecompensaExp()), String.valueOf(mis.getIdPersonajeConcluyeMision()));
                                 break;
-
                         }
                     }
                 }
@@ -2063,12 +1987,8 @@ public class Manager extends JGEngine {
         private JGPoint tabla;
         private boolean working = false;
 
-
         public Seccion() {
         }
-
-
-
 
         public boolean isWorking() {
             return working;
@@ -2121,7 +2041,6 @@ public class Manager extends JGEngine {
                                     Map.Entry en = (Map.Entry) it.next();
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
-
                                     if (inv.tieneItem(obje.getIdObjeto())) {
                                         cantidad++;
 

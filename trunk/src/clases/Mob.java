@@ -52,7 +52,6 @@ public class Mob extends Personaje {
     @Override
     public void cargarPersonaje(Short id) {
         conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos Mob");
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit,"
                 + " pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue,"
