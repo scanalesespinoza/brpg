@@ -150,7 +150,6 @@ public class Personaje extends extensiones.StdDungeon {
 
     public void cargarPersonaje(Short id) {
         this.conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos personaje");
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo FROM personaje pjuno "
                 + "WHERE pjuno.id=" + id;

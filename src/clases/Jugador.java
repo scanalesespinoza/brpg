@@ -48,7 +48,6 @@ public class Jugador extends Personaje {
     @Override
     public void cargarPersonaje(Short id) {
         conexion = new dbDelegate();
-        System.out.println("Inicio obtiene datos Jugador");
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit,"
                 + " pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue,"
@@ -103,7 +102,6 @@ public class Jugador extends Personaje {
         this.enemigo = enemigo;
     }
 
-    
     public int getDinero() {
         return dinero;
     }
@@ -113,11 +111,11 @@ public class Jugador extends Personaje {
     }
 
     public Integer getAtaque() {
-        return getFuerza() * 2 + getFuerza() / 5 + getNivel(); //+ dañoArma
+        return (getFuerza() * 2 + getFuerza() / 5 + getNivel());
     }
 
     public Integer getDefensa() {
-        return getVitalidad() / 10; // + defensa equipo
+        return (getVitalidad() / 10);
     }
 
     public Integer getHp() {
@@ -177,9 +175,8 @@ public class Jugador extends Personaje {
     private double calcularLimiteExperiencia() {
         int limite = this.getLimiteSuperiorExperiencia();
         //hay que fijar en el trabajo (documento word) la formula que emplearemos.
-        //aca usare que aumente el 37%
-
-        return limite * 1.37;
+        //aca usare que aumente el 17%
+        return limite * 1.17;
     }
 
     public boolean haComprado() {
@@ -207,10 +204,12 @@ public class Jugador extends Personaje {
 
     public void aumentarExperiencia(short exp) {
         if (this.getExperiencia() + exp >= this.getLimiteSuperiorExperiencia()) {//persoanje subió de nivel
-            short resto = (short) ((this.getExperiencia() + exp)-(this.getLimiteSuperiorExperiencia())) ;
+            short resto = (short) ((this.getExperiencia() + exp) - (this.getLimiteSuperiorExperiencia()));
             subirNivel();
             this.aumentarExperiencia(resto);
-        }else this.setExperiencia(this.getExperiencia() + exp);
+        } else {
+            this.setExperiencia(this.getExperiencia() + exp);
+        }
 
     }
 
@@ -327,7 +326,7 @@ public class Jugador extends Personaje {
                 break;
             case 4:
                 this.enemigo = (Mob) obj;
-               
+
                 break;
             default:
                 break;
@@ -414,6 +413,10 @@ public class Jugador extends Personaje {
         this.totalPuntosHabilidad = totalPuntosHabilidad;
     }
 
+    /**
+     * devuelve la vitalidad del jugador mas su equipo
+     * @return
+     */
     public short getVitalidad() {
         return vitalidad;
     }
@@ -607,15 +610,15 @@ public class Jugador extends Personaje {
     }
 
     public void aumentarFuerza(int i) {
-       this.setFuerza((short) (getFuerza() + 1));
+        this.setFuerza((short) (getFuerza() + 1));
     }
 
     public void aumentarDestreza(int i) {
-        this.setDestreza((short)(getDestreza() + 1));
+        this.setDestreza((short) (getDestreza() + 1));
     }
 
     void aumentarSabiduria(int i) {
-        this.setSabiduria((short)(getSabiduria() + 1));
+        this.setSabiduria((short) (getSabiduria() + 1));
     }
 
     void aumentarVitalidad(int i) {

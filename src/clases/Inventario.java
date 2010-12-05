@@ -20,6 +20,7 @@ public class Inventario {
     private dbDelegate conexion;
     private HashMap<Short, Item> objetos;//contiene los objetos del personaje
     private HashMap<Short, Item> respaldoObjetos;
+    private short vitalidad = 0, sabiduria = 0, fuerza = 0, destreza = 0, ataque = 0, defensa = 0;
 
     public HashMap<Short, Item> getRepaldoObjetos() {
         return respaldoObjetos;
@@ -31,23 +32,22 @@ public class Inventario {
 
     public Inventario() {
         this.objetos = new HashMap<Short, Item>();
+//        this.equipo = new HashMap<Short, Short>();
     }
 
-    /*
+    /**
      * Carga los objetos desde la base de datos asociados al personaje
      * las deja en el arreglo "objetos"
      */
     public void cargarInventario(short id) {
         this.conexion = new dbDelegate();
         String StrSql = "SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto,"
-                + " inv.cantidad cantidad, obj.nombre nombre, inv.estaEquipado estaEquipado "
-                + "  FROM inventario inv, objeto obj "
-                + " WHERE inv.Personaje_id=" + id
-                + "   AND inv.Objeto_id=obj.id";
+                + " inv.cantidad cantidad, inv.estaEquipado estaEquipado "
+                + "  FROM inventario inv"
+                + " WHERE inv.Personaje_id=" + id;
         try {
             ResultSet res = conexion.Consulta(StrSql);
             byte i = 0;
-
             while (res.next()) {
                 Item item = new Item();
                 item.setIdObjeto(res.getShort("idObjeto"));
@@ -60,8 +60,9 @@ public class Inventario {
                 item.setObjeto(obj);
                 this.objetos.put(item.getIdObjeto(), item);
                 i += 1;
-
+                
             }
+            
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }
@@ -217,6 +218,7 @@ public class Inventario {
      * Este método es para fines de implementación y solo contempla
      * si existe en el hashmap (pudiendo tener cantidad o)
      * @param idObjeto
+     *
      * @return
      */
     private boolean comprobarItem(short idObjeto) {
@@ -232,7 +234,7 @@ public class Inventario {
     public boolean tieneItem(short idItem) {
         return tieneItem(idItem, (short) 1);
     }
-
+ 
     /**
      * Verifica si tiene la cantidad requerida del objeto en cuestión
      * @param idObjeto
@@ -335,6 +337,54 @@ public class Inventario {
     public void respaldarInventario() {
         this.respaldoObjetos = this.objetos;
 
+    }
+
+    public short getAtaque() {
+        return ataque;
+    }
+
+    public void setAtaque(short ataque) {
+        this.ataque = ataque;
+    }
+
+    public short getDefensa() {
+        return defensa;
+    }
+
+    public void setDefensa(short defensa) {
+        this.defensa = defensa;
+    }
+
+    public short getDestreza() {
+        return destreza;
+    }
+
+    public void setDestreza(short destreza) {
+        this.destreza = destreza;
+    }
+
+    public short getFuerza() {
+        return fuerza;
+    }
+
+    public void setFuerza(short fuerza) {
+        this.fuerza = fuerza;
+    }
+
+    public short getSabiduria() {
+        return sabiduria;
+    }
+
+    public void setSabiduria(short sabiduria) {
+        this.sabiduria = sabiduria;
+    }
+
+    public short getVitalidad() {
+        return vitalidad;
+    }
+
+    public void setVitalidad(short vitalidad) {
+        this.vitalidad = vitalidad;
     }
 
     public class Item {

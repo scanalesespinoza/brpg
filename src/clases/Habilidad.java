@@ -32,7 +32,6 @@ public class Habilidad {
      */
     public void setHabilidad(short id) {
         this.conexion = new dbDelegate();
-            System.out.println("Inicio obtiene datos personaje");
             String StrSql = "SELECT * FROM habilidad "
                     + "WHERE id = " + id;
             try {
