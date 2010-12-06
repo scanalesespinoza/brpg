@@ -82,14 +82,11 @@ public class Jugador extends Personaje {
                 this.setDinero(res.getInt("dinero"));
 
             }
-        } catch (SQLException ex) {
-            System.out.println("Problemas en: clase->Jugador , método->cargarPersonaje() " + ex);
-        }
-        try {
             this.conexion.cierraDbCon();
         } catch (Exception ex) {
-            Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problemas en: clase->Jugador , método->cargarPersonaje() " + ex);
         }
+       
         setHp();
         setMp();
     }

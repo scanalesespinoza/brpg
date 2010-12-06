@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -62,8 +64,9 @@ public class Inventario {
                 i += 1;
                 
             }
-            
-        } catch (SQLException ex) {
+            this.conexion.cierraDbCon();
+
+        } catch (Exception ex) {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }
 
@@ -99,19 +102,20 @@ public class Inventario {
      * para hacer el respectivo update en la base de datos
      */
     private void bdUpdates() {
-        this.conexion = new dbDelegate();
-        Iterator it = this.getObjetos().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            Item item = this.getItem(Short.parseShort(e.getKey().toString()));
-            if (!item.isNewItem() && item.getCantidad() > 0) {
-                String StrSql = "UPDATE inventario"
-                        + " SET cantidad = " + item.getCantidad() + ","
-                        + "     estaEquipado = " + item.getEstaEquipado()
-                        + " WHERE personaje_id = " + this.getIdPersonaje()
-                        + "   AND objeto_id = " + item.getIdObjeto();
-                conexion.Ejecutar(StrSql);
+        try {
+            this.conexion = new dbDelegate();
+            Iterator it = this.getObjetos().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry e = (Map.Entry) it.next();
+                Item item = this.getItem(Short.parseShort(e.getKey().toString()));
+                if (!item.isNewItem() && item.getCantidad() > 0) {
+                    String StrSql = "UPDATE inventario" + " SET cantidad = " + item.getCantidad() + "," + "     estaEquipado = " + item.getEstaEquipado() + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND objeto_id = " + item.getIdObjeto();
+                    conexion.Ejecutar(StrSql);
+                }
             }
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -120,19 +124,20 @@ public class Inventario {
      * insertar en la base de datos
      */
     private void bdInserts() {
-        this.conexion = new dbDelegate();
-        Iterator it = this.getObjetos().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            Item item = this.getItem(Short.parseShort(e.getKey().toString()));
-            if (item.isNewItem() && item.getCantidad() > 0) {
-                String StrSql = "INSERT INTO inventario VALUES("
-                        + this.getIdPersonaje() + ","
-                        + item.getIdObjeto() + ","
-                        + item.getCantidad() + ","
-                        + item.getEstaEquipado() + ")";
-                conexion.Ejecutar(StrSql);
+        try {
+            this.conexion = new dbDelegate();
+            Iterator it = this.getObjetos().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry e = (Map.Entry) it.next();
+                Item item = this.getItem(Short.parseShort(e.getKey().toString()));
+                if (item.isNewItem() && item.getCantidad() > 0) {
+                    String StrSql = "INSERT INTO inventario VALUES(" + this.getIdPersonaje() + "," + item.getIdObjeto() + "," + item.getCantidad() + "," + item.getEstaEquipado() + ")";
+                    conexion.Ejecutar(StrSql);
+                }
             }
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -140,17 +145,20 @@ public class Inventario {
      * si el item no tiene cantidad , se borra de la base de datos
      */
     private void bdDeletes() {
-        this.conexion = new dbDelegate();
-        Iterator it = this.getObjetos().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            Item item = this.getItem(Short.parseShort(e.getKey().toString()));
-            if (item.getCantidad() <= 0) {
-                String StrSql = "DELETE FROM inventario WHERE"
-                        + " personaje_id = " + this.getIdPersonaje()
-                        + " AND objeto_id = " + item.getIdObjeto();
-                conexion.Ejecutar(StrSql);
+        try {
+            this.conexion = new dbDelegate();
+            Iterator it = this.getObjetos().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry e = (Map.Entry) it.next();
+                Item item = this.getItem(Short.parseShort(e.getKey().toString()));
+                if (item.getCantidad() <= 0) {
+                    String StrSql = "DELETE FROM inventario WHERE" + " personaje_id = " + this.getIdPersonaje() + " AND objeto_id = " + item.getIdObjeto();
+                    conexion.Ejecutar(StrSql);
+                }
             }
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

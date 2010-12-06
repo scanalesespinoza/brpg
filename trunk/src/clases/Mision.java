@@ -121,7 +121,8 @@ public class Mision {
                     
                 
             }
-        } catch (SQLException ex) {
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
             System.out.println("Problemas en: clase->Mision, método->setMision() " + ex);
         }
         this.dialogo.cargarDialogos(this.idMision);

@@ -43,7 +43,8 @@ public class ObjetoMision {
                 i += 1;
                
             }
-        } catch (SQLException ex) {
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }
 

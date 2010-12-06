@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,7 +62,8 @@ public class ContrincanteHabilidad {
                 this.getHabilidades().put(habilidad.getIdHabilidad(), habilidad);
                 i += 1;
             }
-        } catch (SQLException ex) {
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
             System.out.println("Problemas en: clase->ContrincanteHabilidad , método->cargarHabilidades() " + ex);
         }
 
@@ -79,18 +82,20 @@ public class ContrincanteHabilidad {
      * actualiza en la base de datos si newHabilidad es false
      */
     private void bdUpdates() {
-        this.conexion = new dbDelegate();
-        Iterator it = this.getHabilidades().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            UnaHabilidad habi = this.getHabilidad(Short.parseShort(e.getKey().toString()));
-            if (!habi.isNewHabilidad()) {
-                String StrSql = "UPDATE contrincante_habilidad"
-                        + " SET nivelhabilidad= " + habi.getNivelHabilidad() + ","
-                        + " WHERE personaje_id = " + this.getIdPersonaje()
-                        + "   AND objeto_id = " + habi.getIdHabilidad();
-                conexion.Ejecutar(StrSql);
+        try {
+            this.conexion = new dbDelegate();
+            Iterator it = this.getHabilidades().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry e = (Map.Entry) it.next();
+                UnaHabilidad habi = this.getHabilidad(Short.parseShort(e.getKey().toString()));
+                if (!habi.isNewHabilidad()) {
+                    String StrSql = "UPDATE contrincante_habilidad" + " SET nivelhabilidad= " + habi.getNivelHabilidad() + "," + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND objeto_id = " + habi.getIdHabilidad();
+                    conexion.Ejecutar(StrSql);
+                }
             }
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(ContrincanteHabilidad.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -98,18 +103,20 @@ public class ContrincanteHabilidad {
      * se ingresa a la base de datos si newHabilidad == false
      */
     private void bdInserts() {
-        this.conexion = new dbDelegate();
-        Iterator it = this.getHabilidades().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            UnaHabilidad habi = this.getHabilidad(Short.parseShort(e.getKey().toString()));
-            if (habi.isNewHabilidad()) {
-                String StrSql = "INSERT INTO contrincante_habilidad VALUES("
-                        + this.getIdPersonaje() + ","
-                        + habi.getIdHabilidad() + ","
-                        + habi.getNivelHabilidad() + ")";
-                conexion.Ejecutar(StrSql);
+        try {
+            this.conexion = new dbDelegate();
+            Iterator it = this.getHabilidades().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry e = (Map.Entry) it.next();
+                UnaHabilidad habi = this.getHabilidad(Short.parseShort(e.getKey().toString()));
+                if (habi.isNewHabilidad()) {
+                    String StrSql = "INSERT INTO contrincante_habilidad VALUES(" + this.getIdPersonaje() + "," + habi.getIdHabilidad() + "," + habi.getNivelHabilidad() + ")";
+                    conexion.Ejecutar(StrSql);
+                }
             }
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(ContrincanteHabilidad.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

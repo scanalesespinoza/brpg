@@ -54,7 +54,8 @@ public class dialogo_personaje {
             if (hayTexto) {
                 id_texto_concurrente = indices.get(0);
             }
-        } catch (SQLException ex) {
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
             System.out.println("Problemas en: clase->dialogo_personaje , método->cargarDialogos() " + ex);
         }
 

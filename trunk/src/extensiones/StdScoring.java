@@ -27,7 +27,7 @@ public class StdScoring extends JGObject {
             super("score",true,0,0, (int)Math.pow(2, 7),null,0,0,0);
 	}
 	/** Paints the message. */
-	public void paintB() {
+	public void paint() {
 		eng.setFont(font);
 		eng.setColor(cols[(cycletimer/cyclespeed)%cols.length]);
 		eng.drawString(msg,(int)x,(int)y,0,true);
