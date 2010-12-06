@@ -3,7 +3,6 @@ package clases;
 import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGPoint;
@@ -13,6 +12,7 @@ import jgame.JGTimer;
 import jgame.JGObject;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import jgame.JGRectangle;
 
 /**
@@ -98,7 +98,7 @@ public class Manager extends JGEngine {
     private Ventana asd;
     public String[] textoPrueba;
     private boolean salirInInteracting = false;
-public int filtro = 0;
+    public int filtro = 0;
 
     public static void main(String[] args) {
         new Manager(new JGPoint(800, 540));
@@ -117,6 +117,7 @@ public int filtro = 0;
         initEngineApplet();
 
     }
+
     @Override
     public void initCanvas() {
         // we set the background colour to same colour as the splash background
@@ -239,7 +240,7 @@ public int filtro = 0;
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
         }
-
+        //setTileSettings("!", 20,0);
         ventanaManager = new Ventana();
         setGameState("Title");
     }
@@ -374,21 +375,22 @@ public int filtro = 0;
 
     @Override
     public void paintFrame() {
-
+//        drawString(mob_jefe_final.x + "," + mob_jefe_final.y, viewWidth() / 2, viewHeight() / 2, -1, false);
+//        drawString(pj.x + "," + pj.y, viewWidth() / 2, viewHeight() / 2 + 20, -1, false);
         seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
-        menu.recibeHm(hmIconoHabilidades, 2,filtro);
+        menu.recibeHm(hmIconoHabilidades, 2, filtro);
 
         seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
-        menu.recibeHm(hmIconoItem, 1,filtro);
+        menu.recibeHm(hmIconoItem, 1, filtro);
 
         seccion.setWorking(true);
-        
+
         cursor.desplegarInformacion();
 
         moveObjects(null, 1);
-        
+
         menu.paintB();
         menu.menuActual(getTeclaMenu(), pj);
 
@@ -452,22 +454,36 @@ public int filtro = 0;
 
     public void paintFrameInCombat() {
 
-//(mpMax * ((float) (porcentaje / 100.0)))
         setFont(new JGFont("Arial", 0, 15));
 
-        setColor(JGColor.orange);
+        setColor(JGColor.black);
         // aca graficar todas las wes hermosas y lindas de la warifaifa
-        drawString(pj.getNombre() + " --- " + (float) (pj.getHp() * 100 / pj.getHpMax()), ((viewWidth() * 10) / 100), (double) 305, 0);
+        drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302, 0);
+
         drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 400, JGColor.green);
         drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 400, JGColor.blue);
 
-        setColor(JGColor.yellow);
-        drawString(mob_concurrente.getNombre() + "---" + (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), ((viewWidth() * 70) / 100), (double) 305, 0);
+
+        setColor(JGColor.black);
+        drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 70) / 100), (double) 302, 0);
         drawRect(viewWidth() * 70 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
         drawRect(viewWidth() * 70 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
+
+        setFont(new JGFont("Arial", 0, 10));
+        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322, 0, false);
+        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 77) / 100) + 9, 322, 0, false);
+        setColor(JGColor.green);
+        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337, 0, false);
+        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 77) / 100) + 9, 337, 0, false);
+
+        if (mob_concurrente.getIdProximoAtaque() != -1) {
+            new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 10), new JGColor[]{JGColor.black, JGColor.white}, 20);
+        }
+
     }
 
     public void doFrameInCombat() {
+        moveObjects(null, (int) Math.pow(2, 7));
         int dañoBeneficio = 0;
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
@@ -486,21 +502,22 @@ public int filtro = 0;
                 if (dañoBeneficio < 0) {
                     dañoBeneficio -= ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
-                    mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
-
+                    mob_concurrente.recibirDañoBeneficio(-mob_concurrente.getHpMax());
                     //si no es beneficio al jugador
-                    menu.recibeScore(null, new StdScoring("scoring", mob_concurrente.x, mob_concurrente.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
+                    new StdScoring("scoring_mob",  ((viewWidth() * 70) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
+//                    menu.recibeScore(null, new StdScoring("scoring", mob_concurrente.x, mob_concurrente.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
                 } else {
                     pj.recibirDañoBeneficio(dañoBeneficio);
-                    menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5), null);
+                    new StdScoring("scoring_pj",  ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+//                    menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5), null);
                 }
             }
             setIcon(null);
         } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
             //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
             Objeto obje = icon.getItem();//pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
-            System.out.println("Es--------->"+obje.getNombre());
-            System.out.println("EsUsoCombate--------->"+obje.isUsoCombate());
+            System.out.println("Es--------->" + obje.getNombre());
+            System.out.println("EsUsoCombate--------->" + obje.isUsoCombate());
             if (obje.isUsoCombate()) {
                 pj.setProximoItem(obje);
                 pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).restarCantidad((short) 1);
@@ -511,7 +528,7 @@ public int filtro = 0;
                 //el personaje puede usar un item
                 dañoBeneficio = random(pj.getNivel() * 2, pj.getNivel() * 5, 10);
                 pj.recibirDañoBeneficio(dañoBeneficio);
-                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
             }
             setIcon(null);
         }
@@ -527,11 +544,11 @@ public int filtro = 0;
                 dañoBeneficio -= ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
                 //se convierte en daño hacia el jugador
                 pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
-                new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
+                new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                 //si no es beneficio al MOB
             } else {
                 mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
-                new StdScoring("scoring", mob_concurrente.x, mob_concurrente.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                new StdScoring("scoring_mob",((viewWidth() * 70) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
             }
         }
         //regenero mana cada 4 segundos y que desaparezca cuando no esté en estado INCOMBAT
@@ -1039,12 +1056,12 @@ public int filtro = 0;
 
 //            pj.colid = 0;
             seccion.generaSeccion(pj, 1);
-            menu.recibeHm(hmIconoItem, 1,filtro);
+            menu.recibeHm(hmIconoItem, 1, filtro);
             pj.bloquear();
 
             seccionNpc.setSeccion(new JGPoint(160, 210), new JGPoint(3, 4));
             seccionNpc.generaSeccion(vendedor, 1);
-            menu.recibeHm(hmIconoItem, 0,filtro);
+            menu.recibeHm(hmIconoItem, 0, filtro);
 
             cerrar = new Boton("cerrar", "cerrar", 230, 320, (int) Math.pow(2, 5), 0, 0);
             cerrar.pintar();
@@ -1097,13 +1114,13 @@ public int filtro = 0;
 
 //            pj.colid = 0;
             seccion.generaSeccion(pj, 1);
-            menu.recibeHm(hmIconoItem, 1,filtro);
+            menu.recibeHm(hmIconoItem, 1, filtro);
             pj.bloquear();
 
             seccionNpc.setSeccion(new JGPoint(200, 200), new JGPoint(6, 1));
             seccionNpc.generaSeccion(mob, 1);
             seccionNpc.setWorking(true);
-            menu.recibeHm(hmIconoItem, 0,filtro);
+            menu.recibeHm(hmIconoItem, 0, filtro);
 
 //            cerrar = new Boton("cerrar", "cerrar", 230, 320, (int) Math.pow(2, 5), 0, 0);
 //            cerrar.pintar();
@@ -1142,6 +1159,7 @@ public int filtro = 0;
     }
 
     private void dibujarObjetosEscenario() throws SQLException {
+        dbgShowBoundingBox(false);
         new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 6), 0, (short) 105, new String[]{});
         new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 6), 0, (short) 100, new String[]{});
         new Npc(80, 400, "casa2", "casa2", (int) Math.pow(2, 6), 0, (short) 101, new String[]{"Casa 2"});
@@ -1158,6 +1176,48 @@ public int filtro = 0;
         new Npc(16 * 10, 16 * 110, "perdido", "perdido", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"perdido: "});
         new Npc(16 * 80, 16 * 8, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
         new Npc(16 * 80, 16 * 24, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(16 * 100, 16 * 35, "arbol_seco1", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(16 * 140, 16 * 100, "arbol_seco2", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(16 * 130, 16 * 110, "arbol_seco3", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(16 * 60, 16 * 100, "arbol_seco4", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(80, 1616, "arbol_seco5", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(144, 1616, "arbol_seco6", "casa_5", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(608, 1608, "arbol_seco7", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(880, 1184, "arbol_seco8", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(816, 1520, "arbol_seco9", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(752, 1136, "arbol_seco10", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(1072, 1408, "arbol_seco11", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(1168, 1248, "arbol_seco12", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(640, 960, "arbol_seco13", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(544, 960, "arbol_seco14", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(1564, 1232, "arbol_seco15", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(1632, 1040, "arbol_seco16", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(1840, 832, "arbol_seco17", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(2256, 848, "arbol_seco18", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(2352, 608, "arbol_seco19", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(2240, 336, "arbol_seco20", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(2016, 160, "arbol_seco21", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(1728, 160, "arbol_seco22", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(1472, 96, "arbol_seco23", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        //pongo ramas al azar fuera dela ciudad
+        int cont = 1;
+        for (int i = 0; i < 100; i++) {
+            if (cont == 4) {
+                cont = 1;
+            }
+            Random eje_x = new Random(), eje_y = new Random();
+            int p = eje_x.nextInt((16 * 160));
+            int q = eje_y.nextInt((16 * 120));
+            if (p <= 1280 && q <= 960) {
+                q += 960;
+            }
+            new Npc(p, q, "rama" + i, "rama" + cont, (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+            cont++;
+        }
+
+
+
+
     }
 
     public class Ventana {
@@ -1631,8 +1691,9 @@ public int filtro = 0;
                                     }
                                 }
                                 mision_id = mis.getIdMision();
-                                if (mis.getNivelRequerido() > pj.getNivel())
+                                if (mis.getNivelRequerido() > pj.getNivel()) {
                                     accion = 0;
+                                }
                             }
                             System.out.println("mision " + mision_id);
                             System.out.println("accion " + accion);
@@ -1642,7 +1703,7 @@ public int filtro = 0;
                                     ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
                                     break;
                                 case 1: //el personaje no tiene la misión.. agregar
-                                    
+
                                     pj.getMisiones().agregarMision(mision_id, (short) 1);
                                     //pasamos al segundo dialogo (Comprobación)
                                     ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoIniciarMision());
@@ -1735,41 +1796,45 @@ public int filtro = 0;
                         //corresponde al menu y no es boton del tipo "ver"
                         switch (menu.getMenuActual()) {
                             case 4://Menú está en Estadísticas
-                                switch (boton.getId()) {
-                                    /**
-                                     * ids para estadisticas
-                                     * 1 = fuerza
-                                     * 2 = destreza
-                                     * 3 = Sabiduria
-                                     * 4 = vitalidad
-                                     */
-                                    case 1:
-                                        pj.aumentarFuerza(1);
-                                        pj.gastarPuntoEstadistica();
-                                        break;//
-                                    case 2:
-                                        pj.aumentarDestreza(1);
-                                        pj.gastarPuntoEstadistica();
-                                        break;
-                                    case 3:
-                                        pj.aumentarSabiduria(1);
-                                        pj.gastarPuntoEstadistica();
-                                        break;
-                                    case 4:
-                                        pj.gastarPuntoEstadistica();
-                                        pj.aumentarVitalidad(1);
-                                        break;
+                                if (pj.getTotalPuntosEstadistica() > 0) {
+                                    switch (boton.getId()) {
+                                        /**
+                                         * ids para estadisticas
+                                         * 1 = fuerza
+                                         * 2 = destreza
+                                         * 3 = Sabiduria
+                                         * 4 = vitalidad
+                                         */
+                                        case 1:
+                                            pj.aumentarFuerza(1);
+                                            pj.gastarPuntoEstadistica();
+                                            break;//
+                                        case 2:
+                                            pj.aumentarDestreza(1);
+                                            pj.gastarPuntoEstadistica();
+                                            break;
+                                        case 3:
+                                            pj.aumentarSabiduria(1);
+                                            pj.gastarPuntoEstadistica();
+                                            break;
+                                        case 4:
+                                            pj.gastarPuntoEstadistica();
+                                            pj.aumentarVitalidad(1);
+                                            break;
+                                    }
                                 }
                                 break;
                             case 1://Menú está en Habilidad
-                                if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
-                                    pj.getHabilidades().agregaHabilidad((short) boton.getId());
-                                } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
-                                    pj.getHabilidades().aumentarNivel((short) boton.getId());
+                                if (pj.getTotalPuntosHabilidad() > 0) {
+                                    if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
+                                        pj.getHabilidades().agregaHabilidad((short) boton.getId());
+                                    } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
+                                        pj.getHabilidades().aumentarNivel((short) boton.getId());
+                                    }
+                                    pj.gastarPuntosHabilidad();
+                                    seccion.setWorking(false);
+                                    setLimpiarIconos(true);
                                 }
-                                pj.gastarPuntosHabilidad();
-                                seccion.setWorking(false);
-                                setLimpiarIconos(true);
                                 break;
                             case 2://Menú está en misión
                                 if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
@@ -1818,36 +1883,36 @@ public int filtro = 0;
                 }
 
 
-                if(obj.y >= viewYOfs() + (viewHeight() - 180)){
-                    if((getMouseButton(3)&&(getKey(66)))||(getMouseButton(3)&&(getKey(98)))){
+                if (obj.y >= viewYOfs() + (viewHeight() - 180)) {
+                    if ((getMouseButton(3) && (getKey(66))) || (getMouseButton(3) && (getKey(98)))) {
                         seccion.removerIconos();
-                        pj.getInventario().eliminarItem((short)boton.getId());
+                        pj.getInventario().eliminarItem((short) boton.getId());
                         seccion.setWorking(false);
                     }
                     if (boton.getTipo_boton() == 3 && getMouseButton(3)) {
-                            System.out.println("aquiiii->>>>>>>>>>");
-                           Objeto item = pj.getInventario().getObjetos().get((short)boton.getId()).getObjeto();
-                           setInformacionObjeto(item.getNombre(), item.getDescripcion(), String.valueOf(item.getValorDinero()), String.valueOf(item.getPeso()), String.valueOf(item.getTipo()), String.valueOf(item.isUsoCombate()));
-                    }                    
+                        Objeto item = pj.getInventario().getObjetos().get((short) boton.getId()).getObjeto();
+                        setInformacionObjeto(item.getNombre(), item.getDescripcion(), String.valueOf(item.getValorDinero()), String.valueOf(item.getTipo()), String.valueOf(item.getPeso()), String.valueOf(item.isUsoCombate()));
+
+                    }
                 }
-                
-                if(obj.getName().equals("usable")&&(getMouseButton(3))){
-                    System.out.println("Nombre del objeto-------->"+obj.getName());
-//                    seccion.removerIconos();
-                        cursor.setLimpiarIconos(true);
-                    filtro=0;
-                    seccion.setWorking(false);
-                }else if(obj.getName().equals("equipo")&&(getMouseButton(3))){
-                    System.out.println("Nombre del objeto-------->"+obj.getName());
+
+                if (obj.getName().equals("usable") && (getMouseButton(3))) {
+                    System.out.println("Nombre del objeto-------->" + obj.getName());
 //                    seccion.removerIconos();
                     cursor.setLimpiarIconos(true);
-                    filtro=1;
+                    filtro = 0;
                     seccion.setWorking(false);
-                }else if(obj.getName().equals("colec")&&(getMouseButton(3))){
-                    System.out.println("Nombre del objeto-------->"+obj.getName());
+                } else if (obj.getName().equals("equipo") && (getMouseButton(3))) {
+                    System.out.println("Nombre del objeto-------->" + obj.getName());
 //                    seccion.removerIconos();
                     cursor.setLimpiarIconos(true);
-                    filtro=2;
+                    filtro = 1;
+                    seccion.setWorking(false);
+                } else if (obj.getName().equals("colec") && (getMouseButton(3))) {
+                    System.out.println("Nombre del objeto-------->" + obj.getName());
+//                    seccion.removerIconos();
+                    cursor.setLimpiarIconos(true);
+                    filtro = 2;
                     seccion.setWorking(false);
                 }
             }
@@ -1868,7 +1933,7 @@ public int filtro = 0;
                             setMensaje("No tienes suficiente dinero");
                         }
                     }
-                    if ((getMouseButton(3)) && icon.belongTo(pj.getTipo()) && icon.getItem().getTipo()==filtro) {
+                    if ((getMouseButton(3)) && icon.belongTo(pj.getTipo()) && icon.getItem().getTipo() == filtro) {
                         clearMouseButton(3);
                         pj.getInventario().eliminarItem(icon.getIdObjeto(), (short) 1);
                         pj.setDinero(pj.getDinero() + icon.getItem().getValorDinero());
@@ -2045,24 +2110,21 @@ public int filtro = 0;
                                         cantidad++;
 
 
-                                        if(personaje.getTipo()==0){
-                                            
-                                            if(obje.getTipo()==filtro){
-                                                System.out.println("Numero de filtro-------->"+filtro);
+                                        if (personaje.getTipo() == 0) {
+
+                                            if (obje.getTipo() == filtro) {
                                                 hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
 
                                                 setFont(new JGFont("Arial", 0, 24));
-        //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                                System.out.println("ITEMMMMMMMMMMMMMMMMMMMMMMMM Filtrado");
+                                                //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                                 this.recorrido.x += 37;
                                                 this.tabla.x--;
                                             }
-                                        }else{
+                                        } else {
                                             hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
 
                                             setFont(new JGFont("Arial", 0, 24));
-    //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                            System.out.println("ITEMMMMMMMMMMMMMMMMMMMMMMMMM Sin filtro");
+                                            //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                             this.recorrido.x += 37;
                                             this.tabla.x--;
                                         }

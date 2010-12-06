@@ -75,14 +75,11 @@ public class Mob extends Personaje {
                 this.setSabiduria(res.getShort("sab"));
                 this.setExperiencia(res.getShort("experiencia"));
             }
-        } catch (SQLException ex) {
-            System.out.println("Problemas en: clase->MOB , método->cargarPersonaje() " + ex);
-        }
-        try {
             this.conexion.cierraDbCon();
         } catch (Exception ex) {
-            Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problemas en: clase->MOB , método->cargarPersonaje() " + ex);
         }
+        
         this.setHp();
         this.setMp();
     }

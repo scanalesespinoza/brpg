@@ -162,14 +162,11 @@ public class Personaje extends extensiones.StdDungeon {
                 this.setPos(res.getInt("posx"), res.getInt("posy"));
                 this.setTipo(res.getShort("tipo"));
             }
-        } catch (SQLException ex) {
-            System.out.println("Problemas en: clase->personaje , método->cargarPersonaje() " + ex);
-        }
-        try {
             this.conexion.cierraDbCon();
         } catch (Exception ex) {
-            Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problemas en: clase->personaje , método->cargarPersonaje() " + ex);
         }
+        
 
     }
 
@@ -226,34 +223,14 @@ public class Personaje extends extensiones.StdDungeon {
     }
 
     private void salvarPersonaje() {
-        //seccion de misiones contenidas en el hashmap(misiones vigentes)
-        this.conexion = new dbDelegate();
-        String StrSql = "UPDATE Personaje"
-                + "   SET posicionx = " + this.x + ","
-                + "       posiciony  = " + this.y + ","
-                + "       nivel = " + this.getNivel() + ","
-                + "       posiciony  = " + this.y
-                + " WHERE personaje_id = " + this.getIdPersonaje();
-        conexion.Ejecutar(StrSql);
-
-    }
-
-    public void desaparecer() {
-        xAnt = this.x;
-        yAnt = this.y;
-        xSpeedAnt = this.xspeed;
-        ySpeedAnt = this.yspeed;
-        cidAnt = this.colid;
-        colid = 0;
-        x = -30;
-        y = -30;
-        setSpeed(0);
-    }
-
-    public void aparecer() {
-        this.x = this.xAnt;
-        this.y = this.yAnt;
-        setSpeed(this.xSpeedAnt, this.ySpeedAnt);
-        this.colid = cidAnt;
+        try {
+            //seccion de misiones contenidas en el hashmap(misiones vigentes)
+            this.conexion = new dbDelegate();
+            String StrSql = "UPDATE Personaje" + "   SET posicionx = " + this.x + "," + "       posiciony  = " + this.y + "," + "       nivel = " + this.getNivel() + "," + "       posiciony  = " + this.y + " WHERE personaje_id = " + this.getIdPersonaje();
+            conexion.Ejecutar(StrSql);
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

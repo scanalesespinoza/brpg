@@ -58,7 +58,8 @@ public class dialogo_mision {
             if (hayTexto) {
                 this.id_texto_concurrente = indices.get(0);
             }
-        } catch (SQLException ex) {
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
             System.out.println("Problemas en: clase->dialogo_mision , método->cargarDialogos() " + ex);
         }
     }

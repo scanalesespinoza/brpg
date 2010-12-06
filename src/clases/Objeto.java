@@ -6,6 +6,8 @@ package clases;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -56,9 +58,12 @@ public class Objeto {
                 this.setNombreGrafico(res.getString("nom_grafico"));
 
             }
-        } catch (SQLException ex) {
+            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            Logger.getLogger(Objeto.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Problemas en: clase->Objeto , método->setObjeto() " + ex);
         }
+
     }
 
     public int getBeneficio() {

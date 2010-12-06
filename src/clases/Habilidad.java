@@ -6,6 +6,8 @@ package clases;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -46,8 +48,14 @@ public class Habilidad {
                     this.setNombreGrafico(res.getString("nom_grafico"));
                     this.setTiempoEspera(res.getInt("tiempoEspera"));
                 }
-            } catch (SQLException ex) {
-                System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
+
+                this.conexion.cierraDbCon();
+
+            } catch (Exception ex) {
+            Logger.getLogger(Habilidad.class.getName()).log(Level.SEVERE, null, ex);
+             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
+
+               
             }
         
     }
