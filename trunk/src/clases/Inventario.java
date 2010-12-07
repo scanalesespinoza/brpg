@@ -5,7 +5,6 @@
 package clases;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -61,6 +60,7 @@ public class Inventario {
                 obj.setObjeto(item.getIdObjeto());
                 item.setObjeto(obj);
                 this.objetos.put(item.getIdObjeto(), item);
+
                 i += 1;
                 
             }

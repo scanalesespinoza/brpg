@@ -156,6 +156,7 @@ public class Jugador extends Personaje {
      */
 
     public void subirNivel() {
+        eng.playAudio("evento", "subir_nivel", false);
         this.aumentarNivel();
         this.aumentarStats();
         this.setExperiencia(0);
@@ -570,14 +571,16 @@ public class Jugador extends Personaje {
     public void muerte() {
         this.aumentarDisminuirDinero((int) (this.getDinero() * ((float) (0.2))));
         eng.setGameState("InDeath");
+        eng.playAudio("ambiental", "muerte", true);
     }
 
     @Override
     public void paint() {
     }
 
-    public void regenerarMp(int porcentaje) {
+    public int regenerarMp(int porcentaje) {
         aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
+        return (int) (mpMax * ((float) (porcentaje / 100.0)));
     }
 
     public void aumentarDisminuirMp(int cant) {
