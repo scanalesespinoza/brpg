@@ -79,16 +79,14 @@ public class Mob extends Personaje {
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->MOB , método->cargarPersonaje() " + ex);
         }
-        
+
         this.setHp();
         this.setMp();
     }
 
     @Override
     public void move() {
-
         dirGrafica(this.getIdPersonaje());
-
         if (occupied == null
                 || (xspeed == 0 && yspeed == 0)
                 || (xdir == 0 && ydir == 0 && (!isXAligned() || !isYAligned()))) {
@@ -113,62 +111,43 @@ public class Mob extends Personaje {
             setDir(0, 0);
             int newxdir = 0, newydir = 0;
 //            boolean xdir_any = false, ydir_any = false; // alternate directions
-            if(eng.random(0.01, 0.99) > 0.50){
-                quieto=5;
+            if (eng.random(0.01, 0.99) > 0.50) {
+                quieto = 5;
             }
-            if(quieto>0){quieto--;}
-            if ((home_in != null )&&(quieto>0)) {
-//                int basedir = avoid ? -1 : 1;
-//                if (home_in.x < x) {
-//                    newxdir = -basedir;
-//                }
-//                if (home_in.x > x) {
-//                    newxdir = basedir;
-//                }
-//                if (home_in.y < y) {
-//                    newydir = -basedir;
-//                }
-//                if (home_in.y > y) {
-//                    newydir = basedir;
-//                }
-//                if (Math.abs(home_in.x - x) > Math.abs(home_in.y - y)) {
-//                    ydir_any = true;
-//                } else {
-//                    xdir_any = true;
-//                }
-                
+            if (quieto > 0) {
+                quieto--;
+            }
+            if ((home_in != null) && (quieto > 0)) {
                 newxdir = 0;
                 newydir = 0;
             } else { // random
                 newxdir = eng.random(-1, 1, 1);
                 newydir = eng.random(-1, 1, 1);
-//                xdir_any = true;
-//                ydir_any = true;
             }
+
+            if (newxdir == -1) {
+                if (x + newxdir * 16 <= 32) {
+                    newxdir *= -1;
+                }
+            } else {
+                if (x + newxdir * 16 >= eng.pfWidth() - 100) {
+                    newxdir *= -1;
+                }
+            }
+            if (newydir == -1) {
+                if (y + newydir * 16 <= 32) {
+                    newydir *= -1;
+                }
+            } else {
+                if (y + newydir * 16 >= eng.pfHeight() - 100) {
+                    newydir *= -1;
+                }
+            }
+
             // check if we can go this way
             xdir = newxdir;
             ydir = newydir;
             checkIfBlocked(this, block_mask, prevxdir, prevydir);
-//            if (xdir == 0 && ydir == 0) {
-//                // if not, try an alternate direction
-//                if (xdir_any) {
-//                    if (newxdir != 0) {
-//                        xdir = -newxdir;
-//                    } else {
-//                        xdir = eng.random(-1, 1, 2);
-//                    }
-//                    ydir = newydir;
-//                    checkIfBlocked(this, block_mask, prevxdir, prevydir);
-//                } else if (ydir_any) {
-//                    xdir = newxdir;
-//                    if (newydir != 0) {
-//                        ydir = -newydir;
-//                    } else {
-//                        ydir = eng.random(-1, 1, 2);
-//                    }
-//                    checkIfBlocked(this, block_mask, prevxdir, prevydir);
-//                }
-//            }
             // occupy new tile, or same tile if we didn't move
             if (occupied != null) {
                 eng.andTileCid(occupied.x, occupied.y, ~occupy_mask);
@@ -176,40 +155,34 @@ public class Mob extends Personaje {
             occupied = new JGPoint(cen.x + xdir, cen.y + ydir);
             eng.orTileCid(occupied.x, occupied.y, occupy_mask);
             if (!continuous_anim) {
-
-
-                    startAnim();
-
-
+                startAnim();
 
             }
-
         }
-
-
     }
 
-    public void dirGrafica(short id){
+    public void dirGrafica(short id) {
         /*
          * Especificacion grafica segun el mob y la direccion que seguirá
          */
-        switch(id){
-            case 7 :
-                if (xdir < 0){
+        switch (id) {
+            case 7:
+                if (xdir < 0) {
                     setGraphic("orc_walk_l");
-                } else if (xdir > 0){
+                } else if (xdir > 0) {
                     setGraphic("orc_walk_r");
-                }else if (ydir > 0){
+                } else if (ydir > 0) {
                     setGraphic("orc_walk_l");
-                } else if (ydir < 0){
+                } else if (ydir < 0) {
                     setGraphic("orc_walk_r");
+                } else if (ydir == 0 && xdir == 0) {
+                    if (this.getGraphic().equals("orc_walk_l")) {
+                        setGraphic("orc_stand_l");
+                    } else if (this.getGraphic().equals("orc_walk_r")) {
+                        setGraphic("orc_stand_r");
+                    }
                 }
-                else if (ydir == 0 && xdir == 0){
-                    if(this.getGraphic().equals("orc_walk_l")){
-                    setGraphic("orc_stand_l");
-                    }else if(this.getGraphic().equals("orc_walk_r")){setGraphic("orc_stand_r");}
-                }
-            break;
+                break;
         }
     }
 
@@ -403,8 +376,9 @@ public class Mob extends Personaje {
         return muerto;
     }
 
-    public void regenerarMp(int porcentaje) {
+    public int regenerarMp(int porcentaje) {
         aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
+        return (int) (mpMax * ((float) (porcentaje / 100.0)));
 
     }
 

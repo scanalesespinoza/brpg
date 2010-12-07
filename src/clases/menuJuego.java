@@ -8,7 +8,6 @@ import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGObject;
@@ -25,8 +24,6 @@ public class menuJuego extends JGObject {
     private Jugador pj;
     private boolean teclaEscape = false;
     private boolean teclaEnter = false;
-    private Habilidad hab = new Habilidad();
-    private Objeto obj = new Objeto();
     private Jugador pjTest;
     private HashMap<Integer, Icono> hmPjItem = new HashMap<Integer, Icono>();
     private HashMap<Integer, Icono> hmPjHabilidades = new HashMap<Integer, Icono>();
@@ -186,20 +183,20 @@ public class menuJuego extends JGObject {
                 eng.setFont(new JGFont("Arial", 0, 10));//fuente parrafo
                 eng.drawString("Nombre: " + pjTest.getNombre(), eng.viewWidth() - 75, 30, -1);
                 eng.drawString("Nivel: " + pjTest.getNivel(), eng.viewWidth() - 75, 40, -1);
-                eng.drawString("Experiencia" , eng.viewWidth() - 75, 50, -1);
+                eng.drawString("Experiencia", eng.viewWidth() - 75, 50, -1);
                 eng.drawString("Dinero :" + pjTest.getDinero(), eng.viewWidth() - 75, 83, -1);
                 eng.setColor(JGColor.red);
-                eng.drawRect(eng.viewWidth() - 80, 70, 68,10 , false, false, false);
+                eng.drawRect(eng.viewWidth() - 80, 70, 68, 10, false, false, false);
                 eng.setColor(JGColor.yellow);
-                eng.drawRect(eng.viewWidth() - 79, 71, (pj.getExperiencia() * 67)/pj.getLimiteSuperiorExperiencia(), 9, true, false, false, new JGColor[]{JGColor.blue, JGColor.orange, JGColor.green, JGColor.magenta, JGColor.white, JGColor.red});
+                eng.drawRect(eng.viewWidth() - 79, 71, (pj.getExperiencia() * 67) / pj.getLimiteSuperiorExperiencia(), 9, true, false, false, new JGColor[]{JGColor.blue, JGColor.orange, JGColor.green, JGColor.magenta, JGColor.white, JGColor.red});
                 eng.setColor(JGColor.white);
-                eng.drawString(pj.getExperiencia()+"/"+pj.getLimiteSuperiorExperiencia(),eng.viewWidth() -50, 60, 0, false);
-                
+                eng.drawString(pj.getExperiencia() + "/" + pj.getLimiteSuperiorExperiencia(), eng.viewWidth() - 50, 60, 0, false);
+
                 eng.setColor(JGColor.orange);
 //                eng.drawRect(eng.viewWidth() - 80, 263 , 70, 52.5, true, false, false);
                 eng.drawImage(eng.viewWidth() - 80, 263, "mini_mapa", false);
                 eng.setColor(JGColor.black);
-                eng.drawOval(((pj.x * 70) / eng.pfWidth()) + (eng.viewWidth() - 80 ), ((pj.y * 52.5) / eng.pfHeight()) + (263 ), 4, 4, true, true,false);
+                eng.drawOval(((pj.x * 70) / eng.pfWidth()) + (eng.viewWidth() - 80), ((pj.y * 52.5) / eng.pfHeight()) + (263), 4, 4, true, true, false);
                 eng.setColor(JGColor.white);
                 //Dibujar el personaje en el "mini..Mapa"
                 removerIconos();
@@ -523,15 +520,21 @@ public class menuJuego extends JGObject {
     public void paintB() {
 
 //
-//        if ((eng.inGameState("InCombat")||(eng.inGameState("InReward")))) {
-////            eng.drawImage(0, 0, "combate", false);
+        if ((eng.inGameState("InCombat") )) {
+            eng.drawImage(0, 0, "combate", false);
+            //dibujo los perfiles de los contrincantes
+            //personaje
+            eng.drawImage(10, 10, "personaje_combate", false);
+            //mob
+            eng.drawImage(eng.viewWidth()/2,10 , "mob_combate", false);
+
 //            if((stdScorePj!=null)){
 //
 //                stdScorePj.paintB();
 //            }else if((stdScoreNpc!=null)){
 //                stdScoreNpc.paintB();
 //            }
-//        }
+        }
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
         eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
         eng.setFont(new JGFont("Arial", 1, 18));

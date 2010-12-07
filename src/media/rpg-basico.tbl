@@ -93,6 +93,9 @@ ver	-	0	/media/imagenes/menu/ver.png	-
 abandonar	-	0	/media/imagenes/menu/abandonar.png	-
 //define el minimapa a mostrar
 mini_mapa	-	0	/media/imagenes/menu/mini_mapa2.png	-
+//define img personaje combate
+personaje_combate	-	0	/media/imagenes/personaje/goku.jpg	-
+mob_combate	-	0	/media/imagenes/mobs/ihsahn.jpg	-
 //******************************************************************************
 //                      Iconos
 //******************************************************************************
