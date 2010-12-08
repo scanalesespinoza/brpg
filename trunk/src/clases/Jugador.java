@@ -19,6 +19,7 @@ public class Jugador extends Personaje {
     private short idJugador;
     private HashMap<Short, Integer> preCompra = new HashMap<Short, Integer>();
     private Mob enemigo;
+    private boolean bloquear_uso = false;
 
     public Jugador(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, int cid) throws SQLException {
         super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
@@ -42,7 +43,7 @@ public class Jugador extends Personaje {
     private boolean interactuarNpc = false;
     private dbDelegate conect = new dbDelegate();
     public Npc npcInterac;
-    private short idProximoAtaque, idProximoItem;
+    private short idProximoAtaque = -1, idProximoItem = -1;
     private Integer hp, mp, defensa, ataque, hpMax, mpMax;
 
     @Override
@@ -86,7 +87,7 @@ public class Jugador extends Personaje {
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Jugador , método->cargarPersonaje() " + ex);
         }
-       
+
         setHp();
         setMp();
     }
@@ -229,12 +230,11 @@ public class Jugador extends Personaje {
         this.setPesoSoportado(this.getPesoSoportado() + 50);
     }
 
-    public void usarItem(Objeto objeto){
-            if(objeto.getTipo()==0){
-                if(this.hp+objeto.getBeneficio()<this.hpMax){
-                    this.hp+=objeto.getBeneficio();
-                }else{this.hp=this.hpMax;}
-            }
+    public void usarItem(Objeto objeto) {
+        if (objeto.getTipo() == 0) {
+            this.getInventario().getItem(objeto.getIdObjeto()).restarCantidad((short) 1);
+            this.bloquearUsarItem(1);
+        }
     }
 
     @Override
@@ -519,14 +519,14 @@ public class Jugador extends Personaje {
     }
 
     public void setProximoItem(Objeto obj) {
-        if (eng.inGameState("InCombat")) {
-            if (!isBlocked()) {
-//                this.setIdProximoItem(idItem);
-                this.usarItem(obj);
-            } else {
-                this.setIdProximoItem((short) -1);
-            }
+//        if (eng.inGameState("InCombat")) {
+        if (!isBloquearUso()) {
+            this.setIdProximoItem(obj.getIdObjeto());
+            this.usarItem(obj);
+        } else {
+            this.setIdProximoItem((short) -1);
         }
+//        }
     }
 
     /**
@@ -539,7 +539,6 @@ public class Jugador extends Personaje {
                 //tiene mp suficiente para ejecutar la habilidad
                 //quitar mp
                 aumentarDisminuirMp(-costo);
-
                 //bloqueo segun tiempo de espera
                 this.bloquear(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
             } else {
@@ -631,5 +630,32 @@ public class Jugador extends Personaje {
 
     void gastarPuntosHabilidad() {
         this.setTotalPuntosHabilidad((short) (getTotalPuntosHabilidad() - 1));
+    }
+
+    private void bloquearUsarItem(int i) {
+        this.setBloquear_uso(true);
+        new JGTimer((int) (eng.getFrameRate() * i), true) {
+
+            @Override
+            public void alarm() {
+                desbloquear_uso();
+            }
+        };
+    }
+
+    private void desbloquear_uso() {
+        this.setBloquear_uso(false);
+    }
+
+    /**
+     * Verifica si el Jugador esta habilitado para usar items o habilidades
+     * @return
+     */
+    public boolean isBloquearUso() {
+        return this.bloquear_uso;
+    }
+
+    public void setBloquear_uso(boolean bloquear_uso) {
+        this.bloquear_uso = bloquear_uso;
     }
 }

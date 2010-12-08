@@ -360,11 +360,7 @@ public class Manager extends JGEngine {
         1600 + 2 ^ 11, // cids of objects that our objects should collide with
         2 ^ 11 // cids of the objects whose hit() should be called
         );*/
-        if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
-            mob_concurrente = pj.getEnemigo();
-            setGameState("InCombat");
-            playAudio("ambiental", "combate", true);
-        }
+
         int posX = (int) pj.x;
         int posY = (int) pj.y;
 
@@ -379,9 +375,16 @@ public class Manager extends JGEngine {
             seccion.setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
             seccionNpc.setSeccion(new JGPoint(250, 25), new JGPoint(3, 4));
         }
-
         if (isSalir()) {
             System.exit(0);
+        }
+        if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
+            mob_concurrente = pj.getEnemigo();
+            setGameState("InCombat");
+            playAudio("ambiental", "combate", true);
+            filtro = 0;
+            seccion.setWorking(false);
+            seccion.removerIconos();
         }
     }
 
@@ -527,6 +530,7 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameInCombat() {
+
         moveObjects(null, (int) Math.pow(2, 7));
         int dañoBeneficio = 0;
         checkCollision(
@@ -566,16 +570,17 @@ public class Manager extends JGEngine {
             System.out.println("EsUsoCombate--------->" + obje.isUsoCombate());
             if (obje.isUsoCombate()) {
                 pj.setProximoItem(obje);
-                pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).restarCantidad((short) 1);
                 seccion.removerIconos();
                 seccion.setWorking(false);
             }
+
             if (pj.getIdProximoItem() != -1) {
                 //el personaje puede usar un item
-                dañoBeneficio = random(pj.getNivel() * 2, pj.getNivel() * 5, 10);
+                dañoBeneficio = pj.getInventario().getItem(pj.getIdProximoItem()).getObjeto().getBeneficio();
                 pj.recibirDañoBeneficio(dañoBeneficio);
-                playAudio("evento_combate", "heal2s", false);
+                playAudio("evento_combate", "heal2", false);
                 std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                pj.setIdProximoItem((short) -1);
             }
             setIcon(null);
         }
@@ -1146,8 +1151,6 @@ public class Manager extends JGEngine {
 //            cursor.setVentana((byte) 0);
             setGameState(estado);
         }
-
-
     }
 
     public void interacVentana(Personaje mob, String estado) {
@@ -1155,7 +1158,7 @@ public class Manager extends JGEngine {
         if (cursor.getVentana() == 1) {
             seccion.setWorking(false);
             seccionNpc.setWorking(false);
-            seccion.setSeccion(new JGPoint(110 + viewXOfs(), 400+ viewYOfs()), new JGPoint(12, 1));
+            seccion.setSeccion(new JGPoint(110 + viewXOfs(), 400 + viewYOfs()), new JGPoint(12, 1));
             seccion.generaSeccion(pj, 1);
             menu.recibeHm(hmIconoItem, 1, filtro);
             pj.bloquear();
@@ -1950,14 +1953,18 @@ public class Manager extends JGEngine {
 
                 if (obj.y >= viewYOfs() + (viewHeight() - 180)) {
                     if ((getMouseButton(3) && (getKey(66))) || (getMouseButton(3) && (getKey(98)))) {
+                        clearMouseButton(3);
                         seccion.removerIconos();
-                        pj.getInventario().eliminarItem((short) boton.getId());
+                        cursor.setVentana((byte) 4);
+                        pj.getInventario().eliminarItem((short) boton.getId(), (short) 1);
                         seccion.setWorking(false);
+
                     }
                     if (boton.getTipo_boton() == 3 && getMouseButton(3)) {
                         Objeto item = pj.getInventario().getObjetos().get((short) boton.getId()).getObjeto();
                         setInformacionObjeto(item.getNombre(), item.getDescripcion(), String.valueOf(item.getValorDinero()), String.valueOf(item.getTipo()), String.valueOf(item.getPeso()), String.valueOf(item.isUsoCombate()));
                     }
+
                 }
 
                 if (obj.getName().equals("usable") && (getMouseButton(3))) {
@@ -2006,6 +2013,7 @@ public class Manager extends JGEngine {
                 clearMouseButton(3);
                 setIcon((Icono) obj);
             }
+            //click en icono
             if (obj.colid == (int) Math.pow(2, 4)) {
                 Icono icon = (Icono) obj;
                 if (inGameState("InCommerce")) {
@@ -2041,6 +2049,20 @@ public class Manager extends JGEngine {
                         } else {
                             ventanaManager.mostrarMensajeValidacion("No soportas mas peso");
                         }
+                    }
+                }
+                if (inGameState("InWorld")) {
+                    if (getMouseButton(3) && ((Icono) obj).getTipo() == 1 && ((Icono) obj).getItem().getTipo() == 0) {
+                        clearMouseButton(3);
+                        if (!pj.isBloquearUso()) {
+                            //el personaje va a usar un item, por que el culiao es entero choro
+                            pj.recibirDañoBeneficio(((Icono) obj ).getItem().getBeneficio());
+                            playAudio("evento_combate", "heal2", false);
+                            new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + ((Icono) obj ).getItem().getBeneficio() + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                            pj.usarItem(((Icono) obj ).getItem());
+                        }
+                        seccion.removerIconos();
+                        seccion.setWorking(false);
                     }
                 }
             }
@@ -2202,21 +2224,19 @@ public class Manager extends JGEngine {
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
                                     if (inv.tieneItem(obje.getIdObjeto())) {
                                         cantidad++;
-
-
                                         if (personaje.getTipo() == 0) {
 
                                             if (obje.getTipo() == filtro) {
+                                                System.out.println("Dibuje a este qlio: " + obje.getNombre() + " " + obje.getNombreGrafico());
                                                 hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
-
                                                 setFont(new JGFont("Arial", 0, 24));
                                                 //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                                 this.recorrido.x += 37;
                                                 this.tabla.x--;
                                             }
                                         } else {
+                                            System.out.println("Dibuje a este qlio 2: " + obje.getNombre() + " " + obje.getNombreGrafico());
                                             hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
-
                                             setFont(new JGFont("Arial", 0, 24));
                                             //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                             this.recorrido.x += 37;
