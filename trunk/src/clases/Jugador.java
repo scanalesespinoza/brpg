@@ -467,7 +467,7 @@ public class Jugador extends Personaje {
         return tiene;
     }
 
-    private boolean puedellevarItem(short idItem, short cantidad) {
+    public boolean puedellevarItem(short idItem, short cantidad) {
         Objeto objt = new Objeto();
         objt.setObjeto(idItem);
         return cantidad > 0 && objt != null && objt.getPeso() * cantidad <= this.getPesoDisponible();
