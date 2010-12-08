@@ -467,6 +467,10 @@ public class menuJuego extends JGObject {
                     linea_x += 37;
                 }
 
+            }else {
+                this.botones_objetos_abandonar.get(((Inventario.Item)e.getValue()).getIdObjeto()).suspend();
+                this.botones_objetos_ver.get(((Inventario.Item)e.getValue()).getIdObjeto()).suspend();
+
             }
 //                    if (cont % 2 != 0) {//el numero es par se dibuja lo mas a la izquierda posible
 //                        linea_x = eng.viewWidth() - 80;
@@ -585,11 +589,11 @@ public class menuJuego extends JGObject {
         if (eng.inGameState("InCommerce")) {
 
 //            eng.drawImage(20, 20, "trade", false);
-            eng.drawImage(150, 200, "trade", false);
+//            eng.drawImage(150, 200, "trade", false);
             eng.drawImage(230, 320, "cerrar", false);
 //            setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
 //            generaSeccion(1);
-            setSeccion(new JGPoint(160, 210), new JGPoint(3, 4));
+            setSeccion(new JGPoint(170, 220), new JGPoint(3, 4));
             generaSeccion(0);
         }
 //        if ((eng.inGameState("InWorld")) && ((eng.getKey(73)) || (eng.getKey(105)))) {
