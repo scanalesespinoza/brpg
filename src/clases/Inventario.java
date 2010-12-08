@@ -20,20 +20,13 @@ public class Inventario {
     private short idPersonaje;
     private dbDelegate conexion;
     private HashMap<Short, Item> objetos;//contiene los objetos del personaje
-    private HashMap<Short, Item> respaldoObjetos;
+    private HashMap<Short, Short> respaldoObjetos;
     private short vitalidad = 0, sabiduria = 0, fuerza = 0, destreza = 0, ataque = 0, defensa = 0;
-
-    public HashMap<Short, Item> getRepaldoObjetos() {
-        return respaldoObjetos;
-    }
-
-    public void setRepaldoObjetos(HashMap<Short, Item> repaldoObjetos) {
-        this.respaldoObjetos = repaldoObjetos;
-    }
 
     public Inventario() {
         this.objetos = new HashMap<Short, Item>();
-//        this.equipo = new HashMap<Short, Short>();
+        this.respaldoObjetos = new HashMap<Short, Short>();
+//      this.equipo = new HashMap<Short, Short>();
     }
 
     /**
@@ -60,17 +53,12 @@ public class Inventario {
                 obj.setObjeto(item.getIdObjeto());
                 item.setObjeto(obj);
                 this.objetos.put(item.getIdObjeto(), item);
-
                 i += 1;
-                
             }
             this.conexion.cierraDbCon();
-
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }
-
-        repaldarInventario(objetos);
     }
 
     /************************IMPORTANTE*****************************************/
@@ -242,7 +230,7 @@ public class Inventario {
     public boolean tieneItem(short idItem) {
         return tieneItem(idItem, (short) 1);
     }
- 
+
     /**
      * Verifica si tiene la cantidad requerida del objeto en cuestión
      * @param idObjeto
@@ -333,18 +321,32 @@ public class Inventario {
         return objetos;
     }
 
-    private void repaldarInventario(HashMap<Short, Item> objetos) {
-        this.respaldoObjetos = objetos;
-
-    }
-
+//    private void repaldarInventario(HashMap<Short, Item> objetos) {
+//        this.respaldoObjetos = (HashMap<Short, Item>) this.objetos.clone();
+//
+//    }
     public void restablecerInventario() {
-        this.objetos = this.respaldoObjetos;
+
+        for (Map.Entry id : this.respaldoObjetos.entrySet()) {
+            System.out.println("'" + this.objetos.get(Short.valueOf(id.getKey().toString())).cantidad);
+            this.objetos.get(Short.valueOf(id.getKey().toString())).sumarCantidad(Short.valueOf(id.getValue().toString()));
+            System.out.println("*" + this.objetos.get(Short.valueOf(id.getKey().toString())).cantidad);
+        }
+
+        this.respaldoObjetos = new HashMap<Short, Short>();
     }
 
-    public void respaldarInventario() {
-        this.respaldoObjetos = this.objetos;
-
+//    public void respaldarInventario() {
+//        this.respaldoObjetos = this.objetos;
+//
+//    }
+    public void mod_despojar(short id) {
+        if (this.respaldoObjetos.containsKey(id)) {
+            this.respaldoObjetos.put(id, (short) (this.respaldoObjetos.get(id) + 1));
+        } else {
+            this.respaldoObjetos.put(id, (short) 1);
+        }
+        eliminarItem(id, (short) (1));
     }
 
     public short getAtaque() {

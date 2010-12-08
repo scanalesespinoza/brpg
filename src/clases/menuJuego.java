@@ -185,6 +185,7 @@ public class menuJuego extends JGObject {
                 eng.drawString("Nivel: " + pjTest.getNivel(), eng.viewWidth() - 75, 40, -1);
                 eng.drawString("Experiencia", eng.viewWidth() - 75, 50, -1);
                 eng.drawString("Dinero :" + pjTest.getDinero(), eng.viewWidth() - 75, 83, -1);
+                eng.drawString("Peso libre :" + pjTest.getPesoDisponible(), eng.viewWidth() - 75, 93, -1);
                 eng.setColor(JGColor.red);
                 eng.drawRect(eng.viewWidth() - 80, 70, 68, 10, false, false, false);
                 eng.setColor(JGColor.yellow);

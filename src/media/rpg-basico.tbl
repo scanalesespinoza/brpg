@@ -36,7 +36,7 @@ ppantano	(	0	/media/imagenes/tiles/pasto_oscuro.png	-
 ppantano1	)	0	/media/imagenes/tiles/pasto_oscuro1.png	-
 pentradaciudad	[	0	/media/imagenes/tiles/pasto_oscuro2.png	-
 //barrera boss
-reja_boss	´	20	/media/imagenes/tiles/Tile_Barrera_Boss.png	-
+reja_boss	=	20	/media/imagenes/tiles/Tile_Barrera_Boss.png	-
 //Define arboles
 arbol_seco	-	20	/media/imagenes/tiles/Arbol_Seco_64.png	-
 arbol_seco2	-	20	/media/imagenes/tiles/Arbol_Semi_Seco_64.png	-

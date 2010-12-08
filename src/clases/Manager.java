@@ -38,6 +38,7 @@ public class Manager extends JGEngine {
     public Mob mob_concurrente;
     public Npc vendedor_concurrente;
     public Npc npc_concurrente;
+    public Personaje personaje_concurrente;
     public Npc npc_vendedor_1; // id = 1
     public Npc npc_vendedor_2; // id = 2
     public Npc npc_encargo_1; // id = 3
@@ -53,6 +54,7 @@ public class Manager extends JGEngine {
     public Seccion seccion = new Seccion();
     public Seccion seccionNpc = new Seccion();
     public Ventana ventanaManager;
+    public boolean entregarRecompensa = false;
     /*
      * Objetos de combate
      */
@@ -156,6 +158,7 @@ public class Manager extends JGEngine {
             public void alarm() {
                 seg++;
                 inicializarTeclas();
+
             }
         };
         //setMsgFont(new JGFont("Helvetica",0,32));
@@ -176,20 +179,13 @@ public class Manager extends JGEngine {
             mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
             mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
 
-            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
-            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
+            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 0, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 10
+            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 0, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 11
 
-            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
-
-            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
-            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
-
-            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "mob_5", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 10
-            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 11
-
-            mob_jefe_final = new Mob(140 * 16, 110 * 16, 1.5, (short) 100, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
+            mob_jefe_final = new Mob(140 * 16, 110 * 16, 0, (short) 12, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
 
             mob_facil_1.cargarDatos((short) 6);
+            mob_facil_1.getInventario().setIdPersonaje((short) 6);
             mob_facil_2.cargarDatos((short) 7);
             mob_medio_1.cargarDatos((short) 8);
             mob_medio_2.cargarDatos((short) 9);
@@ -249,6 +245,14 @@ public class Manager extends JGEngine {
         //setTileSettings("!", 20,0);
         ventanaManager = new Ventana();
         setGameState("Title");
+        new JGTimer((int) (getFrameRate() * 3), false) {
+
+            @Override
+            public void alarm() {
+                pj.regenerarMp(1);
+
+            }
+        };
     }
     /** View offset. */
     int xofs = 0, yofs = 0;
@@ -282,13 +286,13 @@ public class Manager extends JGEngine {
         if (pj.isSuspended()) {
             pj.setResumeMode(true);
         }
-        if (pj.x < viewWidth()*2 && pj.y < viewHeight()*2) {
+        if (pj.x < viewWidth() * 2 && pj.y < viewHeight() * 2) {
             //esta en la ciudad
             playAudio("ambiental", "ciudad", true);
-        } else if (pj.x < viewWidth()*3 && pj.y< viewHeight()*3) {
+        } else if (pj.x < viewWidth() * 3 && pj.y < viewHeight() * 3) {
             //esta en la afuera de la ciudad
             playAudio("ambiental", "ciudad2", true);
-        }else {
+        } else {
             //Esta en pantano
             playAudio("ambiental", "pantano", true);
         }
@@ -359,7 +363,6 @@ public class Manager extends JGEngine {
         if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
             mob_concurrente = pj.getEnemigo();
             setGameState("InCombat");
-            mob_concurrente.getInventario().respaldarInventario();
             playAudio("ambiental", "combate", true);
         }
         int posX = (int) pj.x;
@@ -392,8 +395,8 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
-        drawString(mob_jefe_final.x + "," + mob_jefe_final.y, viewWidth() / 2, viewHeight() / 2, -1, false);
         drawString(pj.x + "," + pj.y, viewWidth() / 2, viewHeight() / 2 + 20, -1, false);
+
         seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
         menu.recibeHm(hmIconoHabilidades, 2, filtro);
@@ -422,13 +425,18 @@ public class Manager extends JGEngine {
 //        }
         //el cursor no choca contra el icono
         if (checkCollision((int) Math.pow(2, 4), cursor) != Math.pow(2, 4)) {
-            cursor.setMensajeIcon(null);
+//            cursor.setMensajeIcon(null);
+            ventanaManager.mostrarDatoFreak("");
         }
         //el cursor no choca contra un boton del tipo ver
         if (checkCollision((int) Math.pow(2, 5), cursor) != Math.pow(2, 5)) {
-            cursor.limpiarInformacion();
+            ventanaManager.mostrarDatoFreak("");
+//            cursor.limpiarInformacion();
         }
-
+        //el cursor no choca contra un npc
+        if (checkCollision((int) Math.pow(2, 3), cursor) != Math.pow(2, 3)) {
+            ventanaManager.mostrarDatoFreak("");
+        }
         moveObjects(null, (int) Math.pow(2, 7));
     }
 
@@ -606,7 +614,7 @@ public class Manager extends JGEngine {
         if (mob_concurrente.getHp() <= 0) {
             final Mob enemigo_procesar = (Mob) getObject(mob_concurrente.getName());
             if (respawn_mob == null) {
-                respawn_mob = new JGTimer((int) (getFrameRate() * 60 * 1), true) {
+                respawn_mob = new JGTimer((int) (getFrameRate() * 10 * 1), true) {
 
                     @Override
                     public void alarm() {
@@ -619,6 +627,7 @@ public class Manager extends JGEngine {
                 respawn_mob = null;
             }
             mob_concurrente.suspend();
+            personaje_concurrente = (Personaje) enemigo_procesar;
             seccion.removerIconos();
             cursor.setVentana((byte) (1));
             setGameState("InReward");
@@ -669,14 +678,19 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
         if (getMouseButton(1)) {
-            mob_concurrente.recibirDañoBeneficio(mob_concurrente.getHpMax());
-            mob_concurrente.aumentarDisminuirMp(mob_concurrente.getMpMax());
+//            mob_concurrente.recibirDañoBeneficio(mob_concurrente.getHpMax());
+//            mob_concurrente.aumentarDisminuirMp(mob_concurrente.getMpMax());
             clearMouseButton(1);
-            cursor.setLimpiarIconos(true);
+//            cursor.setLimpiarIconos(true);
+            seccion.removerIconos();
+            seccion.setWorking(false);
             pj.bloquear();
             setGameState("InWorld");
+            this.entregarRecompensa = false;
+            personaje_concurrente.getInventario().restablecerInventario();
+            this.personaje_concurrente = null;
         } else {
-            interacVentana(mob_concurrente, "InReward");
+            interacVentana(personaje_concurrente, "InReward");
         }
     }
 
@@ -1016,66 +1030,66 @@ public class Manager extends JGEngine {
         setTiles(
                 80, // tile x index
                 60,// tile y index
-                new String[]{"[[[[[[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%",//1
-                    "[[[[[[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%",
-                    "[[^[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%",
-                    "[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%",
-                    "[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%",//%
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%",//10
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%",//1%
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//2%
-                    ")))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//30
-                    ")))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//3%
-                    ")))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//38
-                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    ")))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",});
+                new String[]{"[[[[[[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%!!!!!!!",//1
+                    "[[[[[[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%!!!!!!!",
+                    "[[^[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%!!!!!!!",
+                    "[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%!!!!!!!",
+                    "[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%!!!!!!!",//%
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%!!!!!!!",//10
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%!!!!!!!",//1%
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//2%
+                    ")))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//30
+                    ")))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//3%
+                    ")))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//38
+                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    ")))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
+                    "))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%==============!!!!!!!",
+                    ")))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=!!!!!!!",
+                    "))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%======!!!!!!!",
+                    ")))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%=%%%==!!!!!!!",
+                    "))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%=%%%==!!!!!!!",
+                    ")))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%=%%%==!!!!!!!",
+                    ")))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%%%%%==!!!!!!!",
+                    "))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%%%%%==!!!!!!!",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%==================!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",});
     }
 
     public void interacVentana(Jugador pj, Personaje vendedor, String estado) {
@@ -1139,17 +1153,9 @@ public class Manager extends JGEngine {
     public void interacVentana(Personaje mob, String estado) {
         clearKey(73);
         if (cursor.getVentana() == 1) {
-
-            //grillaNpc = new Boton("grilla npc", "grilla npc", viewXOfs() + 10, viewYOfs() + 10, (int) Math.pow(2, 5));
-            //grillaPj = new Boton("grilla pj", "grilla pj", viewXOfs() + 200, viewYOfs() + 10, (int) Math.pow(2, 5));
-            //ventanaTrade = new Boton("ventana trade", "ventana trade",viewXOfs(),viewYOfs(),0);
-//            procesaItem(pj, grillaPj.x, grillaPj.y);
-//            procesaItem(vendedor, grillaNpc.x, grillaNpc.y);
-            //seccion.setSeccion(new JGPoint(10,10), new JGPoint(3,4));
             seccion.setWorking(false);
             seccionNpc.setWorking(false);
-
-//            pj.colid = 0;
+            seccion.setSeccion(new JGPoint(110 + viewXOfs(), 400+ viewYOfs()), new JGPoint(12, 1));
             seccion.generaSeccion(pj, 1);
             menu.recibeHm(hmIconoItem, 1, filtro);
             pj.bloquear();
@@ -1159,30 +1165,14 @@ public class Manager extends JGEngine {
             seccionNpc.setWorking(true);
             menu.recibeHm(hmIconoItem, 0, filtro);
 
-//            cerrar = new Boton("cerrar", "cerrar", 230, 320, (int) Math.pow(2, 5), 0, 0);
-//            cerrar.pintar();
-
             cursor.setVentana((byte) 2);
         } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
-//            Remueve todos los objetos que forman la ventana de comerciar
-//            removeObjects("ventana trade", 0);
-//            removeObjects("grilla npc", (int) Math.pow(2, 5));
-//            removeObjects("grilla pj", (int) Math.pow(2, 5));
-//            removeObjects("cerrar", (int) Math.pow(2, 5));
-//            for (int i = 0; i < 200; i++) {
 
-            //Renueve todos los objetos item
+            //Remueve todos los objetos item
             seccion.removerIconos();
 //            seccionNpc.setWorking(false);
-
-
-
             pj.desbloquear();
             pj.colid = 2;
-
-
-
-
             if (cursor.getVentana() == 4) {
                 cursor.setVentana((byte) 1);
 
@@ -1273,8 +1263,9 @@ public class Manager extends JGEngine {
         private int separadorLinea;
         private int indiceUltimaLetra;
         private int indice_concurrente;
-        private String dialogo_restante, dialogo_mostrar, linea_1, linea_2, linea_3;
+        private String dialogo_restante, dialogo_mostrar, linea_1, linea_2, linea_3, mensaje_flash = "";
         private boolean terminoDialogo;
+        private StdScoring mensajito = new StdScoring("freak", 480, 370, 0, 0, -1, "", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue, JGColor.white}, 20, false);
 
         /**
          * Muestra una ventana del tipo alerta usada para mostrar mensajes flash
@@ -1288,17 +1279,7 @@ public class Manager extends JGEngine {
             this.segundos = 3;
             this.desplegarVentana(100, 100);
             this.desplegarMensaje(130, 130, mensaje);
-            new JGTimer(
-                    (int) (getFrameRate() * this.getSegundos()), //calculo los frames
-                    true // true indica que la alarma solo se dispara una vez
-                    ) {
-                //método que se debe redefinir para que ejecute una acción
-                //esta vez, desaparecer el objeto ventana
 
-                @Override
-                public void alarm() {
-                }
-            };
 
         }
 
@@ -1571,12 +1552,30 @@ public class Manager extends JGEngine {
             setColor(JGColor.white);
             drawRect(viewXOfs() + 205, viewYOfs() + 255, 290, 90, true, false);
         }
+
+        public void mostrarMensajeValidacion(String txt) {
+
+            new StdScoring("validacion", 480 + viewXOfs(), 370 + viewYOfs(), 0, 0, 120, txt, new JGFont("arial", 1, 10), new JGColor[]{JGColor.yellow, JGColor.black}, 20);
+            this.mensaje_flash = txt;
+        }
+
+        public void mostrarDatoFreak(String txt) {
+            this.mensajito.msg = txt;
+//            if (!this.mensaje_flash.equals(txt) || this.mensajito.cycletimer >= this.mensajito.expiry ) {//cambio de mensaje
+//                if (mensajito != null ) mensajito.suspend();
+//
+//                this.mensaje_flash = txt;
+//            }else {
+//                this.mensajito.paintB();
+//            }
+        }
     }
 
     public class Cursor extends JGObject {
 
         private String mensaje = new String();
-        private double ejex = eng.getMouseX() + eng.viewXOfs();
+        private double ejex =
+                eng.getMouseX() + eng.viewXOfs();
         private double ejey = eng.getMouseY() + eng.viewYOfs();
         private byte ventana;
         private String mensajeIcon;
@@ -1671,6 +1670,14 @@ public class Manager extends JGEngine {
 
         @Override
         public void hit(JGObject obj) {
+            if (obj instanceof Icono) {
+                if (((Icono) obj).getTipo() == 0) {//habilidades{
+                    ventanaManager.mostrarDatoFreak("Habilidad: " + ((Icono) obj).getHabilidad().getNombre());
+                } else {
+                    ventanaManager.mostrarDatoFreak("Ítem: " + ((Icono) obj).getItem().getNombre());
+                }
+            }
+//                         ventanaManager.mostrarDatoFreak("Obj: "+obj.colid);
             if ((obj.colid == (int) Math.pow(2, 4))) {//es icono
                 Icono iconito = (Icono) obj;
                 this.setMensajeIcon(iconito.getNombreLogico());
@@ -1685,7 +1692,7 @@ public class Manager extends JGEngine {
                 switch (npc_procesar.getTipo()) {
                     case 2://npc de misiones
                         npc_concurrente = npc_procesar;
-                        setMensaje("El es " + npc_procesar.getNombre() + npc_procesar.getIdPersonaje());
+                        ventanaManager.mostrarDatoFreak("Personaje: " + npc_procesar.getNombre());
                         if (getMouseButton(3)) {
                             clearMouseButton(3);
                             //veo qué misión tiene el npc que el personaje no tenga (también veo el
@@ -1716,7 +1723,6 @@ public class Manager extends JGEngine {
                                     }
                                 } else {
                                     if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
-                                        System.out.println("me meti aca po choro!!" + npc_concurrente.getNombre());
                                         accion = 1;//agregar
                                     } else {
                                         //comprobar si cumple la misión
@@ -1779,6 +1785,7 @@ public class Manager extends JGEngine {
                                             pj.getInventario().eliminarItem(objeto_id, cantidad);
                                         }
                                         playAudio("evento", "hallar_algo", false);
+                                        entregarRecompensa = true;
                                     }
 
 
@@ -1793,7 +1800,8 @@ public class Manager extends JGEngine {
                         }
                         break;
                     case 1://npc vendedor
-                        setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
+                        ventanaManager.mostrarDatoFreak("Vendedor: " + ((Personaje) (obj)).getNombre());
+                        //setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
                         if (getMouseButton(3)) {
                             vendedor_concurrente = (Npc) obj;
                             setVentana((byte) 1);
@@ -1813,9 +1821,19 @@ public class Manager extends JGEngine {
                         switch (btn.getTipo_boton()) {
                             case 0: //Presiono boton cerrar en un dialogo
                                 salirInInteracting = true;
+                                if (entregarRecompensa) {
+                                    //seteo todo para entregar la recompensa
+                                    personaje_concurrente = (Personaje) npc_concurrente;
+//                                    seccion.removerIconos();
+                                    cursor.setVentana((byte) (1));
+                                    setGameState("InReward");
+                                } else {
+                                    setGameState("InWorld");
+                                }
                                 npc_concurrente.getDialogo().nextTexto();
                                 npc_concurrente = null;
-                                setGameState("InWorld");
+
+
                                 removeObject(obj);
                                 break;
                             case 5: //presiono boton siguiente para las siguientes lineas del dialogo
@@ -1826,65 +1844,73 @@ public class Manager extends JGEngine {
                     }
                 }
                 if (obj.x >= viewXOfs() + (viewWidth() - 180)) {// es del menu
-                    if (boton.getTipo_boton() != 3 && getMouseButton(3)) {
-                        clearMouseButton(3);
-                        //corresponde al menu y no es boton del tipo "ver"
-                        switch (menu.getMenuActual()) {
-                            case 4://Menú está en Estadísticas
-                                if (pj.getTotalPuntosEstadistica() > 0) {
-                                    playAudio("evento", "permitido", false);
-                                    switch (boton.getId()) {
-                                        /**
-                                         * ids para estadisticas
-                                         * 1 = fuerza
-                                         * 2 = destreza
-                                         * 3 = Sabiduria
-                                         * 4 = vitalidad
-                                         */
-                                        case 1:
-                                            pj.aumentarFuerza(1);
-                                            pj.gastarPuntoEstadistica();
-                                            break;//
-                                        case 2:
-                                            pj.aumentarDestreza(1);
-                                            pj.gastarPuntoEstadistica();
-                                            break;
-                                        case 3:
-                                            pj.aumentarSabiduria(1);
-                                            pj.gastarPuntoEstadistica();
-                                            break;
-                                        case 4:
-                                            pj.gastarPuntoEstadistica();
-                                            pj.aumentarVitalidad(1);
-                                            break;
+                    if (boton.getTipo_boton() != 3) {
+                        if (boton.getTipo_boton() == 4) {
+                            ventanaManager.mostrarDatoFreak("Eliminar");
+                        } else if (boton.getTipo_boton() == 1) {
+                            ventanaManager.mostrarDatoFreak("Asignar puntos");
+                        }
+                        if (getMouseButton(3)) {
+                            clearMouseButton(3);
+                            //corresponde al menu y no es boton del tipo "ver"
+                            switch (menu.getMenuActual()) {
+                                case 4://Menú está en Estadísticas
+                                    if (pj.getTotalPuntosEstadistica() > 0) {
+                                        playAudio("evento", "permitido", false);
+                                        switch (boton.getId()) {
+                                            /**
+                                             * ids para estadisticas
+                                             * 1 = fuerza
+                                             * 2 = destreza
+                                             * 3 = Sabiduria
+                                             * 4 = vitalidad
+                                             */
+                                            case 1:
+                                                pj.aumentarFuerza(1);
+                                                pj.gastarPuntoEstadistica();
+                                                break;//
+                                            case 2:
+                                                pj.aumentarDestreza(1);
+                                                pj.gastarPuntoEstadistica();
+                                                break;
+                                            case 3:
+                                                pj.aumentarSabiduria(1);
+                                                pj.gastarPuntoEstadistica();
+                                                break;
+                                            case 4:
+                                                pj.gastarPuntoEstadistica();
+                                                pj.aumentarVitalidad(1);
+                                                break;
+                                        }
                                     }
-                                }
-                                break;
-                            case 1://Menú está en Habilidad
-                                if (pj.getTotalPuntosHabilidad() > 0) {
-                                    playAudio("evento", "permitido", false);
-                                    if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
-                                        pj.getHabilidades().agregaHabilidad((short) boton.getId());
-                                        pj.gastarPuntosHabilidad();
-                                    } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
-                                        pj.getHabilidades().aumentarNivel((short) boton.getId());
-                                        pj.gastarPuntosHabilidad();
+                                    break;
+                                case 1://Menú está en Habilidad
+                                    if (pj.getTotalPuntosHabilidad() > 0) {
+                                        playAudio("evento", "permitido", false);
+                                        if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
+                                            pj.getHabilidades().agregaHabilidad((short) boton.getId());
+                                            pj.gastarPuntosHabilidad();
+                                        } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
+                                            pj.getHabilidades().aumentarNivel((short) boton.getId());
+                                            pj.gastarPuntosHabilidad();
+                                        }
+                                        seccion.setWorking(false);
+                                        setLimpiarIconos(true);
                                     }
-                                    seccion.setWorking(false);
-                                    setLimpiarIconos(true);
-                                }
-                                break;
-                            case 2://Menú está en misión
-                                if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
-                                    pj.getMisiones().abandonaMision((short) boton.getId());
-                                    playAudio("evento", "no_permitido", false);
-                                }
-                                break;
+                                    break;
+                                case 2://Menú está en misión
+                                    if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
+                                        pj.getMisiones().abandonaMision((short) boton.getId());
+                                        playAudio("evento", "no_permitido", false);
+                                    }
+                                    break;
+                            }
                         }
                     } else if (boton.getTipo_boton() == 3) {
                         //corresponde al menu y es boton del tipo "ver"
                         //por comportamiento mouse over , se muestra información
                         //en el monitor
+                        ventanaManager.mostrarDatoFreak("Ver descripción");
                         switch (menu.getMenuActual()) {
                             case 4://Menú está en Estadísticas
                                 switch (boton.getId()) {
@@ -1931,28 +1957,49 @@ public class Manager extends JGEngine {
                     if (boton.getTipo_boton() == 3 && getMouseButton(3)) {
                         Objeto item = pj.getInventario().getObjetos().get((short) boton.getId()).getObjeto();
                         setInformacionObjeto(item.getNombre(), item.getDescripcion(), String.valueOf(item.getValorDinero()), String.valueOf(item.getTipo()), String.valueOf(item.getPeso()), String.valueOf(item.isUsoCombate()));
-
                     }
                 }
 
                 if (obj.getName().equals("usable") && (getMouseButton(3))) {
                     System.out.println("Nombre del objeto-------->" + obj.getName());
-//                    seccion.removerIconos();
-                    cursor.setLimpiarIconos(true);
+                    seccion.removerIconos();
+//                    cursor.setLimpiarIconos(true);
+                    clearMouseButton(3);
                     filtro = 0;
                     seccion.setWorking(false);
+                    if (inGameState("InCommerce")) {
+                        cursor.setVentana((byte) 4);
+                    }
+                    if (inGameState("InReward")) {
+                        cursor.setVentana((byte) 1);
+                    }
                 } else if (obj.getName().equals("equipo") && (getMouseButton(3))) {
                     System.out.println("Nombre del objeto-------->" + obj.getName());
-//                    seccion.removerIconos();
-                    cursor.setLimpiarIconos(true);
+                    seccion.removerIconos();
+//                    cursor.setLimpiarIconos(true);
+                    clearMouseButton(3);
                     filtro = 1;
                     seccion.setWorking(false);
+                    if (inGameState("InCommerce")) {
+                        cursor.setVentana((byte) 4);
+                    }
+                    if (inGameState("InReward")) {
+                        cursor.setVentana((byte) 1);
+                    }
                 } else if (obj.getName().equals("colec") && (getMouseButton(3))) {
                     System.out.println("Nombre del objeto-------->" + obj.getName());
-//                    seccion.removerIconos();
-                    cursor.setLimpiarIconos(true);
+                    seccion.removerIconos();
+//                    cursor.setLimpiarIconos(true);
+                    clearMouseButton(3);
                     filtro = 2;
                     seccion.setWorking(false);
+
+                    if (inGameState("InCommerce")) {
+                        cursor.setVentana((byte) 4);
+                    }
+                    if (inGameState("InReward")) {
+                        cursor.setVentana((byte) 1);
+                    }
                 }
             }
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
@@ -1964,12 +2011,16 @@ public class Manager extends JGEngine {
                 if (inGameState("InCommerce")) {
                     if ((getMouseButton(3)) && icon.belongTo(vendedor_concurrente.getTipo())) {
                         clearMouseButton(3);
-                        if (pj.validarDinero(icon.getItem().getValorDinero())) {
+                        if (pj.validarDinero(icon.getItem().getValorDinero()) && pj.puedellevarItem(icon.getItem().getIdObjeto(), (short) 1)) {
                             pj.getInventario().agregarItem(icon.getIdObjeto());
                             pj.setDinero(pj.getDinero() - icon.getItem().getValorDinero());
                             cursor.setVentana((byte) 4);
                         } else {
-                            setMensaje("No tienes suficiente dinero");
+                            if (!pj.validarDinero(icon.getItem().getValorDinero())) {
+                                ventanaManager.mostrarMensajeValidacion("No tiene suficiente dinero");
+                            } else {
+                                ventanaManager.mostrarMensajeValidacion("No soportas mas peso");
+                            }
                         }
                     }
                     if ((getMouseButton(3)) && icon.belongTo(pj.getTipo()) && icon.getItem().getTipo() == filtro) {
@@ -1981,11 +2032,15 @@ public class Manager extends JGEngine {
 
                 }
                 if (inGameState("InReward")) {
-                    if ((getMouseButton(3)) && icon.belongTo(mob_concurrente.getTipo())) {
+                    if ((getMouseButton(3)) && icon.belongTo(personaje_concurrente.getTipo())) {
                         clearMouseButton(3);
-                        pj.getInventario().agregarItem(icon.getIdObjeto());
-                        mob_concurrente.getInventario().eliminarItem(icon.getIdObjeto(), (short) 1);
-                        cursor.setVentana((byte) 4);
+                        if (pj.puedellevarItem(icon.getItem().getIdObjeto(), (short) 1)) {
+                            pj.getInventario().agregarItem(icon.getIdObjeto());
+                            personaje_concurrente.getInventario().mod_despojar(icon.getIdObjeto());
+                            cursor.setVentana((byte) 4);
+                        } else {
+                            ventanaManager.mostrarMensajeValidacion("No soportas mas peso");
+                        }
                     }
                 }
             }
