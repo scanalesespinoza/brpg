@@ -245,12 +245,17 @@ public class Manager extends JGEngine {
         //setTileSettings("!", 20,0);
         ventanaManager = new Ventana();
         setGameState("Title");
-        new JGTimer((int) (getFrameRate() * 3), false) {
+        new JGTimer((int) (getFrameRate() *10), false) {
 
             @Override
             public void alarm() {
-                pj.regenerarMp(1);
-
+                if (!inGameState("InCombat")) {
+                    pj.regenerarMp(5);System.out.println("sddsdsdsdsdsdsd");
+                    new StdScoring("scoring_pj_mp", ((viewWidth() * 8) / 100), (double) 312 , -0.1, -0.5, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue}, 5,false);
+                    pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
+                    new StdScoring("scoring_pj", ((viewWidth() * 10) / 100), (double) 302, -0.09, -0.5, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
+                }
+                System.out.println("13131313");
             }
         };
     }
@@ -550,7 +555,7 @@ public class Manager extends JGEngine {
                 if (dañoBeneficio < 0) {
                     dañoBeneficio -= ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
                     //se convierte en daño hacia el enemigo
-                    mob_concurrente.recibirDañoBeneficio(-mob_concurrente.getHpMax());
+                    mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
                     //si no es beneficio al jugador
                     std_mob_daño = new StdScoring("scoring_mob", ((viewWidth() * 78) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                     playAudio("evento_combate", "golpe", false);
@@ -2056,10 +2061,10 @@ public class Manager extends JGEngine {
                         clearMouseButton(3);
                         if (!pj.isBloquearUso()) {
                             //el personaje va a usar un item, por que el culiao es entero choro
-                            pj.recibirDañoBeneficio(((Icono) obj ).getItem().getBeneficio());
+                            pj.recibirDañoBeneficio(((Icono) obj).getItem().getBeneficio());
                             playAudio("evento_combate", "heal2", false);
-                            new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + ((Icono) obj ).getItem().getBeneficio() + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
-                            pj.usarItem(((Icono) obj ).getItem());
+                            new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + ((Icono) obj).getItem().getBeneficio() + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                            pj.usarItem(((Icono) obj).getItem());
                         }
                         seccion.removerIconos();
                         seccion.setWorking(false);
