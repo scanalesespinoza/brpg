@@ -183,6 +183,23 @@ public class Mob extends Personaje {
                     }
                 }
                 break;
+            case 10:
+                if (xdir < 0) {
+                    setGraphic("grif_walk_l");
+                } else if (xdir > 0) {
+                    setGraphic("grif_walk_r");
+                } else if (ydir > 0) {
+                    setGraphic("grif_walk_l");
+                } else if (ydir < 0) {
+                    setGraphic("grif_walk_r");
+                } else if (ydir == 0 && xdir == 0) {
+                    if (this.getGraphic().equals("grif_walk_l")) {
+                        setGraphic("grif_walk_l");
+                    } else if (this.getGraphic().equals("grif_walk_r")) {
+                        setGraphic("grif_walk_r");
+                    }
+                }
+                break;
         }
     }
 
