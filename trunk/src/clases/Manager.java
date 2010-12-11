@@ -1,6 +1,5 @@
 package clases;
 
-import com.mysql.jdbc.EscapeTokenizer;
 import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,7 +64,7 @@ public class Manager extends JGEngine {
     private Icono equipo3;
     private Icono equipo4;
     private Icono equipo5;
-    
+    /*
     /*
      * Objetos de combate
      */
@@ -77,6 +76,7 @@ public class Manager extends JGEngine {
     private Npc npc_interaccion;
     private StdScoring std_mob_daño, std_mob_sanacion, std_pj_daño, std_pj_sanacion, std_mob_habilidad, std_pj_mana;
     private HashMap<Short, Objeto> objetos;
+    private boolean terminar_combate;
 
     public Icono getIcon() {
         return icon;
@@ -148,7 +148,7 @@ public class Manager extends JGEngine {
         }
         setFrameRate(60, 2);
         dbgShowGameState(true);
-        dbgShowBoundingBox(false);
+        dbgShowBoundingBox(true);
 
         try {
             defineMedia("/media/rpg-basico_1.tbl");
@@ -180,53 +180,50 @@ public class Manager extends JGEngine {
         //Objeto cursor, imágen que sigue las coordenadas del mouse
         cursor = new Cursor();
         //cargaJugador(0,0); reemplazamos por el metodo nuevo
-        this.pj = new Jugador();
-        this.pj.cargarDatos(this.idJugador);
-//        System.out.println("primero---"+pj.getInventario().getEquipo().get(1).getEquipaEn());
+
 //        setCursor(null);
         inicializarTeclas();
         try {
-            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
-            mob_facil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 7, "mob_facil_2", "orc_stand_r", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 7
-
-            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
-            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
-
-            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "grif_walk_r", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 10
-            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 0, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 11
-
-            mob_jefe_final = new Mob(140 * 16, 110 * 16, 0, (short) 12, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
-
-            mob_facil_1.cargarDatos((short) 6);
-            mob_facil_1.getInventario().setIdPersonaje((short) 6);
-            mob_facil_2.cargarDatos((short) 7);
-            mob_medio_1.cargarDatos((short) 8);
-            mob_medio_2.cargarDatos((short) 9);
-            mob_dificil_1.cargarDatos((short) 10);
-            mob_dificil_2.cargarDatos((short) 11);
-            mob_jefe_final.cargarDatos((short) 12);
-
-            mob_facil_1.resume_in_view = false;
-            mob_facil_2.resume_in_view = false;
-            mob_medio_1.resume_in_view = false;
-            mob_medio_2.resume_in_view = false;
-            mob_dificil_1.resume_in_view = false;
-            mob_dificil_2.resume_in_view = false;
-            mob_jefe_final.resume_in_view = false;
+////            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
+////            mob_facil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 7, "mob_facil_2", "orc_stand_r", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 7
+////
+////            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
+////            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
+////
+////            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "grif_walk_r", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 10
+////            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 0, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 11
+////
+////            mob_jefe_final = new Mob(140 * 16, 110 * 16, 0, (short) 12, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
+////
+//            mob_facil_1.cargarDatos((short) 6);
+//            mob_facil_2.cargarDatos((short) 7);
+//            mob_medio_1.cargarDatos((short) 8);
+//            mob_medio_2.cargarDatos((short) 9);
+//            mob_dificil_1.cargarDatos((short) 10);
+//            mob_dificil_2.cargarDatos((short) 11);
+//            mob_jefe_final.cargarDatos((short) 12);
+//
+//            mob_facil_1.resume_in_view = false;
+//            mob_facil_2.resume_in_view = false;
+//            mob_medio_1.resume_in_view = false;
+//            mob_medio_2.resume_in_view = false;
+//            mob_dificil_1.resume_in_view = false;
+//            mob_dificil_2.resume_in_view = false;
+//            mob_jefe_final.resume_in_view = false;
 
             dibujarObjetosEscenario();
-            menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj);
+            menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj, conect);
 
-            npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-            npc_vendedor_1.cargarDatos((short) 1);
-            npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-            npc_vendedor_2.cargarDatos((short) 2);
-            npc_encargo_1 = new Npc(700, 75, "npc_encargo_1", "people", (int) Math.pow(2, 3), 0, (short) 3, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 3
-            npc_encargo_1.cargarDatos((short) 3);
-            npc_encargo_2 = new Npc(730, 75, "npc_encargo_2", "people2", (int) Math.pow(2, 3), 0, (short) 4, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 4
-            npc_encargo_2.cargarDatos((short) 4);
-            npc_encargo_3 = new Npc(760, 75, "npc_encargo_3", "people3", (int) Math.pow(2, 3), 0, (short) 5, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior;
-            npc_encargo_3.cargarDatos((short) 5);
+//            npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+//            npc_vendedor_1.cargarDatos((short) 1);
+//            npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+//            npc_vendedor_2.cargarDatos((short) 2);
+//            npc_encargo_1 = new Npc(700, 75, "npc_encargo_1", "people", (int) Math.pow(2, 3), 0, (short) 3, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 3
+//            npc_encargo_1.cargarDatos((short) 3);
+//            npc_encargo_2 = new Npc(730, 75, "npc_encargo_2", "people2", (int) Math.pow(2, 3), 0, (short) 4, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 4
+//            npc_encargo_2.cargarDatos((short) 4);
+//            npc_encargo_3 = new Npc(760, 75, "npc_encargo_3", "people3", (int) Math.pow(2, 3), 0, (short) 5, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior;
+//            npc_encargo_3.cargarDatos((short) 5);
 
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
@@ -236,7 +233,7 @@ public class Manager extends JGEngine {
 
         //CARGA DE HABILIDADES*************************************************/
         String StrSql = "SELECT * FROM habilidad ";
-System.out.println("*******************************************************************");
+        System.out.println("*******************************************************************");
         this.habilidades = new HashMap<Short, Habilidad>();
         double linea = 30;
         try {
@@ -252,8 +249,7 @@ System.out.println("************************************************************
                 habi.setNombreGrafico(res.getString("nom_grafico"));
                 habi.setTiempoEspera(res.getInt("tiempoEspera"));
                 this.habilidades.put(habi.getIdHabilidad(), habi);
-                System.out.println("HABILIDAD "+habi.getNombre());
-
+                System.out.println("HABILIDAD " + habi.getNombre());
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
@@ -265,19 +261,26 @@ System.out.println("************************************************************
 
         this.misiones = new HashMap<Short, Mision>();
         System.out.println("Inicio obtiene datos personaje");
+        boolean bool;
         try {
             ResultSet res = conect.Consulta(StrSql);
             while (res.next()) {
-                Mision mis = new Mision();
+                Mision mis = new Mision(conect);
                 mis.setDescripcion(res.getString("descripcion"));
                 mis.setNombre(res.getString("nombre"));
                 mis.setIdMision(res.getShort("id"));
                 mis.setIdPersonajeConcluyeMision(res.getShort("personaje_id"));
                 mis.setNivelRequerido(res.getShort("nivelrequerido"));
-                mis.setRepetible(Boolean.parseBoolean(res.getString("repetible")));
+                if (res.getShort("repetible") == 0) {
+                    bool = false;
+                } else {
+                    bool = true;
+                }
+                mis.setRepetible(bool);
                 mis.setRecompensaExp(res.getShort("recompensaexp"));
-                this.misiones.put(mis.getIdMision(),mis);
-                System.out.println("MISION :"+mis.getNombre());
+                mis.cargarDatos();
+                this.misiones.put(mis.getIdMision(), mis);
+                System.out.println("MISION :" + mis.getNombre());
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->manager , método-Linea 255 " + ex);
@@ -298,17 +301,129 @@ System.out.println("************************************************************
                 obj.setIdObjeto(res.getShort("id"));
                 obj.setNombreGrafico(res.getString("nom_grafico"));
                 obj.setBeneficio(res.getShort("beneficio"));
-                obj.setUsoCombate(Boolean.parseBoolean(res.getString("usocombate")));
+                if (res.getInt("usocombate") == 0) {
+                    obj.setUsoCombate(false);
+                } else {
+                    obj.setUsoCombate(true);
+                }
                 obj.setTipo(res.getShort("tipo"));
                 obj.setPeso(res.getShort("peso"));
                 obj.setValorDinero(res.getShort("valordinero"));
 
                 this.objetos.put(obj.getIdObjeto(), obj);
-                System.out.println("OBJETO: "+ obj.getNombre());
+                System.out.println("OBJETO: " + obj.getNombre());
             }
         } catch (SQLException ex) {
             System.out.println("Problemas en: clase->manager , método-Linea 255 " + ex);
         }
+//CARGO PERSONAJES*************************************************************/
+        //CARGO PERSONAJES-NPC*************************************************/
+        StrSql = "SELECT * FROM personaje p "
+                + " WHERE tipo = 2 OR tipo= 1 ";
+
+        System.out.println("**********PERSAONJEASDasda************************************************");
+        try {
+            ResultSet res = conect.Consulta(StrSql);
+            while (res.next()) {
+                switch (res.getShort("id")) {
+                    //Pongo los constructores
+                    case 1:
+//                        npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+//                        npc_vendedor_1.cargarDatos((short) 1);
+                        npc_vendedor_1 = new Npc("vendedor", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 2:
+//                        npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
+//                        npc_vendedor_2.cargarDatos((short) 2);
+                        npc_vendedor_2 = new Npc("vendedor", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 3:
+//                        npc_encargo_1 = new Npc(700, 75, "npc_encargo_1", "people", (int) Math.pow(2, 3), 0, (short) 3, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 3
+//                        npc_encargo_1.cargarDatos((short) 3);
+                        npc_encargo_1 = new Npc("people", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 4:
+//                        npc_encargo_2 = new Npc(730, 75, "npc_encargo_2", "people2", (int) Math.pow(2, 3), 0, (short) 4, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 4
+//                        npc_encargo_2.cargarDatos((short) 4);
+                        npc_encargo_2 = new Npc("people2", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 5:
+//                        npc_encargo_3 = new Npc(760, 75, "npc_encargo_3", "people3", (int) Math.pow(2, 3), 0, (short) 5, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior;
+//                        npc_encargo_3.cargarDatos((short) 5);
+                        npc_encargo_3 = new Npc("people3", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                }
+                System.out.println("PERSONAJE NPC :" + res.getString("nombre"));
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
+        }
+        System.out.println("*******************************************************************");
+
+        //CARGO PERSONAJES-MOB*************************************************/
+        StrSql = "SELECT * FROM personaje p,mob m "
+                + " WHERE p.id = m.personaje_id ";
+
+        System.out.println("**********************************************************");
+        try {
+            ResultSet res = conect.Consulta(StrSql);
+            while (res.next()) {
+                switch (res.getShort("id")) {
+                    //Pongo los constructores
+                    case 6:
+//                        mob_facil_1 = new Mob("goblin_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        break;
+                    case 7:
+//                        mob_facil_2 = new Mob("orc_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        break;
+                    case 8:
+//                        mob_medio_1 = new Mob("tana_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14  ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        break;
+                    case 9:
+//                        mob_medio_2 = new Mob("mutant_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        break;
+                    case 10:
+//                        mob_dificil_1 = new Mob("grif_walk_l","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 , 0.0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        break;
+                    case 11:
+//                        mob_dificil_2 = new Mob("wolverine","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 , 0.0,res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        break;
+                    case 12:
+                        mob_jefe_final = new Mob("boss_stand_l", "boss_dying_l", 20, "boss_hit_l", 5, "boss_attack_l", 14, "boss_stand2_l", 10, 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
+                        break;
+                }
+                System.out.println("PERSONAJE NPC :" + res.getString("nombre"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
+        }
+
+//        mob_facil_1.cargarDatos(objetos, habilidades, misiones);
+//        mob_facil_2.cargarDatos(objetos, habilidades, misiones);
+//        mob_medio_1.cargarDatos(objetos, habilidades, misiones);
+//        mob_medio_2.cargarDatos(objetos, habilidades, misiones);
+//        mob_dificil_1.cargarDatos(objetos, habilidades, misiones);
+//        mob_dificil_2.cargarDatos(objetos, habilidades, misiones);
+        mob_jefe_final.cargarDatos(objetos, habilidades, misiones);
+        npc_vendedor_1.cargarDatos(objetos, habilidades, misiones);
+        npc_vendedor_2.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_1.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_2.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_3.cargarDatos(objetos, habilidades, misiones);
+
+//        mob_facil_1.resume_in_view = false;
+//        mob_facil_2.resume_in_view = false;
+//        mob_medio_1.resume_in_view = false;
+//        mob_medio_2.resume_in_view = false;
+//        mob_dificil_1.resume_in_view = false;
+//        mob_dificil_2.resume_in_view = false;
+        mob_jefe_final.resume_in_view = false;
+        this.pj = new Jugador("human_", "pj_stand_r", 6, "pj_stand_r", 6, "pj_attack1_r", 3, "pj_stand_r", 6, 1, idJugador, conect);
+        this.pj.cargarPersonaje(idJugador);
+        this.pj.cargarDatos(objetos, habilidades, misiones);
+        this.pj.setLinkMenu(menu);
+        System.out.println("*******************************************************************");
         //setTileSettings("!", 20,0);
         ventanaManager = new Ventana();
         setGameState("Title");
@@ -318,12 +433,10 @@ System.out.println("************************************************************
             public void alarm() {
                 if (!inGameState("InCombat")) {
                     pj.regenerarMp(5);
-                    System.out.println("sddsdsdsdsdsdsd");
                     new StdScoring("scoring_pj_mp", ((viewWidth() * 8) / 100), (double) 312, -0.1, -0.5, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue}, 5, false);
                     pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
                     new StdScoring("scoring_pj", ((viewWidth() * 10) / 100), (double) 302, -0.09, -0.5, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
                 }
-                System.out.println("13131313");
             }
         };
     }
@@ -445,8 +558,8 @@ System.out.println("************************************************************
 
         if (cursor.getVentana() == 1) {
             setGameState("InCommerce");
-            mostrarVestir=0;
-            menu.vestir=false;
+            mostrarVestir = 0;
+            menu.vestir = false;
             seccion.setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
             seccionNpc.setSeccion(new JGPoint(250, 25), new JGPoint(3, 4));
         }
@@ -456,6 +569,11 @@ System.out.println("************************************************************
         if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
             mob_concurrente = pj.getEnemigo();
             setGameState("InCombat");
+            menu.restablecerDinamicaCombate();
+            menu.anim_mob_flag = "Parado";
+            menu.anim_mob = mob_concurrente.anim_parado;
+            menu.frames_mob = mob_concurrente.frames_anim_parado;
+            terminar_combate = false;
             //playAudio("ambiental", "combate", true);
             filtro = 0;
             seccion.setWorking(false);
@@ -473,8 +591,6 @@ System.out.println("************************************************************
 
     @Override
     public void paintFrame() {
-        drawString(pj.x + "," + pj.y, viewWidth() / 2, viewHeight() / 2 + 20, -1, false);
-//        System.out.println(pj.getInventario().getEquipo().get(1).getEquipaEn());
         seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
         menu.recibeHm(hmIconoHabilidades, 2, filtro);
@@ -482,63 +598,62 @@ System.out.println("************************************************************
         seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
         menu.recibeHm(hmIconoItem, 1, filtro);
+        if (mostrarVestir > 0) {
 
-        if(mostrarVestir>0){
-
-            if(equipo1!=null){
-                if(pj.getInventario().getEquipo().get(equipo1.getItem().getIdObjeto()).getEquipado()==1){
-                equipo1.x= 100 + viewXOfs();
-                equipo1.y= 100 + viewYOfs();
+            if (equipo1 != null) {
+                if (pj.getInventario().getEquipo().get(equipo1.getItem().getIdObjeto()).getEquipado() == 1) {
+                    equipo1.x = 100 + viewXOfs();
+                    equipo1.y = 100 + viewYOfs();
                 }
             }
-            if(equipo2!=null){
-                if(pj.getInventario().getEquipo().get(equipo2.getItem().getIdObjeto()).getEquipado()==1){
-                equipo2.x= 100 + viewXOfs();
-                equipo2.y= 150 + viewYOfs();
+            if (equipo2 != null) {
+                if (pj.getInventario().getEquipo().get(equipo2.getItem().getIdObjeto()).getEquipado() == 1) {
+                    equipo2.x = 100 + viewXOfs();
+                    equipo2.y = 150 + viewYOfs();
                 }
             }
-            if(equipo3!=null){
-                if(pj.getInventario().getEquipo().get(equipo3.getItem().getIdObjeto()).getEquipado()==1){
-                equipo3.x= 100 + viewXOfs();
-                equipo3.y= 200 + viewYOfs();
+            if (equipo3 != null) {
+                if (pj.getInventario().getEquipo().get(equipo3.getItem().getIdObjeto()).getEquipado() == 1) {
+                    equipo3.x = 100 + viewXOfs();
+                    equipo3.y = 200 + viewYOfs();
                 }
             }
-            if(equipo4!=null){
-                if(pj.getInventario().getEquipo().get(equipo4.getItem().getIdObjeto()).getEquipado()==1){
-                equipo4.x= 100 + viewXOfs();
-                equipo4.y= 250 + viewYOfs();
+            if (equipo4 != null) {
+                if (pj.getInventario().getEquipo().get(equipo4.getItem().getIdObjeto()).getEquipado() == 1) {
+                    equipo4.x = 100 + viewXOfs();
+                    equipo4.y = 250 + viewYOfs();
                 }
             }
-            if(equipo5!=null){
-                if(pj.getInventario().getEquipo().get(equipo5.getItem().getIdObjeto()).getEquipado()==1){
-                equipo5.x= 100 + viewXOfs();
-                equipo5.y= 300 + viewYOfs();
+            if (equipo5 != null) {
+                if (pj.getInventario().getEquipo().get(equipo5.getItem().getIdObjeto()).getEquipado() == 1) {
+                    equipo5.x = 100 + viewXOfs();
+                    equipo5.y = 300 + viewYOfs();
                 }
             }
 
-        }else{
-            if(equipo1!=null){
-                equipo1.x= -100;
-                equipo1.y= -100;
+        } else {
+            if (equipo1 != null) {
+                equipo1.x = -100;
+                equipo1.y = -100;
             }
-            if(equipo2!=null){
-                equipo2.x= -100;
-                equipo2.y= -100;
+            if (equipo2 != null) {
+                equipo2.x = -100;
+                equipo2.y = -100;
             }
-            if(equipo3!=null){
-                equipo3.x= -100;
-                equipo3.y= -100;
+            if (equipo3 != null) {
+                equipo3.x = -100;
+                equipo3.y = -100;
             }
-            if(equipo4!=null){
-                equipo4.x= -100;
-                equipo4.y= -100;
+            if (equipo4 != null) {
+                equipo4.x = -100;
+                equipo4.y = -100;
             }
-            if(equipo5!=null){
-                equipo5.x= -100;
-                equipo5.y= -100;
+            if (equipo5 != null) {
+                equipo5.x = -100;
+                equipo5.y = -100;
             }
-            if(mostrarVestir==-1){
-                mostrarVestir=1;
+            if (mostrarVestir == -1) {
+                mostrarVestir = 1;
             }
 
 
@@ -555,7 +670,7 @@ System.out.println("************************************************************
 
         moveObjects(null, 1);
 
-        menu.paintB();
+        menu.paintB(pj);
         menu.menuActual(getTeclaMenu(), pj);
 
     }
@@ -582,9 +697,10 @@ System.out.println("************************************************************
             ventanaManager.mostrarDatoFreak("");
         }
         moveObjects(null, (int) Math.pow(2, 7));
-        if(getKey(27)){
+        if (getKey(27)) {
             cursor.limpiarInformacion();
         }
+
     }
 
     public void paintFrameInDeath() {
@@ -681,114 +797,121 @@ System.out.println("************************************************************
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0) // ejecuta hit cursor
                 );
-        //PESCO LOS ICONOS QUE FUERON PRESIONADOS POR EL JUGADOR Y LE DIGO AL OBJETO JUGADOR
-        //QUE ESA HABILIDAD SE VA A OCUPAR, LE ENTREGO COMO PARAMETRO LA HABILIDAD DEL ICONO
-        //PONER EN VARIABLES AL WEON CON CUAL EL QLIO DEL JUGADOR PELEA (nombre = Enemigo)
-        /**************************PERSONAJE**********************************/
-        if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 0) {
-            //personaje utilizara una habilidad
-            pj.setProximoAtaque(this.getIconoPresionado().getIdObjeto());
-            if (pj.getIdProximoAtaque() != -1) {
-                //el personaje puede atacar por que no está bloqueado
-                dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
-                if (dañoBeneficio < 0) {
-                    dañoBeneficio -= ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
-                    //se convierte en daño hacia el enemigo
-                    mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
-                    //si no es beneficio al jugador
-                    std_mob_daño = new StdScoring("scoring_mob", ((viewWidth() * 78) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
-                    // playAudio("evento_combate", "golpe", false);
+        if (!terminar_combate) {
+            //PESCO LOS ICONOS QUE FUERON PRESIONADOS POR EL JUGADOR Y LE DIGO AL OBJETO JUGADOR
+            //QUE ESA HABILIDAD SE VA A OCUPAR, LE ENTREGO COMO PARAMETRO LA HABILIDAD DEL ICONO
+            //PONER EN VARIABLES AL WEON CON CUAL EL QLIO DEL JUGADOR PELEA (nombre = Enemigo)
+            /**************************PERSONAJE**********************************/
+            if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 0) {
+                //personaje utilizara una habilidad
+                pj.setProximoAtaque(this.getIconoPresionado().getIdObjeto());
+                if (pj.getIdProximoAtaque() != -1) {
+                    //el personaje puede atacar por que no está bloqueado
+                    dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
+                    if (dañoBeneficio < 0) {
+                        dañoBeneficio -= ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
+                        //se convierte en daño hacia el enemigo
+                        mob_concurrente.recibirDañoBeneficio(-(mob_concurrente.getHpMax() / 4));
+                        //si no es beneficio al jugador
+                        std_mob_daño = new StdScoring("scoring_mob", ((viewWidth() * 78) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
+                        // playAudio("evento_combate", "golpe", false);
 //                    menu.recibeScore(null, new StdScoring("scoring", mob_concurrente.x, mob_concurrente.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
-                } else {
-                    pj.recibirDañoBeneficio(dañoBeneficio);
-                    //playAudio("evento_combate", "heal", false);
-                    std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                    } else {
+                        pj.recibirDañoBeneficio(dañoBeneficio);
+                        //playAudio("evento_combate", "heal", false);
+                        std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
 //                    menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5), null);
+                    }
+                }
+                setIcon(null);
+            } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
+                //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
+                Objeto obje = icon.getItem();//pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
+                System.out.println("Es--------->" + obje.getNombre());
+                System.out.println("EsUsoCombate--------->" + obje.isUsoCombate());
+                if (obje.isUsoCombate()) {
+                    pj.setProximoItem(obje);
+                    seccion.removerIconos();
+                    seccion.setWorking(false);
+                }
+
+                if (pj.getIdProximoItem() != -1) {
+                    //el personaje puede usar un item
+                    dañoBeneficio = pj.getInventario().getItem(pj.getIdProximoItem()).getObjeto().getBeneficio();
+                    pj.recibirDañoBeneficio(dañoBeneficio);
+                    //playAudio("evento_combate", "heal2", false);
+                    std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
+                    pj.setIdProximoItem((short) -1);
+                }
+                setIcon(null);
+            }
+
+
+            dañoBeneficio = 0;
+            /**************************ENEMIGO MOB*********************************/
+            //MOB utilizara una habilidad
+            mob_concurrente.generarProximoAtaque();
+            if (mob_concurrente.getIdProximoAtaque() != -1) {
+                //el MOB puede atacar por que no está bloqueado
+                dañoBeneficio = mob_concurrente.getHabilidades().getDañoBeneficio(mob_concurrente.getIdProximoAtaque());
+                if (dañoBeneficio < 0) {
+                    dañoBeneficio -= ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
+                    //se convierte en daño hacia el jugador
+                    pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
+                    //playAudio("evento_combate", "golpe2", false);
+                    std_pj_daño = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
+                    //si no es beneficio al MOB
+                } else {
+                    mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
+                    std_mob_sanacion = new StdScoring("scoring_mob", ((viewWidth() * 78) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
                 }
             }
-            setIcon(null);
-        } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
-            //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
-            Objeto obje = icon.getItem();//pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
-            System.out.println("Es--------->" + obje.getNombre());
-            System.out.println("EsUsoCombate--------->" + obje.isUsoCombate());
-            if (obje.isUsoCombate()) {
-                pj.setProximoItem(obje);
-                seccion.removerIconos();
-                seccion.setWorking(false);
-            }
-
-            if (pj.getIdProximoItem() != -1) {
-                //el personaje puede usar un item
-                dañoBeneficio = pj.getInventario().getItem(pj.getIdProximoItem()).getObjeto().getBeneficio();
-                pj.recibirDañoBeneficio(dañoBeneficio);
-                //playAudio("evento_combate", "heal2", false);
-                std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
-                pj.setIdProximoItem((short) -1);
-            }
-            setIcon(null);
-        }
-
-        dañoBeneficio = 0;
-        /**************************ENEMIGO MOB*********************************/
-        //MOB utilizara una habilidad
-        mob_concurrente.generarProximoAtaque();
-        if (mob_concurrente.getIdProximoAtaque() != -1) {
-            //el MOB puede atacar por que no está bloqueado
-            dañoBeneficio = mob_concurrente.getHabilidades().getDañoBeneficio(mob_concurrente.getIdProximoAtaque());
-            if (dañoBeneficio < 0) {
-                dañoBeneficio -= ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
-                //se convierte en daño hacia el jugador
-                pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
-                //playAudio("evento_combate", "golpe2", false);
-                std_pj_daño = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
-                //si no es beneficio al MOB
-            } else {
-                mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
-                std_mob_sanacion = new StdScoring("scoring_mob", ((viewWidth() * 78) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
-            }
-        }
-        //regenero mana cada 4 segundos y que desaparezca cuando no esté en estado INCOMBAT
-        if (tiempoRegenerar == null || !tiempoRegenerar.running) {
-            tiempoRegenerar = new JGTimer((int) (getFrameRate() * 4), false, "InCombat") {
-
-                @Override
-                public void alarm() {
-                    mob_concurrente.regenerarMp(3);
-                    std_pj_mana = new StdScoring("scoring_pj_mp", ((viewWidth() * 8) / 100) + viewXOfs(), (double) 312 + viewYOfs(), -0.1, -0.5, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("helvetica", 1, 14), new JGColor[]{JGColor.blue}, 5);
-                }
-            };
-        }
-
-        if (mob_concurrente.getHp() <= 0) {
-            final Mob enemigo_procesar = (Mob) getObject(mob_concurrente.getName());
-            if (respawn_mob == null) {
-                respawn_mob = new JGTimer((int) (getFrameRate() * 10 * 1), true) {
+            //regenero mana cada 4 segundos y que desaparezca cuando no esté en estado INCOMBAT
+            if (tiempoRegenerar == null || !tiempoRegenerar.running) {
+                tiempoRegenerar = new JGTimer((int) (getFrameRate() * 4), false, "InCombat") {
 
                     @Override
                     public void alarm() {
-                        enemigo_procesar.resume();
-                        enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
-                        enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
-                        mob_concurrente.getInventario().restablecerInventario();
+                        mob_concurrente.regenerarMp(3);
+                        std_pj_mana = new StdScoring("scoring_pj_mp", ((viewWidth() * 8) / 100) + viewXOfs(), (double) 312 + viewYOfs(), -0.1, -0.5, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("helvetica", 1, 14), new JGColor[]{JGColor.blue}, 5);
                     }
                 };
-                respawn_mob = null;
             }
-            mob_concurrente.suspend();
-            personaje_concurrente = (Personaje) enemigo_procesar;
-            seccion.removerIconos();
-            cursor.setVentana((byte) (1));
-            setGameState("InReward");
-            int nivel = pj.getNivel();
-            pj.aumentarExperiencia(mob_concurrente.getExperiencia());
-            String mjs;
-            if (nivel != pj.getNivel()) {
-                mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
-            } else {
-                mjs = "¡ +" + mob_concurrente.getExperiencia() + " de experiencia !";
+        }
+        if (mob_concurrente.getHp() <= 0) {
+            terminar_combate = true;
+            final Mob enemigo_procesar = (Mob) getObject(mob_concurrente.getName());
+            if (menu.isTermineAnimacionMuerte()) {
+                if (respawn_mob == null) {
+                    respawn_mob = new JGTimer((int) (getFrameRate() * 10 * 1), true) {
+
+                        @Override
+                        public void alarm() {
+                            enemigo_procesar.resume();
+                            enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
+                            enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
+                            mob_concurrente.getInventario().restablecerInventario();
+                        }
+                    };
+                    respawn_mob = null;
+                }
+
+                mob_concurrente.suspend();
+                personaje_concurrente = (Personaje) enemigo_procesar;
+                seccion.removerIconos();
+                cursor.setVentana((byte) (1));
+                setGameState("InReward");
+                int nivel = pj.getNivel();
+                pj.aumentarExperiencia(mob_concurrente.getExperiencia());
+                String mjs;
+                if (nivel != pj.getNivel()) {
+                    mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
+                } else {
+                    mjs = "¡ +" + mob_concurrente.getExperiencia() + " de experiencia !";
+                }
+                new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
+//                menu.restablecerDinamicaCombate();
             }
-            new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
         }
     }
 
@@ -1268,7 +1391,6 @@ System.out.println("************************************************************
             cerrar.pintar();
 
             cursor.setVentana((byte) 2);
-
         } else if ((cursor.getVentana() == 3) || (cursor.getVentana() == 4)) {
 //            Remueve todos los objetos que forman la ventana de comerciar
 //            removeObjects("ventana trade", 0);
@@ -1278,7 +1400,6 @@ System.out.println("************************************************************
 //            for (int i = 0; i < 200; i++) {
 
             //Renueve todos los objetos item
-
             seccion.removerIconos();
 //            seccionNpc.setWorking(false);
 
@@ -1337,45 +1458,45 @@ System.out.println("************************************************************
 
     private void dibujarObjetosEscenario() throws SQLException {
         dbgShowBoundingBox(false);
-        new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 6), 0, (short) 105, new String[]{});
-        new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 6), 0, (short) 100, new String[]{});
-        new Npc(80, 400, "casa2", "casa2", (int) Math.pow(2, 6), 0, (short) 101, new String[]{"Casa 2"});
-        new Npc(350, 448, "casa3", "casa4", (int) Math.pow(2, 6), 0, (short) 102, new String[]{"Casa 3"});
-        new Npc(80, 634, "casa3", "casa3", (int) Math.pow(2, 6), 0, (short) 103, new String[]{"Casa 3"});
-        new Npc(350, 682, "casa3", "casa5", (int) Math.pow(2, 6), 0, (short) 104, new String[]{"Casa 3"});
-        new Npc(352, 64, "arbol1", "arbol", (int) Math.pow(2, 6), 0, (short) 106, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-        new Npc(288, 32, "arbol2", "arbol", (int) Math.pow(2, 6), 0, (short) 107, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
-        new Npc(128, 64, "arbol2", "pileta", (int) Math.pow(2, 6), 0, (short) 108, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-        new Npc(16 * 80, 16 * 12, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
-        new Npc(16 * 80, 16 * 21, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Guardia: vé con cuidado"});
-        new Npc(16 * 16, 16 * 12, "viajero", "viajero", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Viajero: "});
-        new Npc(16 * 10, 16 * 17, "mono", "mono", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"Mono: "});
-        new Npc(16 * 10, 16 * 110, "perdido", "perdido", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"perdido: "});
-        new Npc(16 * 80, 16 * 8, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(16 * 80, 16 * 24, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(16 * 100, 16 * 35, "arbol_seco1", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(16 * 140, 16 * 100, "arbol_seco2", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(16 * 130, 16 * 110, "arbol_seco3", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(16 * 60, 16 * 100, "arbol_seco4", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(80, 1616, "arbol_seco5", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(144, 1616, "arbol_seco6", "casa_5", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(608, 1608, "arbol_seco7", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(880, 1184, "arbol_seco8", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(816, 1520, "arbol_seco9", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(752, 1136, "arbol_seco10", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(1072, 1408, "arbol_seco11", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(1168, 1248, "arbol_seco12", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(640, 960, "arbol_seco13", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(544, 960, "arbol_seco14", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(1564, 1232, "arbol_seco15", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(1632, 1040, "arbol_seco16", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(1840, 832, "arbol_seco17", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(2256, 848, "arbol_seco18", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(2352, 608, "arbol_seco19", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(2240, 336, "arbol_seco20", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(2016, 160, "arbol_seco21", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(1728, 160, "arbol_seco22", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
-        new Npc(1472, 96, "arbol_seco23", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+        new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 6), 0, (short) 105, conect, new String[]{});
+        new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 6), 0, (short) 100, conect, new String[]{});
+        new Npc(80, 400, "casa2", "casa2", (int) Math.pow(2, 6), 0, (short) 101, conect, new String[]{"Casa 2"});
+        new Npc(350, 448, "casa3", "casa4", (int) Math.pow(2, 6), 0, (short) 102, conect, new String[]{"Casa 3"});
+        new Npc(80, 634, "casa3", "casa3", (int) Math.pow(2, 6), 0, (short) 103, conect, new String[]{"Casa 3"});
+        new Npc(350, 682, "casa3", "casa5", (int) Math.pow(2, 6), 0, (short) 104, conect, new String[]{"Casa 3"});
+        new Npc(352, 64, "arbol1", "arbol", (int) Math.pow(2, 6), 0, (short) 106, conect, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+        new Npc(288, 32, "arbol2", "arbol", (int) Math.pow(2, 6), 0, (short) 107, conect, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
+        new Npc(128, 64, "arbol2", "pileta", (int) Math.pow(2, 6), 0, (short) 108, conect, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
+        new Npc(16 * 80, 16 * 12, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 80, 16 * 21, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 16, 16 * 12, "viajero", "viajero", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Viajero: "});
+        new Npc(16 * 10, 16 * 17, "mono", "mono", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Mono: "});
+        new Npc(16 * 10, 16 * 110, "perdido", "perdido", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"perdido: "});
+        new Npc(16 * 80, 16 * 8, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(16 * 80, 16 * 24, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(16 * 100, 16 * 35, "arbol_seco1", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(16 * 140, 16 * 100, "arbol_seco2", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(16 * 130, 16 * 110, "arbol_seco3", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(16 * 60, 16 * 100, "arbol_seco4", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(80, 1616, "arbol_seco5", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(144, 1616, "arbol_seco6", "casa_5", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(608, 1608, "arbol_seco7", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(880, 1184, "arbol_seco8", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(816, 1520, "arbol_seco9", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(752, 1136, "arbol_seco10", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(1072, 1408, "arbol_seco11", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(1168, 1248, "arbol_seco12", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(640, 960, "arbol_seco13", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(544, 960, "arbol_seco14", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(1564, 1232, "arbol_seco15", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(1632, 1040, "arbol_seco16", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(1840, 832, "arbol_seco17", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(2256, 848, "arbol_seco18", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(2352, 608, "arbol_seco19", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(2240, 336, "arbol_seco20", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(2016, 160, "arbol_seco21", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(1728, 160, "arbol_seco22", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+        new Npc(1472, 96, "arbol_seco23", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         //pongo ramas al azar fuera dela ciudad
         int cont = 1;
         for (int i = 0; i < 100; i++) {
@@ -1388,7 +1509,7 @@ System.out.println("************************************************************
             if (p <= 1280 && q <= 960) {
                 q += 960;
             }
-            new Npc(p, q, "rama" + i, "rama" + cont, (int) Math.pow(2, 6), (short) 4, (short) 20, new String[]{"escultura: "});
+            new Npc(p, q, "rama" + i, "rama" + cont, (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
             cont++;
         }
     }
@@ -1836,23 +1957,152 @@ System.out.println("************************************************************
             if ((obj.getGraphic().equals("cerrar")) && (getMouseButton(3))) {
                 setVentana((byte) 3);
             }
+            //click en NPC
+            if (obj.colid == (int) Math.pow(2, 3) && obj.y < viewHeight() - 110 + viewYOfs() && obj.x < viewXOfs() + viewWidth() - 110) {
+                Npc npc_procesar = (Npc) obj;
+                switch (npc_procesar.getTipo()) {
+                    case 2://npc de misiones
+                        npc_concurrente = npc_procesar;
+                        ventanaManager.mostrarDatoFreak("Personaje: " + npc_procesar.getNombre());
+                        if (getMouseButton(3)) {
+                            clearMouseButton(3);
+                            //veo qué misión tiene el npc que el personaje no tenga (también veo el
+                            Iterator it = npc_procesar.getMisiones().getMisiones().entrySet().iterator();
+                            short mision_id = -1;
+                            short accion = 0;
+                            /**
+                             * -1 = invalido
+                             *  0 = agregar
+                             *  1 = agregar
+                             *  2 = comprobar
+                             *
+                             */
+                            while (it.hasNext() && accion == 0) {
+                                Map.Entry e = (Map.Entry) it.next();
+                                Mision mis = npc_procesar.getMisiones().getMisiones().get(Short.parseShort(e.getKey().toString())).getMision();
+                                if (!mis.isRepetible()) {//no es repetible
+                                    if (!pj.getMisiones().isHizoMision(mis.getIdMision(), misiones.get(mis.getIdMision()))) {//nunca ha hecho la mision
+                                        if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
+                                            //si llega hasta acá, el pj nunca en su vida  ha tomado la misión
+                                            accion = 1;//agregar
+                                            //Validar que el personaje tenga nivel necesario
+
+                                        } else {
+                                            //comprobar si cumple la misión
+                                            accion = 2;
+                                        }
+                                    }
+                                } else {
+                                    if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
+                                        accion = 1;//agregar
+                                    } else {
+                                        //comprobar si cumple la misión
+                                        accion = 2;
+                                    }
+                                }
+                                mision_id = mis.getIdMision();
+                                if (mis.getNivelRequerido() > pj.getNivel()) {
+                                    accion = 0;
+                                }
+                            }
+                            switch (accion) {
+                                case 0://el personaje hizo todas las misiones o no tiene ninguna
+                                    //aca se pone el dialogo normal
+                                    ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
+
+                                    break;
+                                case 1: //el personaje no tiene la misión.. agregar
+
+                                    pj.getMisiones().agregarMision(mision_id, (short) 1, misiones.get(mision_id));
+                                    //pasamos al segundo dialogo (Comprobación)
+                                    ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoIniciarMision());
+                                    break;
+                                case 2://Comprobar Mision
+                                    //Busco si el PJ tiene los objetos que la mision requiere
+                                    //recorro el hashmap de la lista de objetos asociados A LA MISION
+                                    /**Iterator **/
+                                    it = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().entrySet().iterator();
+                                    boolean fail = false;
+                                    int cont = 0;
+                                    while (it.hasNext() && !fail) {
+                                        Map.Entry e = (Map.Entry) it.next();
+                                        short objeto_id = Short.parseShort(e.getKey().toString());
+                                        short cantidad = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().get(objeto_id).getCantidad();
+                                        if (!pj.getInventario().tieneItem(objeto_id, cantidad)) {
+                                            fail = true;
+                                        }
+
+                                        cont++;
+                                    }
+                                    String stringRelleno = "...                                                      ...";//30 espacios
+
+                                    if (fail) {//no tiene los requerimientos para cumplir la mision
+                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoFalloMision());
+                                    } else {
+                                        //cumplio los requerimientos...
+                                        Mision misi = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision();
+
+                                        //Se da la experiencia
+                                        pj.aumentarExperiencia(misi.getRecompensaExp());
+
+                                        interacVentana(npc_concurrente, "InInteraction");
+                                        pj.getMisiones().completarMision(misi.getIdMision());
+                                        //se da los item que tiene asociado el personaje que le dio la misión (NPC_CONCURRENTE)
+                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoCumplirMision());
+                                        //se restan de su inventario
+                                        for (Map.Entry id : misi.getRequerimientos().getObjetos().entrySet()) {
+                                            short objeto_id = Short.parseShort(id.getKey().toString());
+                                            short cantidad = misi.getRequerimientos().getObjetos().get(objeto_id).getCantidad();
+                                            pj.getInventario().eliminarItem(objeto_id, cantidad);
+                                        }
+                                        //playAudio("evento", "hallar_algo", false);
+                                        entregarRecompensa = true;
+                                    }
+
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            ventanaManager.activarParametrosFormateoTexto();
+                            setGameState("InInteraction");
+                            salirInInteracting = false;
+                        }
+                        break;
+                    case 1://npc vendedor
+                        ventanaManager.mostrarDatoFreak("Vendedor: " + ((Personaje) (obj)).getNombre());
+                        //setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
+                        if (getMouseButton(3)) {
+                            vendedor_concurrente = (Npc) obj;
+                            setVentana((byte) 1);
+                            mostrarVestir = 0;
+                        }
+                    //playAudio("evento", "mensaje", false);
+
+                }
+            }
+            if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
+                clearMouseButton(3);
+                setIcon((Icono) obj);
+            }
             //click en algun boton
             if (obj.colid == (int) Math.pow(2, 5)) {
                 Boton boton = (Boton) obj;
-            if(boton.getId()==31&&getMouseButton(3)){
-                clearMouseButton(3);
-                System.out.println("mostrar vestir "+mostrarVestir);
-                if(mostrarVestir>0){
-                    mostrarVestir=0;
-                    menu.vestir(false);
+                if (boton.getId() == 31 && getMouseButton(3)) {
+                    clearMouseButton(3);
+                    System.out.println("mostrar vestir " + mostrarVestir);
+                    if (mostrarVestir > 0) {
+                        mostrarVestir = 0;
+                        menu.vestir(false);
 
-                }else{
-                    seccion.removerIconos();
-                    seccion.setWorking(false);
-                    mostrarVestir=1;
-                    menu.vestir(true);
+                    } else {
+                        seccion.removerIconos();
+                        seccion.setWorking(false);
+                        mostrarVestir = 1;
+                        menu.vestir(true);
+                    }
                 }
-            }
                 if (inGameState("InInteraction")) {
                     if (getMouseButton(3)) {
                         clearMouseButton(3);
@@ -1928,7 +2178,7 @@ System.out.println("************************************************************
                                     if (pj.getTotalPuntosHabilidad() > 0) {
                                         //playAudio("evento", "permitido", false);
                                         if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
-                                            pj.getHabilidades().agregaHabilidad((short) boton.getId());
+                                            pj.getHabilidades().agregaHabilidad((short) boton.getId(), habilidades.get((short) boton.getId()));
                                             pj.gastarPuntosHabilidad();
                                         } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
                                             pj.getHabilidades().aumentarNivel((short) boton.getId());
@@ -2011,8 +2261,6 @@ System.out.println("************************************************************
                     clearMouseButton(3);
                     filtro = 0;
                     seccion.setWorking(false);
-                    if(inGameState("InWorld"))
-                    mostrarVestir=-1;
                     if (inGameState("InCommerce")) {
                         cursor.setVentana((byte) 4);
                     }
@@ -2026,8 +2274,9 @@ System.out.println("************************************************************
                     clearMouseButton(3);
                     filtro = 1;
                     seccion.setWorking(false);
-                    if(inGameState("InWorld"))
-                    mostrarVestir=-1;
+                    if (inGameState("InWorld")) {
+                        mostrarVestir = -1;
+                    }
                     if (inGameState("InCommerce")) {
                         cursor.setVentana((byte) 4);
                     }
@@ -2041,9 +2290,9 @@ System.out.println("************************************************************
                     clearMouseButton(3);
                     filtro = 2;
                     seccion.setWorking(false);
-                    if(inGameState("InWorld"))
-                    mostrarVestir=-1;
-
+                    if (inGameState("InWorld")) {
+                        mostrarVestir = -1;
+                    }
                     if (inGameState("InCommerce")) {
                         cursor.setVentana((byte) 4);
                     }
@@ -2052,144 +2301,15 @@ System.out.println("************************************************************
                     }
                 }
             }
-            //click en NPC
-            if (obj.colid == (int) Math.pow(2, 3)&&obj.y<viewHeight()-110+viewYOfs()&&obj.x<viewXOfs()+viewWidth()-110) {
-                Npc npc_procesar = (Npc) obj;
-                switch (npc_procesar.getTipo()) {
-                    case 2://npc de misiones
-                        npc_concurrente = npc_procesar;
-                        ventanaManager.mostrarDatoFreak("Personaje: " + npc_procesar.getNombre());
-                        if (getMouseButton(3)) {
-                            clearMouseButton(3);
-                            //veo qué misión tiene el npc que el personaje no tenga (también veo el
-                            Iterator it = npc_procesar.getMisiones().getMisiones().entrySet().iterator();
-                            short mision_id = -1;
-                            short accion = 0;
-                            /**
-                             * -1 = invalido
-                             *  0 = agregar
-                             *  1 = agregar
-                             *  2 = comprobar
-                             *
-                             */
-                            while (it.hasNext() && accion == 0) {
-                                Map.Entry e = (Map.Entry) it.next();
-                                Mision mis = npc_procesar.getMisiones().getMisiones().get(Short.parseShort(e.getKey().toString())).getMision();
-                                if (!mis.isRepetible()) {//no es repetible
-                                    if (!pj.getMisiones().isHizoMision(mis.getIdMision())) {//nunca ha hecho la mision
-                                        if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
-                                            //si llega hasta acá, el pj nunca en su vida  ha tomado la misión
-                                            accion = 1;//agregar
-                                            //Validar que el personaje tenga nivel necesario
 
-                                        } else {
-                                            //comprobar si cumple la misión
-                                            accion = 2;
-                                        }
-                                    }
-                                } else {
-                                    if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
-                                        accion = 1;//agregar
-                                    } else {
-                                        //comprobar si cumple la misión
-                                        accion = 2;
-                                    }
-                                }
-                                mision_id = mis.getIdMision();
-                                if (mis.getNivelRequerido() > pj.getNivel()) {
-                                    accion = 0;
-                                }
-                            }
-                            switch (accion) {
-                                case 0://el personaje hizo todas las misiones o no tiene ninguna
-                                    //aca se pone el dialogo normal
-                                    ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
-
-                                    break;
-                                case 1: //el personaje no tiene la misión.. agregar
-
-                                    pj.getMisiones().agregarMision(mision_id, (short) 1);
-                                    //pasamos al segundo dialogo (Comprobación)
-                                    ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoIniciarMision());
-                                    break;
-                                case 2://Comprobar Mision
-                                    //Busco si el PJ tiene los objetos que la mision requiere
-                                    //recorro el hashmap de la lista de objetos asociados A LA MISION
-                                    /**Iterator **/
-                                    it = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().entrySet().iterator();
-                                    boolean fail = false;
-                                    int cont = 0;
-                                    while (it.hasNext() && !fail) {
-                                        Map.Entry e = (Map.Entry) it.next();
-                                        short objeto_id = Short.parseShort(e.getKey().toString());
-                                        short cantidad = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().get(objeto_id).getCantidad();
-                                        if (!pj.getInventario().tieneItem(objeto_id, cantidad)) {
-                                            fail = true;
-                                        }
-
-                                        cont++;
-                                    }
-                                    String stringRelleno = "...                                                      ...";//30 espacios
-
-                                    if (fail) {//no tiene los requerimientos para cumplir la mision
-                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoFalloMision());
-                                    } else {
-                                        //cumplio los requerimientos...
-                                        Mision misi = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision();
-
-                                        //Se da la experiencia
-                                        pj.aumentarExperiencia(misi.getRecompensaExp());
-
-                                        interacVentana(npc_concurrente, "InInteraction");
-                                        pj.getMisiones().completarMision(misi.getIdMision());
-                                        //se da los item que tiene asociado el personaje que le dio la misión (NPC_CONCURRENTE)
-                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoCumplirMision());
-                                        //se restan de su inventario
-                                        for (Map.Entry id : misi.getRequerimientos().getObjetos().entrySet()) {
-                                            short objeto_id = Short.parseShort(id.getKey().toString());
-                                            short cantidad = misi.getRequerimientos().getObjetos().get(objeto_id).getCantidad();
-                                            pj.getInventario().eliminarItem(objeto_id, cantidad);
-                                        }
-                                        //playAudio("evento", "hallar_algo", false);
-                                        entregarRecompensa = true;
-                                    }
-
-
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            ventanaManager.activarParametrosFormateoTexto();
-                            setGameState("InInteraction");
-                            salirInInteracting = false;
-                        }
-                        break;
-                    case 1://npc vendedor
-                        ventanaManager.mostrarDatoFreak("Vendedor: " + ((Personaje) (obj)).getNombre());
-                        //setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
-                        if (getMouseButton(3)) {
-                            vendedor_concurrente = (Npc) obj;
-                            setVentana((byte) 1);
-                            mostrarVestir=0;
-                        }
-                    //playAudio("evento", "mensaje", false);
-
-                }
-            }
-
-            if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
-                clearMouseButton(3);
-                setIcon((Icono) obj);
-            }
             //click en icono
             if (obj.colid == (int) Math.pow(2, 4)) {
                 Icono icon = (Icono) obj;
                 if (inGameState("InCommerce")) {
                     if ((getMouseButton(3)) && icon.belongTo(vendedor_concurrente.getTipo())) {
                         clearMouseButton(3);
-                        if (pj.validarDinero(icon.getItem().getValorDinero()) && pj.puedellevarItem(icon.getItem().getIdObjeto(), (short) 1)) {
-                            pj.getInventario().agregarItem(icon.getIdObjeto());
+                        if (pj.validarDinero(icon.getItem().getValorDinero()) && pj.puedellevarItem(icon.getItem().getIdObjeto(), (short) 1, objetos.get(icon.getItem().getIdObjeto()))) {
+                            pj.getInventario().agregarItem(icon.getIdObjeto(), objetos.get(icon.getItem().getIdObjeto()));
                             pj.setDinero(pj.getDinero() - icon.getItem().getValorDinero());
                             cursor.setVentana((byte) 4);
                         } else {
@@ -2211,8 +2331,8 @@ System.out.println("************************************************************
                 if (inGameState("InReward")) {
                     if ((getMouseButton(3)) && icon.belongTo(personaje_concurrente.getTipo())) {
                         clearMouseButton(3);
-                        if (pj.puedellevarItem(icon.getItem().getIdObjeto(), (short) 1)) {
-                            pj.getInventario().agregarItem(icon.getIdObjeto());
+                        if (pj.puedellevarItem(icon.getItem().getIdObjeto(), (short) 1, objetos.get(icon.getItem().getIdObjeto()))) {
+                            pj.getInventario().agregarItem(icon.getIdObjeto(), objetos.get(icon.getItem().getIdObjeto()));
                             personaje_concurrente.getInventario().mod_despojar(icon.getIdObjeto());
                             cursor.setVentana((byte) 4);
                         } else {
@@ -2242,7 +2362,7 @@ System.out.println("************************************************************
                             pj.getInventario().desequipar(((Icono) obj).getItem().getIdObjeto());
 //                            seccion.removerIconos();
 //                            seccion.setWorking(false);
-                            mostrarVestir=-1;
+                            mostrarVestir = -1;
                         }
                         if (obj.y >= viewYOfs() + (viewHeight() - 100)) {
                             pj.getInventario().equipar(((Icono) obj).getItem().getIdObjeto());
@@ -2251,12 +2371,11 @@ System.out.println("************************************************************
                         }
                         seccion.removerIconos();
                         seccion.setWorking(false);
-                                                    mostrarVestir=-1;
+                        mostrarVestir = -1;
 //                        clearKey(90);clearKey(122);
                     }
                 }
             }
-
         }
 
         public void desplegarInformacion() {
@@ -2412,54 +2531,51 @@ System.out.println("************************************************************
 
                                     Map.Entry en = (Map.Entry) it.next();
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
-//                                    Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
+                                    //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
                                     if (inv.tieneItem(obje.getIdObjeto())) {
                                         cantidad++;
-
                                         if (personaje.getTipo() == 0) {
-                                           
-                                            System.out.println("entra"+obje.getTipo());
-                                            if(mostrarVestir>0){
+                                            System.out.println("entra" + obje.getTipo());
+                                            if (mostrarVestir > 0) {
 //                                            System.out.println("entra again"+inv.getEquipo().get(obje.getIdObjeto()).getEquipado());
-                                            if(obje.getTipo()==1&&inv.getEquipo().get(obje.getIdObjeto()).getEquipado()==1){
-                                                System.out.println("Nombre Objeto-----"+obje.getNombre()+"---lugar que se equipa "+pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn());
-                                                if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn()==1){
-                                                    equipo1=new Icono("1icono", -100, -100, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                if (obje.getTipo() == 1 && inv.getEquipo().get(obje.getIdObjeto()).getEquipado() == 1) {
+                                                    System.out.println("Nombre Objeto-----" + obje.getNombre() + "---lugar que se equipa " + pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn());
+                                                    if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 1) {
+                                                        equipo1 = new Icono("1icono", -100, -100, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo1.suspend();
-                                                }else if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn()==2){
-                                                    equipo2=new Icono("2icono", -100, -150, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 2) {
+                                                        equipo2 = new Icono("2icono", -100, -150, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo2.suspend();
-                                                }else if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn()==3){
-                                                    equipo3=new Icono("3icono", -100, -200, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 3) {
+                                                        equipo3 = new Icono("3icono", -100, -200, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo3.suspend();
-                                                }else if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn()==4){
-                                                    equipo4=new Icono("4icono", -100, -250, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 4) {
+                                                        equipo4 = new Icono("4icono", -100, -250, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo4.suspend();
-                                                }else{
+                                                    } else {
 //                                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
-                                                    equipo5=new Icono("5icono", -100, -300, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                        equipo5 = new Icono("5icono", -100, -300, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo5.suspend();
+                                                    }
                                                 }
                                             }
-                                            }
                                             if (obje.getTipo() == filtro) {
-
-//                                                if(obje.getTipo()==1){
+                                                //if(obje.getTipo()==1){
 //
 //                                                    if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipado()==1){
 //                                                        pj.getInventario().eliminarItem(obje.getIdObjeto(), (short)1);
 //                                                        System.out.println("Nombre Objeto-----"+obje.getNombre()+"---lugar que se equipa "+pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn());
 //                                                    }
 //                                                }
-                                                if(inv.tieneItem(obje.getIdObjeto())){
-                                                System.out.println("Dibuje a este qlio: " + obje.getNombre() + " " + obje.getNombreGrafico());
-                                                hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
-                                                setFont(new JGFont("Arial", 0, 24));
-                                                //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                                this.recorrido.x += 37;
-                                                this.tabla.x--;
+                                                if (inv.tieneItem(obje.getIdObjeto())) {
+                                                    System.out.println("Dibuje a este qlio: " + obje.getNombre() + " " + obje.getNombreGrafico());
+                                                    hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
+                                                    setFont(new JGFont("Arial", 0, 24));
+                                                    //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
+                                                    this.recorrido.x += 37;
+                                                    this.tabla.x--;
                                                 }
-//                                                if(obje.getTipo()==1){
+                                                //                                                if(obje.getTipo()==1){
 //
 //                                                    if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipado()==1){
 //                                                        pj.getInventario().agregarItem(obje.getIdObjeto(), (short)1);
@@ -2467,7 +2583,6 @@ System.out.println("************************************************************
 //                                                    }
 //                                                }
                                             }
-                                                
                                         } else {
                                             System.out.println("Dibuje a este qlio 2: " + obje.getNombre() + " " + obje.getNombreGrafico());
                                             hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));

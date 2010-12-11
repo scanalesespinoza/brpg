@@ -32,33 +32,33 @@ public class Habilidad {
      * Busca los valores en la base de datos y los mapea para que queden disponible
      * de manera objetual para el sistema
      */
-    public void setHabilidad(short id) {
-        this.conexion = new dbDelegate();
-            String StrSql = "SELECT * FROM habilidad "
-                    + "WHERE id = " + id;
-            try {
-                ResultSet res = conexion.Consulta(StrSql);
-                if (res.next()) {
-                    this.setDescripcion(res.getString("descripcion"));
-                    this.setNombre(res.getString("nombre"));
-                    this.setIdHabilidad(res.getShort("id"));
-                    this.setDanoBeneficio(res.getShort("danoBeneficio"));
-                    this.setNivelMaximo(res.getShort("nivelMaximo"));
-                    this.setCostoBasico(res.getShort("costoBasico"));
-                    this.setNombreGrafico(res.getString("nom_grafico"));
-                    this.setTiempoEspera(res.getInt("tiempoEspera"));
-                }
-
-                this.conexion.cierraDbCon();
-
-            } catch (Exception ex) {
-            Logger.getLogger(Habilidad.class.getName()).log(Level.SEVERE, null, ex);
-             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
-
-               
-            }
-        
-    }
+//    public void setHabilidad(short id) {
+//        this.conexion = new dbDelegate();
+//            String StrSql = "SELECT * FROM habilidad "
+//                    + "WHERE id = " + id;
+//            try {
+//                ResultSet res = conexion.Consulta(StrSql);
+//                if (res.next()) {
+//                    this.setDescripcion(res.getString("descripcion"));
+//                    this.setNombre(res.getString("nombre"));
+//                    this.setIdHabilidad(res.getShort("id"));
+//                    this.setDanoBeneficio(res.getShort("danoBeneficio"));
+//                    this.setNivelMaximo(res.getShort("nivelMaximo"));
+//                    this.setCostoBasico(res.getShort("costoBasico"));
+//                    this.setNombreGrafico(res.getString("nom_grafico"));
+//                    this.setTiempoEspera(res.getInt("tiempoEspera"));
+//                }
+//
+//                this.conexion.cierraDbCon();
+//
+//            } catch (Exception ex) {
+//            Logger.getLogger(Habilidad.class.getName()).log(Level.SEVERE, null, ex);
+//             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
+//
+//
+//            }
+//
+//    }
 
 
     public short getCostoBasico() {

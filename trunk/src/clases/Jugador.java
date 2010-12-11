@@ -20,11 +20,31 @@ public class Jugador extends Personaje {
     private HashMap<Short, Integer> preCompra = new HashMap<Short, Integer>();
     private Mob enemigo;
     private boolean bloquear_uso = false;
+    private boolean muriendo = false, golpeado = false, atacando = false, esperando = false;
+    public int quieto = 0;
+    public String anim_muerte, anim_golpeado, anim_atacar, anim_parado, anim_inworld;
+    public int frames_anim_muerte, frames_anim_golpeado, frames_anim_atacar, frames_anim_parado;
+    private int frames_anim_concurrente;
+    private String anim_concurrente;
+    private menuJuego menu;
 
-    public Jugador(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, int cid) throws SQLException {
-        super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
+    public Jugador(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, int cid, dbDelegate con) throws SQLException {
+        super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid, con);
         this.idJugador = idPj;
 
+    }
+
+    public Jugador(String graf, String anim_muerte, int frames_muerte, String anim_golpeado, int frames_golpeado, String anim_atacar, int frames_atacar, String anim_parado, int frames_parado, double speed, short idPersonaje, dbDelegate con) {
+        super(con);
+        this.anim_atacar = anim_atacar;
+        this.anim_golpeado = anim_golpeado;
+        this.anim_muerte = anim_muerte;
+        this.anim_parado = anim_parado;
+        this.frames_anim_atacar = frames_atacar;
+        this.frames_anim_golpeado = frames_golpeado;
+        this.frames_anim_parado = frames_parado;
+        this.frames_anim_muerte = frames_muerte;
+        this.anim_inworld = graf;
     }
     private short vitalidad;
     private short destreza;
@@ -41,14 +61,18 @@ public class Jugador extends Personaje {
     private boolean haComprado;
     //Determina si un npc esta activo (se ha colisionado con el desencadenando un dialogo con el jugador)
     private boolean interactuarNpc = false;
-    private dbDelegate conect = new dbDelegate();
     public Npc npcInterac;
     private short idProximoAtaque = -1, idProximoItem = -1;
     private Integer hp, mp, defensa, ataque, hpMax, mpMax;
 
     @Override
+    public void cargarDatos(HashMap<Short, Objeto> objetos, HashMap<Short, Habilidad> habilidades, HashMap<Short, Mision> misiones) {
+        super.cargarDatos(objetos, habilidades, misiones);
+
+    }
+
+    @Override
     public void cargarPersonaje(Short id) {
-        conexion = new dbDelegate();
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit,"
                 + " pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue,"
@@ -83,7 +107,7 @@ public class Jugador extends Personaje {
                 this.setDinero(res.getInt("dinero"));
 
             }
-            this.conexion.cierraDbCon();
+
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Jugador , método->cargarPersonaje() " + ex);
         }
@@ -150,7 +174,8 @@ public class Jugador extends Personaje {
         this.idProximoItem = idProximoItem;
     }
 
-    public Jugador() {
+    public Jugador(dbDelegate con) {
+        super(con);
     }
     /* Aumenta la todas las  cosas inherentes al subir de nivel
      * 
@@ -210,6 +235,74 @@ public class Jugador extends Personaje {
             this.setExperiencia(this.getExperiencia() + exp);
         }
 
+    }
+
+    public boolean isAtacando() {
+        return atacando;
+    }
+
+    public void setAtacando(boolean atacando) {
+        this.atacando = atacando;
+    }
+
+    public boolean isEsperando() {
+        return esperando;
+    }
+
+    public void setEsperando(boolean esperando) {
+        this.esperando = esperando;
+    }
+
+    public boolean isGolpeado() {
+        return golpeado;
+    }
+
+    public void setGolpeado(boolean golpeado) {
+        this.golpeado = golpeado;
+    }
+
+    public boolean isMuriendo() {
+        return muriendo;
+    }
+
+    public void setMuriendo(boolean muriendo) {
+        this.muriendo = muriendo;
+    }
+
+    public String getGraficaEstado() {
+        if (eng.inGameState("InCombat")) {
+            if (isAtacando()) {
+                setAtacando(false);
+                anim_concurrente = "Atacando";
+                this.frames_anim_concurrente = frames_anim_atacar;
+                return anim_atacar;
+            } else if (isGolpeado()) {
+                this.frames_anim_concurrente = frames_anim_golpeado;
+                setGolpeado(false);
+                anim_concurrente = "Golpeado";
+                return anim_golpeado;
+            } //else if (isMuriendo()) {
+//                this.frames_anim_concurrente =frames_anim_muerte;
+//                anim_concurrente = "Muriendo";
+//                setMuriendo(false);
+//                return anim_muerte;
+//            }
+            setAtacando(false);
+            setGolpeado(false);
+            setMuriendo(false);
+            anim_concurrente = "Parado";
+            this.frames_anim_concurrente = frames_anim_parado;
+            return anim_parado;
+        }
+        return anim_inworld;
+    }
+
+    public String getAnim_concurrente() {
+        return anim_concurrente;
+    }
+
+    public void setAnim_concurrente(String anim_concurrente) {
+        this.anim_concurrente = anim_concurrente;
     }
 
     private void aumentarPuntos() {
@@ -324,7 +417,7 @@ public class Jugador extends Personaje {
                 break;
             case 4:
                 this.enemigo = (Mob) obj;
-
+                System.out.println("CHOQUE CON MOBIANO");
                 break;
             default:
                 break;
@@ -451,19 +544,15 @@ public class Jugador extends Personaje {
         return this.getPesoSoportado() - this.getInventario().getPesoUsado();
     }
 
-    public void agregarItem(short idItem, short cantidad) {
-        Objeto objt = new Objeto();
-        objt.setObjeto(idItem);
-        if (puedellevarItem(idItem, cantidad)) {
-            this.getInventario().agregarItem(idItem, cantidad);
+    public void agregarItem(short idItem, short cantidad, Objeto objt) {
+        if (puedellevarItem(idItem, cantidad, objt)) {
+            this.getInventario().agregarItem(idItem, cantidad, objt);
         }
     }
 
-    public void agregarItem(short idItem) {
-        Objeto objt = new Objeto();
-        objt.setObjeto(idItem);
-        if (puedellevarItem(idItem, (short) 1)) {
-            this.getInventario().agregarItem(idItem, (short) 1);
+    public void agregarItem(short idItem, Objeto objt) {
+        if (puedellevarItem(idItem, (short) 1, objt)) {
+            this.getInventario().agregarItem(idItem, (short) 1, objt);
         }
     }
 
@@ -475,31 +564,8 @@ public class Jugador extends Personaje {
         return tiene;
     }
 
-    public boolean puedellevarItem(short idItem, short cantidad) {
-        Objeto objt = new Objeto();
-        objt.setObjeto(idItem);
+    public boolean puedellevarItem(short idItem, short cantidad, Objeto objt) {
         return cantidad > 0 && objt != null && objt.getPeso() * cantidad <= this.getPesoDisponible();
-    }
-
-    public void preComprarItem(Short id) {
-        if (puedellevarItem(id, (short) 1)) {
-            if (getPreCompra().containsKey(id)) {
-                getPreCompra().put(id, getPreCompra().get(id) + 1);
-            } else {
-                getPreCompra().put(id, 1);
-            }
-            setHaComprado(true);
-        }
-    }
-
-    public void procesarPreCompra() {
-        this.conexion = new dbDelegate();
-        Iterator it = this.getPreCompra().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            agregarItem(Short.parseShort(e.getKey().toString()), Short.parseShort(e.getValue().toString()));
-        }
-        setHaComprado(false);
     }
 
     public HashMap<Short, Integer> getPreCompra() {
@@ -518,11 +584,14 @@ public class Jugador extends Personaje {
             if (!isBlocked()) {
                 this.setIdProximoAtaque(idHabilidad);
                 this.utilizarHabilidad();
+                setAtacando(true);
             } else {
                 this.setIdProximoAtaque((short) -1);
+                setAtacando(false);
             }
         } else {
             this.setIdProximoAtaque((short) -1);
+            setAtacando(false);
         }
     }
 
@@ -565,6 +634,9 @@ public class Jugador extends Personaje {
     }
 
     public void recibirDañoBeneficio(int daño) {
+        if (daño < 0) {
+            setGolpeado(true);
+        }
         if (this.hpMax >= this.getHp() + daño && this.getHp() + daño > 0) {
             this.hp += daño;
         } else if (this.hpMax <= this.getHp() + daño) {
@@ -576,9 +648,15 @@ public class Jugador extends Personaje {
     }
 
     public void muerte() {
-        this.aumentarDisminuirDinero((int) (this.getDinero() * ((float) (0.2))));
-        eng.setGameState("InDeath");
-        eng.playAudio("ambiental", "muerte", true);
+        if (menu.termineAnimacionMuerte) {
+            this.aumentarDisminuirDinero((int) -(this.getDinero() * ((float) (0.2))));
+            eng.setGameState("InDeath");
+            eng.playAudio("ambiental", "muerte", true);
+        }
+    }
+
+    public int getFrames_anim_concurrente() {
+        return frames_anim_concurrente;
     }
 
     @Override
@@ -665,5 +743,9 @@ public class Jugador extends Personaje {
 
     public void setBloquear_uso(boolean bloquear_uso) {
         this.bloquear_uso = bloquear_uso;
+    }
+
+    public void setLinkMenu(menuJuego menu) {
+        this.menu = menu;
     }
 }

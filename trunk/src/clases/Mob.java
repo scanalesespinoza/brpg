@@ -27,20 +27,41 @@ public class Mob extends Personaje {
     private short experiencia;
     private int hpMax;
     private int mpMax;
-    private boolean muerto;
+    private boolean muriendo = false, golpeado = false, atacando = false, esperando = false;
     public int quieto = 0;
+    public String anim_muerte, anim_golpeado, anim_atacar, anim_parado, anim_inworld;
+    public int frames_anim_muerte, frames_anim_golpeado, frames_anim_atacar, frames_anim_parado;
+    private int frames_anim_concurrente;
+    private String anim_concurrente;
+    public int getFrames_anim_concurrente() {
+        return frames_anim_concurrente;
+    }
 
-    public Mob(double x, double y, double speed, short idPj, String nombrePj, String graf, short nivelPj, short tipoPj, JGObject home_in, boolean avoid, double random_proportion, int cid) /*throws SQLException*/ {
-        super(x, y, speed, idPj, nombrePj, graf, nivelPj, tipoPj, cid);
-        this.setIdPersonaje(idPj);
+    public Mob(dbDelegate con) {
+        super(con);
+    }
+
+    public Mob(String graf, String anim_muerte, int frames_muerte, String anim_golpeado, int frames_golpeado, String anim_atacar, int frames_atacar, String anim_parado, int frames_parado, double speed, short idPersonaje, String nombre, short nivel, double posicionX, double posicionY, short tipo, JGObject home_in, boolean avoid, double random_proportion, short vitalidad, short destreza, short sabiduria, short fuerza, short experiencia, short dinero, dbDelegate con) {
+        super(posicionX, posicionY, speed, idPersonaje, nombre, graf, nivel, tipo, (int) Math.pow(2, 2), con);
         this.home_in = home_in;
         this.avoid = avoid;
         this.random_proportion = random_proportion;
+        this.vitalidad = vitalidad;
+        this.sabiduria = sabiduria;
+        this.fuerza = fuerza;
+        this.destreza = destreza;
+        this.experiencia = experiencia;
+        this.anim_atacar = anim_atacar;
+        this.anim_golpeado = anim_golpeado;
+        this.anim_muerte = anim_muerte;
+        this.anim_parado = anim_parado;
+        this.frames_anim_atacar = frames_atacar;
+        this.frames_anim_golpeado = frames_golpeado;
+        this.frames_anim_parado = frames_parado;
+        this.frames_anim_muerte = frames_muerte;
+        this.anim_inworld = graf;
         this.setHp();
         this.setMp();
-    }
-
-    public Mob() {
     }
 
     public void cargarInventario() {
@@ -48,7 +69,7 @@ public class Mob extends Personaje {
 
     @Override
     public void cargarPersonaje(Short id) {
-        conexion = new dbDelegate();
+//        conexion = new dbDelegate();
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit,"
                 + " pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue,"
@@ -72,13 +93,44 @@ public class Mob extends Personaje {
                 this.setSabiduria(res.getShort("sab"));
                 this.setExperiencia(res.getShort("experiencia"));
             }
-            this.conexion.cierraDbCon();
+//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->MOB , método->cargarPersonaje() " + ex);
         }
 
-        this.setHp();
-        this.setMp();
+
+    }
+
+    public boolean isAtacando() {
+        return atacando;
+    }
+
+    public void setAtacando(boolean atacando) {
+        this.atacando = atacando;
+    }
+
+    public boolean isEsperando() {
+        return esperando;
+    }
+
+    public void setEsperando(boolean esperando) {
+        this.esperando = esperando;
+    }
+
+    public boolean isGolpeado() {
+        return golpeado;
+    }
+
+    public void setGolpeado(boolean golpeado) {
+        this.golpeado = golpeado;
+    }
+
+    public boolean isMuriendo() {
+        return muriendo;
+    }
+
+    public void setMuriendo(boolean muriendo) {
+        this.muriendo = muriendo;
     }
 
     @Override
@@ -163,6 +215,23 @@ public class Mob extends Personaje {
          * Especificacion grafica segun el mob y la direccion que seguirá
          */
         switch (id) {
+            case 6:
+                if (xdir < 0) {
+                    setGraphic("goblin_walk_l");
+                } else if (xdir > 0) {
+                    setGraphic("goblin_walk_r");
+                } else if (ydir > 0) {
+                    setGraphic("goblin_walk_l");
+                } else if (ydir < 0) {
+                    setGraphic("goblin_walk_r");
+                } else if (ydir == 0 && xdir == 0) {
+                    if (this.getGraphic().equals("goblin_walk_l")) {
+                        setGraphic("goblin_stand_l");
+                    } else if (this.getGraphic().equals("goblin_walk_r")) {
+                        setGraphic("goblin_stand_r");
+                    }
+                }
+                break;
             case 7:
                 if (xdir < 0) {
                     setGraphic("orc_walk_l");
@@ -177,6 +246,40 @@ public class Mob extends Personaje {
                         setGraphic("orc_stand_l");
                     } else if (this.getGraphic().equals("orc_walk_r")) {
                         setGraphic("orc_stand_r");
+                    }
+                }
+                break;
+            case 8:
+                if (xdir < 0) {
+                    setGraphic("tana_walk_l");
+                } else if (xdir > 0) {
+                    setGraphic("tana_walk_r");
+                } else if (ydir > 0) {
+                    setGraphic("tana_walk_l");
+                } else if (ydir < 0) {
+                    setGraphic("tana_walk_r");
+                } else if (ydir == 0 && xdir == 0) {
+                    if (this.getGraphic().equals("tana_walk_l")) {
+                        setGraphic("tana_stand_l");
+                    } else if (this.getGraphic().equals("tana_walk_r")) {
+                        setGraphic("tana_stand_r");
+                    }
+                }
+                break;
+            case 9:
+                if (xdir < 0) {
+                    setGraphic("mutant_walk_l");
+                } else if (xdir > 0) {
+                    setGraphic("mutant_walk_r");
+                } else if (ydir > 0) {
+                    setGraphic("mutant_walk_l");
+                } else if (ydir < 0) {
+                    setGraphic("mutant_walk_r");
+                } else if (ydir == 0 && xdir == 0) {
+                    if (this.getGraphic().equals("mutant_walk_l")) {
+                        setGraphic("mutant_stand_l");
+                    } else if (this.getGraphic().equals("mutant_walk_r")) {
+                        setGraphic("mutant_stand_r");
                     }
                 }
                 break;
@@ -196,8 +299,67 @@ public class Mob extends Personaje {
                         setGraphic("grif_walk_r");
                     }
                 }
+                startAnim();
+                System.out.println(this.getImageName());
+//                System.out.println(eng.getAnimation(this.getAnimId()).);
+                break;
+            case 12:
+                if (xdir < 0) {
+                    setGraphic("boss_stand_l");
+                } else if (xdir > 0) {
+                    setGraphic("boss_stand_r");
+                } else if (ydir > 0) {
+                    setGraphic("boss_stand_l");
+                } else if (ydir < 0) {
+                    setGraphic("boss_stand_r");
+                } else if (ydir == 0 && xdir == 0) {
+                    if (this.getGraphic().equals("boss_stand_l")) {
+                        setGraphic("boss_stand_l");
+                    } else if (this.getGraphic().equals("boss_stand_r")) {
+                        setGraphic("boss_stand_r");
+                    }
+                }
+                startAnim();
                 break;
         }
+
+
+    }
+
+    public String getGraficaEstado() {
+        if (eng.inGameState("InCombat")) {
+            if (isAtacando()) {
+                setAtacando(false);
+                anim_concurrente = "Atacando";
+                this.frames_anim_concurrente = frames_anim_atacar;
+                return anim_atacar;
+            } else if (isGolpeado()) {
+                this.frames_anim_concurrente = frames_anim_golpeado;
+                setGolpeado(false);
+                anim_concurrente = "Golpeado";
+                return anim_golpeado;
+            } //else if (isMuriendo()) {
+//                this.frames_anim_concurrente =frames_anim_muerte;
+//                anim_concurrente = "Muriendo";
+//                setMuriendo(false);
+//                return anim_muerte;
+//            }
+            setAtacando(false);
+            setGolpeado(false);
+            setMuriendo(false);
+            anim_concurrente = "Parado";
+            this.frames_anim_concurrente = frames_anim_parado;
+            return anim_parado;
+        }
+        return anim_inworld;
+    }
+
+    public String getAnim_concurrente() {
+        return anim_concurrente;
+    }
+
+    public void setAnim_concurrente(String anim_concurrente) {
+        this.anim_concurrente = anim_concurrente;
     }
 
     /** Removes object and object's occupation. */
@@ -298,11 +460,14 @@ public class Mob extends Personaje {
                 //Genero una habilidad al azar
                 this.setIdProximoAtaque(this.getHabilidades().getHabilidadAlAzar());
                 this.utilizarHabilidad();
+                setAtacando(true);
             } else {
                 this.setIdProximoAtaque((short) -1);
+                setAtacando(false);
             }
         } else {
             this.setIdProximoAtaque((short) -1);
+            setAtacando(false);
         }
     }
 
@@ -361,13 +526,20 @@ public class Mob extends Personaje {
     }
 
     public void recibirDañoBeneficio(int daño) {
+        if (daño < 0) {
+            setGolpeado(true);
+        }
         if (this.hpMax >= this.getHp() + daño && this.getHp() + daño > 0) {
             this.hp += daño;
         } else if (this.hpMax <= this.getHp() + daño) {
             this.hp = this.hpMax;
         } else {
             this.hp = 0;
+            
         }
+        if (this.hp <= 0){
+            setMuriendo(true);
+        }else setMuriendo(false);
     }
 
     public void muerte() {
@@ -382,12 +554,12 @@ public class Mob extends Personaje {
     }
 
     private void setMuerto(boolean b) {
-        this.muerto = b;
+        this.muriendo = b;
 
     }
 
     public boolean isMuerto() {
-        return muerto;
+        return muriendo;
     }
 
     public int regenerarMp(int porcentaje) {

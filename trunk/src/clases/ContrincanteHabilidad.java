@@ -24,9 +24,9 @@ public class ContrincanteHabilidad {
     private dbDelegate conexion;
 
 
-    public ContrincanteHabilidad() {
+    public ContrincanteHabilidad(dbDelegate con) {
         this.habilidades = new HashMap<Short, UnaHabilidad>();
-       
+        this.conexion = con;
     }
 
     public short getIdPersonaje() {
@@ -37,37 +37,37 @@ public class ContrincanteHabilidad {
         this.idPersonaje = idPersonaje;
     }
 
-    /*
-     * Carga las habilidades desde la base de datos asociadas al personaje
-     * las deja en el arreglo "habilidades"
-     */
-    public void cargarHabilidades(Short id) {
-        this.conexion = new dbDelegate();
-        String StrSql = "SELECT * FROM contrincante_habilidad "
-                + "WHERE personaje_id = " + id;
-        try {
-            ResultSet res = conexion.Consulta(StrSql);
-            byte i = 0;
-            while (res.next()) {
-                UnaHabilidad habilidad = new UnaHabilidad();
-                habilidad.setIdHabilidad(res.getShort("habilidad_id"));
-                habilidad.setIdPersonaje(res.getShort("personaje_id"));
-                habilidad.setNivelHabilidad(res.getShort("nivelhabilidad"));
-                habilidad.setNewHabilidad(false);
-                Habilidad hab = new Habilidad();
-                hab.setHabilidad(habilidad.getIdHabilidad());
-                
-                habilidad.setHabilidad(hab);
-                
-                this.getHabilidades().put(habilidad.getIdHabilidad(), habilidad);
-                i += 1;
-            }
-            this.conexion.cierraDbCon();
-        } catch (Exception ex) {
-            System.out.println("Problemas en: clase->ContrincanteHabilidad , método->cargarHabilidades() " + ex);
-        }
-
-    }
+//    /*
+//     * Carga las habilidades desde la base de datos asociadas al personaje
+//     * las deja en el arreglo "habilidades"
+//     */
+//    public void cargarHabilidades(Short id) {
+////        this.conexion = new dbDelegate();
+//        String StrSql = "SELECT * FROM contrincante_habilidad "
+//                + "WHERE personaje_id = " + id;
+//        try {
+//            ResultSet res = conexion.Consulta(StrSql);
+//            byte i = 0;
+//            while (res.next()) {
+//                UnaHabilidad habilidad = new UnaHabilidad();
+//                habilidad.setIdHabilidad(res.getShort("habilidad_id"));
+//                habilidad.setIdPersonaje(res.getShort("personaje_id"));
+//                habilidad.setNivelHabilidad(res.getShort("nivelhabilidad"));
+//                habilidad.setNewHabilidad(false);
+//                Habilidad hab = new Habilidad();
+//                hab.setHabilidad(habilidad.getIdHabilidad());
+//
+//                habilidad.setHabilidad(hab);
+//
+//                this.getHabilidades().put(habilidad.getIdHabilidad(), habilidad);
+//                i += 1;
+//            }
+////            this.conexion.cierraDbCon();
+//        } catch (Exception ex) {
+//            System.out.println("Problemas en: clase->ContrincanteHabilidad , método->cargarHabilidades() " + ex);
+//        }
+//
+//    }
 
     /**
      * elimina, inserta y actualiza en la base de datos según los datos que tenga
@@ -125,9 +125,9 @@ public class ContrincanteHabilidad {
      * nivel  mayor que 0
      * @param idhabilidad
      */
-    public void agregaHabilidad(short idhabilidad) {
+    public void agregaHabilidad(short idhabilidad, Habilidad hab) {
         if (!tieneHabilidad(idhabilidad)) {
-            UnaHabilidad habi = new UnaHabilidad(idhabilidad, (short) 1, true);
+            UnaHabilidad habi = new UnaHabilidad(idhabilidad, (short) 1, true, hab);
             this.getHabilidades().put(idhabilidad, habi);
         }
     }
@@ -184,19 +184,42 @@ public class ContrincanteHabilidad {
         return result;
     }
 
+    void cargarHabilidades(short id, HashMap<Short, Habilidad> habilidades) {
+//        this.conexion = new dbDelegate();
+        String StrSql = "SELECT * FROM contrincante_habilidad "
+                + "WHERE personaje_id = " + id;
+        try {
+            ResultSet res = conexion.Consulta(StrSql);
+            byte i = 0;
+            while (res.next()) {
+                UnaHabilidad habilidad = new UnaHabilidad();
+                habilidad.setIdHabilidad(res.getShort("habilidad_id"));
+                habilidad.setIdPersonaje(res.getShort("personaje_id"));
+                habilidad.setNivelHabilidad(res.getShort("nivelhabilidad"));
+                habilidad.setNewHabilidad(false);
+                habilidad.setHabilidad(habilidades.get(habilidad.getIdHabilidad()));
+                this.getHabilidades().put(habilidad.getIdHabilidad(), habilidad);
+                i += 1;
+            }
+//            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            System.out.println("Problemas en: clase->ContrincanteHabilidad , método->cargarHabilidades() " + ex);
+        }
+    }
+
     public class UnaHabilidad {
 
         private short idPersonaje;
         private short idHabilidad;
         private short nivelHabilidad;
         private boolean newHabilidad;
-        private Habilidad habilidad = new Habilidad();
+        private Habilidad habilidad;
 
-        public UnaHabilidad(short idHabilidad, short nivelHabilidad, boolean newHabilidad) {
+        public UnaHabilidad(short idHabilidad, short nivelHabilidad, boolean newHabilidad, Habilidad hab) {
             this.idHabilidad = idHabilidad;
             this.nivelHabilidad = nivelHabilidad;
             this.newHabilidad = newHabilidad;
-            this.habilidad.setHabilidad(idHabilidad);
+            this.habilidad = hab;
         }
 
         public Habilidad getHabilidad() {

@@ -7,6 +7,7 @@ package clases;
 //import jgame.JGPoint;
 import java.sql.*;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jgame.JGRectangle;
@@ -40,15 +41,16 @@ public class Personaje extends extensiones.StdDungeon {
     private Boolean bloqueo;
     private int cidAnt;
 
-    public Personaje(String name, boolean unique_id, double x, double y, int cid, String graphic, int occupy_mask) {
-        super(name, unique_id, x, y, cid, graphic, occupy_mask);
-        this.inventario = new Inventario();
-        this.habilidades = new ContrincanteHabilidad();
-        this.misiones = new Encargo();
+    public Personaje(String name, boolean unique_id, double x, double y, int cid, String graphic, int occupy_mask,dbDelegate conn) {
+        super(name, unique_id, x, y, cid, graphic, occupy_mask );
+        this.inventario = new Inventario(conn);
+        this.habilidades = new ContrincanteHabilidad(conn);
+        this.misiones = new Encargo(conn);
         this.bloqueo = false;
+        this.conexion = conn;
     }
 
-    public Personaje(double x, double y, double speed, short idPersonaje, String nombre, String graf, short nivel, short tipo, int cid) {
+    public Personaje(double x, double y, double speed, short idPersonaje, String nombre, String graf, short nivel, short tipo, int cid,dbDelegate conn) {
         super(nombre, x, y, cid, graf, true, false,
                 16, 32, speed);
         stopAnim();
@@ -56,21 +58,50 @@ public class Personaje extends extensiones.StdDungeon {
         this.nombre = nombre;
         this.nivel = nivel;
         this.tipo = tipo;
-        this.inventario = new Inventario();
-        this.habilidades = new ContrincanteHabilidad();
-        this.misiones = new Encargo();
+        this.inventario = new Inventario(conn);
+        this.habilidades = new ContrincanteHabilidad(conn);
+        this.misiones = new Encargo(conn);
         this.bloqueo = false;
+        this.conexion = conn;
     }
 
-    public Personaje() {
+    public Personaje(dbDelegate conn) {
         super("player", 0, 0, 2, "human_", true, false,
                 16, 32, 2.3);
-        this.inventario = new Inventario();
-        this.habilidades = new ContrincanteHabilidad();
-        this.misiones = new Encargo();
+        this.inventario = new Inventario(conn);
+        this.habilidades = new ContrincanteHabilidad(conn);
+        this.misiones = new Encargo(conn);
         this.bloqueo = false;
+        this.conexion = conn;
 
     }
+    /**
+     * Nuevo constructor para NPC OPTIMIZACION BD
+     * 
+     * @param posicionX
+     * @param posicionY
+     * @param speed
+     * @param graf
+     * @param idPersonaje
+     * @param nombre
+     * @param nivel
+     * @param tipo
+     * @param cid
+     */
+    public Personaje( double speed, String graf, int cid,short idPersonaje, String nombre, short nivel, double posicionX, double posicionY, short tipo, dbDelegate conn) {
+        super(nombre, posicionX, posicionY, cid, graf, true, false,
+                16, 32, speed);
+        stopAnim();
+        this.idPersonaje = idPersonaje;
+        this.nombre = nombre;
+        this.nivel = nivel;
+        this.tipo = tipo;
+        this.inventario = new Inventario(conn);
+        this.habilidades = new ContrincanteHabilidad(conn);
+        this.misiones = new Encargo(conn);
+        this.bloqueo = false;
+    }
+
 
     public ContrincanteHabilidad getHabilidades() {
         return habilidades;
@@ -135,15 +166,22 @@ public class Personaje extends extensiones.StdDungeon {
      * -Habilidades que posee
      */
 
-    public void cargarDatos(Short id) {
-        System.out.println("ID------------>"+id);
-        this.cargarPersonaje(id);
-        this.getInventario().cargarInventario(id);
-        this.getInventario().cargarEquipo();
-        this.getMisiones().cargarMisiones(id);
-        this.getHabilidades().cargarHabilidades(id);
-
-
+//    public void cargarDatos(Short id) {
+//        this.cargarPersonaje(id);
+//        this.getInventario().cargarInventario(id);
+//        this.getMisiones().cargarMisiones(id);
+//        this.getHabilidades().cargarHabilidades(id);
+//
+//
+//    }
+    /**
+     * Carga los datos del personaje
+     * @param id
+     */
+    public void cargarDatos(HashMap<Short,Objeto> objetos ,HashMap<Short, Habilidad> habilidades, HashMap<Short,Mision> misiones) {
+        this.getInventario().cargarInventario(this.getIdPersonaje(),objetos);
+        this.getMisiones().cargarMisiones(this.getIdPersonaje(),misiones);
+        this.getHabilidades().cargarHabilidades(this.getIdPersonaje(),habilidades);
     }
 
     /*
@@ -151,7 +189,7 @@ public class Personaje extends extensiones.StdDungeon {
      */
 
     public void cargarPersonaje(Short id) {
-        this.conexion = new dbDelegate();
+//        this.conexion = new dbDelegate();
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo FROM personaje pjuno "
                 + "WHERE pjuno.id=" + id;
@@ -165,7 +203,7 @@ public class Personaje extends extensiones.StdDungeon {
                 this.setPos(res.getInt("posx"), res.getInt("posy"));
                 this.setTipo(res.getShort("tipo"));
             }
-            this.conexion.cierraDbCon();
+//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->personaje , método->cargarPersonaje() " + ex);
         }
@@ -228,10 +266,10 @@ public class Personaje extends extensiones.StdDungeon {
     private void salvarPersonaje() {
         try {
             //seccion de misiones contenidas en el hashmap(misiones vigentes)
-            this.conexion = new dbDelegate();
+//            this.conexion = new dbDelegate();
             String StrSql = "UPDATE Personaje" + "   SET posicionx = " + this.x + "," + "       posiciony  = " + this.y + "," + "       nivel = " + this.getNivel() + "," + "       posiciony  = " + this.y + " WHERE personaje_id = " + this.getIdPersonaje();
             conexion.Ejecutar(StrSql);
-            this.conexion.cierraDbCon();
+//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
         }

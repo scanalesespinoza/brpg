@@ -26,43 +26,38 @@ public class Npc extends Personaje {
     private String grafNpc;
     private String nomNpc;
     private int colId;
-    private dbDelegate conect = new dbDelegate();
     public Calendar c1;
     public boolean cargado = false;
-    private Inventario[] inv;
+    
 
-    public Npc(double x, double y, String name, String mediaName, int colId, int tamano, short idNpc, String[] dialogo) throws SQLException {
-        super(name, true, x, y, colId, mediaName, tamano);
+    public Npc(double x, double y, String name, String mediaName, int colId, int tamano, short idNpc,dbDelegate conn, String[] dialogo) throws SQLException {
+        super(name, true, x, y, colId, mediaName, tamano,null);
         this.idNpc = idNpc;
         this.grafNpc = mediaName;
         this.nomNpc = name;
         this.colId = colId;
-        this.dialogo = new dialogo_personaje();
+        this.dialogo = new dialogo_personaje(conn);
     }
 
-    public Npc(double x, double y, String name, String mediaName, int tamano, short idNpc, short nivel, short tipo, String[] dialogo) throws SQLException {
-        super(x, y, 1, idNpc, name, mediaName, nivel, tipo, (int) Math.pow(2, 3));
-        this.dialogo = new dialogo_personaje();
+    public Npc(double x, double y, String name, String mediaName, int tamano, short idNpc, short nivel, short tipo,  dbDelegate conn,String[] dialogo) throws SQLException {
+        super(x, y, 1, idNpc, name, mediaName, nivel, tipo, (int) Math.pow(2, 3),conn);
+        this.dialogo = new dialogo_personaje(conn);
         this.idNpc = idNpc;
         this.grafNpc = mediaName;
         this.nomNpc = name;
     }
 
-    public Npc() {
-        this.dialogo = new dialogo_personaje();
+    public Npc(String graf, short idPersonaje, String nombre, short nivel, double posicionX, double posicionY, short tipo,  dbDelegate conn) {
+        super(posicionX, posicionY, 1, idPersonaje, nombre, graf, nivel, tipo, (int) Math.pow(2, 3),conn);
+        this.dialogo = new dialogo_personaje(conn);
+    }
+
+    public Npc(dbDelegate con) {
+        super(con);
     }
 
     public String obtieneDialogo() {
         return dialogo.getParrafo() + " y mi nombre eh " + this.getNombre();
-    }
-
-    public void comerciar() {
-    }
-
-    public void misionar() {
-    }
-
-    public void dialogar() {
     }
 
     @Override
@@ -99,8 +94,8 @@ public class Npc extends Personaje {
     }
 
     @Override
-    public void cargarDatos(Short id) {
-        super.cargarDatos(id);
+    public void cargarDatos(HashMap<Short,Objeto> objetos ,HashMap<Short, Habilidad> habilidades, HashMap<Short,Mision> misiones) {
+        super.cargarDatos(objetos,habilidades,misiones);
         dialogo.cargarDialogos(this.getIdPersonaje());
     }
 
@@ -111,6 +106,7 @@ public class Npc extends Personaje {
     public void setDialogo(dialogo_personaje dialogo) {
         this.dialogo = dialogo;
     }
+
     /**
      * Solo para personajes del tipo mision
      * Retorna si hay misiones asignadas
@@ -127,15 +123,14 @@ public class Npc extends Personaje {
             return false;
         }
     }
-    public void getDialogoConcurrente(HashMap<Short,Encargo.UnEncargo> misiones ){
+
+    public void getDialogoConcurrente(HashMap<Short, Encargo.UnEncargo> misiones) {
         //busco si tiene las misiones el personaje
         Iterator it = misiones.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
             UnEncargo mision = (UnEncargo) e.getValue();
-            
-            }
+
         }
     }
-
-
+}

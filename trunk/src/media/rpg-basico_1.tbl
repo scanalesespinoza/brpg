@@ -36,7 +36,7 @@ ppantano	(	0	/media/imagenes/tiles/pasto_oscuro.png	-
 ppantano1	)	0	/media/imagenes/tiles/pasto_oscuro1.png	-
 pentradaciudad	[	0	/media/imagenes/tiles/pasto_oscuro2.png	-
 //barrera boss
-reja_boss	´	20	/media/imagenes/tiles/Tile_Barrera_Boss.png	-
+reja_boss	=	20	/media/imagenes/tiles/Tile_Barrera_Boss.png	-
 //Define arboles
 arbol_seco	-	20	/media/imagenes/tiles/Arbol_Seco_64.png	-
 arbol_seco2	-	20	/media/imagenes/tiles/Arbol_Semi_Seco_64.png	-
@@ -133,14 +133,36 @@ singrafico	-	0	/media/imagenes/menu/not_found.png	-
 //***********************Mapas de personajes******************
 //************************Pj**********************************
 //gif-map de 11 cuadros que simulan el desplazar frontal del personaje
-pj_front_map		/media/imagenes/personaje/Animation_Front64.png		0	0	21	64	0	0
-pj_back_map		/media/imagenes/personaje/Animation_Back64.png		0	0	21	64	0	0
-pj_right_map	/media/imagenes/personaje/Animation_Right64.png		0	0	49	64	0	0
+pj_front_map		/media/imagenes/personaje/Fmonk Front.png		0	0	52	100	0	0
+pj_back_map		/media/imagenes/personaje/Fmonk U.png		0	0	52	100	0	0
+pj_left_map	/media/imagenes/personaje/Fmonk L.png		0	0	52	100	0	0
+pj_upleft_map		/media/imagenes/personaje/Fmonk LU.png		0	0	52	100	0	0
+pj_downleft_map	/media/imagenes/personaje/Fmonk LD.png		0	0	52	100	0	0
+pj_right_rmap	/media/imagenes/personaje/Fmonk COMBATE.png		0	0	52	100	0	0
+pj_attack1_rmap	/media/imagenes/personaje/Fmonk Attack2.png		0	0	64	104	0	0
 //************************Orco**********************************
 orco_standing_lmap	/media/imagenes/mobs/orc_standing_map.png		0	0	46	64	0	0
 orco_walking_lmap	/media/imagenes/mobs/orc_walking_map.png		0	0	54	64	0	0
+//************************Goblin**********************************
+goblin_standing_lmap	/media/imagenes/mobs/FF1_standing_79_80.png		0	0	79	80	0	0
+goblin_walking_lmap	/media/imagenes/mobs/FF1_walking.png		0	0	74	61	0	0
+/************************tana**********************************
+tana_standing_lmap	/media/imagenes/mobs/FM1_standing_71_108.png		0	0	71	108	0	0
+tana_walking_lmap	/media/imagenes/mobs/FM1_walking.png		0	0	71	108	0	0
+/************************mutant**********************************
+mutant_standing_lmap	/media/imagenes/mobs/FM2_standing_75_116.png		0	0	75	116	0	0
+mutant_walking_lmap	/media/imagenes/mobs/FM2_walking.png		0	0	78	118	0	0
+/************************Wolverine**********************************
+wolverine	-	0	/media/imagenes/mobs/FD2_standing.png	-
 //************************Griphon*******************************
-grif_walking_lmap	/media/imagenes/mobs/FGrifowalking128.png		0	0	64	128	0	0
+grif_walking_lmap	/media/imagenes/mobs/FD1standing.png		0	0	90	137	0	0
+
+//************************BOSS*******************************
+boss_standing_lmap	/media/imagenes/mobs/FBoss_standing_86_134.png		0	0	86	134	0	0
+boss_attacking_lmapa	/media/imagenes/mobs/FBossattackfull.png		0	0	349	355	0	0
+boss_standing2_lmap	/media/imagenes/mobs/FBoss_standing_full.png		0	0	184	287	0	0
+boss_beinghit_lmap	/media/imagenes/mobs/abys_hit.png		0	0	128	204	0	0
+boss_dying_lmap	/media/imagenes/mobs/abys_died.png		0	0	113	153	0	0
 **************************Objetos escenario*************************************
 //arbolMap
 arbol_map		/media/imagenes/tiles/secuenciarbol.png		0	0	64	128	0	0
@@ -159,61 +181,101 @@ casa3	-	0	/media/imagenes/tiles/Terrible_Casa_HechaMier2.png	-
 casa5	-	0	/media/imagenes/tiles/Terrible_Casa_Trasparente_2.png	-
 //******************************Pj Animap
 //separacion cuadro por cuadro del movimiento del pj a la izquierda
-human_f0	p	0	pj_front_map	0		-	0	0	21	64
-human_f1	p	0	pj_front_map	1		-	0	0	21	64
-human_f2	p	0	pj_front_map	2		-	0	0	21	64
-human_f3	p	0	pj_front_map	3		-	0	0	21	64
-human_f4	p	0	pj_front_map	4		-	0	0	21	64
-human_f5	p	0	pj_front_map	5		-	0	0	21	64
-human_f6	p	0	pj_front_map	6		-	0	0	21	64
-human_f7	p	0	pj_front_map	7		-	0	0	21	64
-human_f8	p	0	pj_front_map	8		-	0	0	21	64
-human_f9	p	0	pj_front_map	9		-	0	0	21	64
-human_f10	p	0	pj_front_map	10		-	0	0	21	64
-human_f11	p	0	pj_front_map	11		-	0	0	21	64
+human_f0	p	0	pj_front_map	0		-	0	0	52	100
+human_f1	p	0	pj_front_map	1		-	0	0	52	100
+human_f2	p	0	pj_front_map	2		-	0	0	52	100
+human_f3	p	0	pj_front_map	3		-	0	0	52	100
+human_f4	p	0	pj_front_map	4		-	0	0	52	100
+human_f5	p	0	pj_front_map	5		-	0	0	52	100
+human_f6	p	0	pj_front_map	6		-	0	0	52	100
+human_f7	p	0	pj_front_map	7		-	0	0	52	100
+
 
 //separacion cuadro por cuadro del movimiento del pj a la derecha
-human_b0	p	0	pj_back_map	0		-	0	0	21	64
-human_b1	p	0	pj_back_map	1		-	0	0	21	64
-human_b2	p	0	pj_back_map	2		-	0	0	21	64
-human_b3	p	0	pj_back_map	3		-	0	0	21	64
-human_b4	p	0	pj_back_map	4		-	0	0	21	64
-human_b5	p	0	pj_back_map	5		-	0	0	21	64
-human_b6	p	0	pj_back_map	6		-	0	0	21	64
-human_b7	p	0	pj_back_map	7		-	0	0	21	64
-human_b8	p	0	pj_back_map	8		-	0	0	21	64
-human_b9	p	0	pj_back_map	9		-	0	0	21	64
-human_b10	p	0	pj_back_map	10		-	0	0	21	64
-human_b11	p	0	pj_back_map	11		-	0	0	21	64
+human_b0	p	0	pj_back_map	0		-	0	0	52	100
+human_b1	p	0	pj_back_map	1		-	0	0	52	100
+human_b2	p	0	pj_back_map	2		-	0	0	52	100
+human_b3	p	0	pj_back_map	3		-	0	0	52	100
+human_b4	p	0	pj_back_map	4		-	0	0	52	100
+human_b5	p	0	pj_back_map	5		-	0	0	52	100
+human_b6	p	0	pj_back_map	6		-	0	0	52	100
+human_b7	p	0	pj_back_map	7		-	0	0	52	100
+
 
 //separacion cuadro por cuadro del movimiento del pj adelante
-human_l0	p	0	pj_right_map	0		x	0	0	21	64
-human_l1	p	0	pj_right_map	1		x	0	0	21	64
-human_l2	p	0	pj_right_map	2		x	0	0	21	64
-human_l3	p	0	pj_right_map	3		x	0	0	21	64
-human_l4	p	0	pj_right_map	4		x	0	0	21	64
-human_l5	p	0	pj_right_map	5		x	0	0	21	64
-human_l6	p	0	pj_right_map	6		x	0	0	21	64
-human_l7	p	0	pj_right_map	7		x	0	0	21	64
-human_l8	p	0	pj_right_map	8		x	0	0	21	64
-human_l9	p	0	pj_right_map	9		x	0	0	21	64
-human_l10	p	0	pj_right_map	10		x	0	0	21	64
-human_l11	p	0	pj_right_map	11		x	0	0	21	64
+human_l0	p	0	pj_left_map	0		-	0	0	52	100
+human_l1	p	0	pj_left_map	1		-	0	0	52	100
+human_l2	p	0	pj_left_map	2		-	0	0	52	100
+human_l3	p	0	pj_left_map	3		-	0	0	52	100
+human_l4	p	0	pj_left_map	4		-	0	0	52	100
+human_l5	p	0	pj_left_map	5		-	0	0	52	100
+human_l6	p	0	pj_left_map	6		-	0	0	52	100
+human_l7	p	0	pj_left_map	7		-	0	0	52	100
+
 
 //separacion cuadro por cuadro del movimiento del pj detras
-human_r0	p	0	pj_right_map	0		-	0	0	21	64
-human_r1	p	0	pj_right_map	1		-	0	0	21	64
-human_r2	p	0	pj_right_map	2		-	0	0	21	64
-human_r3	p	0	pj_right_map	3		-	0	0	21	64
-human_r4	p	0	pj_right_map	4		-	0	0	21	64
-human_r5	p	0	pj_right_map	5		-	0	0	21	64
-human_r6	p	0	pj_right_map	6		-	0	0	21	64
-human_r7	p	0	pj_right_map	7		-	0	0	21	64
-human_r8	p	0	pj_right_map	8		-	0	0	21	64
-human_r9	p	0	pj_right_map	9		-	0	0	21	64
-human_r10	p	0	pj_right_map	10		-	0	0	21	64
-human_r11	p	0	pj_right_map	11		-	0	0	21	64
+human_r0	p	0	pj_left_map	0		x	0	0	52	100
+human_r1	p	0	pj_left_map	1		x	0	0	52	100
+human_r2	p	0	pj_left_map	2		x	0	0	52	100
+human_r3	p	0	pj_left_map	3		x	0	0	52	100
+human_r4	p	0	pj_left_map	4		x	0	0	52	100
+human_r5	p	0	pj_left_map	5		x	0	0	52	100
+human_r6	p	0	pj_left_map	6		x	0	0	52	100
+human_r7	p	0	pj_left_map	7		x	0	0	52	100
 
+//separacion cuadro por cuadro del movimiento del pj adelante izquierda
+human_ul0	p	0	pj_upleft_map	0		-	0	0	52	100
+human_ul1	p	0	pj_upleft_map	1		-	0	0	52	100
+human_ul2	p	0	pj_upleft_map	2		-	0	0	52	100
+human_ul3	p	0	pj_upleft_map	3		-	0	0	52	100
+human_ul4	p	0	pj_upleft_map	4		-	0	0	52	100
+human_ul5	p	0	pj_upleft_map	5		-	0	0	52	100
+human_ul6	p	0	pj_upleft_map	6		-	0	0	52	100
+human_ul7	p	0	pj_upleft_map	7		-	0	0	52	100
+
+
+//separacion cuadro por cuadro del movimiento del pj adelante derecha
+human_ur0	p	0	pj_upleft_map	0		x	0	0	52	100
+human_ur1	p	0	pj_upleft_map	1		x	0	0	52	100
+human_ur2	p	0	pj_upleft_map	2		x	0	0	52	100
+human_ur3	p	0	pj_upleft_map	3		x	0	0	52	100
+human_ur4	p	0	pj_upleft_map	4		x	0	0	52	100
+human_ur5	p	0	pj_upleft_map	5		x	0	0	52	100
+human_ur6	p	0	pj_upleft_map	6		x	0	0	52	100
+human_ur7	p	0	pj_upleft_map	7		x	0	0	52	100
+
+//separacion cuadro por cuadro del movimiento del pj abajo izquierda
+human_dl0	p	0	pj_downleft_map	0		-	0	0	52	100
+human_dl1	p	0	pj_downleft_map	1		-	0	0	52	100
+human_dl2	p	0	pj_downleft_map	2		-	0	0	52	100
+human_dl3	p	0	pj_downleft_map	3		-	0	0	52	100
+human_dl4	p	0	pj_downleft_map	4		-	0	0	52	100
+human_dl5	p	0	pj_downleft_map	5		-	0	0	52	100
+human_dl6	p	0	pj_downleft_map	6		-	0	0	52	100
+human_dl7	p	0	pj_downleft_map	7		-	0	0	52	100
+
+
+//separacion cuadro por cuadro del movimiento del pj abajo derecha
+human_dr0	p	0	pj_downleft_map	0		x	0	0	52	100
+human_dr1	p	0	pj_downleft_map	1		x	0	0	52	100
+human_dr2	p	0	pj_downleft_map	2		x	0	0	52	100
+human_dr3	p	0	pj_downleft_map	3		x	0	0	52	100
+human_dr4	p	0	pj_downleft_map	4		x	0	0	52	100
+human_dr5	p	0	pj_downleft_map	5		x	0	0	52	100
+human_dr6	p	0	pj_downleft_map	6		x	0	0	52	100
+human_dr7	p	0	pj_downleft_map	7		x	0	0	52	100
+
+//Separacion cuado por blah blah del movimiento del pj en combate standing
+pj_stand_r0	p	0	pj_right_rmap	0		-	0	0	52	100
+pj_stand_r1	p	0	pj_right_rmap	1		-	0	0	52	100
+pj_stand_r2	p	0	pj_right_rmap	2		-	0	0	52	100
+pj_stand_r3	p	0	pj_right_rmap	3		-	0	0	52	100
+pj_stand_r4	p	0	pj_right_rmap	4		-	0	0	52	100
+pj_stand_r5	p	0	pj_right_rmap	5		-	0	0	52	100
+
+pj_attack1_r0	p	0	pj_attack1_rmap	0		x	0	0	64	103
+pj_attack1_r1	p	0	pj_attack1_rmap	1		x	0	0	64	103
+pj_attack1_r2	p	0	pj_attack1_rmap	2		x	0	0	64	103
 
 //separacion cuadro por cuadro del movimiento del arbol
 arbol_00	p	0	arbol_map	0		-	0	0	64	128
@@ -320,43 +382,331 @@ orc_walking_r7	p	0	orco_walking_lmap	7		x	0	0	54	64
 orc_walking_r8	p	0	orco_walking_lmap	8		x	0	0	54	64
 orc_walking_r9	p	0	orco_walking_lmap	9		x	0	0	54	64
 
-//separacion cuadro por cuadro del movimiento del griphon caminando a la derecha
-grif_walking_l0	p	0	grif_walking_lmap	0		-	0	0	64	128
-grif_walking_l1	p	0	grif_walking_lmap	1		-	0	0	64	128
-grif_walking_l2	p	0	grif_walking_lmap	2		-	0	0	64	128
-grif_walking_l3	p	0	grif_walking_lmap	3		-	0	0	64	128
-grif_walking_l4	p	0	grif_walking_lmap	4		-	0	0	64	128
-grif_walking_l5	p	0	grif_walking_lmap	5		-	0	0	64	128
-grif_walking_l6	p	0	grif_walking_lmap	6		-	0	0	64	128
-grif_walking_l7	p	0	grif_walking_lmap	7		-	0	0	64	128
+//**********************************Goblin Animap*************************************************
+//separacion cuadro por cuadro del movimiento del goblin quieto mirando a la izquierda
+goblin_stand_l0	p	0	goblin_standing_lmap	0		-	0	0	79	80
+goblin_stand_l1	p	0	goblin_standing_lmap	1		-	0	0	79	80
+goblin_stand_l2	p	0	goblin_standing_lmap	2		-	0	0	79	80
+goblin_stand_l3	p	0	goblin_standing_lmap	3		-	0	0	79	80
+goblin_stand_l4	p	0	goblin_standing_lmap	4		-	0	0	79	80
+goblin_stand_l5	p	0	goblin_standing_lmap	5		-	0	0	79	80
+goblin_stand_l6	p	0	goblin_standing_lmap	6		-	0	0	79	80
+goblin_stand_l7	p	0	goblin_standing_lmap	7		-	0	0	79	80
+goblin_stand_l8	p	0	goblin_standing_lmap	8		-	0	0	79	80
+goblin_stand_l9	p	0	goblin_standing_lmap	9		-	0	0	79	80
+goblin_stand_l10	p	0	goblin_standing_lmap	10		-	0	0	79	80
+goblin_stand_l11	p	0	goblin_standing_lmap	11		-	0	0	79	80
+goblin_stand_l12	p	0	goblin_standing_lmap	12		-	0	0	79	80
+goblin_stand_l13	p	0	goblin_standing_lmap	13		-	0	0	79	80
+goblin_stand_l14	p	0	goblin_standing_lmap	14		-	0	0	79	80
+goblin_stand_l15	p	0	goblin_standing_lmap	15		-	0	0	79	80
+
+//separacion cuadro por cuadro del movimiento del goblin quieto mirando a la derecha
+goblin_stand_r0	p	0	goblin_standing_lmap	0		x	0	0	79	80
+goblin_stand_r1	p	0	goblin_standing_lmap	1		x	0	0	79	80
+goblin_stand_r2	p	0	goblin_standing_lmap	2		x	0	0	79	80
+goblin_stand_r3	p	0	goblin_standing_lmap	3		x	0	0	79	80
+goblin_stand_r4	p	0	goblin_standing_lmap	4		x	0	0	79	80
+goblin_stand_r5	p	0	goblin_standing_lmap	5		x	0	0	79	80
+goblin_stand_r6	p	0	goblin_standing_lmap	6		x	0	0	79	80
+goblin_stand_r7	p	0	goblin_standing_lmap	7		x	0	0	79	80
+goblin_stand_r8	p	0	goblin_standing_lmap	8		x	0	0	79	80
+goblin_stand_r9	p	0	goblin_standing_lmap	9		x	0	0	79	80
+goblin_stand_r10	p	0	goblin_standing_lmap	10		x	0	0	79	80
+goblin_stand_r11	p	0	goblin_standing_lmap	11		x	0	0	79	80
+goblin_stand_r12	p	0	goblin_standing_lmap	12		x	0	0	79	80
+goblin_stand_r13	p	0	goblin_standing_lmap	13		x	0	0	79	80
+goblin_stand_r14	p	0	goblin_standing_lmap	14		x	0	0	79	80
+goblin_stand_r15	p	0	goblin_standing_lmap	15		x	0	0	79	80
+
+//separacion cuadro por cuadro del movimiento del goblin caminando a la izquierda
+goblin_walking_l0	p	0	goblin_walking_lmap	0		-	0	0	74	61
+goblin_walking_l1	p	0	goblin_walking_lmap	1		-	0	0	74	61
+goblin_walking_l2	p	0	goblin_walking_lmap	2		-	0	0	74	61
+goblin_walking_l3	p	0	goblin_walking_lmap	3		-	0	0	74	61
+goblin_walking_l4	p	0	goblin_walking_lmap	4		-	0	0	74	61
+goblin_walking_l5	p	0	goblin_walking_lmap	5		-	0	0	74	61
+goblin_walking_l6	p	0	goblin_walking_lmap	6		-	0	0	74	61
+goblin_walking_l7	p	0	goblin_walking_lmap	7		-	0	0	74	61
+goblin_walking_l8	p	0	goblin_walking_lmap	8		-	0	0	74	61
+goblin_walking_l9	p	0	goblin_walking_lmap	9		-	0	0	74	61
+goblin_walking_l10	p	0	goblin_walking_lmap	10		-	0	0	74	61
+goblin_walking_l11	p	0	goblin_walking_lmap	11		-	0	0	74	61
+goblin_walking_l12	p	0	goblin_walking_lmap	12		-	0	0	74	61
+goblin_walking_l13	p	0	goblin_walking_lmap	13		-	0	0	74	61
+goblin_walking_l14	p	0	goblin_walking_lmap	14		-	0	0	74	61
+//separacion cuadro por cuadro del movimiento del goblin caminando a la derecha
+goblin_walking_r0	p	0	goblin_walking_lmap	0		x	0	0	74	61
+goblin_walking_r1	p	0	goblin_walking_lmap	1		x	0	0	74	61
+goblin_walking_r2	p	0	goblin_walking_lmap	2		x	0	0	74	61
+goblin_walking_r3	p	0	goblin_walking_lmap	3		x	0	0	74	61
+goblin_walking_r4	p	0	goblin_walking_lmap	4		x	0	0	74	61
+goblin_walking_r5	p	0	goblin_walking_lmap	5		x	0	0	74	61
+goblin_walking_r6	p	0	goblin_walking_lmap	6		x	0	0	74	61
+goblin_walking_r7	p	0	goblin_walking_lmap	7		x	0	0	74	61
+goblin_walking_r8	p	0	goblin_walking_lmap	8		x	0	0	74	61
+goblin_walking_r9	p	0	goblin_walking_lmap	9		x	0	0	74	61
+goblin_walking_r10	p	0	goblin_walking_lmap	10		-	0	0	74	61
+goblin_walking_r11	p	0	goblin_walking_lmap	11		-	0	0	74	61
+goblin_walking_r12	p	0	goblin_walking_lmap	12		-	0	0	74	61
+goblin_walking_r13	p	0	goblin_walking_lmap	13		-	0	0	74	61
+goblin_walking_r14	p	0	goblin_walking_lmap	14		-	0	0	74	61
+//**********************************tana Animap*************************************************
+//separacion cuadro por cuadro del movimiento del tana quieto mirando a la izquierda
+tana_stand_l0	p	0	tana_standing_lmap	0		-	0	0	71	108
+tana_stand_l1	p	0	tana_standing_lmap	1		-	0	0	71	108
+tana_stand_l2	p	0	tana_standing_lmap	2		-	0	0	71	108
+tana_stand_l3	p	0	tana_standing_lmap	3		-	0	0	71	108
+tana_stand_l4	p	0	tana_standing_lmap	4		-	0	0	71	108
+tana_stand_l5	p	0	tana_standing_lmap	5		-	0	0	71	108
+tana_stand_l6	p	0	tana_standing_lmap	6		-	0	0	71	108
+tana_stand_l7	p	0	tana_standing_lmap	7		-	0	0	71	108
+tana_stand_l8	p	0	tana_standing_lmap	8		-	0	0	71	108
+tana_stand_l9	p	0	tana_standing_lmap	9		-	0	0	71	108
+tana_stand_l10	p	0	tana_standing_lmap	10		-	0	0	71	108
+tana_stand_l11	p	0	tana_standing_lmap	11		-	0	0	71	108
+tana_stand_l12	p	0	tana_standing_lmap	12		-	0	0	71	108
+tana_stand_l13	p	0	tana_standing_lmap	13		-	0	0	71	108
+tana_stand_l14	p	0	tana_standing_lmap	14		-	0	0	71	108
+tana_stand_l15	p	0	tana_standing_lmap	15		-	0	0	71	108
+
+//separacion cuadro por cuadro del movimiento del tana quieto mirando a la derecha
+tana_stand_r0	p	0	tana_standing_lmap	0		x	0	0	71	108
+tana_stand_r1	p	0	tana_standing_lmap	1		x	0	0	71	108
+tana_stand_r2	p	0	tana_standing_lmap	2		x	0	0	71	108
+tana_stand_r3	p	0	tana_standing_lmap	3		x	0	0	71	108
+tana_stand_r4	p	0	tana_standing_lmap	4		x	0	0	71	108
+tana_stand_r5	p	0	tana_standing_lmap	5		x	0	0	71	108
+tana_stand_r6	p	0	tana_standing_lmap	6		x	0	0	71	108
+tana_stand_r7	p	0	tana_standing_lmap	7		x	0	0	71	108
+tana_stand_r8	p	0	tana_standing_lmap	8		x	0	0	71	108
+tana_stand_r9	p	0	tana_standing_lmap	9		x	0	0	71	108
+tana_stand_r10	p	0	tana_standing_lmap	10		x	0	0	71	108
+tana_stand_r11	p	0	tana_standing_lmap	11		x	0	0	71	108
+tana_stand_r12	p	0	tana_standing_lmap	12		x	0	0	71	108
+tana_stand_r13	p	0	tana_standing_lmap	13		x	0	0	71	108
+tana_stand_r14	p	0	tana_standing_lmap	14		x	0	0	71	108
+tana_stand_r15	p	0	tana_standing_lmap	15		x	0	0	71	108
+
+//separacion cuadro por cuadro del movimiento del tana caminando a la izquierda
+tana_walking_l0	p	0	tana_walking_lmap	0		-	0	0	71	108
+tana_walking_l1	p	0	tana_walking_lmap	1		-	0	0	71	108
+tana_walking_l2	p	0	tana_walking_lmap	2		-	0	0	71	108
+tana_walking_l3	p	0	tana_walking_lmap	3		-	0	0	71	108
+tana_walking_l4	p	0	tana_walking_lmap	4		-	0	0	71	108
+tana_walking_l5	p	0	tana_walking_lmap	5		-	0	0	71	108
+tana_walking_l6	p	0	tana_walking_lmap	6		-	0	0	71	108
+tana_walking_l7	p	0	tana_walking_lmap	7		-	0	0	71	108
+tana_walking_l8	p	0	tana_walking_lmap	8		-	0	0	71	108
+tana_walking_l9	p	0	tana_walking_lmap	9		-	0	0	71	108
+tana_walking_l10	p	0	tana_walking_lmap	10		-	0	0	71	108
+tana_walking_l11	p	0	tana_walking_lmap	11		-	0	0	71	108
+tana_walking_l12	p	0	tana_walking_lmap	12		-	0	0	71	108
+tana_walking_l13	p	0	tana_walking_lmap	13		-	0	0	71	108
+tana_walking_l14	p	0	tana_walking_lmap	14		-	0	0	71	108
+//separacion cuadro por cuadro del movimiento del tana caminando a la derecha
+tana_walking_r0	p	0	tana_walking_lmap	0		x	0	0	71	108
+tana_walking_r1	p	0	tana_walking_lmap	1		x	0	0	71	108
+tana_walking_r2	p	0	tana_walking_lmap	2		x	0	0	71	108
+tana_walking_r3	p	0	tana_walking_lmap	3		x	0	0	71	108
+tana_walking_r4	p	0	tana_walking_lmap	4		x	0	0	71	108
+tana_walking_r5	p	0	tana_walking_lmap	5		x	0	0	71	108
+tana_walking_r6	p	0	tana_walking_lmap	6		x	0	0	71	108
+tana_walking_r7	p	0	tana_walking_lmap	7		x	0	0	71	108
+tana_walking_r8	p	0	tana_walking_lmap	8		x	0	0	71	108
+tana_walking_r9	p	0	tana_walking_lmap	9		x	0	0	71	108
+tana_walking_r10	p	0	tana_walking_lmap	10		x	0	0	71	108
+tana_walking_r11	p	0	tana_walking_lmap	11		x	0	0	71	108
+tana_walking_r12	p	0	tana_walking_lmap	12		x	0	0	71	108
+tana_walking_r13	p	0	tana_walking_lmap	13		x	0	0	71	108
+tana_walking_r14	p	0	tana_walking_lmap	14		x	0	0	71	108
+//**********************************mutant Animap*************************************************
+//separacion cuadro por cuadro del movimiento del mutant quieto mirando a la izquierda
+mutant_stand_l0	p	0	mutant_standing_lmap	0		-	0	0	75	116
+mutant_stand_l1	p	0	mutant_standing_lmap	1		-	0	0	75	116
+mutant_stand_l2	p	0	mutant_standing_lmap	2		-	0	0	75	116
+mutant_stand_l3	p	0	mutant_standing_lmap	3		-	0	0	75	116
+mutant_stand_l4	p	0	mutant_standing_lmap	4		-	0	0	75	116
+mutant_stand_l5	p	0	mutant_standing_lmap	5		-	0	0	75	116
+mutant_stand_l6	p	0	mutant_standing_lmap	6		-	0	0	75	116
+mutant_stand_l7	p	0	mutant_standing_lmap	7		-	0	0	75	116
+
+
+//separacion cuadro por cuadro del movimiento del mutant quieto mirando a la derecha
+mutant_stand_r0	p	0	mutant_standing_lmap	0		x	0	0	75	116
+mutant_stand_r1	p	0	mutant_standing_lmap	1		x	0	0	75	116
+mutant_stand_r2	p	0	mutant_standing_lmap	2		x	0	0	75	116
+mutant_stand_r3	p	0	mutant_standing_lmap	3		x	0	0	75	116
+mutant_stand_r4	p	0	mutant_standing_lmap	4		x	0	0	75	116
+mutant_stand_r5	p	0	mutant_standing_lmap	5		x	0	0	75	116
+mutant_stand_r6	p	0	mutant_standing_lmap	6		x	0	0	75	116
+mutant_stand_r7	p	0	mutant_standing_lmap	7		x	0	0	75	116
+
+
+//separacion cuadro por cuadro del movimiento del mutant caminando a la izquierda
+mutant_walking_l0	p	0	mutant_walking_lmap	0		-	0	0	78	118
+mutant_walking_l1	p	0	mutant_walking_lmap	1		-	0	0	78	118
+mutant_walking_l2	p	0	mutant_walking_lmap	2		-	0	0	78	118
+mutant_walking_l3	p	0	mutant_walking_lmap	3		-	0	0	78	118
+mutant_walking_l4	p	0	mutant_walking_lmap	4		-	0	0	78	118
+mutant_walking_l5	p	0	mutant_walking_lmap	5		-	0	0	78	118
+
+//separacion cuadro por cuadro del movimiento del mutant caminando a la derecha
+mutant_walking_r0	p	0	mutant_walking_lmap	0		x	0	0	78	118
+mutant_walking_r1	p	0	mutant_walking_lmap	1		x	0	0	78	118
+mutant_walking_r2	p	0	mutant_walking_lmap	2		x	0	0	78	118
+mutant_walking_r3	p	0	mutant_walking_lmap	3		x	0	0	78	118
+mutant_walking_r4	p	0	mutant_walking_lmap	4		x	0	0	78	118
+mutant_walking_r5	p	0	mutant_walking_lmap	5		x	0	0	78	118
+mutant_walking_r6	p	0	mutant_walking_lmap	6		x	0	0	78	118
+//**********************************grif Animap*************************************************
+
 
 //separacion cuadro por cuadro del movimiento del griphon caminando a la derecha
-grif_walking_r0	p	0	grif_walking_lmap	0		x	0	0	64	128
-grif_walking_r1	p	0	grif_walking_lmap	1		x	0	0	64	128
-grif_walking_r2	p	0	grif_walking_lmap	2		x	0	0	64	128
-grif_walking_r3	p	0	grif_walking_lmap	3		x	0	0	64	128
-grif_walking_r4	p	0	grif_walking_lmap	4		x	0	0	64	128
-grif_walking_r5	p	0	grif_walking_lmap	5		x	0	0	64	128
-grif_walking_r6	p	0	grif_walking_lmap	6		x	0	0	64	128
-grif_walking_r7	p	0	grif_walking_lmap	7		x	0	0	64	128
+grif_walking_l0	p	0	grif_walking_lmap	0		-	0	0	90	137
+grif_walking_l1	p	0	grif_walking_lmap	1		-	0	0	90	137
+grif_walking_l2	p	0	grif_walking_lmap	2		-	0	0	90	137
+grif_walking_l3	p	0	grif_walking_lmap	3		-	0	0	90	137
+grif_walking_l4	p	0	grif_walking_lmap	4		-	0	0	90	137
+grif_walking_l5	p	0	grif_walking_lmap	5		-	0	0	90	137
+grif_walking_l6	p	0	grif_walking_lmap	6		-	0	0	90	137
+grif_walking_l7	p	0	grif_walking_lmap	7		-	0	0	90	137
 
+//separacion cuadro por cuadro del movimiento del griphon caminando a la derecha
+grif_walking_r0	p	0	grif_walking_lmap	0		x	0	0	90	137
+grif_walking_r1	p	0	grif_walking_lmap	1		x	0	0	90	137
+grif_walking_r2	p	0	grif_walking_lmap	2		x	0	0	90	137
+grif_walking_r3	p	0	grif_walking_lmap	3		x	0	0	90	137
+grif_walking_r4	p	0	grif_walking_lmap	4		x	0	0	90	137
+grif_walking_r5	p	0	grif_walking_lmap	5		x	0	0	90	137
+grif_walking_r6	p	0	grif_walking_lmap	6		x	0	0	90	137
+grif_walking_r7	p	0	grif_walking_lmap	7		x	0	0	90	137
+
+
+//**********************************boss Animap*************************************************
+//separacion cuadro por cuadro del movimiento del bosso quieto mirando a la izquierda
+boss_stand_l0	p	0	boss_standing_lmap	0		-	0	0	86	134
+boss_stand_l1	p	0	boss_standing_lmap	1		-	0	0	86	134
+boss_stand_l2	p	0	boss_standing_lmap	2		-	0	0	86	134
+boss_stand_l3	p	0	boss_standing_lmap	3		-	0	0	86	134
+boss_stand_l4	p	0	boss_standing_lmap	4		-	0	0	86	134
+boss_stand_l5	p	0	boss_standing_lmap	5		-	0	0	86	134
+boss_stand_l6	p	0	boss_standing_lmap	6		-	0	0	86	134
+boss_stand_l7	p	0	boss_standing_lmap	7		-	0	0	86	134
+
+//separacion cuadro por cuadro del movimiento del bosso quieto mirando a la derecha
+boss_stand_r0	p	0	boss_standing_lmap	0		x	0	0	86	134
+boss_stand_r1	p	0	boss_standing_lmap	1		x	0	0	86	134
+boss_stand_r2	p	0	boss_standing_lmap	2		x	0	0	86	134
+boss_stand_r3	p	0	boss_standing_lmap	3		x	0	0	86	134
+boss_stand_r4	p	0	boss_standing_lmap	4		x	0	0	86	134
+boss_stand_r5	p	0	boss_standing_lmap	5		x	0	0	86	134
+boss_stand_r6	p	0	boss_standing_lmap	6		x	0	0	86	134
+boss_stand_r7	p	0	boss_standing_lmap	7		x	0	0	86	134
+
+//**********************************Boss attack Animap*************************************************
+//separacion cuadro por cuadro del movimiento del goblin quieto mirando a la izquierda
+boss_attack_l0	p	0	boss_attacking_lmapa	0		-	0	0	349	355
+boss_attack_l1	p	0	boss_attacking_lmapa	1		-	0	0	349	355
+boss_attack_l2	p	0	boss_attacking_lmapa	2		-	0	0	349	355
+boss_attack_l3	p	0	boss_attacking_lmapa	3		-	0	0	349	355
+boss_attack_l4	p	0	boss_attacking_lmapa	4		-	0	0	349	355
+boss_attack_l5	p	0	boss_attacking_lmapa	5		-	0	0	349	355
+boss_attack_l6	p	0	boss_attacking_lmapa	6		-	0	0	349	355
+boss_attack_l7	p	0	boss_attacking_lmapa	7		-	0	0	349	355
+boss_attack_l8	p	0	boss_attacking_lmapa	8		-	0	0	349	355
+boss_attack_l9	p	0	boss_attacking_lmapa	9		-	0	0	349	355
+boss_attack_l10	p	0	boss_attacking_lmapa	10		-	0	0	349	355
+boss_attack_l11	p	0	boss_attacking_lmapa	11		-	0	0	349	355
+boss_attack_l12	p	0	boss_attacking_lmapa	12		-	0	0	349	355
+boss_attack_l13	p	0	boss_attacking_lmapa	13		-	0	0	349	355
+********************************Standing******************Combat*******************************************
+//separacion cuadro por cuadro del movimiento del bosso quieto mirando a la izquierda
+boss_stand2_l0	p	0	boss_standing2_lmap	0		-	0	0	184	287
+boss_stand2_l1	p	0	boss_standing2_lmap	1		-	0	0	184	287
+boss_stand2_l2	p	0	boss_standing2_lmap	2		-	0	0	184	287
+boss_stand2_l3	p	0	boss_standing2_lmap	3		-	0	0	184	287
+boss_stand2_l4	p	0	boss_standing2_lmap	4		-	0	0	184	287
+boss_stand2_l5	p	0	boss_standing2_lmap	5		-	0	0	184	287
+boss_stand2_l6	p	0	boss_standing2_lmap	6		-	0	0	184	287
+boss_stand2_l7	p	0	boss_standing2_lmap	7		-	0	0	184	287
+boss_stand2_l8	p	0	boss_standing2_lmap	8		-	0	0	184	287
+boss_stand2_l9	p	0	boss_standing2_lmap	9		-	0	0	184	287
+
+//separacion cuadro por cuadro del movimiento del mutant caminando a la izquierda
+boss_hit_l0	p	0	boss_beinghit_lmap	0		-	0	0	128	204
+boss_hit_l1	p	0	boss_beinghit_lmap	1		-	0	0	128	204
+boss_hit_l2	p	0	boss_beinghit_lmap	2		-	0	0	128	204
+boss_hit_l3	p	0	boss_beinghit_lmap	3		-	0	0	128	204
+boss_hit_l4	p	0	boss_beinghit_lmap	4		-	0	0	128	204
+
+boss_dying_l0	p	0	boss_dying_lmap	0		-	0	0	113	153
+boss_dying_l1	p	0	boss_dying_lmap	1		-	0	0	113	153
+boss_dying_l2	p	0	boss_dying_lmap	2		-	0	0	113	153
+boss_dying_l3	p	0	boss_dying_lmap	3		-	0	0	113	153
+boss_dying_l4	p	0	boss_dying_lmap	4		-	0	0	113	153
+boss_dying_l5	p	0	boss_dying_lmap	5		-	0	0	113	153
+boss_dying_l6	p	0	boss_dying_lmap	6		-	0	0	113	153
+boss_dying_l7	p	0	boss_dying_lmap	7		-	0	0	113	153
+boss_dying_l8	p	0	boss_dying_lmap	8		-	0	0	113	153
+boss_dying_l9	p	0	boss_dying_lmap	9		-	0	0	113	153
+boss_dying_l10	p	0	boss_dying_lmap	10		-	0	0	113	153
+boss_dying_l11	p	0	boss_dying_lmap	11		-	0	0	113	153
+boss_dying_l12	p	0	boss_dying_lmap	12		-	0	0	113	153
+boss_dying_l13	p	0	boss_dying_lmap	13		-	0	0	113	153
+boss_dying_l14	p	0	boss_dying_lmap	14		-	0	0	113	153
+boss_dying_l15	p	0	boss_dying_lmap	15		-	0	0	113	153
+boss_dying_l16	p	0	boss_dying_lmap	16		-	0	0	113	153
+boss_dying_l17	p	0	boss_dying_lmap	17		-	0	0	113	153
+boss_dying_l18	p	0	boss_dying_lmap	18		-	0	0	113	153
+boss_dying_l19	p	0	boss_dying_lmap	19		-	0	0	113	153
 
 //concatenacion de cuadros y tiempo por cuadro en una sola variable
 //simula el movimiento del pj recorriendo el gif-map del personaje
 
 human_	human_f0		0.0
-human_d		human_f0;human_f1;human_f2;human_f3;human_f4;human_f5;human_f6;human_f7;human_f8;human_f9;human_f10;human_f11		0.3
-human_u		human_b0;human_b1;human_b2;human_b3;human_b4;human_b5;human_b6;human_b7;human_b8;human_b9;human_b10;human_b11		0.3
-human_l		human_l0;human_l1;human_l2;human_l3;human_l4;human_l5;human_l6;human_l7;human_l8;human_l9;human_l10;human_l11		0.3
-human_r		human_r0;human_r1;human_r2;human_r3;human_r4;human_r5;human_r6;human_r7;human_r8;human_r9;human_r10;human_r11		0.3		-
+human_d		human_f0;human_f1;human_f2;human_f3;human_f4;human_f5;human_f6;human_f7;		0.3
+human_u		human_b0;human_b1;human_b2;human_b3;human_b4;human_b5;human_b6;human_b7;		0.3
+human_l		human_l0;human_l1;human_l2;human_l3;human_l4;human_l5;human_l6;human_l7;		0.3
+human_r		human_r0;human_r1;human_r2;human_r3;human_r4;human_r5;human_r6;human_r7;		0.3
+human_ul		human_ul0;human_ul1;human_ul2;human_ul3;human_ul4;human_ul5;human_ul6;human_ul7;		0.3
+human_ur		human_ur0;human_ur1;human_ur2;human_ur3;human_ur4;human_ur5;human_ur6;human_ur7;		0.3
+human_dl		human_dl0;human_dl1;human_dl2;human_dl3;human_dl4;human_dl5;human_dl6;human_dl7;		0.3
+human_dr		human_dr0;human_dr1;human_dr2;human_dr3;human_dr4;human_dr5;human_dr6;human_dr7;		0.3
+pj_stand_r		pj_stand_r0;pj_stand_r1;pj_stand_r2;pj_stand_r3;pj_stand_r4;pj_stand_r5		0.3
+pj_attack1_r		pj_attack1_r0;pj_attack1_r1;pj_attack1_r2		0.3
 
 orc_stand_l	orc_stand_l0;orc_stand_l1;orc_stand_l2;orc_stand_l3;orc_stand_l4;orc_stand_l5;orc_stand_l6;orc_stand_l7;orc_stand_l8;orc_stand_l9;orc_stand_l10;orc_stand_l11;orc_stand_l12;orc_stand_l13;orc_stand_l14;orc_stand_l15		0.2
 orc_stand_r	orc_stand_r0;orc_stand_r1;orc_stand_r2;orc_stand_r3;orc_stand_r4;orc_stand_r5;orc_stand_r6;orc_stand_r7;orc_stand_r8;orc_stand_r9;orc_stand_r10;orc_stand_r11;orc_stand_r12;orc_stand_r13;orc_stand_r14;orc_stand_r15		0.2
 orc_walk_l	orc_walking_l0;orc_walking_l1;orc_walking_l2;orc_walking_l3;orc_walking_l4;orc_walking_l5;orc_walking_l6;orc_walking_l7;orc_walking_l8;orc_walking_l9		0.3
 orc_walk_r	orc_walking_r0;orc_walking_r1;orc_walking_r2;orc_walking_r3;orc_walking_r4;orc_walking_r5;orc_walking_r6;orc_walking_r7;orc_walking_r8;orc_walking_r9		0.3
+goblin_stand_l	goblin_stand_l0;goblin_stand_l1;goblin_stand_l2;goblin_stand_l3;goblin_stand_l4;goblin_stand_l5;goblin_stand_l6;goblin_stand_l7;goblin_stand_l8;goblin_stand_l9;goblin_stand_l10;		0.2
+goblin_stand_r	goblin_stand_r0;goblin_stand_r1;goblin_stand_r2;goblin_stand_r3;goblin_stand_r4;goblin_stand_r5;goblin_stand_r6;goblin_stand_r7;goblin_stand_r8;goblin_stand_r9;goblin_stand_r10;		0.2
+goblin_walk_l	goblin_walking_l0;goblin_walking_l1;goblin_walking_l2;goblin_walking_l3;goblin_walking_l4;goblin_walking_l5;goblin_walking_l6;goblin_walking_l7;goblin_walking_l8;goblin_walking_l9;goblin_walking_l10;goblin_walking_l11;goblin_walking_l12;goblin_walking_l13;		0.3
+goblin_walk_r	goblin_walking_r0;goblin_walking_r1;goblin_walking_r2;goblin_walking_r3;goblin_walking_r4;goblin_walking_r5;goblin_walking_r6;goblin_walking_r7;goblin_walking_r8;goblin_walking_r9;goblin_walking_r10;goblin_walking_r11;goblin_walking_r12;goblin_walking_r13;		0.3
+
+tana_stand_l	tana_stand_l0;tana_stand_l1;tana_stand_l2;tana_stand_l3;tana_stand_l4;tana_stand_l5;		0.2
+tana_stand_r	tana_stand_r0;tana_stand_r1;tana_stand_r2;tana_stand_r3;tana_stand_r4;tana_stand_r5;		0.2
+tana_walk_l	tana_walking_l0;tana_walking_l1;tana_walking_l2;tana_walking_l3;tana_walking_l4;tana_walking_l5;		0.3
+tana_walk_r	tana_walking_r0;tana_walking_r1;tana_walking_r2;tana_walking_r3;tana_walking_r4;tana_walking_r5;		0.3
+
+mutant_stand_l	mutant_stand_l0;mutant_stand_l1;mutant_stand_l2;mutant_stand_l3;mutant_stand_l4;mutant_stand_l5;mutant_stand_l6;mutant_stand_l7		0.2
+mutant_stand_r	mutant_stand_r0;mutant_stand_r1;mutant_stand_r2;mutant_stand_r3;mutant_stand_r4;mutant_stand_r5;mutant_stand_r6;mutant_stand_r7		0.2
+mutant_walk_l	mutant_walking_l0;mutant_walking_l1;mutant_walking_l2;mutant_walking_l3;mutant_walking_l4;mutant_walking_l5		0.3
+mutant_walk_r	mutant_walking_r0;mutant_walking_r1;mutant_walking_r2;mutant_walking_r3;mutant_walking_r4;mutant_walking_r5		0.3
+
 //grif
 grif_walk_l	grif_walking_l0;grif_walking_l1;grif_walking_l2;grif_walking_l3;grif_walking_l4;grif_walking_l5;grif_walking_l6;grif_walking_l7		0.3
 grif_walk_r	grif_walking_r0;grif_walking_r1;grif_walking_r2;grif_walking_r3;grif_walking_r4;grif_walking_r5;grif_walking_r6;grif_walking_r7		0.3
+grif_stand_l	grif_stand_l0;grif_stand_l1;grif_stand_l2;grif_stand_l3;grif_stand_l4;grif_stand_l5;grif_stand_l6;grif_stand_l7		0.2
+grif_stand_r	grif_stand_r0;grif_stand_r1;grif_stand_r2;grif_stand_r3;grif_stand_r4;grif_stand_r5;grif_stand_r6;grif_stand_r7		0.2
+
+boss_stand_l	boss_stand_l0;boss_stand_l1;boss_stand_l2;boss_stand_l3;boss_stand_l4;boss_stand_l5;boss_stand_l6;boss_stand_l7		0.2
+boss_stand_r	boss_stand_r0;boss_stand_r1;boss_stand_r2;boss_stand_r3;boss_stand_r4;boss_stand_r5;boss_stand_r6;boss_stand_r7		0.2
+boss_attack_l	boss_attacking_l0;boss_attacking_l1;boss_attacking_l2;boss_attacking_l3;		0.3
+boss_stand2_l	boss_stand2_l0;boss_stand2_l1;boss_stand2_l2;boss_stand2_l3;boss_stand2_l4;boss_stand2_l5;boss_stand2_l6;boss_stand2_l7;boss_stand2_l8;boss_stand2_l7			0.2
+boss_hit_l	boss_hit_l0;boss_hit_l1;boss_hit_l2;boss_hit_l3;boss_hit_l4		0.2
+boss_dying_l	boss_dying_l0;boss_dying_l1;boss_dying_l2;boss_dying_l3;boss_dying_l4;boss_dying_l5;boss_dying_l6;boss_dying_l7;boss_dying_l8;boss_dying_l9;boss_dying_l10;boss_dying_l11;boss_dying_l12;boss_dying_l13;boss_dying_l14;boss_dying_l15;boss_dying_l16;boss_dying_l17;boss_dying_l18;boss_dying_l19		0.2
 
 arbol		arbol_00;arbol_01;arbol_02;arbol_03;arbol_04;arbol_05;arbol_06;arbol_07;arbol_08;arbol_09;arbol_10;arbol_11;arbol_12;arbol_13;arbol_14;arbol_15	0.1
 pileta		pileta_00;pileta_01;pileta_02;pileta_03;pileta_04;pileta_05;pileta_06;pileta_07;pileta_08	0.2
