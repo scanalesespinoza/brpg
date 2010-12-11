@@ -136,6 +136,8 @@ pj_right_map	/media/imagenes/personaje/Animation_Right64.png		0	0	49	64	0	0
 //************************Orco**********************************
 orco_standing_lmap	/media/imagenes/mobs/orc_standing_map.png		0	0	46	64	0	0
 orco_walking_lmap	/media/imagenes/mobs/orc_walking_map.png		0	0	54	64	0	0
+//************************Griphon*******************************
+grif_walking_lmap	/media/imagenes/mobs/FGrifowalking128.png		0	0	64	128	0	0
 **************************Objetos escenario*************************************
 //arbolMap
 arbol_map		/media/imagenes/tiles/secuenciarbol.png		0	0	64	128	0	0
@@ -314,6 +316,28 @@ orc_walking_r6	p	0	orco_walking_lmap	6		x	0	0	54	64
 orc_walking_r7	p	0	orco_walking_lmap	7		x	0	0	54	64
 orc_walking_r8	p	0	orco_walking_lmap	8		x	0	0	54	64
 orc_walking_r9	p	0	orco_walking_lmap	9		x	0	0	54	64
+
+//separacion cuadro por cuadro del movimiento del griphon caminando a la derecha
+grif_walking_l0	p	0	grif_walking_lmap	0		-	0	0	64	128
+grif_walking_l1	p	0	grif_walking_lmap	1		-	0	0	64	128
+grif_walking_l2	p	0	grif_walking_lmap	2		-	0	0	64	128
+grif_walking_l3	p	0	grif_walking_lmap	3		-	0	0	64	128
+grif_walking_l4	p	0	grif_walking_lmap	4		-	0	0	64	128
+grif_walking_l5	p	0	grif_walking_lmap	5		-	0	0	64	128
+grif_walking_l6	p	0	grif_walking_lmap	6		-	0	0	64	128
+grif_walking_l7	p	0	grif_walking_lmap	7		-	0	0	64	128
+
+//separacion cuadro por cuadro del movimiento del griphon caminando a la derecha
+grif_walking_r0	p	0	grif_walking_lmap	0		x	0	0	64	128
+grif_walking_r1	p	0	grif_walking_lmap	1		x	0	0	64	128
+grif_walking_r2	p	0	grif_walking_lmap	2		x	0	0	64	128
+grif_walking_r3	p	0	grif_walking_lmap	3		x	0	0	64	128
+grif_walking_r4	p	0	grif_walking_lmap	4		x	0	0	64	128
+grif_walking_r5	p	0	grif_walking_lmap	5		x	0	0	64	128
+grif_walking_r6	p	0	grif_walking_lmap	6		x	0	0	64	128
+grif_walking_r7	p	0	grif_walking_lmap	7		x	0	0	64	128
+
+
 //concatenacion de cuadros y tiempo por cuadro en una sola variable
 //simula el movimiento del pj recorriendo el gif-map del personaje
 
@@ -327,6 +351,9 @@ orc_stand_l	orc_stand_l0;orc_stand_l1;orc_stand_l2;orc_stand_l3;orc_stand_l4;orc
 orc_stand_r	orc_stand_r0;orc_stand_r1;orc_stand_r2;orc_stand_r3;orc_stand_r4;orc_stand_r5;orc_stand_r6;orc_stand_r7;orc_stand_r8;orc_stand_r9;orc_stand_r10;orc_stand_r11;orc_stand_r12;orc_stand_r13;orc_stand_r14;orc_stand_r15		0.2
 orc_walk_l	orc_walking_l0;orc_walking_l1;orc_walking_l2;orc_walking_l3;orc_walking_l4;orc_walking_l5;orc_walking_l6;orc_walking_l7;orc_walking_l8;orc_walking_l9		0.3
 orc_walk_r	orc_walking_r0;orc_walking_r1;orc_walking_r2;orc_walking_r3;orc_walking_r4;orc_walking_r5;orc_walking_r6;orc_walking_r7;orc_walking_r8;orc_walking_r9		0.3
+//grif
+grif_walk_l	grif_walking_l0;grif_walking_l1;grif_walking_l2;grif_walking_l3;grif_walking_l4;grif_walking_l5;grif_walking_l6;grif_walking_l7		0.3
+grif_walk_r	grif_walking_r0;grif_walking_r1;grif_walking_r2;grif_walking_r3;grif_walking_r4;grif_walking_r5;grif_walking_r6;grif_walking_r7		0.3
 
 arbol		arbol_00;arbol_01;arbol_02;arbol_03;arbol_04;arbol_05;arbol_06;arbol_07;arbol_08;arbol_09;arbol_10;arbol_11;arbol_12;arbol_13;arbol_14;arbol_15	0.1
 pileta		pileta_00;pileta_01;pileta_02;pileta_03;pileta_04;pileta_05;pileta_06;pileta_07;pileta_08	0.2

@@ -136,8 +136,10 @@ public class Personaje extends extensiones.StdDungeon {
      */
 
     public void cargarDatos(Short id) {
+        System.out.println("ID------------>"+id);
         this.cargarPersonaje(id);
         this.getInventario().cargarInventario(id);
+        this.getInventario().cargarEquipo();
         this.getMisiones().cargarMisiones(id);
         this.getHabilidades().cargarHabilidades(id);
 
@@ -157,6 +159,7 @@ public class Personaje extends extensiones.StdDungeon {
             ResultSet res = conexion.Consulta(StrSql);
             if (res.next()) {
                 this.setIdPersonaje(res.getShort("id"));
+//                System.out.println("ID------------>"+this.getIdPersonaje());
                 this.setNombre(res.getString("nombre"));
                 this.setNivel(res.getShort("nivel"));
                 this.setPos(res.getInt("posx"), res.getInt("posy"));

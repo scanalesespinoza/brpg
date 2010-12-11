@@ -331,8 +331,10 @@ public class Jugador extends Personaje {
         }
     }
 
-    public short getDestreza() {
-        return destreza;
+    public int getDestreza() {
+        int totalDes=0;
+        totalDes=this.destreza+this.getInventario().getDestreza();
+        return totalDes;
     }
 
     public void setDestreza(short destreza) {
@@ -363,8 +365,10 @@ public class Jugador extends Personaje {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public short getFuerza() {
-        return fuerza;
+    public int getFuerza() {
+        int totalFue=0;
+        totalFue=this.fuerza+this.getInventario().getFuerza();
+        return totalFue;
     }
 
     public void setFuerza(short fuerza) {
@@ -387,8 +391,10 @@ public class Jugador extends Personaje {
         this.pesoSoportado = pesoSoportado;
     }
 
-    public short getSabiduria() {
-        return sabiduria;
+    public int getSabiduria() {
+        int totalSab=0;
+        totalSab=this.sabiduria+this.getInventario().getSabiduria();
+        return totalSab;
     }
 
     public void setSabiduria(short sabiduria) {
@@ -415,8 +421,10 @@ public class Jugador extends Personaje {
      * devuelve la vitalidad del jugador mas su equipo
      * @return
      */
-    public short getVitalidad() {
-        return vitalidad;
+    public int getVitalidad() {
+        int totalVit=0;
+        totalVit=this.vitalidad+this.getInventario().getVitalidad();
+        return totalVit;
     }
 
     public void setVitalidad(short vitalidad) {
