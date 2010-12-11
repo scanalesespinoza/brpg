@@ -25,9 +25,13 @@ public class ObjetoMision {
         this.objetos = objetos;
     }
 
+    public ObjetoMision(dbDelegate conexion) {
+        this.conexion = conexion;
+    }
+
     
     public void cargarRequerimientos(short id) {
-        this.conexion = new dbDelegate();
+//        this.conexion = new dbDelegate();
         String StrSql = "SELECT  * "
                 + "  FROM objeto_mision "
                 + " WHERE mision_id=" + id;
@@ -43,7 +47,7 @@ public class ObjetoMision {
                 i += 1;
                
             }
-            this.conexion.cierraDbCon();
+//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }

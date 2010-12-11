@@ -21,7 +21,8 @@ public class dialogo_personaje {
     private ArrayList<Short> indices = new ArrayList<Short>();
     private boolean hayTexto = false;
 
-    public dialogo_personaje() {
+    public dialogo_personaje(dbDelegate con) {
+        this.conexion =con;
     }
 
     public short getId_texto_concurrente() {
@@ -33,7 +34,7 @@ public class dialogo_personaje {
     }
 
     public void cargarDialogos(short id) {
-        this.conexion = new dbDelegate();
+//        this.conexion = new dbDelegate();
         String StrSql = "SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt "
                 + "WHERE dial.texto_id = txt.id "
                 + "   AND dial.personaje_id =" + id;
@@ -54,7 +55,7 @@ public class dialogo_personaje {
             if (hayTexto) {
                 id_texto_concurrente = indices.get(0);
             }
-            this.conexion.cierraDbCon();
+//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->dialogo_personaje , método->cargarDialogos() " + ex);
         }

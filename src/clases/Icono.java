@@ -177,7 +177,7 @@ public class Icono extends JGObject {
         eng.drawString("" + this.cantidad, xAnt+10, yAnt+10, 0);
 
     }
-    public void paintEquipo() {
+   public void paintEquipo() {
         x = 100 + eng.viewXOfs();
         y = 100 + eng.viewYOfs();
 

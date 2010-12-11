@@ -30,7 +30,8 @@ public class Encargo {
         this.idPersonaje = idPj;
     }
 
-    public Encargo() {
+    public Encargo(dbDelegate con) {
+        this.conexion = con;
     }
 
     public short getIdPersonaje() {
@@ -45,17 +46,17 @@ public class Encargo {
         return misiones_activas;
     }
 
-    /**
-     * Carga las misiones desde la base de datos asociados al personaje
-     * las deja en el arreglo "objetos"
-     * @param id
-     */
-    public void cargarMisiones(Short id) {
-        cargarMisionesFinalizadas(id);
-        cargarMisionesVigentes(id);
-    }
+//    /**
+//     * Carga las misiones desde la base de datos asociados al personaje
+//     * las deja en el arreglo "objetos"
+//     * @param id
+//     */
+//    public void cargarMisiones(Short id) {
+//        cargarMisionesFinalizadas(id);
+//        cargarMisionesVigentes(id);
+//    }
 
-    public void agregarMision(short idMision, short rol) {
+    public void agregarMision(short idMision, short rol, Mision mis) {
 //        if (!this.isHaciendoMision(idMision) && !this.isHizoMision(idMision)) {
         UnEncargo mision = new UnEncargo();
         mision.setIdMision(idMision);
@@ -63,8 +64,6 @@ public class Encargo {
         mision.setFechaFin(null);
         mision.setFechaComienzo(getFecha());
         mision.setNewEncargo(true);
-        Mision mis = new Mision();
-        mis.setMision(idMision);
         mision.setMision(mis);
         this.getMisiones().put(mision.getIdMision(), mision);
 
@@ -117,7 +116,7 @@ public class Encargo {
      * @param id
      */
     private void cargarMisionesFinalizadas(Short id) {
-        this.conexion = new dbDelegate();
+//        this.conexion = new dbDelegate();
         String StrSql = "SELECT * FROM encargo "
                 + " WHERE personaje_id = " + id
                 + " AND updated_at IS NOT NULL";
@@ -136,53 +135,51 @@ public class Encargo {
                 misiones_finalizadas.add(i, mision);
                 i += 1;
             }
-            this.conexion.cierraDbCon();
+//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Encargo , método->cargarMisionesFinalizadas() " + ex);
         }
     }
 
-    /**
-     * Deja las misiones sin fecha de termino en un hashmap
-     * para obtener mejor performace
-     * @param id
-     */
-    private void cargarMisionesVigentes(Short id) {
-        this.conexion = new dbDelegate();
-        String StrSql = "SELECT * FROM encargo "
-                + " WHERE personaje_id = " + id
-                + " AND updated_at IS NULL";
-        this.misiones_activas = new HashMap<Short, UnEncargo>();
-        try {
-            ResultSet res = conexion.Consulta(StrSql);
-            while (res.next()) {
-                UnEncargo mision = new UnEncargo();
-                mision.setIdMision(res.getShort("mision_id"));
-                mision.setIdPersonaje(res.getShort("personaje_id"));
-                mision.setFechaComienzo(res.getString("created_at"));
-                mision.setRolPersonaje(res.getShort("rolpersonaje"));
-                mision.setFechaFin(null);
-                mision.setNewEncargo(false);
-                Mision mis = new Mision();
-                mis.setMision(mision.getIdMision());
-                mision.setMision(mis);
-                this.misiones_activas.put(mision.getIdMision(), mision);
+//    /**
+//     * Deja las misiones sin fecha de termino en un hashmap
+//     * para obtener mejor performace
+//     * @param id
+//     */
+//    private void cargarMisionesVigentes(Short id ) {
+////        this.conexion = new dbDelegate();
+//        String StrSql = "SELECT * FROM encargo "
+//                + " WHERE personaje_id = " + id
+//                + " AND updated_at IS NULL";
+//        this.misiones_activas = new HashMap<Short, UnEncargo>();
+//        try {
+//            ResultSet res = conexion.Consulta(StrSql);
+//            while (res.next()) {
+//                UnEncargo mision = new UnEncargo();
+//                mision.setIdMision(res.getShort("mision_id"));
+//                mision.setIdPersonaje(res.getShort("personaje_id"));
+//                mision.setFechaComienzo(res.getString("created_at"));
+//                mision.setRolPersonaje(res.getShort("rolpersonaje"));
+//                mision.setFechaFin(null);
+//                mision.setNewEncargo(false);
+//                Mision mis = new Mision();
+//                mis.setMision(mision.getIdMision());
+//                mision.setMision(mis);
+//                this.misiones_activas.put(mision.getIdMision(), mision);
+//
+//            }
+////            this.conexion.cierraDbCon();
+//        } catch (Exception ex) {
+//            System.out.println("Problemas en: clase->Encargo , método->cargarMisionesVigentes() " + ex);
+//        }
+//
+//
+//    }
 
-            }
-            this.conexion.cierraDbCon();
-        } catch (Exception ex) {
-            System.out.println("Problemas en: clase->Encargo , método->cargarMisionesVigentes() " + ex);
-        }
-
-
-    }
-
-    public boolean isHizoMision(short idMision) {
+    public boolean isHizoMision(short idMision , Mision mision) {
         byte i = 0;
         while (i < this.misiones_finalizadas.size()) {
             if (this.misiones_finalizadas.get(i).getIdMision() == idMision) {
-                Mision mision = new Mision();
-                mision.setMision(idMision);
                 if (mision.isRepetible()) {
                     return false;
                 } else {
@@ -284,6 +281,37 @@ public class Encargo {
 
     }
 
+    public void cargarMisiones(short id, HashMap<Short, Mision> misiones) {
+        cargarMisionesFinalizadas(id);
+        cargarMisionesVigentes(id, misiones);
+    }
+    private void cargarMisionesVigentes(short id, HashMap<Short, Mision> misiones) {
+//        this.conexion = new dbDelegate();
+        String StrSql = "SELECT * FROM encargo "
+                + " WHERE personaje_id = " + id
+                + " AND updated_at IS NULL";
+        
+        this.misiones_activas = new HashMap<Short, UnEncargo>();
+        try {
+            ResultSet res = conexion.Consulta(StrSql);
+            while (res.next()) {
+                UnEncargo mision = new UnEncargo();
+                mision.setIdMision(res.getShort("mision_id"));
+                mision.setIdPersonaje(res.getShort("personaje_id"));
+                mision.setFechaComienzo(res.getString("created_at"));
+                mision.setRolPersonaje(res.getShort("rolpersonaje"));
+                mision.setFechaFin(null);
+                mision.setNewEncargo(false);
+                mision.setMision(misiones.get(mision.getIdMision()));
+                this.misiones_activas.put(mision.getIdMision(), mision);
+
+            }
+//            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            System.out.println("Problemas en: clase->Encargo , método->cargarMisionesVigentes() " + ex);
+        }
+    }
+
     public class UnEncargo {
 
         private short idPersonaje;
@@ -292,7 +320,7 @@ public class Encargo {
         private short rolPersonaje;
         private String fechaFin;
         private boolean newEncargo;
-        private Mision mision = new Mision();
+        private Mision mision = new Mision(conexion);
 
         public Mision getMision() {
             return mision;

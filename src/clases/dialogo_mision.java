@@ -24,7 +24,8 @@ public class dialogo_mision {
     private boolean hayTexto = false;
     private boolean terminoDialogo = false;
 
-    public dialogo_mision() {
+    public dialogo_mision(dbDelegate con) {
+        this.conexion = con;
     }
 
     public short getId_texto_concurrente() {
@@ -36,10 +37,11 @@ public class dialogo_mision {
     }
 
     public void cargarDialogos(short id) {
-        this.conexion = new dbDelegate();
+//        this.conexion = new dbDelegate();
         String StrSql = "SELECT txt.id, txt.texto,dial.texto_siguiente_id,dial.texto_anterior_id FROM dialogo_mision dial, texto txt "
                 + "WHERE dial.texto_id = txt.id "
                 + "   AND dial.mision_id =" + id;
+//        System.out.println(StrSql);
         byte i = 0;
         try {
             ResultSet res = conexion.Consulta(StrSql);
@@ -58,7 +60,7 @@ public class dialogo_mision {
             if (hayTexto) {
                 this.id_texto_concurrente = indices.get(0);
             }
-            this.conexion.cierraDbCon();
+//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->dialogo_mision , método->cargarDialogos() " + ex);
         }

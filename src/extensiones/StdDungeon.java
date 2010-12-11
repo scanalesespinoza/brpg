@@ -224,14 +224,22 @@ public class StdDungeon extends JGObject {
 	 * touch x, y, xspeed, yspeed, xdir, ydir. */
 	public void player_move() {
                 //coincidir direccion grafica con logica
-                if (xdir < 0){
+                if (xdir < 0 && ydir == 0){
                     setGraphic("human_l");
-                } else if (xdir > 0){
+                } else if (xdir > 0 && ydir == 0){
                     setGraphic("human_r");
-                } else if (ydir < 0){
+                } else if (xdir == 0 && ydir < 0){
                     setGraphic("human_u");
-                } else if (ydir > 0){
+                } else if (xdir == 0 && ydir > 0){
                     setGraphic("human_d");
+                } else if (xdir < 0 && ydir < 0){
+                    setGraphic("human_ul");
+                } else if (xdir > 0 && ydir < 0){
+                    setGraphic("human_ur");
+                } else if (xdir < 0 && ydir > 0){
+                    setGraphic("human_dl");
+                } else if (xdir > 0 && ydir > 0){
+                    setGraphic("human_dr");
                 }
 
 		if ( occupied==null 

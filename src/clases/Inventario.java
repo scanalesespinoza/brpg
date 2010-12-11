@@ -28,62 +28,44 @@ public class Inventario {
     private short sabiduria;
     private short fuerza;
 
-
-    public Inventario() {
+    public Inventario(dbDelegate conn) {
         this.objetos = new HashMap<Short, Item>();
         this.respaldoObjetos = new HashMap<Short, Short>();
+        this.conexion = conn;
 //      this.equipo = new HashMap<Short, Short>();
     }
 
-    /**
-     * Carga los objetos desde la base de datos asociados al personaje
-     * las deja en el arreglo "objetos"
-     */
-    public void cargarInventario(short id) {
-        this.conexion = new dbDelegate();
-        String StrSql = "SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto,"
-                + " inv.cantidad cantidad, inv.estaEquipado estaEquipado "
-                + "  FROM inventario inv"
-                + " WHERE inv.Personaje_id=" + id;
-        try {
-            ResultSet res = conexion.Consulta(StrSql);
-            
-            byte i = 0;
-            while (res.next()) {
-                parteEquipo = new Equipo();
-
-                Item item = new Item();
-                item.setIdObjeto(res.getShort("idObjeto"));
-                item.setIdPersonaje(res.getShort("idPersonaje"));
-                item.setCantidad(res.getShort("cantidad"));
-                item.setEstaEquipado(res.getShort("estaequipado"));
-
-                item.setNewItem(false);
-                Objeto obj = new Objeto();
-                obj.setObjeto(item.getIdObjeto());
-
-
-                if(obj.getTipo()==1){
-
-                    parteEquipo.setEquipo(obj.getIdObjeto(),item.getEstaEquipado());
-                    setFuerza(parteEquipo.getFuerza());
-                    setSabiduria(parteEquipo.getSabiduria());
-                    setVitalidad(parteEquipo.getVitalidad());
-                    setDestreza(parteEquipo.getDestreza());
-                    equipo.put(item.getIdObjeto(),parteEquipo);
-                }
-
-                item.setObjeto(obj);
-                this.objetos.put(item.getIdObjeto(), item);
-                i += 1;
-
-            }
-            this.conexion.cierraDbCon();
-        } catch (Exception ex) {
-            System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
-        }
-    }
-
+//    /**
+//     * Carga los objetos desde la base de datos asociados al personaje
+//     * las deja en el arreglo "objetos"
+//     */
+//    public void cargarInventario(short id) {
+////        this.conexion = new dbDelegate();
+//        String StrSql = "SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto,"
+//                + " inv.cantidad cantidad, inv.estaEquipado estaEquipado "
+//                + "  FROM inventario inv"
+//                + " WHERE inv.Personaje_id=" + id;
+//        try {
+//            ResultSet res = conexion.Consulta(StrSql);
+//            byte i = 0;
+//            while (res.next()) {
+//                Item item = new Item();
+//                item.setIdObjeto(res.getShort("idObjeto"));
+//                item.setIdPersonaje(res.getShort("idPersonaje"));
+//                item.setCantidad(res.getShort("cantidad"));
+//                item.setEstaEquipado(res.getShort("estaequipado"));
+//                item.setNewItem(false);
+//                Objeto obj = new Objeto();
+//                obj.setObjeto(item.getIdObjeto());
+//                item.setObjeto(obj);
+//                this.objetos.put(item.getIdObjeto(), item);
+//                i += 1;
+//            }
+////            this.conexion.cierraDbCon();
+//        } catch (Exception ex) {
+//            System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
+//        }
+//    }
     /************************IMPORTANTE*****************************************/
     //    Para manipular correctamente la base de datos, se ha diseñado una serie de
     //    convenciones:
@@ -182,8 +164,8 @@ public class Inventario {
      * @param idItem
      * @param cantidad
      */
-    public void agregarItem(short idItem, short cantidad) {
-        Item item = creaItem(idItem, cantidad, (short) 0);
+    public void agregarItem(short idItem, short cantidad, Objeto obj) {
+        Item item = creaItem(idItem, cantidad, (short) 0, obj);
         if (this.comprobarItem(idItem)) {
             this.getObjetos().get(idItem).sumarCantidad(cantidad);
         } else {
@@ -198,8 +180,8 @@ public class Inventario {
      *  Agrega UN item al inventario
      * @param idItem
      */
-    public void agregarItem(short idItem) {
-        Item item = creaItem(idItem, (short) 1, (short) 0);
+    public void agregarItem(short idItem, Objeto obj) {
+        Item item = creaItem(idItem, (short) 1, (short) 0, obj);
         if (this.comprobarItem(idItem)) {
             this.getObjetos().get(idItem).sumarCantidad((short) 1);
         } else {
@@ -302,8 +284,8 @@ public class Inventario {
      * @param estaequipado
      * @return
      */
-    private Item creaItem(short idObjeto, short cantidad, short estaequipado) {
-        return new Item(this.getIdPersonaje(), idObjeto, cantidad, estaequipado);
+    private Item creaItem(short idObjeto, short cantidad, short estaequipado, Objeto obj) {
+        return new Item(this.getIdPersonaje(), idObjeto, cantidad, estaequipado, obj);
     }
 
     /*
@@ -364,7 +346,48 @@ public class Inventario {
         this.vitalidad += vitalidad;
     }
 
+    public void cargarInventario(short id, HashMap<Short, Objeto> objetos) {
+//        this.conexion = new dbDelegate();
+        String StrSql = "SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto,"
+                + " inv.cantidad cantidad, inv.estaEquipado estaEquipado "
+                + "  FROM inventario inv"
+                + " WHERE inv.Personaje_id=" + id;
+        try {
+            ResultSet res = conexion.Consulta(StrSql);
+            byte i = 0;
+            while (res.next()) {
+                parteEquipo = new Equipo();
 
+                Item item = new Item();
+                item.setIdObjeto(res.getShort("idObjeto"));
+                item.setIdPersonaje(res.getShort("idPersonaje"));
+                item.setCantidad(res.getShort("cantidad"));
+                item.setEstaEquipado(res.getShort("estaequipado"));
+
+                item.setNewItem(false);
+                Objeto obj = objetos.get(item.getIdObjeto());
+                
+                if (obj.getTipo() == 1) {
+                    parteEquipo.setEquipo(obj.getIdObjeto(), item.getEstaEquipado());
+                    setFuerza(parteEquipo.getFuerza());
+                    setSabiduria(parteEquipo.getSabiduria());
+                    setVitalidad(parteEquipo.getVitalidad());
+                    setDestreza(parteEquipo.getDestreza());
+                    
+                    equipo.put(item.getIdObjeto(), parteEquipo);
+                }
+
+                item.setObjeto(obj);
+                this.objetos.put(item.getIdObjeto(), item);
+                i += 1;
+
+
+            }
+//            this.conexion.cierraDbCon();
+        } catch (Exception ex) {
+            System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
+        }
+    }
 
     public Equipo getParteEquipo() {
         return parteEquipo;
@@ -374,7 +397,6 @@ public class Inventario {
         this.parteEquipo = parteEquipo;
     }
 
-
     public HashMap<Short, Equipo> getEquipo() {
         return equipo;
     }
@@ -382,7 +404,6 @@ public class Inventario {
     public void setEquipo(HashMap<Short, Equipo> equipo) {
         this.equipo = equipo;
     }
-
 
     public short getIdPersonaje() {
         return idPersonaje;
@@ -424,111 +445,114 @@ public class Inventario {
         eliminarItem(id, (short) (1));
     }
 
-    public void equipar(short id){
-            Equipo unEquipo = new Equipo();
-            unEquipo = this.equipo.get(id);
-            Iterator it = equipo.entrySet().iterator();
+    public void equipar(short id) {
+        Equipo unEquipo = new Equipo();
+        unEquipo = this.equipo.get(id);
+        Iterator it = equipo.entrySet().iterator();
 
-            boolean hayEquipo = false;
-            boolean mismo = false;
-
-            /*
-             * Recorre el quipo mientras no encuentre algo equipado en la posicion del
-             * item que se desea equipar, al revisar todo finaliza.
-             */
-            while (it.hasNext()&&!hayEquipo){
-                Map.Entry e = (Map.Entry) it.next();
-                System.out.println("quipar-----"+id);
-                System.out.println("quipado-----"+Short.parseShort(e.getKey().toString()));
-
-                if(id!=Short.parseShort(e.getKey().toString())&&equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn()==unEquipo.getEquipaEn()&&equipo.get(Short.parseShort(e.getKey().toString())).getEquipado()==1){
-                        hayEquipo=true;
-                        equipo.get(Short.parseShort(e.getKey().toString())).setEquipado((short)0);
-                        this.setDestreza((short)-equipo.get(Short.parseShort(e.getKey().toString())).getDestreza());
-                        this.setFuerza((short)-equipo.get(Short.parseShort(e.getKey().toString())).getFuerza());
-                        this.setSabiduria((short)-equipo.get(Short.parseShort(e.getKey().toString())).getSabiduria());
-                        this.setVitalidad((short)-equipo.get(Short.parseShort(e.getKey().toString())).getVitalidad());
-
-                        this.agregarItem(Short.parseShort(e.getKey().toString()),(short)1);
-
-                    
-                }
-                if(id==Short.parseShort(e.getKey().toString())&&equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn()==unEquipo.getEquipaEn()&&equipo.get(Short.parseShort(e.getKey().toString())).getEquipado()==1){
-                    mismo=true;
-                }
-            }
-
-            if(!mismo){
-                equipo.get(id).setEquipado((short)1);
-                this.setDestreza((short)equipo.get(id).getDestreza());
-                this.setFuerza((short)equipo.get(id).getFuerza());
-                this.setSabiduria((short)equipo.get(id).getSabiduria());
-                this.setVitalidad((short)equipo.get(id).getVitalidad());
-                this.eliminarItem(id, (short)1);
-            }
-
-
-        }
-        public void desequipar(short id){
-                if(equipo.get(id).getEquipado()==1){
-                equipo.get(id).setEquipado((short)0);
-
-                this.setDestreza((short)-equipo.get(id).getDestreza());
-                this.setFuerza((short)-equipo.get(id).getFuerza());
-                this.setSabiduria((short)-equipo.get(id).getSabiduria());
-                this.setVitalidad((short)-equipo.get(id).getVitalidad());
-
-                this.agregarItem(id, (short)1);
-                }
-        }
+        boolean hayEquipo = false;
+        boolean mismo = false;
 
         /*
-         * Al iniciar la aplicacion resta los item que estan equipados del inventario
+         * Recorre el quipo mientras no encuentre algo equipado en la posicion del
+         * item que se desea equipar, al revisar todo finaliza.
          */
-    public void cargarEquipo(){
-            Iterator it = equipo.entrySet().iterator();
+        while (it.hasNext() && !hayEquipo) {
+            Map.Entry e = (Map.Entry) it.next();
+            System.out.println("quipar-----" + id);
+            System.out.println("quipado-----" + Short.parseShort(e.getKey().toString()));
 
-            boolean hayEquipo = false;
-            while (it.hasNext()&&!hayEquipo){
-                Map.Entry e = (Map.Entry) it.next();
+            if (id != Short.parseShort(e.getKey().toString()) && equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn() == unEquipo.getEquipaEn() && equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
+                hayEquipo = true;
+                equipo.get(Short.parseShort(e.getKey().toString())).setEquipado((short) 0);
+                this.setDestreza((short) -equipo.get(Short.parseShort(e.getKey().toString())).getDestreza());
+                this.setFuerza((short) -equipo.get(Short.parseShort(e.getKey().toString())).getFuerza());
+                this.setSabiduria((short) -equipo.get(Short.parseShort(e.getKey().toString())).getSabiduria());
+                this.setVitalidad((short) -equipo.get(Short.parseShort(e.getKey().toString())).getVitalidad());
 
-                if(equipo.get(Short.parseShort(e.getKey().toString())).getEquipado()==1){
-                    this.eliminarItem(Short.parseShort(e.getKey().toString()),(short)1);
-                }
+                this.agregarItem(Short.parseShort(e.getKey().toString()), (short) 1, objetos.get(Short.parseShort(e.getKey().toString())).getObjeto());
 
 
+            }
+            if (id == Short.parseShort(e.getKey().toString()) && equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn() == unEquipo.getEquipaEn() && equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
+                mismo = true;
+            }
+        }
+
+        if (!mismo) {
+            System.out.println("IDEEEEEEEEEEEEEEEEEEEEEEEEEEE"+equipo.containsKey(id));
+            equipo.get(id).setEquipado((short) 1);
+            this.setDestreza((short) equipo.get(id).getDestreza());
+            this.setFuerza((short) equipo.get(id).getFuerza());
+            this.setSabiduria((short) equipo.get(id).getSabiduria());
+            this.setVitalidad((short) equipo.get(id).getVitalidad());
+            this.eliminarItem(id, (short) 1);
+        }
+
+
+    }
+
+    public void desequipar(short id) {
+        if (equipo.get(id).getEquipado() == 1) {
+            equipo.get(id).setEquipado((short) 0);
+
+            this.setDestreza((short) -equipo.get(id).getDestreza());
+            this.setFuerza((short) -equipo.get(id).getFuerza());
+            this.setSabiduria((short) -equipo.get(id).getSabiduria());
+            this.setVitalidad((short) -equipo.get(id).getVitalidad());
+
+            this.agregarItem(id, (short) 1, objetos.get(id).getObjeto());
+        }
+    }
+
+    /*
+     * Al iniciar la aplicacion resta los item que estan equipados del inventario
+     */
+    public void cargarEquipo() {
+        Iterator it = equipo.entrySet().iterator();
+
+        boolean hayEquipo = false;
+        while (it.hasNext() && !hayEquipo) {
+            Map.Entry e = (Map.Entry) it.next();
+
+            if (equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
+                this.eliminarItem(Short.parseShort(e.getKey().toString()), (short) 1);
             }
 
 
         }
 
-        public HashMap<Short, String> itemEquipados(HashMap<Short, Equipo> equipo,Personaje pj){
-            HashMap<Short, String> hmGraficos = new HashMap<Short, String>();
-            Iterator it = equipo.entrySet().iterator();
 
-            while (it.hasNext()){
-                Map.Entry e = (Map.Entry) it.next();
-                if(equipo.get(Short.parseShort(e.getKey().toString())).getEquipado()==1){
-                    hmGraficos.put(equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn(), pj.getInventario().getObjetos().get(Short.parseShort(e.getKey().toString())).getObjeto().getNombreGrafico());
-                }
+    }
 
+    public HashMap<Short, String> itemEquipados(HashMap<Short, Equipo> equipo, Personaje pj) {
+        HashMap<Short, String> hmGraficos = new HashMap<Short, String>();
+        Iterator it = equipo.entrySet().iterator();
 
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            if (equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
+                hmGraficos.put(equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn(), pj.getInventario().getObjetos().get(Short.parseShort(e.getKey().toString())).getObjeto().getNombreGrafico());
             }
-            return hmGraficos;
+
+
         }
-        public void pintaEquipo(){
+        return hmGraficos;
+    }
+
+    public void pintaEquipo() {
 //            HashMap<Short, String> hmGraficos = new HashMap<Short, String>();
-            Iterator it = this.equipo.entrySet().iterator();
+        Iterator it = this.equipo.entrySet().iterator();
 
-            while (it.hasNext()){
-                Map.Entry e = (Map.Entry) it.next();
-                if(equipo.get(Short.parseShort(e.getKey().toString())).getEquipado()==1){
+        while (it.hasNext()) {
+            Map.Entry e = (Map.Entry) it.next();
+            if (equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
 //                    hmGraficos.put(equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn(), pj.getInventario().getObjetos().get(Short.parseShort(e.getKey().toString())).getObjeto().getNombreGrafico());
-                }
-                System.out.println("Equipa en: "+equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn()+" Grafico: "+this.getItem(Short.parseShort(e.getKey().toString())).getObjeto().getNombreGrafico());
-
             }
+            System.out.println("Equipa en: " + equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn() + " Grafico: " + this.getItem(Short.parseShort(e.getKey().toString())).getObjeto().getNombreGrafico());
+
         }
+    }
 
     public class Item {
 
@@ -538,17 +562,17 @@ public class Inventario {
         private short estaEquipado;
         private boolean newItem;
         private boolean eliminarItem;
-        private Objeto objeto = new Objeto();
+        private Objeto objeto;
 
         public Item() {
         }
 
-        public Item(short idPersonaje, short idObjeto, short cantidad, short estaEquipado) {
+        public Item(short idPersonaje, short idObjeto, short cantidad, short estaEquipado, Objeto obj) {
             this.idPersonaje = idPersonaje;
             this.idObjeto = idObjeto;
             this.cantidad = cantidad;
             this.estaEquipado = estaEquipado;
-            this.objeto.setObjeto(idObjeto);
+            this.objeto = obj;
 
         }
 
@@ -626,7 +650,7 @@ public class Inventario {
         }
     }
 
-    public class Equipo{
+    public class Equipo {
 
         private short vitalidad;
         private short destreza;
@@ -636,22 +660,23 @@ public class Inventario {
         private short equipado;
 //        private dbDelegate conexion;
         private Item item = new Item();
+
         /**
          * Contructor vacio
          */
         public Equipo() {
         }
 
-        public void setEquipo(short id, short estaEquipado){
+        public void setEquipo(short id, short estaEquipado) {
 //            this.conexion = new dbDelegate();
             System.out.println("new db delegate");
             String StrSql = "SELECT *"
                     + "  FROM equipo"
                     + " WHERE id_objeto=" + id;
-                    System.out.println("id ql"+id);
+            System.out.println("id ql-------------------------------->" + id);
             try {
                 ResultSet res = conexion.Consulta(StrSql);
-                if(res.next()){
+                if (res.next()) {
                     this.setEquipado(estaEquipado);
 
                     this.setVitalidad(res.getShort("vitalidad"));
@@ -659,15 +684,12 @@ public class Inventario {
                     this.setSabiduria(res.getShort("sabiduria"));
                     this.setFuerza(res.getShort("fuerza"));
                     this.setEquipaEn(res.getShort("equipa_en"));
-                    System.out.println("equipa_en "+this.getEquipaEn());
-
-
+                    System.out.println("equipa_en " + this.getEquipaEn());
                 }
 //                this.conexion.cierraDbCon();
-
-                } catch (Exception ex) {
-                    System.out.println("Problemas en: clase->Inventario.Equipo , método->cargarEquipo() " + ex);
-                }
+            } catch (Exception ex) {
+                System.out.println("Problemas en: clase->Inventario.Equipo , método->cargarEquipo() " + ex);
+            }
         }
 
         public Item getItem() {
@@ -678,10 +700,6 @@ public class Inventario {
             this.item = item;
         }
 
-
-
-
-
         public short getEquipado() {
             return equipado;
         }
@@ -689,7 +707,6 @@ public class Inventario {
         public void setEquipado(short equipado) {
             this.equipado = equipado;
         }
-
 
         public short getDestreza() {
             return destreza;
@@ -715,8 +732,6 @@ public class Inventario {
             this.fuerza = fuerza;
         }
 
-
-
         public short getSabiduria() {
             return sabiduria;
         }
@@ -732,8 +747,5 @@ public class Inventario {
         public void setVitalidad(short vitalidad) {
             this.vitalidad = vitalidad;
         }
-
-
-
     }
 }

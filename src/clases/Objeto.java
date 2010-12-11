@@ -34,37 +34,37 @@ public class Objeto {
      * de manera objetual para el sistema
      * 
      */
-    public void setObjeto(short id) {
-        this.conexion = new dbDelegate();
-        String StrSql = "SELECT * FROM objeto obj"
-                + " WHERE obj.id = " + id;
-
-        try {
-            ResultSet res = conexion.Consulta(StrSql);
-            if (res.next()) {
-                this.setDescripcion(res.getString("descripcion"));
-                this.setNombre(res.getString("nombre"));
-                this.setIdObjeto(res.getShort("id"));
-                this.setPeso(res.getShort("peso"));
-                this.setTipo(res.getInt("tipo"));
-                this.setBeneficio(res.getInt("beneficio"));
-                if(res.getInt("usocombate")==0){
-                    this.setUsoCombate(false);
-                }else{
-                    this.setUsoCombate(true);
-                }
-
-                this.setValorDinero(res.getShort("valordinero"));
-                this.setNombreGrafico(res.getString("nom_grafico"));
-
-            }
-            this.conexion.cierraDbCon();
-        } catch (Exception ex) {
-            Logger.getLogger(Objeto.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Problemas en: clase->Objeto , método->setObjeto() " + ex);
-        }
-
-    }
+//    public void setObjeto(short id) {
+//        this.conexion = new dbDelegate();
+//        String StrSql = "SELECT * FROM objeto obj"
+//                + " WHERE obj.id = " + id;
+//
+//        try {
+//            ResultSet res = conexion.Consulta(StrSql);
+//            if (res.next()) {
+//                this.setDescripcion(res.getString("descripcion"));
+//                this.setNombre(res.getString("nombre"));
+//                this.setIdObjeto(res.getShort("id"));
+//                this.setPeso(res.getShort("peso"));
+//                this.setTipo(res.getInt("tipo"));
+//                this.setBeneficio(res.getInt("beneficio"));
+//                if(res.getInt("usocombate")==0){
+//                    this.setUsoCombate(false);
+//                }else{
+//                    this.setUsoCombate(true);
+//                }
+//
+//                this.setValorDinero(res.getShort("valordinero"));
+//                this.setNombreGrafico(res.getString("nom_grafico"));
+//
+//            }
+//            this.conexion.cierraDbCon();
+//        } catch (Exception ex) {
+//            Logger.getLogger(Objeto.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("Problemas en: clase->Objeto , método->setObjeto() " + ex);
+//        }
+//
+//    }
 
     public int getBeneficio() {
         return beneficio;

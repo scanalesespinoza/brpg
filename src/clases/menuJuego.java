@@ -44,8 +44,19 @@ public class menuJuego extends JGObject {
 //    private final HashMap<Short, Boton> botones_objetos_usar;
     private final HashMap<Short, Boton> botones_objetos_ver;
     public int filtrar = 0;
-    public boolean vestir = false;
-
+    private boolean continua_anim_mob = false;
+    public String anim_mob, anim_mob_flag, anim_pj, anim_pj_flag;
+    public int frames_mob, frames_pj;
+    public int frame_mob;
+    private double tick_go_mob;
+    private double tick_actual_mob = 0;
+    private boolean continua_anim_pj = false;
+    public int frame_pj;
+    private double tick_go_pj;
+    private double tick_actual_pj = 0;
+    public boolean termineAnimacionMuerte = false;
+    public boolean dibujandoAnimacionMuerte = false;
+	public boolean vestir = false;
     public StdScoring getStdScoreNpc() {
         return stdScoreNpc;
     }
@@ -102,8 +113,9 @@ public class menuJuego extends JGObject {
         this.hmPjItem = hm;
     }
 
-    public menuJuego(String string, boolean bln, double d, double d1, int i, String string1, Jugador pj) {
+    public menuJuego(String string, boolean bln, double d, double d1, int i, String string1, Jugador pj, dbDelegate con) {
         super(string, bln, d, d1, i, string1);
+        this.conexion = con;
         this.pj = pj;
         this.botones_estadistica_aumentar = new HashMap<Short, Boton>();
         this.botones_estadistica_ver = new HashMap<Short, Boton>();
@@ -130,7 +142,7 @@ public class menuJuego extends JGObject {
         this.botones_estadistica_ver.get((short) 2).suspend();
         this.botones_estadistica_ver.get((short) 3).suspend();
         this.botones_estadistica_ver.get((short) 4).suspend();
-        this.conexion = new dbDelegate();
+
         String StrSql = "SELECT * FROM habilidad ";
         this.botones_habilidad_aumentar = new HashMap<Short, Boton>();
         this.botones_habilidad_ver = new HashMap<Short, Boton>();
@@ -468,9 +480,9 @@ public class menuJuego extends JGObject {
                     linea_x += 37;
                 }
 
-            }else {
-                this.botones_objetos_abandonar.get(((Inventario.Item)e.getValue()).getIdObjeto()).suspend();
-                this.botones_objetos_ver.get(((Inventario.Item)e.getValue()).getIdObjeto()).suspend();
+            } else {
+                this.botones_objetos_abandonar.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
+                this.botones_objetos_ver.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
 
             }
 //                    if (cont % 2 != 0) {//el numero es par se dibuja lo mas a la izquierda posible
@@ -523,23 +535,196 @@ public class menuJuego extends JGObject {
         this.menuActual = menuActual;
     }
 
-    public void paintB() {
+    public void paintB(Jugador pj) {
+        String img = null, img1 = null;
 
 //
-        if ((eng.inGameState("InCombat") )) {
+        if ((eng.inGameState("InCombat"))) {
             eng.drawImage(0, 0, "combate", false);
             //dibujo los perfiles de los contrincantes
-            //personaje
-            eng.drawImage(10, 10, "personaje_combate", false);
-            //mob
-            eng.drawImage(eng.viewWidth()/2,10 , "mob_combate", false);
-
-//            if((stdScorePj!=null)){
+//            //personaje
+//            String img1 = "personaje_combate";
+//            if (pj.getImageName() != null) {
+//                img1 = pj.getImageName();
 //
-//                stdScorePj.paintB();
-//            }else if((stdScoreNpc!=null)){
-//                stdScoreNpc.paintB();
 //            }
+//            eng.drawImage(10, 10, img1, false);
+            //.....VARIABLES AUXILIARES PERSONAJE
+            String anim_aux_pj = pj.getGraficaEstado();
+            String anim_concu_aux_pj = pj.getAnim_concurrente();
+            int frame_concu_aux_pj = pj.getFrames_anim_concurrente();
+            //.....VARIABLES AUXILIARES ENEMIGO
+            String anim_aux_mob = pj.getEnemigo().getGraficaEstado();
+            String anim_concu_aux_mob = pj.getEnemigo().getAnim_concurrente();
+            int frame_concu_aux_mob = pj.getEnemigo().getFrames_anim_concurrente();
+
+            if ((pj.getEnemigo().getHp() > 0) && (pj.getHp() > 0)) {//la pelea continua
+                //****************SECION ANIMACION PERSONAJE******************//
+                if ((anim_aux_pj != null && !this.continua_anim_pj)) {
+                    //No hay ninguno corriendo
+                    anim_pj = anim_aux_pj;
+                    frames_pj = frame_concu_aux_pj;
+                    this.continua_anim_pj = true;
+                    this.anim_pj_flag = anim_concu_aux_pj;
+                    this.frame_pj = 0;
+                    this.tick_actual_pj = 0;
+                    if (this.frames_pj < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_pj = (eng.getFrameRate() / frames_pj) - 2;
+                    } else {
+                        tick_go_pj = 6;
+                    }
+
+                } else if (continua_anim_pj && anim_pj_flag == "Parado" && anim_concu_aux_pj != "Parado") {
+                    //cualquier imagen tiene prioridad sobre el flag "Parado"
+                    anim_pj = anim_aux_pj;
+                    frames_pj = frame_concu_aux_pj;
+                    this.continua_anim_pj = true;
+                    this.anim_pj_flag = anim_concu_aux_pj;
+                    this.frame_pj = 0;
+                    this.tick_actual_pj = 0;
+                    if (this.frames_pj < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_pj = (eng.getFrameRate() / frames_pj) - 2;
+                    } else {
+                        tick_go_pj = 6;
+                    }
+
+                } else if (continua_anim_pj && anim_pj_flag != "Parado" && anim_concu_aux_pj != "Parado") {
+                } else if (continua_anim_pj && anim_pj_flag != "Parado" && anim_concu_aux_pj == "Parado") {
+                } else if (continua_anim_pj && anim_pj_flag == "Parado" && anim_aux_pj == "Parado") {
+                    anim_pj = anim_aux_pj;
+                    frames_pj = frame_concu_aux_pj;
+                    this.continua_anim_pj = true;
+                    this.anim_pj_flag = anim_concu_aux_pj;
+                    this.frame_pj = 0;
+                    this.tick_actual_pj = 0;
+                    if (this.frames_pj < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_pj = (eng.getFrameRate() / frames_pj) - 2;
+                    } else {
+                        tick_go_pj = 6;
+                    }
+                    if (this.frame_pj > this.frames_pj - 2) {
+                        this.frame_pj = 0;
+                    }
+                }
+                //****************SECION ANIMACION MOB************************//
+                if ((anim_aux_mob != null && !this.continua_anim_mob)) {
+                    //No hay ninguno corriendo
+                    anim_mob = anim_aux_mob;
+                    frames_mob = frame_concu_aux_mob;
+                    this.continua_anim_mob = true;
+                    this.anim_mob_flag = anim_concu_aux_mob;
+                    this.frame_mob = 0;
+                    this.tick_actual_mob = 0;
+                    if (this.frames_mob < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                    } else {
+                        tick_go_mob = 6;
+                    }
+
+                } else if (continua_anim_mob && anim_mob_flag == "Parado" && anim_concu_aux_mob != "Parado") {
+                    //cualquier imagen tiene prioridad sobre el flag "Parado"
+                    anim_mob = anim_aux_mob;
+                    frames_mob = frame_concu_aux_mob;
+                    this.continua_anim_mob = true;
+                    this.anim_mob_flag = anim_concu_aux_mob;
+                    this.frame_mob = 0;
+                    this.tick_actual_mob = 0;
+                    if (this.frames_mob < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                    } else {
+                        tick_go_mob = 6;
+                    }
+
+                } else if (continua_anim_mob && anim_mob_flag != "Parado" && anim_concu_aux_mob != "Parado") {
+                } else if (continua_anim_mob && anim_mob_flag != "Parado" && anim_concu_aux_mob == "Parado") {
+                } else if (continua_anim_mob && anim_mob_flag == "Parado" && anim_aux_mob == "Parado") {
+                    anim_mob = anim_aux_mob;
+                    frames_mob = frame_concu_aux_mob;
+                    this.continua_anim_mob = true;
+                    this.anim_mob_flag = anim_concu_aux_mob;
+                    this.frame_mob = 0;
+                    this.tick_actual_mob = 0;
+                    if (this.frames_mob < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                    } else {
+                        tick_go_mob = 6;
+                    }
+                    if (this.frame_mob > this.frames_mob - 2) {
+                        this.frame_mob = 0;
+                    }
+                }
+            } else {//la pelea acabó-...buscar quien murió
+                if (pj.getHp() <= 0) {
+                    //Aca setear animacion dying del pj y Standing del mob
+                } else if (pj.getEnemigo().getHp() <= 0 && !dibujandoAnimacionMuerte) {//Mob Murió, muestro animación
+                    anim_mob = pj.getEnemigo().anim_muerte;
+                    frames_mob = pj.getEnemigo().frames_anim_muerte;
+                    this.continua_anim_mob = true;
+                    this.anim_mob_flag = "Muerte";
+                    this.frame_mob = 0;
+                    this.tick_actual_mob = 0;
+                    if (this.frames_mob < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                    } else {
+                        tick_go_mob = 6;
+                    }
+                    dibujandoAnimacionMuerte = true;
+                    //Falta setear animacion del pj (Standing)
+                }
+
+            }
+            //******************TRATO ANIMACION JUGADOR***********************//
+            if (this.frame_pj < this.frames_pj) {
+                //no ha terminado de reproducir
+                img1 = anim_pj + frame_pj;
+                if (tick_actual_pj == tick_go_pj) {
+                    //si el tick se cumplio avanzo el cuadro
+                    frame_pj++;
+                    tick_actual_pj = 0;
+                } else {
+                    tick_actual_pj++;
+                }
+
+            } else {//termino de reproducir
+                if (anim_pj_flag == "Muerte") {
+                    //El mob está Muerto
+                    this.termineAnimacionMuerte = true;
+                } else {
+                    this.continua_anim_pj = false;
+                    img1 = pj.anim_parado + "0";
+                }
+            }
+            eng.drawImage(10, 10, img1, false);
+            //******************TRATO ANIMACION MOB***************************//
+            if (this.frame_mob < this.frames_mob) {
+                //no ha terminado de reproducir
+                img = anim_mob + frame_mob;
+                if (tick_actual_mob == tick_go_mob) {
+                    //si el tick se cumplio avanzo el cuadro
+                    frame_mob++;
+                    tick_actual_mob = 0;
+                } else {
+                    tick_actual_mob++;
+                }
+
+            } else {//termino de reproducir
+                if (anim_mob_flag == "Muerte") {
+                    //El mob está Muerto
+                    this.termineAnimacionMuerte = true;
+                } else {
+                    this.continua_anim_mob = false;
+                    img = pj.getEnemigo().anim_parado + "0";
+                }
+            }
+            eng.drawImage(eng.viewWidth() / 2, 10, img, false);
+
         }
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
 //        eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
@@ -629,6 +814,23 @@ public class menuJuego extends JGObject {
             setSeccion(new JGPoint(200, 200), new JGPoint(4, 4));
             generaSeccion(0);
         }
+    }
+
+    public void restablecerDinamicaCombate() {
+        this.dibujandoAnimacionMuerte = false;
+        this.anim_mob = null;
+        this.anim_mob_flag = "null";
+        this.continua_anim_mob = false;
+        this.termineAnimacionMuerte = false;
+        System.out.println("ME METI ACA CSM");
+    }
+
+    public boolean isTermineAnimacionMuerte() {
+        return termineAnimacionMuerte;
+    }
+
+    public void setTermineAnimacionMuerte(boolean termineAnimacionMuerte) {
+        this.termineAnimacionMuerte = termineAnimacionMuerte;
     }
 
     public void recibeHm(HashMap<Integer, Icono> hm, int tipo, int filtro) {
