@@ -124,6 +124,9 @@ tab_equipo	-	0	/media/imagenes/menu/equipo.png	-
 tab_usable_dest	-	0	/media/imagenes/menu/usable_dest.png	-
 tab_colec_dest	-	0	/media/imagenes/menu/colec_dest.png	-
 tab_equipo_dest	-	0	/media/imagenes/menu/equipo_dest.png	-
+vestir	-	0	/media/imagenes/menu/vestir.png	-
+vestir_select	-	0	/media/imagenes/menu/vestir_select.png	-
+vestimenta	-	0	/media/imagenes/menu/vestimenta.png	-
 
 //define imagen por defecto de iconos
 singrafico	-	0	/media/imagenes/menu/not_found.png	-

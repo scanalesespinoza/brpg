@@ -44,6 +44,7 @@ public class menuJuego extends JGObject {
 //    private final HashMap<Short, Boton> botones_objetos_usar;
     private final HashMap<Short, Boton> botones_objetos_ver;
     public int filtrar = 0;
+    public boolean vestir = false;
 
     public StdScoring getStdScoreNpc() {
         return stdScoreNpc;
@@ -541,7 +542,7 @@ public class menuJuego extends JGObject {
 //            }
         }
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
-        eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
+//        eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
         eng.setFont(new JGFont("Arial", 1, 18));
         eng.setColor(JGColor.white);
         eng.drawString("Items", 20, eng.viewHeight() - 70, -1);
@@ -552,6 +553,28 @@ public class menuJuego extends JGObject {
         eng.drawImage(eng.viewWidth() - 90, 315, "titulo", false);
         eng.drawImage(eng.viewWidth() - 90, 5, "titulo", false);
 
+        /*
+         * Equipo
+         */
+        HashMap<Short,String> hmEquipo = new HashMap<Short,String>(pj.getInventario().itemEquipados(pj.getInventario().getEquipo(),(Personaje) pj));
+        if(this.vestir){
+                eng.drawImage(50, 50, "vestimenta", false);
+                eng.drawImage(100, 100, hmEquipo.get((short)1), false);
+                eng.drawImage(100, 150, hmEquipo.get((short)2), false);
+                eng.drawImage(100, 200, hmEquipo.get((short)3), false);
+                eng.drawImage(100, 250, hmEquipo.get((short)4), false);
+                eng.drawImage(100, 300, hmEquipo.get((short)5), false);
+                }
+
+
+        if(eng.inGameState("InWorld")){
+        new Boton("vestir", "vestir", eng.viewWidth()-100, 171, (int) Math.pow(2, 5), 2, 31/*id boton*/);
+            if (this.vestir) {
+                eng.drawImage( eng.viewWidth()-100, 171, "vestir_select", false);
+            } else {
+                eng.drawImage( eng.viewWidth()-100, 171, "vestir", false);
+            }
+        }
         if (!eng.inGameState("InCombat")) {
             new Boton("usable", "tab_usable", 110, 370, (int) Math.pow(2, 5), 2, 30/*id boton*/);
             new Boton("equipo", "tab_equipo", 210, 370, (int) Math.pow(2, 5), 2, 30/*id boton*/);
@@ -622,6 +645,10 @@ public class menuJuego extends JGObject {
         }
         this.filtrar = filtro;
 //        System.out.println("HM vacio: "+this.hm.isEmpty());
+    }
+
+    public void vestir(boolean vestir){
+        this.vestir=vestir;
     }
 
     /**

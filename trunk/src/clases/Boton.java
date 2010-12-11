@@ -14,7 +14,8 @@ public class Boton extends JGObject {
      * 2 = usar
      * 3 = ver
      * 4 = abandonar
-     * 5 = siguiente dialogo
+     * 5 = siguiente dialog
+     * 31 = vestir
      */
     private int tipo_boton;
     private boolean apretado;

@@ -171,9 +171,15 @@ public class Icono extends JGObject {
     public void paintB() {
         x = xAnt + eng.viewXOfs();
         y = yAnt + eng.viewYOfs();
+
         eng.setFont(new JGFont("Arial", 0, 24));
         eng.setColor(JGColor.white);
         eng.drawString("" + this.cantidad, xAnt+10, yAnt+10, 0);
+
+    }
+    public void paintEquipo() {
+        x = 100 + eng.viewXOfs();
+        y = 100 + eng.viewYOfs();
 
     }
 }
