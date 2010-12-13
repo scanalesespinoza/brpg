@@ -111,7 +111,6 @@ public class Manager extends JGEngine {
     private HashMap<Integer, Boolean> teclas;
     private HashMap<Integer, Icono> hmIconoItem = new HashMap<Integer, Icono>();
     private HashMap<Integer, Icono> hmIconoHabilidades = new HashMap<Integer, Icono>();
-    private Ventana asd;
     public String[] textoPrueba;
     private boolean salirInInteracting = false;
     public int filtro = 0;
@@ -149,10 +148,9 @@ public class Manager extends JGEngine {
         }
         setFrameRate(60, 2);
         dbgShowGameState(true);
-        dbgShowBoundingBox(true);
-
+        dbgShowBoundingBox(false);
         try {
-            defineMedia("/media/rpg-basico_1.tbl");
+            defineMedia("/media/rpg-basico_2.tbl");
             setBGImage("bgimage");
 
             /**
@@ -331,27 +329,27 @@ public class Manager extends JGEngine {
                     case 1:
 //                        npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
 //                        npc_vendedor_1.cargarDatos((short) 1);
-                        npc_vendedor_1 = new Npc("vendedor", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        npc_vendedor_1 = new Npc("vendedor_1", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 2:
 //                        npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
 //                        npc_vendedor_2.cargarDatos((short) 2);
-                        npc_vendedor_2 = new Npc("vendedor", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        npc_vendedor_2 = new Npc("vendedor_2", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 3:
 //                        npc_encargo_1 = new Npc(700, 75, "npc_encargo_1", "people", (int) Math.pow(2, 3), 0, (short) 3, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 3
 //                        npc_encargo_1.cargarDatos((short) 3);
-                        npc_encargo_1 = new Npc("people", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        npc_encargo_1 = new Npc("mision_1", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 4:
 //                        npc_encargo_2 = new Npc(730, 75, "npc_encargo_2", "people2", (int) Math.pow(2, 3), 0, (short) 4, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 4
 //                        npc_encargo_2.cargarDatos((short) 4);
-                        npc_encargo_2 = new Npc("people2", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        npc_encargo_2 = new Npc("mision_2", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 5:
 //                        npc_encargo_3 = new Npc(760, 75, "npc_encargo_3", "people3", (int) Math.pow(2, 3), 0, (short) 5, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior;
 //                        npc_encargo_3.cargarDatos((short) 5);
-                        npc_encargo_3 = new Npc("people3", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        npc_encargo_3 = new Npc("mision_3", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                 }
                 System.out.println("PERSONAJE NPC :" + res.getString("nombre"));
@@ -373,25 +371,25 @@ public class Manager extends JGEngine {
                 switch (res.getShort("id")) {
                     //Pongo los constructores
                     case 6:
-//                        mob_facil_1 = new Mob("goblin_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_facil_1 = new Mob("goblin_stand_r","goblin_dying_l",10, "goblin_hit_l", 5, "goblin_attack_l", 13, "goblin_stand2_l", 11,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 7:
-//                        mob_facil_2 = new Mob("orc_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_facil_2 = new Mob("goblin2_stand_r","goblin2_dying_l",24, "goblin2_hit_l", 6, "goblin2_attack_l", 13, "goblin2_stand2_l", 8,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 8:
-//                        mob_medio_1 = new Mob("tana_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14  ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_medio_1 = new Mob("tana_stand_r","tana_dying_l",20, "tana_hit_l", 5, "tana_attack_l", 11, "tana_stand2_l", 6  ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 9:
-//                        mob_medio_2 = new Mob("mutant_stand_r","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_medio_2 = new Mob("mutant_stand_r","mutant_dying_l",60, "mutant_hit_l", 5, "mutant_attack_l", 18, "mutant_stand2_l", 8 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 10:
-//                        mob_dificil_1 = new Mob("grif_walk_l","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 , 0.0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_dificil_1 = new Mob("grif_walk_l", "grif_dying_l",46, "grif_hit_l", 6, "grif_attack_l", 14, "grif_stand2_l", 8 , 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 11:
-//                        mob_dificil_2 = new Mob("wolverine","mboss_attack_l",14 ,"gboss_attack_l",14 ,"aboss_attack_l",14 ,"pboss_attack_l",14 , 0.0,res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_dificil_2 = new Mob("wolverine","wolverine_dying_l",5, "wolverine_hit_l", 6, "wolverine_attack_l", 7, "wolverine_stand2_l", 1  , 0.0,res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 12:
-                        mob_jefe_final = new Mob("boss_stand_l", "boss_dying_l", 20, "boss_hit_l", 5, "boss_attack_l", 14, "boss_stand2_l", 10, 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
+                        mob_jefe_final = new Mob("boss_stand_l", "boss_dying_l",20, "boss_hit_l", 5, "boss_attack_l", 14, "boss_stand2_l", 10, 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
                         break;
                 }
                 System.out.println("PERSONAJE NPC :" + res.getString("nombre"));
@@ -400,12 +398,12 @@ public class Manager extends JGEngine {
             System.out.println("Problemas en: clase->habilidades , método->setHabilidad() " + ex);
         }
 
-//        mob_facil_1.cargarDatos(objetos, habilidades, misiones);
-//        mob_facil_2.cargarDatos(objetos, habilidades, misiones);
-//        mob_medio_1.cargarDatos(objetos, habilidades, misiones);
-//        mob_medio_2.cargarDatos(objetos, habilidades, misiones);
-//        mob_dificil_1.cargarDatos(objetos, habilidades, misiones);
-//        mob_dificil_2.cargarDatos(objetos, habilidades, misiones);
+        mob_facil_1.cargarDatos(objetos, habilidades, misiones);
+        mob_facil_2.cargarDatos(objetos, habilidades, misiones);
+        mob_medio_1.cargarDatos(objetos, habilidades, misiones);
+        mob_medio_2.cargarDatos(objetos, habilidades, misiones);
+        mob_dificil_1.cargarDatos(objetos, habilidades, misiones);
+        mob_dificil_2.cargarDatos(objetos, habilidades, misiones);
         mob_jefe_final.cargarDatos(objetos, habilidades, misiones);
         npc_vendedor_1.cargarDatos(objetos, habilidades, misiones);
         npc_vendedor_2.cargarDatos(objetos, habilidades, misiones);
@@ -413,12 +411,12 @@ public class Manager extends JGEngine {
         npc_encargo_2.cargarDatos(objetos, habilidades, misiones);
         npc_encargo_3.cargarDatos(objetos, habilidades, misiones);
 
-//        mob_facil_1.resume_in_view = false;
-//        mob_facil_2.resume_in_view = false;
-//        mob_medio_1.resume_in_view = false;
-//        mob_medio_2.resume_in_view = false;
-//        mob_dificil_1.resume_in_view = false;
-//        mob_dificil_2.resume_in_view = false;
+        mob_facil_1.resume_in_view = false;
+        mob_facil_2.resume_in_view = false;
+        mob_medio_1.resume_in_view = false;
+        mob_medio_2.resume_in_view = false;
+        mob_dificil_1.resume_in_view = false;
+        mob_dificil_2.resume_in_view = false;
         mob_jefe_final.resume_in_view = false;
         this.pj = new Jugador("human_", "pj_stand_r", 6, "pj_stand_r", 6, "pj_attack1_r", 3, "pj_stand_r", 6, 1, idJugador, conect);
         this.pj.cargarPersonaje(idJugador);
@@ -438,6 +436,15 @@ public class Manager extends JGEngine {
                     pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
                     new StdScoring("scoring_pj", ((viewWidth() * 10) / 100), (double) 302, -0.09, -0.5, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
                 }
+            }
+        };
+        //Guarda en la base de datos el jugador
+        new JGTimer((int) (getFrameRate() * 30), false) {
+
+            @Override
+            public void alarm() {
+                pj.salvarDatos();
+                
             }
         };
     }
@@ -575,6 +582,7 @@ public class Manager extends JGEngine {
             menu.anim_mob = mob_concurrente.anim_parado;
             menu.frames_mob = mob_concurrente.frames_anim_parado;
             terminar_combate = false;
+            
             //playAudio("ambiental", "combate", true);
             filtro = 0;
             seccion.setWorking(false);
@@ -592,6 +600,22 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
+        pj.getMisiones().getFecha();
+        //Dibujo barra vida y mana del jugador
+        setFont(new JGFont("Arial", 0, 15));
+
+        setColor(JGColor.black);
+        // aca graficar todas las wes hermosas y lindas de la warifaifa
+        drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302, 0);
+
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
+        setColor(JGColor.blue);
+        setFont(new JGFont("Arial", 0, 10));
+        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322, 0, false);
+        setColor(JGColor.green);
+        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337, 0, false);
+
 
         if (mostrarVestir == 1) {
 
@@ -727,7 +751,8 @@ public class Manager extends JGEngine {
 
 
         //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
-        if (getMouseButton(1)) {
+        ventanaManager.mostrarDatoFreak("Pulse ENTER para continuar");
+        if (getKey(KeyEnter)|| getMouseButton(1)) {
             clearMouseButton(1);
             new JGTimer(60 * 3, true) {
 
@@ -764,15 +789,16 @@ public class Manager extends JGEngine {
         if (std_pj_mana != null) {
             std_pj_mana.paintB();
         }
+
+        //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
 
         setColor(JGColor.black);
         // aca graficar todas las wes hermosas y lindas de la warifaifa
         drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302, 0);
 
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 400, JGColor.green);
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 400, JGColor.blue);
-
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
 
         setColor(JGColor.black);
         drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 70) / 100), (double) 302, 0);
@@ -829,8 +855,6 @@ public class Manager extends JGEngine {
             } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
                 //personaje ha utilizado algun tipo de objeto...validar que sea para uso en combate
                 Objeto obje = icon.getItem();//pj.getInventario().getItem(this.getIconoPresionado().getIdObjeto()).getObjeto();
-                System.out.println("Es--------->" + obje.getNombre());
-                System.out.println("EsUsoCombate--------->" + obje.isUsoCombate());
                 if (obje.isUsoCombate()) {
                     pj.setProximoItem(obje);
                     seccion.removerIconos();
@@ -890,8 +914,8 @@ public class Manager extends JGEngine {
                         @Override
                         public void alarm() {
                             enemigo_procesar.resume();
-                            enemigo_procesar.aumentarDisminuirMp(pj.getMpMax() / 2);
-                            enemigo_procesar.recibirDañoBeneficio(pj.getHpMax() / 2);
+                            enemigo_procesar.aumentarDisminuirMp(enemigo_procesar.getMpMax());
+                            enemigo_procesar.recibirDañoBeneficio(enemigo_procesar.getHpMax());
                             mob_concurrente.getInventario().restablecerInventario();
                         }
                     };
@@ -910,6 +934,7 @@ public class Manager extends JGEngine {
                     mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
                 } else {
                     mjs = "¡ +" + mob_concurrente.getExperiencia() + " de experiencia !";
+                    playAudio("evento", "hallar_algo", false);
                 }
                 new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
 //                menu.restablecerDinamicaCombate();
@@ -951,7 +976,9 @@ public class Manager extends JGEngine {
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
-        if (getMouseButton(1)) {
+        ventanaManager.mostrarDatoFreak("Pulse ENTER para continuar");
+        if (getKey(KeyEnter)|| getMouseButton(1)) {
+        
 //            mob_concurrente.recibirDañoBeneficio(mob_concurrente.getHpMax());
 //            mob_concurrente.aumentarDisminuirMp(mob_concurrente.getMpMax());
             clearMouseButton(1);
@@ -1304,66 +1331,66 @@ public class Manager extends JGEngine {
         setTiles(
                 80, // tile x index
                 60,// tile y index
-                new String[]{"[[[[[[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%!!!!!!!",//1
-                    "[[[[[[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%!!!!!!!",
-                    "[[^[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%!!!!!!!",
-                    "[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%!!!!!!!",
-                    "[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%!!!!!!!",//%
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%!!!!!!!",//10
-                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%!!!!!!!",//1%
-                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//2%
-                    ")))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//30
-                    ")))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//3%
-                    ")))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",//38
-                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    ")))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!",
-                    "))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%==============!!!!!!!",
-                    ")))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=!!!!!!!",
-                    "))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%======!!!!!!!",
-                    ")))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%=%%%==!!!!!!!",
-                    "))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%=%%%==!!!!!!!",
-                    ")))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%=%%%==!!!!!!!",
-                    ")))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%%%%%==!!!!!!!",
-                    "))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%=%%%%%%==!!!!!!!",
-                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%==================!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",});
+                new String[]{"[[[[[[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%",//1
+                    "[[[[[[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%",
+                    "[[^[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%",
+                    "[[[[)))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%",
+                    "[[))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%",//%
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%",//10
+                    ")))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%",//1%
+                    "))))))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//2%
+                    ")))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//30
+                    ")))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//3%
+                    ")))))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",//38
+                    ")))))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    ")))))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "))))))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%==============%%%%%%%",
+                    ")))))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%",
+                    "))))))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%======%%%%%%%",
+                    ")))))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%%%%%==%%%%%%%",
+                    "))))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%%%%%==%%%%%%%",
+                    ")))))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%%%%%==%%%%%%%",
+                    ")))))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%%%%%==%%%%%%%",
+                    "))%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=%%%%%%%%%%%%%%%==%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%==================%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                    "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",});
     }
 
     public void interacVentana(Jugador pj, Personaje vendedor, String estado) {
@@ -1413,7 +1440,6 @@ public class Manager extends JGEngine {
 
             if (cursor.getVentana() == 4) {
                 cursor.setVentana((byte) 1);
-                System.out.println("setVentana antes InWorld:" + cursor.getVentana());
 
             } else {
                 cursor.setVentana((byte) 0);
@@ -1459,7 +1485,7 @@ public class Manager extends JGEngine {
     }
 
     private void dibujarObjetosEscenario() throws SQLException {
-        dbgShowBoundingBox(false);
+
         new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 6), 0, (short) 105, conect, new String[]{});
         new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 6), 0, (short) 100, conect, new String[]{});
         new Npc(80, 400, "casa2", "casa2", (int) Math.pow(2, 6), 0, (short) 101, conect, new String[]{"Casa 2"});
@@ -1469,8 +1495,8 @@ public class Manager extends JGEngine {
         new Npc(352, 64, "arbol1", "arbol", (int) Math.pow(2, 6), 0, (short) 106, conect, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
         new Npc(288, 32, "arbol2", "arbol", (int) Math.pow(2, 6), 0, (short) 107, conect, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
         new Npc(128, 64, "arbol2", "pileta", (int) Math.pow(2, 6), 0, (short) 108, conect, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-        new Npc(16 * 80, 16 * 12, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
-        new Npc(16 * 80, 16 * 21, "guardia", "guardia", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 80, 16 * 10, "guardia", "guard_stand_r", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
+        new Npc(16 * 80, 16 * 21, "guardia", "guard_stand_r", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
         new Npc(16 * 16, 16 * 12, "viajero", "viajero", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Viajero: "});
         new Npc(16 * 10, 16 * 17, "mono", "mono", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Mono: "});
         new Npc(16 * 10, 16 * 110, "perdido", "perdido", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"perdido: "});
@@ -1538,7 +1564,7 @@ public class Manager extends JGEngine {
         private int indice_concurrente;
         private String dialogo_restante, dialogo_mostrar, linea_1, linea_2, linea_3, mensaje_flash = "";
         private boolean terminoDialogo;
-        private StdScoring mensajito = new StdScoring("freak", 480, 370, 0, 0, -1, "", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue, JGColor.white}, 20, false);
+        private StdScoring mensajito = new StdScoring("freak", 480, 380, 0, 0, -1, "", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue, JGColor.white}, 20, false);
 
         /**
          * Muestra una ventana del tipo alerta usada para mostrar mensajes flash
@@ -2043,9 +2069,18 @@ public class Manager extends JGEngine {
                                     } else {
                                         //cumplio los requerimientos...
                                         Mision misi = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision();
-
+                                        int nivel = pj.getNivel();
                                         //Se da la experiencia
                                         pj.aumentarExperiencia(misi.getRecompensaExp());
+                                        String mjs;
+                                        if (nivel != pj.getNivel()) {
+                                            mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
+                                        } else {
+                                            mjs = "¡ +" + misi.getRecompensaExp() + " de experiencia !";
+                                            eng.playAudio("evento", "hallar_algo", false);
+                                        }
+                                        new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
+
 
                                         interacVentana(npc_concurrente, "InInteraction");
                                         pj.getMisiones().completarMision(misi.getIdMision());
@@ -2093,7 +2128,7 @@ public class Manager extends JGEngine {
                 Boton boton = (Boton) obj;
                 if (boton.getId() == 31 && getMouseButton(3)) {
                     clearMouseButton(3);
-                    System.out.println("mostrar vestir " + mostrarVestir);
+
                     if (mostrarVestir == 1) {
                         mostrarVestir = 0;
                         menu.vestir(false);
@@ -2257,7 +2292,6 @@ public class Manager extends JGEngine {
                 }
 
                 if (obj.getName().equals("usable") && (getMouseButton(3))) {
-                    System.out.println("Nombre del objeto-------->" + obj.getName());
                     seccion.removerIconos();
 //                    cursor.setLimpiarIconos(true);
                     clearMouseButton(3);
@@ -2275,7 +2309,6 @@ public class Manager extends JGEngine {
                         cursor.setVentana((byte) 1);
                     }
                 } else if (obj.getName().equals("equipo") && (getMouseButton(3))) {
-                    System.out.println("Nombre del objeto-------->" + obj.getName());
                     seccion.removerIconos();
 //                    cursor.setLimpiarIconos(true);
                     clearMouseButton(3);
@@ -2296,7 +2329,6 @@ public class Manager extends JGEngine {
                         cursor.setVentana((byte) 1);
                     }
                 } else if (obj.getName().equals("colec") && (getMouseButton(3))) {
-                    System.out.println("Nombre del objeto-------->" + obj.getName());
                     seccion.removerIconos();
 //                    cursor.setLimpiarIconos(true);
                     clearMouseButton(3);
@@ -2558,11 +2590,9 @@ public class Manager extends JGEngine {
                                     
                                         cantidad++;
                                         if (personaje.getTipo() == 0) {
-                                            System.out.println("entra" + obje.getTipo());
                                             if (mostrarVestir > 0) {
 //                                            System.out.println("entra again"+inv.getEquipo().get(obje.getIdObjeto()).getEquipado());
                                                 if (obje.getTipo() == 1 && inv.getEquipo().get(obje.getIdObjeto()).getEquipado() == 1) {
-                                                    System.out.println("Nombre Objeto-----" + obje.getNombre() + "---lugar que se equipa " + pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn());
                                                     if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 1) {
                                                         equipo1 = new Icono("1icono", 100, 100, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo1.suspend();
@@ -2592,7 +2622,6 @@ public class Manager extends JGEngine {
 //                                                    }
 //                                                }
                                                 if (inv.tieneItem(obje.getIdObjeto())) {
-                                                    System.out.println("Dibuje a este qlio: " + obje.getNombre() + " " + obje.getNombreGrafico());
                                                     hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
                                                     setFont(new JGFont("Arial", 0, 24));
                                                     //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
@@ -2608,7 +2637,6 @@ public class Manager extends JGEngine {
 //                                                }
                                             }
                                         } else {
-                                            System.out.println("Dibuje a este qlio 2: " + obje.getNombre() + " " + obje.getNombreGrafico());
                                             hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
                                             setFont(new JGFont("Arial", 0, 24));
                                             //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);

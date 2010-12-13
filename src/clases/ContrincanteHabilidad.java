@@ -83,17 +83,15 @@ public class ContrincanteHabilidad {
      */
     private void bdUpdates() {
         try {
-            this.conexion = new dbDelegate();
             Iterator it = this.getHabilidades().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry e = (Map.Entry) it.next();
                 UnaHabilidad habi = this.getHabilidad(Short.parseShort(e.getKey().toString()));
                 if (!habi.isNewHabilidad()) {
-                    String StrSql = "UPDATE contrincante_habilidad" + " SET nivelhabilidad= " + habi.getNivelHabilidad() + "," + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND objeto_id = " + habi.getIdHabilidad();
+                    String StrSql = "UPDATE contrincante_habilidad" + " SET nivelhabilidad= " + habi.getNivelHabilidad() + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND habilidad_id = " + habi.getIdHabilidad();
                     conexion.Ejecutar(StrSql);
                 }
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(ContrincanteHabilidad.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -104,7 +102,6 @@ public class ContrincanteHabilidad {
      */
     private void bdInserts() {
         try {
-            this.conexion = new dbDelegate();
             Iterator it = this.getHabilidades().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry e = (Map.Entry) it.next();
@@ -112,9 +109,9 @@ public class ContrincanteHabilidad {
                 if (habi.isNewHabilidad()) {
                     String StrSql = "INSERT INTO contrincante_habilidad VALUES(" + this.getIdPersonaje() + "," + habi.getIdHabilidad() + "," + habi.getNivelHabilidad() + ")";
                     conexion.Ejecutar(StrSql);
+                    habi.setNewHabilidad(false);
                 }
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(ContrincanteHabilidad.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -186,6 +183,7 @@ public class ContrincanteHabilidad {
 
     void cargarHabilidades(short id, HashMap<Short, Habilidad> habilidades) {
 //        this.conexion = new dbDelegate();
+        this.setIdPersonaje(id);
         String StrSql = "SELECT * FROM contrincante_habilidad "
                 + "WHERE personaje_id = " + id;
         try {

@@ -4,7 +4,7 @@
  */
 package clases;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -101,12 +101,23 @@ public class Encargo {
 
     public String getFecha() {
         Calendar c1 = Calendar.getInstance();
+        Date c2 = new Date();
+        
         String dia = Integer.toString(c1.get(Calendar.DATE));
         String mes = Integer.toString(c1.get(Calendar.MONTH));
         String annio = Integer.toString(c1.get(Calendar.YEAR));
-        String hour = Integer.toString(Calendar.HOUR);
-        String second = Integer.toString(Calendar.SECOND);
-        String minutos = Integer.toString(Calendar.MINUTE);
+        String hour = Integer.toString(c2.getHours());
+        String minutos = Integer.toString(c2.getMinutes());
+        String second = Integer.toString(c2.getSeconds());
+        if (hour.length() == 1){
+            hour = "0"+hour;
+        }
+        if (minutos.length() == 1){
+            minutos = "0"+minutos;
+        }
+        if (second.length() == 1){
+            second = "0"+second;
+        }
         String fecha = annio + "/" + mes + "/" + dia + " " + hour + ":" + minutos + ":" + second;
         return fecha;
     }
@@ -141,40 +152,6 @@ public class Encargo {
         }
     }
 
-//    /**
-//     * Deja las misiones sin fecha de termino en un hashmap
-//     * para obtener mejor performace
-//     * @param id
-//     */
-//    private void cargarMisionesVigentes(Short id ) {
-////        this.conexion = new dbDelegate();
-//        String StrSql = "SELECT * FROM encargo "
-//                + " WHERE personaje_id = " + id
-//                + " AND updated_at IS NULL";
-//        this.misiones_activas = new HashMap<Short, UnEncargo>();
-//        try {
-//            ResultSet res = conexion.Consulta(StrSql);
-//            while (res.next()) {
-//                UnEncargo mision = new UnEncargo();
-//                mision.setIdMision(res.getShort("mision_id"));
-//                mision.setIdPersonaje(res.getShort("personaje_id"));
-//                mision.setFechaComienzo(res.getString("created_at"));
-//                mision.setRolPersonaje(res.getShort("rolpersonaje"));
-//                mision.setFechaFin(null);
-//                mision.setNewEncargo(false);
-//                Mision mis = new Mision();
-//                mis.setMision(mision.getIdMision());
-//                mision.setMision(mis);
-//                this.misiones_activas.put(mision.getIdMision(), mision);
-//
-//            }
-////            this.conexion.cierraDbCon();
-//        } catch (Exception ex) {
-//            System.out.println("Problemas en: clase->Encargo , método->cargarMisionesVigentes() " + ex);
-//        }
-//
-//
-//    }
 
     public boolean isHizoMision(short idMision , Mision mision) {
         byte i = 0;
@@ -204,45 +181,63 @@ public class Encargo {
     }
 
     private void bdUpdates() {
+        String msj;
         try {
-            //seccion de misiones contenidas en el hashmap(misiones vigentes)
-            this.conexion = new dbDelegate();
-            Iterator it = this.getMisiones().entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry e = (Map.Entry) it.next();
-                UnEncargo mision = (UnEncargo) e.getValue();
-                if (!mision.isNewEncargo() && mision.getRolPersonaje() != -1) {
-                    String StrSql = "UPDATE Encargo" + "   SET rolpersonaje = " + mision.getRolPersonaje() + "," + "       updated_At = '" + mision.getFechaFin() + "' WHERE personaje_id = " + this.getIdPersonaje() + "   AND mision_id = " + mision.getIdMision() + "    AND created_at = '" + mision.getFechaComienzo() + "'";
-                    conexion.Ejecutar(StrSql);
-                }
-            }
-            //Seccion de misioens contenidas en el arreglo que representan las misiones
+//            //seccion de misiones contenidas en el hashmap(misiones vigentes)
+//            Iterator it = this.getMisiones().entrySet().iterator();
+//            while (it.hasNext()) {
+//                Map.Entry e = (Map.Entry) it.next();
+//                UnEncargo mision = (UnEncargo) e.getValue();
+//                if (!mision.isNewEncargo() && mision.getRolPersonaje() != -1) {
+//                    if (mision.getFechaFin() == null){
+//                        msj = "NULL";
+//                    } else msj = "'"+mision.getFechaFin()+"'";
+//                    String StrSql = "UPDATE encargo" + "   SET rolpersonaje = " + mision.getRolPersonaje() + "," + "       updated_at = " +msj+ " WHERE personaje_id = " + this.getIdPersonaje() + "   AND mision_id = " + mision.getIdMision() + "    AND created_at = '" + mision.getFechaComienzo() + "'";
+//                    System.out.println(StrSql);
+//                    mision.setNewEncargo(false);
+//                    conexion.Ejecutar(StrSql);
+//                    System.out.println("*******************************");
+//                }
+//            }
+           //Seccion de misioens contenidas en el arreglo que representan las misiones
             //que el jugador ya ha hecho
             byte i = 0;
             while (i < misiones_finalizadas.size()) {
                 if (!misiones_finalizadas.get(i).isNewEncargo()) {
-                    String StrSql = "UPDATE Encargo" + "   SET rolpersonaje = " + misiones_finalizadas.get(i).getRolPersonaje() + "," + "       updated_At = '" + misiones_finalizadas.get(i).getFechaFin() + "' WHERE personaje_id = " + this.getIdPersonaje() + "   AND mision_id = " + misiones_finalizadas.get(i).getIdMision() + "   AND created_at = '" + misiones_finalizadas.get(i).getFechaComienzo() + "'";
+                    if (misiones_finalizadas.get(i).getFechaFin() == null){
+                        msj = "NULL";
+                    } else msj = "'"+misiones_finalizadas.get(i).getFechaFin()+"'";
+                    String StrSql = "UPDATE encargo" + "   SET rolpersonaje = " + misiones_finalizadas.get(i).getRolPersonaje() + "," + "       updated_At = "+ msj+ " WHERE personaje_id = " + this.getIdPersonaje() + "   AND mision_id = " + misiones_finalizadas.get(i).getIdMision() + "   AND created_at = '" + misiones_finalizadas.get(i).getFechaComienzo() + "'";
+                    System.out.println(StrSql);
                     conexion.Ejecutar(StrSql);
+                    misiones_finalizadas.get(i).setNewEncargo(false);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 }
                 i++;
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Encargo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private void bdInsert() {
+        String msj;
         try {
             //seccion de misiones contenidas en el hashmap(misiones vigentes)
-            this.conexion = new dbDelegate();
             Iterator it = this.getMisiones().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry e = (Map.Entry) it.next();
                 UnEncargo mision = (UnEncargo) e.getValue();
                 if (mision.isNewEncargo() && mision.getRolPersonaje() != -1) {
-                    String StrSql = "INSERT INTO Encargo " + "   VALUES (" + this.getIdPersonaje() + "," + mision.getIdMision() + ",'" + mision.getFechaComienzo() + "'," + mision.getRolPersonaje() + ",'" + mision.getFechaFin() + "')";
+                    if (mision.getFechaFin() == null){
+                        msj = "NULL";
+                    } else msj = "'"+mision.getFechaFin()+"'";
+                    String StrSql = "INSERT INTO encargo " + "   VALUES (" + this.getIdPersonaje() + "," + mision.getIdMision() + ",'" + mision.getFechaComienzo() + "'," + mision.getRolPersonaje() + "," +msj + ")";
+                    System.out.println(StrSql);
+                    mision.setNewEncargo(false);
                     conexion.Ejecutar(StrSql);
+                    System.out.println("______________________________!");
+
                 }
             }
             //Seccion de misioens contenidas en el arreglo que representan las misiones
@@ -250,12 +245,18 @@ public class Encargo {
             byte i = 0;
             while (i < misiones_finalizadas.size()) {
                 if (misiones_finalizadas.get(i).isNewEncargo()) {
-                    String StrSql = "INSERT INTO Encargo " + "   VALUES (" + this.getIdPersonaje() + "," + misiones_finalizadas.get(i).getIdMision() + ",'" + misiones_finalizadas.get(i).getFechaComienzo() + "'," + misiones_finalizadas.get(i).getRolPersonaje() + ",'" + misiones_finalizadas.get(i).getFechaFin() + "')";
+                    if (misiones_finalizadas.get(i).getFechaFin() == null){
+                        msj = "NULL";
+                    } else msj = "'"+misiones_finalizadas.get(i).getFechaFin()+"'";
+
+                    String StrSql = "INSERT INTO encargo " + "   VALUES (" + this.getIdPersonaje() + "," + misiones_finalizadas.get(i).getIdMision() + ",'" + misiones_finalizadas.get(i).getFechaComienzo() + "'," + misiones_finalizadas.get(i).getRolPersonaje() + "," + msj + ")";
+                    System.out.println(StrSql);
                     conexion.Ejecutar(StrSql);
+                    misiones_finalizadas.get(i).setNewEncargo(false);
+                    System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKkk");
                 }
                 i++;
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Encargo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -264,17 +265,18 @@ public class Encargo {
     private void bdDelete() {
         try {
             //seccion de misiones contenidas en el hashmap(misiones vigentes)
-            this.conexion = new dbDelegate();
             Iterator it = this.getMisiones().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry e = (Map.Entry) it.next();
                 UnEncargo mision = (UnEncargo) e.getValue();
                 if (!mision.isNewEncargo() && mision.getRolPersonaje() == -1) {
-                    String StrSql = "DELETE FROM Encargo" + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND mision_id = " + mision.getIdMision() + "   AND created_at = '" + mision.getFechaComienzo() + "'";
+                    String StrSql = "DELETE FROM encargo" + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND mision_id = " + mision.getIdMision() + "   AND created_at = '" + mision.getFechaComienzo() + "'";
+                    System.out.println(StrSql);
                     conexion.Ejecutar(StrSql);
+                    System.out.println("222222222222222222222222222222222222222222222222222");
+                    getMisiones().remove((Short)(e.getKey()));
                 }
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Encargo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -282,6 +284,7 @@ public class Encargo {
     }
 
     public void cargarMisiones(short id, HashMap<Short, Mision> misiones) {
+        this.setIdPersonaje(id);
         cargarMisionesFinalizadas(id);
         cargarMisionesVigentes(id, misiones);
     }

@@ -48,8 +48,8 @@ public class menuJuego extends JGObject {
     public String anim_mob, anim_mob_flag, anim_pj, anim_pj_flag;
     public int frames_mob, frames_pj;
     public int frame_mob;
-    private double tick_go_mob;
-    private double tick_actual_mob = 0;
+    private int tick_go_mob;
+    private int tick_actual_mob = 0;
     private boolean continua_anim_pj = false;
     public int frame_pj;
     private double tick_go_pj;
@@ -537,10 +537,11 @@ public class menuJuego extends JGObject {
 
     public void paintB(Jugador pj) {
         String img = null, img1 = null;
-
-//
         if ((eng.inGameState("InCombat"))) {
             eng.drawImage(0, 0, "combate", false);
+            if (pj.isBloquearUso()){
+                eng.drawString("Estás bloqueado, no puedes utilizar habilidades o items", eng.viewWidth()/2 - 100, eng.viewHeight() - 100, -1, false);
+            }
             //dibujo los perfiles de los contrincantes
 //            //personaje
 //            String img1 = "personaje_combate";
@@ -620,7 +621,7 @@ public class menuJuego extends JGObject {
                     this.tick_actual_mob = 0;
                     if (this.frames_mob < 10) {
                         //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
-                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                        tick_go_mob = (int) ((eng.getFrameRate() / frames_mob) - 2);
                     } else {
                         tick_go_mob = 6;
                     }
@@ -635,7 +636,7 @@ public class menuJuego extends JGObject {
                     this.tick_actual_mob = 0;
                     if (this.frames_mob < 10) {
                         //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
-                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                        tick_go_mob = (int) ((eng.getFrameRate() / frames_mob) - 2);
                     } else {
                         tick_go_mob = 6;
                     }
@@ -651,7 +652,7 @@ public class menuJuego extends JGObject {
                     this.tick_actual_mob = 0;
                     if (this.frames_mob < 10) {
                         //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
-                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                        tick_go_mob = (int) ((eng.getFrameRate() / frames_mob) - 2);
                     } else {
                         tick_go_mob = 6;
                     }
@@ -671,7 +672,7 @@ public class menuJuego extends JGObject {
                     this.tick_actual_mob = 0;
                     if (this.frames_mob < 10) {
                         //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
-                        tick_go_mob = (eng.getFrameRate() / frames_mob) - 2;
+                        tick_go_mob = (int) ((eng.getFrameRate() / frames_mob) - 2);
                     } else {
                         tick_go_mob = 6;
                     }
@@ -701,7 +702,11 @@ public class menuJuego extends JGObject {
                     img1 = pj.anim_parado + "0";
                 }
             }
-            eng.drawImage(10, 10, img1, false);
+            if (termineAnimacionMuerte){
+                img1 = "cuadro";
+            }
+            eng.drawImage(100 -(int) (eng.getImage(img1).getSize().x/2) , 200 -(int)(eng.getImage(img1).getSize().y/2), img1, false);
+            
             //******************TRATO ANIMACION MOB***************************//
             if (this.frame_mob < this.frames_mob) {
                 //no ha terminado de reproducir
@@ -723,8 +728,11 @@ public class menuJuego extends JGObject {
                     img = pj.getEnemigo().anim_parado + "0";
                 }
             }
-            eng.drawImage(eng.viewWidth() / 2, 10, img, false);
-
+            if (termineAnimacionMuerte){
+                img = "cuadro";
+            }
+//            eng.drawImage(eng.viewWidth() / 2, 10, img, false);
+            eng.drawImage(eng.viewWidth() -200 -(int) (eng.getImage(img).getSize().x /2) , 200 -(int)(eng.getImage(img).getSize().y/2), img, false);
         }
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
 //        eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
@@ -822,7 +830,7 @@ public class menuJuego extends JGObject {
         this.anim_mob_flag = "null";
         this.continua_anim_mob = false;
         this.termineAnimacionMuerte = false;
-        System.out.println("ME METI ACA CSM");
+        
     }
 
     public boolean isTermineAnimacionMuerte() {
