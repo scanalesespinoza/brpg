@@ -188,7 +188,15 @@ public class Inventario {
             //si el item es nuevo en el hashmap, se debe ingresar en la base de datos
             //para eso  se pone el valor newItem como true
             item.setNewItem(true);
+            parteEquipo = new Equipo();
             this.getObjetos().put(idItem, item);
+                    parteEquipo.setEquipo(obj.getIdObjeto(), item.getEstaEquipado());
+                    setFuerza(parteEquipo.getFuerza());
+                    setSabiduria(parteEquipo.getSabiduria());
+                    setVitalidad(parteEquipo.getVitalidad());
+                    setDestreza(parteEquipo.getDestreza());
+
+                    equipo.put(item.getIdObjeto(), parteEquipo);
         }
     }
 
