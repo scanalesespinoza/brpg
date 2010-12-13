@@ -258,18 +258,16 @@ public class Personaje extends extensiones.StdDungeon {
 
     public void salvarDatos() {
         salvarPersonaje();
-        this.getInventario().salvarInventario();
+//        this.getInventario().salvarInventario();
         this.getHabilidades().salvarHabilidades();
         this.getMisiones().salvarEncargo();
     }
 
     private void salvarPersonaje() {
         try {
-            //seccion de misiones contenidas en el hashmap(misiones vigentes)
-//            this.conexion = new dbDelegate();
-            String StrSql = "UPDATE Personaje" + "   SET posicionx = " + this.x + "," + "       posiciony  = " + this.y + "," + "       nivel = " + this.getNivel() + "," + "       posiciony  = " + this.y + " WHERE personaje_id = " + this.getIdPersonaje();
+            String StrSql = "UPDATE personaje" + "   SET posicionx = " + this.x + "," + "       posiciony  = " + this.y + "," + "       nivel = " + this.getNivel() + " WHERE id = " + this.getIdPersonaje();
+            System.out.println(StrSql);
             conexion.Ejecutar(StrSql);
-//            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
         }

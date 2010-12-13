@@ -15,7 +15,6 @@ import jgame.*;
  * @author gerald
  */
 public class Jugador extends Personaje {
-
     private short idJugador;
     private HashMap<Short, Integer> preCompra = new HashMap<Short, Integer>();
     private Mob enemigo;
@@ -45,6 +44,8 @@ public class Jugador extends Personaje {
         this.frames_anim_parado = frames_parado;
         this.frames_anim_muerte = frames_muerte;
         this.anim_inworld = graf;
+        setTileBBox(16, 50, 64 ,16);
+        
     }
     private short vitalidad;
     private short destreza;
@@ -82,11 +83,8 @@ public class Jugador extends Personaje {
                 + " pjdos.Cuenta_id cuenta, pjdos.dinero dinero FROM personaje pjuno, jugador pjdos "
                 + "WHERE pjuno.id=" + id
                 + "  AND pjdos.Personaje_id=" + id;
-
         try {
-
             ResultSet res = conexion.Consulta(StrSql);
-
             if (res.next()) {
                 this.setIdPersonaje(res.getShort("id"));
                 this.setNombre(res.getString("nombre"));
@@ -105,9 +103,7 @@ public class Jugador extends Personaje {
                 this.setFechaCreacion(res.getDate("fechaCreacion"));
                 this.setEsBaneado(res.getBoolean("ban"));
                 this.setDinero(res.getInt("dinero"));
-
             }
-
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Jugador , método->cargarPersonaje() " + ex);
         }
@@ -176,6 +172,7 @@ public class Jugador extends Personaje {
 
     public Jugador(dbDelegate con) {
         super(con);
+        
     }
     /* Aumenta la todas las  cosas inherentes al subir de nivel
      * 
@@ -326,7 +323,7 @@ public class Jugador extends Personaje {
     public void usarItem(Objeto objeto) {
         if (objeto.getTipo() == 0) {
             this.getInventario().getItem(objeto.getIdObjeto()).restarCantidad((short) 1);
-            this.bloquearUsarItem(1);
+            this.bloquearUsarItemHabilidad(1);
         }
     }
 
@@ -339,26 +336,20 @@ public class Jugador extends Personaje {
         setbUpkey(false);
 
         if (!isBlocked()) {
-
-
             int entorno = 16; //variable para formar cuadrados a partir de un punto.
             if (eng.getMouseButton(1)) {
                 //Obtengo posicion del mouse
                 mouseX = eng.getMouseX() + eng.viewXOfs();
                 mouseY = eng.getMouseY() + eng.viewYOfs();
-
                 if (interactuarNpc) {
                     return;
                 }
-
                 //creo objeto JGRectangle para ver si llegó al punto deseado
                 rClick = new JGRectangle((int) mouseX, (int) mouseY, entorno, entorno);
-
                 this.estadoClick = true;
                 eng.clearMouseButton(1);
             }
             if (estadoClick) {
-
                 if (this.x < mouseX - entorno) {
                     setbRightkey(true);
                 }
@@ -381,7 +372,6 @@ public class Jugador extends Personaje {
                     eng.clearMouseButton(3);
                     estadoClick = false;
                 }
-
             }
             if (!estadoClick) {
                 setbDownkey(false);
@@ -417,7 +407,6 @@ public class Jugador extends Personaje {
                 break;
             case 4:
                 this.enemigo = (Mob) obj;
-                System.out.println("CHOQUE CON MOBIANO");
                 break;
             default:
                 break;
@@ -581,7 +570,7 @@ public class Jugador extends Personaje {
      */
     public void setProximoAtaque(Short idHabilidad) {
         if (eng.inGameState("InCombat")) {
-            if (!isBlocked()) {
+            if (!isBloquearUso()) {
                 this.setIdProximoAtaque(idHabilidad);
                 this.utilizarHabilidad();
                 setAtacando(true);
@@ -617,7 +606,7 @@ public class Jugador extends Personaje {
                 //quitar mp
                 aumentarDisminuirMp(-costo);
                 //bloqueo segun tiempo de espera
-                this.bloquear(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
+                this.bloquearUsarItemHabilidad(this.getHabilidades().getTiempoEspera(this.getIdProximoAtaque()));
             } else {
                 this.setIdProximoAtaque((short) -1);
             }
@@ -718,7 +707,7 @@ public class Jugador extends Personaje {
         this.setTotalPuntosHabilidad((short) (getTotalPuntosHabilidad() - 1));
     }
 
-    private void bloquearUsarItem(int i) {
+    private void bloquearUsarItemHabilidad(int i) {
         this.setBloquear_uso(true);
         new JGTimer((int) (eng.getFrameRate() * i), true) {
 

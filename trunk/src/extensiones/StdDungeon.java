@@ -261,10 +261,10 @@ public class StdDungeon extends JGObject {
 			// determine direction
 			setDir(0,0);
 			if (!stop_moving) {
-				if (bLeftkey&& (x- xdir)+ eng.tileWidth()>0 )  xdir = -1;
-				if (bRightkey&& x + xdir<eng.pfWidth()) xdir = 1;
-				if (bUpkey && y- ydir>0 )    ydir = -1;
-				if (bDownkey && (y + ydir)+ eng.tileHeight()< eng.pfHeight())  ydir = 1;
+				if (bLeftkey  && (x - xdir) + eng.tileWidth() > 32 )  xdir = -1;
+				if (bRightkey &&  x + xdir  < eng.pfWidth() - 150) xdir = 1;
+				if (bUpkey    &&  y - ydir  > 32 )    ydir = -1;
+				if (bDownkey  && (y + ydir) + eng.tileHeight()< eng.pfHeight() - 200)  ydir = 1;
 			}
 			checkIfBlocked(this,block_mask,prevxdir,prevydir);
 			// occupy new tile, or same tile if we didn't move

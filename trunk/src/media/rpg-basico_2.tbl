@@ -50,17 +50,17 @@ casa_5	-	20	/media/imagenes/tiles/Terrible_Casa_HechaMier_Tunning_V2.png	-
 ******************************************************************define mob/npc
 mario	-	0	/media/imagenes/mobs/mario.gif	-
 guardia	-	0	/media/imagenes/npc/guard.gif	-
-viajero	-	0	/media/imagenes/npc/npc_traveler.gif	x
-mono	-	0	/media/imagenes/npc/npc_animal.gif	-
-people	-	0	/media/imagenes/npc/npc_people.gif	-
-people2	-	0	/media/imagenes/npc/npc_people2.gif	-
+viajero	-	0	/media/imagenes/npc/npc_4.gif	x
+mono	-	0	/media/imagenes/npc/npc_1.gif	-
+people	-	0	/media/imagenes/npc/npc_2.gif	-
+people2	-	0	/media/imagenes/npc/npc_3.gif	-
 people3	-	0	/media/imagenes/npc/npc_people3.png	-
 people4	-	0	/media/imagenes/npc/npc_people4.png	-
-perdido	-	0	/media/imagenes/npc/npc_perdido.gif	x
+perdido	-	0	/media/imagenes/npc/npc_5.gif	x
 escultura	-	0	/media/imagenes/npc/npc_escultura.png	x
 mision_1	-	0	/media/imagenes/npc/mision_1.gif	-
 mision_2	-	0	/media/imagenes/npc/mision_2.gif	-
-mision_3	-	0	/media/imagenes/npc/mision_3.png	-
+mision_3	-	0	/media/imagenes/npc/mision_3.gif	-
 mob_1	-	0	/media/imagenes/mobs/mob_animal.png	-
 mob_2	-	0	/media/imagenes/mobs/mob_2.png	-
 mob_3	-	0	/media/imagenes/mobs/mob_3.gif	-
@@ -83,7 +83,8 @@ casa5Npc	-	0	/media/imagenes/npc/npc4.png	-
 *************************************************************define imagenes GUI
 cursor	-	0	/media/imagenes/menu/cursor.png	-
 //define imagen del npc vendedor
-
+vendedor_1	-	0	/media/imagenes/npc/vendedor_1.gif	-
+vendedor_2	-	0	/media/imagenes/npc/vendedor_2.gif	-
 //define imagen de la ventana de trade
 ventana trade	-	0	/media/imagenes/npc/ventana_trade.png	-
 //define imagen boton cerrar
@@ -97,6 +98,8 @@ abandonar	-	0	/media/imagenes/menu/abandonar.png	-
 //define el minimapa a mostrar
 mini_mapa	-	0	/media/imagenes/menu/mini_mapa2.png	-
 //define img personaje combate
+personaje_combate	-	0	/media/imagenes/personaje/goku.jpg	-
+mob_combate	-	0	/media/imagenes/mobs/ihsahn.jpg	-
 //******************************************************************************
 //                      Iconos
 //******************************************************************************
@@ -139,28 +142,558 @@ pj_back_map		/media/imagenes/personaje/Fmonk U.png		0	0	40	77	0	0
 pj_left_map	/media/imagenes/personaje/Fmonk L.png		0	0	40	77	0	0
 pj_upleft_map		/media/imagenes/personaje/Fmonk LU.png		0	0	40	77	0	0
 pj_downleft_map	/media/imagenes/personaje/Fmonk LD.png		0	0	40	77	0	0
-pj_right_rmap	/media/imagenes/personaje/Fmonk COMBATE.png		0	0	40	77	0	0
+pj_right_rmap	/media/imagenes/personaje/Fmonk COMBATE.png		0	0	52	100	0	0
 pj_attack1_rmap	/media/imagenes/personaje/Fmonk Attack2.png		0	0	64	104	0	0
 //************************Orco**********************************
-orco_standing_lmap	/media/imagenes/mobs/orc_standing_map.png		0	0	46	64	0	0
-orco_walking_lmap	/media/imagenes/mobs/orc_walking_map.png		0	0	54	64	0	0
+goblin2_standing_lmap	/media/imagenes/mobs/FF2_standing_79_85.png		0	0	79	85	0	0
+goblin2_walking_lmap	/media/imagenes/mobs/FF2 walking.png		0	0	82	88	0	0
+goblin2_attacking_lmap	/media/imagenes/mobs/FF2 attacking.png		0	0	107	102	0	0
+goblin2_standing2_lmap	/media/imagenes/mobs/FF2_standing_79_85.png		0	0	79	85	0	0
+goblin2_beinghit_lmap	/media/imagenes/mobs/FF2 beinghitted.png		0	0	93	96	0	0
+goblin2_dying_lmap	/media/imagenes/mobs/FF2 dying.png		0	0	144	154	0	0
+
+//**********************************goblin2 Animap*************************************************
+//separacion cuadro por cuadro del movimiento del goblin2 quieto mirando a la izquierda
+goblin2_stand_l0	p	0	goblin2_standing_lmap	0		-	0	0	79	85
+goblin2_stand_l1	p	0	goblin2_standing_lmap	1		-	0	0	79	85
+goblin2_stand_l2	p	0	goblin2_standing_lmap	2		-	0	0	79	85
+goblin2_stand_l3	p	0	goblin2_standing_lmap	3		-	0	0	79	85
+goblin2_stand_l4	p	0	goblin2_standing_lmap	4		-	0	0	79	85
+goblin2_stand_l5	p	0	goblin2_standing_lmap	5		-	0	0	79	85
+goblin2_stand_l6	p	0	goblin2_standing_lmap	6		-	0	0	79	85
+goblin2_stand_l7	p	0	goblin2_standing_lmap	7		-	0	0	79	85
+
+goblin2_stand_l	goblin2_stand_l0;goblin2_stand_l1;goblin2_stand_l2;goblin2_stand_l3;goblin2_stand_l4;goblin2_stand_l5;goblin2_stand_l6;goblin2_stand_l7		0.2
+
+goblin2_stand_r0	p	0	goblin2_standing_lmap	0		x	0	0	79	85
+goblin2_stand_r1	p	0	goblin2_standing_lmap	1		x	0	0	79	85
+goblin2_stand_r2	p	0	goblin2_standing_lmap	2		x	0	0	79	85
+goblin2_stand_r3	p	0	goblin2_standing_lmap	3		x	0	0	79	85
+goblin2_stand_r4	p	0	goblin2_standing_lmap	4		x	0	0	79	85
+goblin2_stand_r5	p	0	goblin2_standing_lmap	5		x	0	0	79	85
+goblin2_stand_r6	p	0	goblin2_standing_lmap	6		x	0	0	79	85
+goblin2_stand_r7	p	0	goblin2_standing_lmap	7		x	0	0	79	85
+
+goblin2_stand_r	goblin2_stand_r0;goblin2_stand_r1;goblin2_stand_r2;goblin2_stand_r3;goblin2_stand_r4;goblin2_stand_r5;goblin2_stand_r6;goblin2_stand_r7		0.2
+
+
+
+
+goblin2_stand2_l0	p	0	goblin2_standing2_lmap	0		-	0	0	79	85
+goblin2_stand2_l1	p	0	goblin2_standing2_lmap	1		-	0	0	79	85
+goblin2_stand2_l2	p	0	goblin2_standing2_lmap	2		-	0	0	79	85
+goblin2_stand2_l3	p	0	goblin2_standing2_lmap	3		-	0	0	79	85
+goblin2_stand2_l4	p	0	goblin2_standing2_lmap	4		-	0	0	79	85
+goblin2_stand2_l5	p	0	goblin2_standing2_lmap	5		-	0	0	79	85
+goblin2_stand2_l6	p	0	goblin2_standing2_lmap	6		-	0	0	79	85
+goblin2_stand2_l7	p	0	goblin2_standing2_lmap	7		-	0	0	79	85
+
+goblin2_stand2_l	goblin2_stand2_l0;goblin2_stand2_l1;goblin2_stand2_l2;goblin2_stand2_l3;goblin2_stand2_l4;goblin2_stand2_l5;goblin2_stand2_l6;goblin2_stand2_l7		0.2
+
+
+
+
+goblin2_attack_l0	p	0	goblin2_attacking_lmap	0		-	0	0	107	102
+goblin2_attack_l1	p	0	goblin2_attacking_lmap	1		-	0	0	107	102
+goblin2_attack_l2	p	0	goblin2_attacking_lmap	2		-	0	0	107	102
+goblin2_attack_l3	p	0	goblin2_attacking_lmap	3		-	0	0	107	102
+goblin2_attack_l4	p	0	goblin2_attacking_lmap	4		-	0	0	107	102
+goblin2_attack_l5	p	0	goblin2_attacking_lmap	5		-	0	0	107	102
+goblin2_attack_l6	p	0	goblin2_attacking_lmap	6		-	0	0	107	102
+goblin2_attack_l7	p	0	goblin2_attacking_lmap	7		-	0	0	107	102
+goblin2_attack_l8	p	0	goblin2_attacking_lmap	8		-	0	0	107	102
+goblin2_attack_l9	p	0	goblin2_attacking_lmap	9		-	0	0	107	102
+goblin2_attack_l10	p	0	goblin2_attacking_lmap	10		-	0	0	107	102
+goblin2_attack_l11	p	0	goblin2_attacking_lmap	11		-	0	0	107	102
+goblin2_attack_l12	p	0	goblin2_attacking_lmap	12		-	0	0	107	102
+
+goblin2_attack_l	goblin2_attack_l0;goblin2_attack_l1;goblin2_attack_l2;goblin2_attack_l3;goblin2_attack_l4;goblin2_attack_l5;goblin2_attack_l6;goblin2_attack_l7;goblin2_attack_l8;goblin2_attack_l9;goblin2_attack_l10;goblin2_attack_l11;goblin2_attack_l12		0.2
+
+
+
+
+goblin2_hit_l0	p	0	goblin2_beinghit_lmap	0		-	0	0	93	96
+goblin2_hit_l1	p	0	goblin2_beinghit_lmap	1		-	0	0	93	96
+goblin2_hit_l2	p	0	goblin2_beinghit_lmap	2		-	0	0	93	96
+goblin2_hit_l3	p	0	goblin2_beinghit_lmap	3		-	0	0	93	96
+goblin2_hit_l4	p	0	goblin2_beinghit_lmap	4		-	0	0	93	96
+goblin2_hit_l5	p	0	goblin2_beinghit_lmap	5		-	0	0	93	96
+
+goblin2_hit_l	goblin2_hit_l0;goblin2_hit_l1;goblin2_hit_l2;goblin2_hit_l3;goblin2_hit_l4;goblin2_hit_l5		0.2
+
+
+
+
+goblin2_dying_l0	p	0	goblin2_dying_lmap	0		-	0	0	144	154
+goblin2_dying_l1	p	0	goblin2_dying_lmap	1		-	0	0	144	154
+goblin2_dying_l2	p	0	goblin2_dying_lmap	2		-	0	0	144	154
+goblin2_dying_l3	p	0	goblin2_dying_lmap	3		-	0	0	144	154
+goblin2_dying_l4	p	0	goblin2_dying_lmap	4		-	0	0	144	154
+goblin2_dying_l5	p	0	goblin2_dying_lmap	5		-	0	0	144	154
+goblin2_dying_l6	p	0	goblin2_dying_lmap	6		-	0	0	144	154
+goblin2_dying_l7	p	0	goblin2_dying_lmap	7		-	0	0	144	154
+goblin2_dying_l8	p	0	goblin2_dying_lmap	8		-	0	0	144	154
+goblin2_dying_l9	p	0	goblin2_dying_lmap	9		-	0	0	144	154
+goblin2_dying_l10	p	0	goblin2_dying_lmap	10		-	0	0	144	154
+goblin2_dying_l11	p	0	goblin2_dying_lmap	11		-	0	0	144	154
+goblin2_dying_l12	p	0	goblin2_dying_lmap	12		-	0	0	144	154
+goblin2_dying_l13	p	0	goblin2_dying_lmap	13		-	0	0	144	154
+goblin2_dying_l14	p	0	goblin2_dying_lmap	14		-	0	0	144	154
+goblin2_dying_l15	p	0	goblin2_dying_lmap	15		-	0	0	144	154
+goblin2_dying_l16	p	0	goblin2_dying_lmap	16		-	0	0	144	154
+goblin2_dying_l17	p	0	goblin2_dying_lmap	17		-	0	0	144	154
+goblin2_dying_l18	p	0	goblin2_dying_lmap	18		-	0	0	144	154
+goblin2_dying_l19	p	0	goblin2_dying_lmap	19		-	0	0	144	154
+goblin2_dying_l20	p	0	goblin2_dying_lmap	20		-	0	0	144	154
+goblin2_dying_l21	p	0	goblin2_dying_lmap	21		-	0	0	144	154
+goblin2_dying_l22	p	0	goblin2_dying_lmap	22		-	0	0	144	154
+goblin2_dying_l23	p	0	goblin2_dying_lmap	23		-	0	0	144	154
+
+goblin2_dying_l	goblin2_dying_l0;goblin2_dying_l1;goblin2_dying_l2;goblin2_dying_l3;goblin2_dying_l4;goblin2_dying_l5;goblin2_dying_l6;goblin2_dying_l7;goblin2_dying_l8;goblin2_dying_l9;goblin2_dying_l10;goblin2_dying_l11;goblin2_dying_l12;goblin2_dying_l13;goblin2_dying_l14;goblin2_dying_l15;goblin2_dying_l16;goblin2_dying_l17;goblin2_dying_l18;goblin2_dying_l19;goblin2_dying_l20;goblin2_dying_l21;goblin2_dying_l22;goblin2_dying_l23		0.2
+
+
+//separacion cuadro por cuadro del movimiento del goblin2 caminando a la izquierda
+goblin2_walking_l0	p	0	goblin2_walking_lmap	0		-	0	0	82	88
+goblin2_walking_l1	p	0	goblin2_walking_lmap	1		-	0	0	82	88
+goblin2_walking_l2	p	0	goblin2_walking_lmap	2		-	0	0	82	88
+goblin2_walking_l3	p	0	goblin2_walking_lmap	3		-	0	0	82	88
+goblin2_walking_l4	p	0	goblin2_walking_lmap	4		-	0	0	82	88
+goblin2_walking_l5	p	0	goblin2_walking_lmap	5		-	0	0	82	88
+goblin2_walking_l6	p	0	goblin2_walking_lmap	6		-	0	0	82	88
+goblin2_walking_l7	p	0	goblin2_walking_lmap	7		-	0	0	82	88
+goblin2_walk_l	goblin2_walking_l0;goblin2_walking_l1;goblin2_walking_l2;goblin2_walking_l3;goblin2_walking_l4;goblin2_walking_l5;goblin2_walking_l6;goblin2_walking_l7		0.3
+
+//separacion cuadro por cuadro del movimiento del goblin2 caminando a la derecha
+goblin2_walking_r0	p	0	goblin2_walking_lmap	0		x	0	0	82	88
+goblin2_walking_r1	p	0	goblin2_walking_lmap	1		x	0	0	82	88
+goblin2_walking_r2	p	0	goblin2_walking_lmap	2		x	0	0	82	88
+goblin2_walking_r3	p	0	goblin2_walking_lmap	3		x	0	0	82	88
+goblin2_walking_r4	p	0	goblin2_walking_lmap	4		x	0	0	82	88
+goblin2_walking_r5	p	0	goblin2_walking_lmap	5		x	0	0	82	88
+goblin2_walking_r6	p	0	goblin2_walking_lmap	6		x	0	0	82	88
+goblin2_walking_r7	p	0	goblin2_walking_lmap	7		x	0	0	82	88
+goblin2_walk_r	goblin2_walking_r0;goblin2_walking_r1;goblin2_walking_r2;goblin2_walking_r3;goblin2_walking_r4;goblin2_walking_r5;goblin2_walking_r6;goblin2_walking_r7		0.3
+
 //************************Goblin**********************************
 goblin_standing_lmap	/media/imagenes/mobs/FF1_standing_79_80.png		0	0	79	80	0	0
 goblin_walking_lmap	/media/imagenes/mobs/FF1_walking.png		0	0	74	61	0	0
+goblin_attacking_lmap	/media/imagenes/mobs/FF1 attacking.png		0	0	80	84	0	0
+goblin_standing2_lmap	/media/imagenes/mobs/FF1_standing_79_80.png		0	0	79	80	0	0
+goblin_beinghit_lmap	/media/imagenes/mobs/FF1 beinghitted.png		0	0	82	61	0	0
+goblin_dying_lmap	/media/imagenes/mobs/FF1 dying.png		0	0	91	69	0	0
+goblin_stand2_l0	p	0	goblin_standing2_lmap	0		-	0	0	79	80
+goblin_stand2_l1	p	0	goblin_standing2_lmap	1		-	0	0	79	80
+goblin_stand2_l2	p	0	goblin_standing2_lmap	2		-	0	0	79	80
+goblin_stand2_l3	p	0	goblin_standing2_lmap	3		-	0	0	79	80
+goblin_stand2_l4	p	0	goblin_standing2_lmap	4		-	0	0	79	80
+goblin_stand2_l5	p	0	goblin_standing2_lmap	5		-	0	0	79	80
+goblin_stand2_l6	p	0	goblin_standing2_lmap	6		-	0	0	79	80
+goblin_stand2_l7	p	0	goblin_standing2_lmap	7		-	0	0	79	80
+goblin_stand2_l8	p	0	goblin_standing2_lmap	8		-	0	0	79	80
+goblin_stand2_l9	p	0	goblin_standing2_lmap	9		-	0	0	79	80
+goblin_stand2_l10	p	0	goblin_standing2_lmap	10		-	0	0	79	80
+
+goblin_stand2_l	goblin_stand2_l0;goblin_stand2_l1;goblin_stand2_l2;goblin_stand2_l3;goblin_stand2_l4;goblin_stand2_l5;goblin_stand2_l6;goblin_stand2_l7;goblin_stand2_l8;goblin_stand2_l9;goblin_stand2_l10		0.2
+
+
+
+
+goblin_attack_l0	p	0	goblin_attacking_lmap	0		-	0	0	80	84
+goblin_attack_l1	p	0	goblin_attacking_lmap	1		-	0	0	80	84
+goblin_attack_l2	p	0	goblin_attacking_lmap	2		-	0	0	80	84
+goblin_attack_l3	p	0	goblin_attacking_lmap	3		-	0	0	80	84
+goblin_attack_l4	p	0	goblin_attacking_lmap	4		-	0	0	80	84
+goblin_attack_l5	p	0	goblin_attacking_lmap	5		-	0	0	80	84
+goblin_attack_l6	p	0	goblin_attacking_lmap	6		-	0	0	80	84
+goblin_attack_l7	p	0	goblin_attacking_lmap	7		-	0	0	80	84
+goblin_attack_l8	p	0	goblin_attacking_lmap	8		-	0	0	80	84
+goblin_attack_l9	p	0	goblin_attacking_lmap	9		-	0	0	80	84
+goblin_attack_l10	p	0	goblin_attacking_lmap	10		-	0	0	80	84
+goblin_attack_l11	p	0	goblin_attacking_lmap	11		-	0	0	80	84
+goblin_attack_l12	p	0	goblin_attacking_lmap	12		-	0	0	80	84
+
+goblin_attack_l	goblin_attack_l0;goblin_attack_l1;goblin_attack_l2;goblin_attack_l3;goblin_attack_l4;goblin_attack_l5;goblin_attack_l6;goblin_attack_l7;goblin_attack_l8;goblin_attack_l9;goblin_attack_l10;goblin_attack_l11;goblin_attack_l12		0.2
+
+
+
+
+goblin_hit_l0	p	0	goblin_beinghit_lmap	0		-	0	0	82	61
+goblin_hit_l1	p	0	goblin_beinghit_lmap	1		-	0	0	82	61
+goblin_hit_l2	p	0	goblin_beinghit_lmap	2		-	0	0	82	61
+goblin_hit_l3	p	0	goblin_beinghit_lmap	3		-	0	0	82	61
+goblin_hit_l4	p	0	goblin_beinghit_lmap	4		-	0	0	82	61
+
+goblin_hit_l	goblin_hit_l0;goblin_hit_l1;goblin_hit_l2;goblin_hit_l3;goblin_hit_l4		0.2
+
+
+
+
+goblin_dying_l0	p	0	goblin_dying_lmap	0		-	0	0	91	69
+goblin_dying_l1	p	0	goblin_dying_lmap	1		-	0	0	91	69
+goblin_dying_l2	p	0	goblin_dying_lmap	2		-	0	0	91	69
+goblin_dying_l3	p	0	goblin_dying_lmap	3		-	0	0	91	69
+goblin_dying_l4	p	0	goblin_dying_lmap	4		-	0	0	91	69
+goblin_dying_l5	p	0	goblin_dying_lmap	5		-	0	0	91	69
+goblin_dying_l6	p	0	goblin_dying_lmap	6		-	0	0	91	69
+goblin_dying_l7	p	0	goblin_dying_lmap	7		-	0	0	91	69
+goblin_dying_l8	p	0	goblin_dying_lmap	8		-	0	0	91	69
+goblin_dying_l9	p	0	goblin_dying_lmap	9		-	0	0	91	69
+
+goblin_dying_l	goblin_dying_l0;goblin_dying_l1;goblin_dying_l2;goblin_dying_l3;goblin_dying_l4;goblin_dying_l5;goblin_dying_l6;goblin_dying_l7;goblin_dying_l8;goblin_dying_l9		0.2
+
+
+
+
 /************************tana**********************************
 tana_standing_lmap	/media/imagenes/mobs/FM1_standing_71_108.png		0	0	71	108	0	0
 tana_walking_lmap	/media/imagenes/mobs/FM1_walking.png		0	0	71	108	0	0
+tana_attacking_lmap	/media/imagenes/mobs/FM1 attacking.png		0	0	108	167	0	0
+tana_standing2_lmap	/media/imagenes/mobs/FM1 standing.png		0	0	110	167	0	0
+tana_beinghit_lmap	/media/imagenes/mobs/FM1 beinghitted.png		0	0	122	168	0	0
+tana_dying_lmap	/media/imagenes/mobs/FM1 dying.png		0	0	122	185	0	0
+tana_stand2_l0	p	0	tana_standing2_lmap	0		-	0	0	110	167
+tana_stand2_l1	p	0	tana_standing2_lmap	1		-	0	0	110	167
+tana_stand2_l2	p	0	tana_standing2_lmap	2		-	0	0	110	167
+tana_stand2_l3	p	0	tana_standing2_lmap	3		-	0	0	110	167
+tana_stand2_l4	p	0	tana_standing2_lmap	4		-	0	0	110	167
+tana_stand2_l5	p	0	tana_standing2_lmap	5		-	0	0	110	167
+
+tana_stand2_l	tana_stand2_l0;tana_stand2_l1;tana_stand2_l2;tana_stand2_l3;tana_stand2_l4;tana_stand2_l5		0.2
+
+
+
+
+tana_attack_l0	p	0	tana_attacking_lmap	0		-	0	0	108	167
+tana_attack_l1	p	0	tana_attacking_lmap	1		-	0	0	108	167
+tana_attack_l2	p	0	tana_attacking_lmap	2		-	0	0	108	167
+tana_attack_l3	p	0	tana_attacking_lmap	3		-	0	0	108	167
+tana_attack_l4	p	0	tana_attacking_lmap	4		-	0	0	108	167
+tana_attack_l5	p	0	tana_attacking_lmap	5		-	0	0	108	167
+tana_attack_l6	p	0	tana_attacking_lmap	6		-	0	0	108	167
+tana_attack_l7	p	0	tana_attacking_lmap	7		-	0	0	108	167
+tana_attack_l8	p	0	tana_attacking_lmap	8		-	0	0	108	167
+tana_attack_l9	p	0	tana_attacking_lmap	9		-	0	0	108	167
+tana_attack_l10	p	0	tana_attacking_lmap	10		-	0	0	108	167
+
+tana_attack_l	tana_attack_l0;tana_attack_l1;tana_attack_l2;tana_attack_l3;tana_attack_l4;tana_attack_l5;tana_attack_l6;tana_attack_l7;tana_attack_l8;tana_attack_l9;tana_attack_l10		0.2
+
+
+
+
+tana_hit_l0	p	0	tana_beinghit_lmap	0		-	0	0	122	118
+tana_hit_l1	p	0	tana_beinghit_lmap	1		-	0	0	122	118
+tana_hit_l2	p	0	tana_beinghit_lmap	2		-	0	0	122	118
+tana_hit_l3	p	0	tana_beinghit_lmap	3		-	0	0	122	118
+tana_hit_l4	p	0	tana_beinghit_lmap	4		-	0	0	122	118
+
+tana_hit_l	tana_hit_l0;tana_hit_l1;tana_hit_l2;tana_hit_l3;tana_hit_l4		0.2
+
+
+
+
+tana_dying_l0	p	0	tana_dying_lmap	0		-	0	0	122	185
+tana_dying_l1	p	0	tana_dying_lmap	1		-	0	0	122	185
+tana_dying_l2	p	0	tana_dying_lmap	2		-	0	0	122	185
+tana_dying_l3	p	0	tana_dying_lmap	3		-	0	0	122	185
+tana_dying_l4	p	0	tana_dying_lmap	4		-	0	0	122	185
+tana_dying_l5	p	0	tana_dying_lmap	5		-	0	0	122	185
+tana_dying_l6	p	0	tana_dying_lmap	6		-	0	0	122	185
+tana_dying_l7	p	0	tana_dying_lmap	7		-	0	0	122	185
+tana_dying_l8	p	0	tana_dying_lmap	8		-	0	0	122	185
+tana_dying_l9	p	0	tana_dying_lmap	9		-	0	0	122	185
+tana_dying_l10	p	0	tana_dying_lmap	10		-	0	0	122	185
+tana_dying_l11	p	0	tana_dying_lmap	11		-	0	0	122	185
+tana_dying_l12	p	0	tana_dying_lmap	12		-	0	0	122	185
+tana_dying_l13	p	0	tana_dying_lmap	13		-	0	0	122	185
+tana_dying_l14	p	0	tana_dying_lmap	14		-	0	0	122	185
+tana_dying_l15	p	0	tana_dying_lmap	15		-	0	0	122	185
+tana_dying_l16	p	0	tana_dying_lmap	16		-	0	0	122	185
+tana_dying_l17	p	0	tana_dying_lmap	17		-	0	0	122	185
+tana_dying_l18	p	0	tana_dying_lmap	18		-	0	0	122	185
+tana_dying_l19	p	0	tana_dying_lmap	19		-	0	0	122	185
+
+tana_dying_l	tana_dying_l0;tana_dying_l1;tana_dying_l2;tana_dying_l3;tana_dying_l4;tana_dying_l5;tana_dying_l6;tana_dying_l7;tana_dying_l8;tana_dying_l9;tana_dying_l10;tana_dying_l11;tana_dying_l12;tana_dying_l13;tana_dying_l14;tana_dying_l15;tana_dying_l16;tana_dying_l17;tana_dying_l18;tana_dying_l19		0.2
+
 /************************mutant**********************************
 mutant_standing_lmap	/media/imagenes/mobs/FM2_standing_75_116.png		0	0	75	116	0	0
 mutant_walking_lmap	/media/imagenes/mobs/FM2_walking.png		0	0	78	118	0	0
+mutant_attacking_lmap	/media/imagenes/mobs/FM2 attacking.png		0	0	305	195	0	0
+mutant_standing2_lmap	/media/imagenes/mobs/FM2 standing.png		0	0	122	189	0	0
+mutant_beinghit_lmap	/media/imagenes/mobs/FM2 beinghitted.png		0	0	180	188	0	0
+mutant_dying_lmap	/media/imagenes/mobs/FM2 dying.png		0	0	180	260	0	0
+mutant_stand2_l0	p	0	mutant_standing2_lmap	0		-	0	0	122	189
+mutant_stand2_l1	p	0	mutant_standing2_lmap	1		-	0	0	122	189
+mutant_stand2_l2	p	0	mutant_standing2_lmap	2		-	0	0	122	189
+mutant_stand2_l3	p	0	mutant_standing2_lmap	3		-	0	0	122	189
+mutant_stand2_l4	p	0	mutant_standing2_lmap	4		-	0	0	122	189
+mutant_stand2_l5	p	0	mutant_standing2_lmap	5		-	0	0	122	189
+mutant_stand2_l6	p	0	mutant_standing2_lmap	6		-	0	0	122	189
+mutant_stand2_l7	p	0	mutant_standing2_lmap	7		-	0	0	122	189
+
+mutant_stand2_l	mutant_stand2_l0;mutant_stand2_l1;mutant_stand2_l2;mutant_stand2_l3;mutant_stand2_l4;mutant_stand2_l5;mutant_stand2_l6;mutant_stand2_l7		0.2
+
+
+
+
+mutant_attack_l0	p	0	mutant_attacking_lmap	0		-	0	0	305	195
+mutant_attack_l1	p	0	mutant_attacking_lmap	1		-	0	0	305	195
+mutant_attack_l2	p	0	mutant_attacking_lmap	2		-	0	0	305	195
+mutant_attack_l3	p	0	mutant_attacking_lmap	3		-	0	0	305	195
+mutant_attack_l4	p	0	mutant_attacking_lmap	4		-	0	0	305	195
+mutant_attack_l5	p	0	mutant_attacking_lmap	5		-	0	0	305	195
+mutant_attack_l6	p	0	mutant_attacking_lmap	6		-	0	0	305	195
+mutant_attack_l7	p	0	mutant_attacking_lmap	7		-	0	0	305	195
+mutant_attack_l8	p	0	mutant_attacking_lmap	8		-	0	0	305	195
+mutant_attack_l9	p	0	mutant_attacking_lmap	9		-	0	0	305	195
+mutant_attack_l10	p	0	mutant_attacking_lmap	10		-	0	0	305	195
+mutant_attack_l11	p	0	mutant_attacking_lmap	11		-	0	0	305	195
+mutant_attack_l12	p	0	mutant_attacking_lmap	12		-	0	0	305	195
+mutant_attack_l13	p	0	mutant_attacking_lmap	13		-	0	0	305	195
+mutant_attack_l14	p	0	mutant_attacking_lmap	14		-	0	0	305	195
+mutant_attack_l15	p	0	mutant_attacking_lmap	15		-	0	0	305	195
+mutant_attack_l16	p	0	mutant_attacking_lmap	16		-	0	0	305	195
+mutant_attack_l17	p	0	mutant_attacking_lmap	17		-	0	0	305	195
+
+mutant_attack_l	mutant_attack_l0;mutant_attack_l1;mutant_attack_l2;mutant_attack_l3;mutant_attack_l4;mutant_attack_l5;mutant_attack_l6;mutant_attack_l7;mutant_attack_l8;mutant_attack_l9;mutant_attack_l10;mutant_attack_l11;mutant_attack_l12;mutant_attack_l13;mutant_attack_l14;mutant_attack_l15;mutant_attack_l16;mutant_attack_l17		0.2
+
+
+
+
+mutant_hit_l0	p	0	mutant_beinghit_lmap	0		-	0	0	180	188
+mutant_hit_l1	p	0	mutant_beinghit_lmap	1		-	0	0	180	188
+mutant_hit_l2	p	0	mutant_beinghit_lmap	2		-	0	0	180	188
+mutant_hit_l3	p	0	mutant_beinghit_lmap	3		-	0	0	180	188
+mutant_hit_l4	p	0	mutant_beinghit_lmap	4		-	0	0	180	188
+
+mutant_hit_l	mutant_hit_l0;mutant_hit_l1;mutant_hit_l2;mutant_hit_l3;mutant_hit_l4		0.2
+
+
+
+
+mutant_dying_l0	p	0	mutant_dying_lmap	0		-	0	0	180	260
+mutant_dying_l1	p	0	mutant_dying_lmap	1		-	0	0	180	260
+mutant_dying_l2	p	0	mutant_dying_lmap	2		-	0	0	180	260
+mutant_dying_l3	p	0	mutant_dying_lmap	3		-	0	0	180	260
+mutant_dying_l4	p	0	mutant_dying_lmap	4		-	0	0	180	260
+mutant_dying_l5	p	0	mutant_dying_lmap	5		-	0	0	180	260
+mutant_dying_l6	p	0	mutant_dying_lmap	6		-	0	0	180	260
+mutant_dying_l7	p	0	mutant_dying_lmap	7		-	0	0	180	260
+mutant_dying_l8	p	0	mutant_dying_lmap	8		-	0	0	180	260
+mutant_dying_l9	p	0	mutant_dying_lmap	9		-	0	0	180	260
+mutant_dying_l10	p	0	mutant_dying_lmap	10		-	0	0	180	260
+mutant_dying_l11	p	0	mutant_dying_lmap	11		-	0	0	180	260
+mutant_dying_l12	p	0	mutant_dying_lmap	12		-	0	0	180	260
+mutant_dying_l13	p	0	mutant_dying_lmap	13		-	0	0	180	260
+mutant_dying_l14	p	0	mutant_dying_lmap	14		-	0	0	180	260
+mutant_dying_l15	p	0	mutant_dying_lmap	15		-	0	0	180	260
+mutant_dying_l16	p	0	mutant_dying_lmap	16		-	0	0	180	260
+mutant_dying_l17	p	0	mutant_dying_lmap	17		-	0	0	180	260
+mutant_dying_l18	p	0	mutant_dying_lmap	18		-	0	0	180	260
+mutant_dying_l19	p	0	mutant_dying_lmap	19		-	0	0	180	260
+mutant_dying_l20	p	0	mutant_dying_lmap	20		-	0	0	180	260
+mutant_dying_l21	p	0	mutant_dying_lmap	21		-	0	0	180	260
+mutant_dying_l22	p	0	mutant_dying_lmap	22		-	0	0	180	260
+mutant_dying_l23	p	0	mutant_dying_lmap	23		-	0	0	180	260
+mutant_dying_l24	p	0	mutant_dying_lmap	24		-	0	0	180	260
+mutant_dying_l25	p	0	mutant_dying_lmap	25		-	0	0	180	260
+mutant_dying_l26	p	0	mutant_dying_lmap	26		-	0	0	180	260
+mutant_dying_l27	p	0	mutant_dying_lmap	27		-	0	0	180	260
+mutant_dying_l28	p	0	mutant_dying_lmap	28		-	0	0	180	260
+mutant_dying_l29	p	0	mutant_dying_lmap	29		-	0	0	180	260
+mutant_dying_l30	p	0	mutant_dying_lmap	30		-	0	0	180	260
+mutant_dying_l31	p	0	mutant_dying_lmap	31		-	0	0	180	260
+mutant_dying_l32	p	0	mutant_dying_lmap	32		-	0	0	180	260
+mutant_dying_l33	p	0	mutant_dying_lmap	33		-	0	0	180	260
+mutant_dying_l34	p	0	mutant_dying_lmap	34		-	0	0	180	260
+mutant_dying_l35	p	0	mutant_dying_lmap	35		-	0	0	180	260
+mutant_dying_l36	p	0	mutant_dying_lmap	36		-	0	0	180	260
+mutant_dying_l37	p	0	mutant_dying_lmap	37		-	0	0	180	260
+mutant_dying_l38	p	0	mutant_dying_lmap	38		-	0	0	180	260
+mutant_dying_l39	p	0	mutant_dying_lmap	39		-	0	0	180	260
+mutant_dying_l40	p	0	mutant_dying_lmap	40		-	0	0	180	260
+mutant_dying_l41	p	0	mutant_dying_lmap	41		-	0	0	180	260
+mutant_dying_l42	p	0	mutant_dying_lmap	42		-	0	0	180	260
+mutant_dying_l43	p	0	mutant_dying_lmap	43		-	0	0	180	260
+mutant_dying_l44	p	0	mutant_dying_lmap	44		-	0	0	180	260
+mutant_dying_l45	p	0	mutant_dying_lmap	45		-	0	0	180	260
+mutant_dying_l46	p	0	mutant_dying_lmap	46		-	0	0	180	260
+mutant_dying_l47	p	0	mutant_dying_lmap	47		-	0	0	180	260
+mutant_dying_l48	p	0	mutant_dying_lmap	48		-	0	0	180	260
+mutant_dying_l49	p	0	mutant_dying_lmap	49		-	0	0	180	260
+mutant_dying_l50	p	0	mutant_dying_lmap	50		-	0	0	180	260
+mutant_dying_l51	p	0	mutant_dying_lmap	51		-	0	0	180	260
+mutant_dying_l52	p	0	mutant_dying_lmap	52		-	0	0	180	260
+mutant_dying_l53	p	0	mutant_dying_lmap	53		-	0	0	180	260
+mutant_dying_l54	p	0	mutant_dying_lmap	54		-	0	0	180	260
+mutant_dying_l55	p	0	mutant_dying_lmap	55		-	0	0	180	260
+mutant_dying_l56	p	0	mutant_dying_lmap	56		-	0	0	180	260
+mutant_dying_l57	p	0	mutant_dying_lmap	57		-	0	0	180	260
+mutant_dying_l58	p	0	mutant_dying_lmap	58		-	0	0	180	260
+mutant_dying_l59	p	0	mutant_dying_lmap	59		-	0	0	180	260
+
+mutant_dying_l	mutant_dying_l0;mutant_dying_l1;mutant_dying_l2;mutant_dying_l3;mutant_dying_l4;mutant_dying_l5;mutant_dying_l6;mutant_dying_l7;mutant_dying_l8;mutant_dying_l9;mutant_dying_l10;mutant_dying_l11;mutant_dying_l12;mutant_dying_l13;mutant_dying_l14;mutant_dying_l15;mutant_dying_l16;mutant_dying_l17;mutant_dying_l18;mutant_dying_l19;mutant_dying_l20;mutant_dying_l21;mutant_dying_l22;mutant_dying_l23;mutant_dying_l24;mutant_dying_l25;mutant_dying_l26;mutant_dying_l27;mutant_dying_l28;mutant_dying_l29;mutant_dying_l30;mutant_dying_l31;mutant_dying_l32;mutant_dying_l33;mutant_dying_l34;mutant_dying_l35;mutant_dying_l36;mutant_dying_l37;mutant_dying_l38;mutant_dying_l39;mutant_dying_l40;mutant_dying_l41;mutant_dying_l42;mutant_dying_l43;mutant_dying_l44;mutant_dying_l45;mutant_dying_l46;mutant_dying_l47;mutant_dying_l48;mutant_dying_l49;mutant_dying_l50;mutant_dying_l51;mutant_dying_l52;mutant_dying_l53;mutant_dying_l54;mutant_dying_l55;mutant_dying_l56;mutant_dying_l57;mutant_dying_l58;mutant_dying_l59		0.2
+
+
 /************************Wolverine**********************************
 wolverine	-	0	/media/imagenes/mobs/FD2_standing.png	-
+wolverine_attacking_lmap	/media/imagenes/mobs/FD2 attacking.png		0	0	118	171	0	0
+wolverine_standing2_lmap	/media/imagenes/mobs/FD2 standing.png		0	0	97	107	0	0
+wolverine_beinghit_lmap	/media/imagenes/mobs/FD2 beinghitted.png		0	0	122	123	0	0
+wolverine_dying_lmap	/media/imagenes/mobs/FD2 dying.png		0	0	149	143	0	0
+
+wolverine_stand2_l0	p	0	wolverine_standing2_lmap	0		-	0	0	97	107
+
+wolverine_stand2_l	wolverine_stand2_l0		0.2
+
+
+wolverine_attack_l0	p	0	wolverine_attacking_lmap	0		-	0	0	171	118
+wolverine_attack_l1	p	0	wolverine_attacking_lmap	1		-	0	0	171	118
+wolverine_attack_l2	p	0	wolverine_attacking_lmap	2		-	0	0	171	118
+wolverine_attack_l3	p	0	wolverine_attacking_lmap	3		-	0	0	171	118
+wolverine_attack_l4	p	0	wolverine_attacking_lmap	4		-	0	0	171	118
+wolverine_attack_l5	p	0	wolverine_attacking_lmap	5		-	0	0	171	118
+wolverine_attack_l6	p	0	wolverine_attacking_lmap	6		-	0	0	171	118
+
+wolverine_attack_l	wolverine_attack_l0;wolverine_attack_l1;wolverine_attack_l2;wolverine_attack_l3;wolverine_attack_l4;wolverine_attack_l5;wolverine_attack_l6		0.2
+
+
+
+
+wolverine_hit_l0	p	0	wolverine_beinghit_lmap	0		-	0	0	123	122
+wolverine_hit_l1	p	0	wolverine_beinghit_lmap	1		-	0	0	123	122
+wolverine_hit_l2	p	0	wolverine_beinghit_lmap	2		-	0	0	123	122
+wolverine_hit_l3	p	0	wolverine_beinghit_lmap	3		-	0	0	123	122
+wolverine_hit_l4	p	0	wolverine_beinghit_lmap	4		-	0	0	123	122
+wolverine_hit_l5	p	0	wolverine_beinghit_lmap	5		-	0	0	123	122
+
+wolverine_hit_l	wolverine_hit_l0;wolverine_hit_l1;wolverine_hit_l2;wolverine_hit_l3;wolverine_hit_l4;wolverine_hit_l5		0.2
+
+
+
+
+wolverine_dying_l0	p	0	wolverine_dying_lmap	0		-	0	0	143	149
+wolverine_dying_l1	p	0	wolverine_dying_lmap	1		-	0	0	143	149
+wolverine_dying_l2	p	0	wolverine_dying_lmap	2		-	0	0	143	149
+wolverine_dying_l3	p	0	wolverine_dying_lmap	3		-	0	0	143	149
+wolverine_dying_l4	p	0	wolverine_dying_lmap	4		-	0	0	143	149
+
+wolverine_dying_l	wolverine_dying_l0;wolverine_dying_l1;wolverine_dying_l2;wolverine_dying_l3;wolverine_dying_l4		0.2
+
+
 //************************Griphon*******************************
 grif_standing_lmap	/media/imagenes/mobs/FD1standing.png		0	0	90	137	0	0
 grif_attacking_lmap	/media/imagenes/mobs/FD1 attacking.png		0	0	193	192	0	0
 grif_standing2_lmap	/media/imagenes/mobs/FD1 standing full.png		0	0	155	236	0	0
 grif_beinghit_lmap	/media/imagenes/mobs/FD1 beinghit.png		0	0	122	141	0	0
 grif_dying_lmap	/media/imagenes/mobs/FD1 dying.png		0	0	257	229	0	0
+grif_stand_l0	p	0	grif_standing_lmap	0		-	0	0	90	137
+grif_stand_l1	p	0	grif_standing_lmap	1		-	0	0	90	137
+grif_stand_l2	p	0	grif_standing_lmap	2		-	0	0	90	137
+grif_stand_l3	p	0	grif_standing_lmap	3		-	0	0	90	137
+grif_stand_l4	p	0	grif_standing_lmap	4		-	0	0	90	137
+grif_stand_l5	p	0	grif_standing_lmap	5		-	0	0	90	137
+grif_stand_l6	p	0	grif_standing_lmap	6		-	0	0	90	137
+grif_stand_l7	p	0	grif_standing_lmap	7		-	0	0	90	137
+
+grif_stand_l	grif_stand_l0;grif_stand_l1;grif_stand_l2;grif_stand_l3;grif_stand_l4;grif_stand_l5;grif_stand_l6;grif_stand_l7		0.2
+
+
+
+
+grif_stand2_l0	p	0	grif_standing2_lmap	0		-	0	0	155	236
+grif_stand2_l1	p	0	grif_standing2_lmap	1		-	0	0	155	236
+grif_stand2_l2	p	0	grif_standing2_lmap	2		-	0	0	155	236
+grif_stand2_l3	p	0	grif_standing2_lmap	3		-	0	0	155	236
+grif_stand2_l4	p	0	grif_standing2_lmap	4		-	0	0	155	236
+grif_stand2_l5	p	0	grif_standing2_lmap	5		-	0	0	155	236
+grif_stand2_l6	p	0	grif_standing2_lmap	6		-	0	0	155	236
+grif_stand2_l7	p	0	grif_standing2_lmap	7		-	0	0	155	236
+
+grif_stand2_l	grif_stand2_l0;grif_stand2_l1;grif_stand2_l2;grif_stand2_l3;grif_stand2_l4;grif_stand2_l5;grif_stand2_l6;grif_stand2_l7		0.3
+
+
+
+
+grif_attack_l0	p	0	grif_attacking_lmap	0		-	0	0	193	192
+grif_attack_l1	p	0	grif_attacking_lmap	1		-	0	0	193	192
+grif_attack_l2	p	0	grif_attacking_lmap	2		-	0	0	193	192
+grif_attack_l3	p	0	grif_attacking_lmap	3		-	0	0	193	192
+grif_attack_l4	p	0	grif_attacking_lmap	4		-	0	0	193	192
+grif_attack_l5	p	0	grif_attacking_lmap	5		-	0	0	193	192
+grif_attack_l6	p	0	grif_attacking_lmap	6		-	0	0	193	192
+grif_attack_l7	p	0	grif_attacking_lmap	7		-	0	0	193	192
+grif_attack_l8	p	0	grif_attacking_lmap	8		-	0	0	193	192
+grif_attack_l9	p	0	grif_attacking_lmap	9		-	0	0	193	192
+grif_attack_l10	p	0	grif_attacking_lmap	10		-	0	0	193	192
+grif_attack_l11	p	0	grif_attacking_lmap	11		-	0	0	193	192
+grif_attack_l12	p	0	grif_attacking_lmap	12		-	0	0	193	192
+grif_attack_l13	p	0	grif_attacking_lmap	13		-	0	0	193	192
+
+grif_attack_l	grif_attack_l0;grif_attack_l1;grif_attack_l2;grif_attack_l3;grif_attack_l4;grif_attack_l5;grif_attack_l6;grif_attack_l7;grif_attack_l8;grif_attack_l9;grif_attack_l10;grif_attack_l11;grif_attack_l12;grif_attack_l13		0.2
+
+
+
+
+grif_hit_l0	p	0	grif_beinghit_lmap	0		-	0	0	122	141
+grif_hit_l1	p	0	grif_beinghit_lmap	1		-	0	0	122	141
+grif_hit_l2	p	0	grif_beinghit_lmap	2		-	0	0	122	141
+grif_hit_l3	p	0	grif_beinghit_lmap	3		-	0	0	122	141
+grif_hit_l4	p	0	grif_beinghit_lmap	4		-	0	0	122	141
+grif_hit_l5	p	0	grif_beinghit_lmap	5		-	0	0	122	141
+
+grif_hit_l	grif_hit_l0;grif_hit_l1;grif_hit_l2;grif_hit_l3;grif_hit_l4;grif_hit_l5		0.2
+
+
+
+
+grif_dying_l0	p	0	grif_dying_lmap	0		-	0	0	257	229
+grif_dying_l1	p	0	grif_dying_lmap	1		-	0	0	257	229
+grif_dying_l2	p	0	grif_dying_lmap	2		-	0	0	257	229
+grif_dying_l3	p	0	grif_dying_lmap	3		-	0	0	257	229
+grif_dying_l4	p	0	grif_dying_lmap	4		-	0	0	257	229
+grif_dying_l5	p	0	grif_dying_lmap	5		-	0	0	257	229
+grif_dying_l6	p	0	grif_dying_lmap	6		-	0	0	257	229
+grif_dying_l7	p	0	grif_dying_lmap	7		-	0	0	257	229
+grif_dying_l8	p	0	grif_dying_lmap	8		-	0	0	257	229
+grif_dying_l9	p	0	grif_dying_lmap	9		-	0	0	257	229
+grif_dying_l10	p	0	grif_dying_lmap	10		-	0	0	257	229
+grif_dying_l11	p	0	grif_dying_lmap	11		-	0	0	257	229
+grif_dying_l12	p	0	grif_dying_lmap	12		-	0	0	257	229
+grif_dying_l13	p	0	grif_dying_lmap	13		-	0	0	257	229
+grif_dying_l14	p	0	grif_dying_lmap	14		-	0	0	257	229
+grif_dying_l15	p	0	grif_dying_lmap	15		-	0	0	257	229
+grif_dying_l16	p	0	grif_dying_lmap	16		-	0	0	257	229
+grif_dying_l17	p	0	grif_dying_lmap	17		-	0	0	257	229
+grif_dying_l18	p	0	grif_dying_lmap	18		-	0	0	257	229
+grif_dying_l19	p	0	grif_dying_lmap	19		-	0	0	257	229
+grif_dying_l20	p	0	grif_dying_lmap	20		-	0	0	257	229
+grif_dying_l21	p	0	grif_dying_lmap	21		-	0	0	257	229
+grif_dying_l22	p	0	grif_dying_lmap	22		-	0	0	257	229
+grif_dying_l23	p	0	grif_dying_lmap	23		-	0	0	257	229
+grif_dying_l24	p	0	grif_dying_lmap	24		-	0	0	257	229
+grif_dying_l25	p	0	grif_dying_lmap	25		-	0	0	257	229
+grif_dying_l26	p	0	grif_dying_lmap	26		-	0	0	257	229
+grif_dying_l27	p	0	grif_dying_lmap	27		-	0	0	257	229
+grif_dying_l28	p	0	grif_dying_lmap	28		-	0	0	257	229
+grif_dying_l29	p	0	grif_dying_lmap	29		-	0	0	257	229
+grif_dying_l30	p	0	grif_dying_lmap	30		-	0	0	257	229
+grif_dying_l31	p	0	grif_dying_lmap	31		-	0	0	257	229
+grif_dying_l32	p	0	grif_dying_lmap	32		-	0	0	257	229
+grif_dying_l33	p	0	grif_dying_lmap	33		-	0	0	257	229
+grif_dying_l34	p	0	grif_dying_lmap	34		-	0	0	257	229
+grif_dying_l35	p	0	grif_dying_lmap	35		-	0	0	257	229
+grif_dying_l36	p	0	grif_dying_lmap	36		-	0	0	257	229
+grif_dying_l37	p	0	grif_dying_lmap	37		-	0	0	257	229
+grif_dying_l38	p	0	grif_dying_lmap	38		-	0	0	257	229
+grif_dying_l39	p	0	grif_dying_lmap	39		-	0	0	257	229
+grif_dying_l40	p	0	grif_dying_lmap	40		-	0	0	257	229
+grif_dying_l41	p	0	grif_dying_lmap	41		-	0	0	257	229
+grif_dying_l42	p	0	grif_dying_lmap	42		-	0	0	257	229
+grif_dying_l43	p	0	grif_dying_lmap	43		-	0	0	257	229
+grif_dying_l44	p	0	grif_dying_lmap	44		-	0	0	257	229
+grif_dying_l45	p	0	grif_dying_lmap	45		-	0	0	257	229
+
+grif_dying_l	grif_dying_l0;grif_dying_l1;grif_dying_l2;grif_dying_l3;grif_dying_l4;grif_dying_l5;grif_dying_l6;grif_dying_l7;grif_dying_l8;grif_dying_l9;grif_dying_l10;grif_dying_l11;grif_dying_l12;grif_dying_l13;grif_dying_l14;grif_dying_l15;grif_dying_l16;grif_dying_l17;grif_dying_l18;grif_dying_l19;grif_dying_l20;grif_dying_l21;grif_dying_l22;grif_dying_l23;grif_dying_l24;grif_dying_l25;grif_dying_l26;grif_dying_l27;grif_dying_l28;grif_dying_l29;grif_dying_l30;grif_dying_l31;grif_dying_l32;grif_dying_l33;grif_dying_l34;grif_dying_l35;grif_dying_l36;grif_dying_l37;grif_dying_l38;grif_dying_l39;grif_dying_l40;grif_dying_l41;grif_dying_l42;grif_dying_l43;grif_dying_l44;grif_dying_l45		0.2
 //************************BOSS*******************************
 boss_standing_lmap	/media/imagenes/mobs/FBoss_standing_86_134.png		0	0	86	134	0	0
 boss_attacking_lmapa	/media/imagenes/mobs/FBossattackfull.png		0	0	349	355	0	0
@@ -326,65 +859,19 @@ casa4_11	p	0	casa4_map	11		-	0	0	192	123
 casa4_12	p	0	casa4_map	12		-	0	0	192	123
 casa4_13	p	0	casa4_map	13		-	0	0	192	123
 
-//**********************************Orc Animap*************************************************
-//separacion cuadro por cuadro del movimiento del orco quieto mirando a la izquierda
-orc_stand_l0	p	0	orco_standing_lmap	0		-	0	0	46	64
-orc_stand_l1	p	0	orco_standing_lmap	1		-	0	0	46	64
-orc_stand_l2	p	0	orco_standing_lmap	2		-	0	0	46	64
-orc_stand_l3	p	0	orco_standing_lmap	3		-	0	0	46	64
-orc_stand_l4	p	0	orco_standing_lmap	4		-	0	0	46	64
-orc_stand_l5	p	0	orco_standing_lmap	5		-	0	0	46	64
-orc_stand_l6	p	0	orco_standing_lmap	6		-	0	0	46	64
-orc_stand_l7	p	0	orco_standing_lmap	7		-	0	0	46	64
-orc_stand_l8	p	0	orco_standing_lmap	8		-	0	0	46	64
-orc_stand_l9	p	0	orco_standing_lmap	9		-	0	0	46	64
-orc_stand_l10	p	0	orco_standing_lmap	10		-	0	0	46	64
-orc_stand_l11	p	0	orco_standing_lmap	11		-	0	0	46	64
-orc_stand_l12	p	0	orco_standing_lmap	12		-	0	0	46	64
-orc_stand_l13	p	0	orco_standing_lmap	13		-	0	0	46	64
-orc_stand_l14	p	0	orco_standing_lmap	14		-	0	0	46	64
-orc_stand_l15	p	0	orco_standing_lmap	15		-	0	0	46	64
+guard_standing_rmap	/media/imagenes/npc/FGuardia.png		0	0	52	96	0	0
 
-//separacion cuadro por cuadro del movimiento del orco quieto mirando a la derecha
-orc_stand_r0	p	0	orco_standing_lmap	0		x	0	0	46	64
-orc_stand_r1	p	0	orco_standing_lmap	1		x	0	0	46	64
-orc_stand_r2	p	0	orco_standing_lmap	2		x	0	0	46	64
-orc_stand_r3	p	0	orco_standing_lmap	3		x	0	0	46	64
-orc_stand_r4	p	0	orco_standing_lmap	4		x	0	0	46	64
-orc_stand_r5	p	0	orco_standing_lmap	5		x	0	0	46	64
-orc_stand_r6	p	0	orco_standing_lmap	6		x	0	0	46	64
-orc_stand_r7	p	0	orco_standing_lmap	7		x	0	0	46	64
-orc_stand_r8	p	0	orco_standing_lmap	8		x	0	0	46	64
-orc_stand_r9	p	0	orco_standing_lmap	9		x	0	0	46	64
-orc_stand_r10	p	0	orco_standing_lmap	10		x	0	0	46	64
-orc_stand_r11	p	0	orco_standing_lmap	11		x	0	0	46	64
-orc_stand_r12	p	0	orco_standing_lmap	12		x	0	0	46	64
-orc_stand_r13	p	0	orco_standing_lmap	13		x	0	0	46	64
-orc_stand_r14	p	0	orco_standing_lmap	14		x	0	0	46	64
-orc_stand_r15	p	0	orco_standing_lmap	15		x	0	0	46	64
+guard_stand_r0	p	0	guard_standing_rmap	0		x	0	0	52	96
+guard_stand_r1	p	0	guard_standing_rmap	1		x	0	0	52	96
+guard_stand_r2	p	0	guard_standing_rmap	2		x	0	0	52	96
+guard_stand_r3	p	0	guard_standing_rmap	3		x	0	0	52	96
+guard_stand_r4	p	0	guard_standing_rmap	4		x	0	0	52	96
+guard_stand_r5	p	0	guard_standing_rmap	5		x	0	0	52	96
+guard_stand_r6	p	0	guard_standing_rmap	6		x	0	0	52	96
+guard_stand_r7	p	0	guard_standing_rmap	7		x	0	0	52	96
 
-//separacion cuadro por cuadro del movimiento del orco caminando a la izquierda
-orc_walking_l0	p	0	orco_walking_lmap	0		-	0	0	54	64
-orc_walking_l1	p	0	orco_walking_lmap	1		-	0	0	54	64
-orc_walking_l2	p	0	orco_walking_lmap	2		-	0	0	54	64
-orc_walking_l3	p	0	orco_walking_lmap	3		-	0	0	54	64
-orc_walking_l4	p	0	orco_walking_lmap	4		-	0	0	54	64
-orc_walking_l5	p	0	orco_walking_lmap	5		-	0	0	54	64
-orc_walking_l6	p	0	orco_walking_lmap	6		-	0	0	54	64
-orc_walking_l7	p	0	orco_walking_lmap	7		-	0	0	54	64
-orc_walking_l8	p	0	orco_walking_lmap	8		-	0	0	54	64
-orc_walking_l9	p	0	orco_walking_lmap	9		-	0	0	54	64
-//separacion cuadro por cuadro del movimiento del orco caminando a la derecha
-orc_walking_r0	p	0	orco_walking_lmap	0		x	0	0	54	64
-orc_walking_r1	p	0	orco_walking_lmap	1		x	0	0	54	64
-orc_walking_r2	p	0	orco_walking_lmap	2		x	0	0	54	64
-orc_walking_r3	p	0	orco_walking_lmap	3		x	0	0	54	64
-orc_walking_r4	p	0	orco_walking_lmap	4		x	0	0	54	64
-orc_walking_r5	p	0	orco_walking_lmap	5		x	0	0	54	64
-orc_walking_r6	p	0	orco_walking_lmap	6		x	0	0	54	64
-orc_walking_r7	p	0	orco_walking_lmap	7		x	0	0	54	64
-orc_walking_r8	p	0	orco_walking_lmap	8		x	0	0	54	64
-orc_walking_r9	p	0	orco_walking_lmap	9		x	0	0	54	64
+guard_stand_r	guard_stand_r0;guard_stand_r1;guard_stand_r2;guard_stand_r3;guard_stand_r4;guard_stand_r5;guard_stand_r6;guard_stand_r7		0.2
+
 
 //**********************************Goblin Animap*************************************************
 //separacion cuadro por cuadro del movimiento del goblin quieto mirando a la izquierda
@@ -576,7 +1063,7 @@ grif_walk_l5	p	0	grif_standing_lmap	5		-	0	0	90	137
 grif_walk_l6	p	0	grif_standing_lmap	6		-	0	0	90	137
 grif_walk_l7	p	0	grif_standing_lmap	7		-	0	0	90	137
 
-grif_walk_l	grif_walking_l0;grif_walking_l1;grif_walking_l2;grif_walking_l3;grif_walking_l4;grif_walking_l5;grif_walking_l6;grif_walking_l7		0.3
+grif_walk_l	grif_walk_l0;grif_walk_l1;grif_walk_l2;grif_walk_l3;grif_walk_l4;grif_walk_l5;grif_walk_l6;grif_walk_l7		0.3
 
 //separacion cuadro por cuadro del movimiento del griphon caminando a la derecha
 grif_walk_r0	p	0	grif_standing_lmap	0		x	0	0	90	137
@@ -590,44 +1077,6 @@ grif_walk_r7	p	0	grif_standing_lmap	7		x	0	0	90	137
 
 grif_walk_r	grif_walking_r0;grif_walking_r1;grif_walking_r2;grif_walking_r3;grif_walking_r4;grif_walking_r5;grif_walking_r6;grif_walking_r7		0.3
 
-//separacion cuadro por cuadro del movimiento del griphon caminando a la derecha
-grif_stand_l0	p	0	grif_standing2_lmap	0		-	0	0	155	236
-grif_stand_l1	p	0	grif_standing2_lmap	1		-	0	0	155	236
-grif_stand_l2	p	0	grif_standing2_lmap	2		-	0	0	155	236
-grif_stand_l3	p	0	grif_standing2_lmap	3		-	0	0	155	236
-grif_stand_l4	p	0	grif_standing2_lmap	4		-	0	0	155	236
-grif_stand_l5	p	0	grif_standing2_lmap	5		-	0	0	155	236
-grif_stand_l6	p	0	grif_standing2_lmap	6		-	0	0	155	236
-grif_stand_l7	p	0	grif_standing2_lmap	7		-	0	0	155	236
-
-grif_stand_l	grif_stand_l0;grif_stand_l1;grif_stand_l2;grif_stand_l3;grif_stand_l4;grif_stand_l5;grif_stand_l6;grif_stand_l7		0.2
-
-//separacion cuadro por cuadro del movimiento del grif atacando a la izquierda
-grif_attacking_l0	p	0	grif_attacking_lmap	0		-	0	0	193	192
-grif_attacking_l1	p	0	grif_attacking_lmap	1		-	0	0	193	192
-grif_attacking_l2	p	0	grif_attacking_lmap	2		-	0	0	193	192
-grif_attacking_l3	p	0	grif_attacking_lmap	3		-	0	0	193	192
-grif_attacking_l4	p	0	grif_attacking_lmap	4		-	0	0	193	192
-grif_attacking_l5	p	0	grif_attacking_lmap	5		-	0	0	193	192
-grif_attacking_l6	p	0	grif_attacking_lmap	6		-	0	0	193	192
-grif_attacking_l7	p	0	grif_attacking_lmap	7		-	0	0	193	192
-grif_attacking_l8	p	0	grif_attacking_lmap	8		-	0	0	193	192
-grif_attacking_l9	p	0	grif_attacking_lmap	9		-	0	0	193	192
-grif_attacking_l10	p	0	grif_attacking_lmap	10		-	0	0	193	192
-grif_attacking_l11	p	0	grif_attacking_lmap	11		-	0	0	193	192
-grif_attacking_l12	p	0	grif_attacking_lmap	12		-	0	0	193	192
-grif_attacking_l13	p	0	grif_attacking_lmap	13		-	0	0	193	192
-
-grif_attack_l	grif_attacking_l0;grif_attacking_l1;grif_attacking_l2;grif_attacking_l3;grif_attacking_l4;grif_attacking_l5;grif_attacking_l6;grif_attacking_l7;grif_attacking_l8;grif_attacking_l9;grif_attacking_l10;grif_attacking_l11;grif_attacking_l12;grif_attacking_l13;		0.3
-
-grif_hit_l0	p	0	grif_beinghit_lmap	0		-	0	0	122	141
-grif_hit_l1	p	0	grif_beinghit_lmap	1		-	0	0	122	141
-grif_hit_l2	p	0	grif_beinghit_lmap	2		-	0	0	122	141
-grif_hit_l3	p	0	grif_beinghit_lmap	3		-	0	0	122	141
-grif_hit_l4	p	0	grif_beinghit_lmap	4		-	0	0	122	141
-grif_hit_l5	p	0	grif_beinghit_lmap	5		-	0	0	122	141
-
-grif_hit_l	grif_hit_l0;grif_hit_l1;grif_hit_l2;grif_hit_l3;grif_hit_l4;grif_hit_l5		0.2
 
 //**********************************boss Animap*************************************************
 boss_standing_lmap	/media/imagenes/mobs/FBoss_standing_86_134.png		0	0	86	134	0	0
@@ -735,10 +1184,6 @@ human_dr		human_dr0;human_dr1;human_dr2;human_dr3;human_dr4;human_dr5;human_dr6;
 pj_stand_r		pj_stand_r0;pj_stand_r1;pj_stand_r2;pj_stand_r3;pj_stand_r4;pj_stand_r5		0.3
 pj_attack1_r		pj_attack1_r0;pj_attack1_r1;pj_attack1_r2		0.3
 
-orc_stand_l	orc_stand_l0;orc_stand_l1;orc_stand_l2;orc_stand_l3;orc_stand_l4;orc_stand_l5;orc_stand_l6;orc_stand_l7;orc_stand_l8;orc_stand_l9;orc_stand_l10;orc_stand_l11;orc_stand_l12;orc_stand_l13;orc_stand_l14;orc_stand_l15		0.2
-orc_stand_r	orc_stand_r0;orc_stand_r1;orc_stand_r2;orc_stand_r3;orc_stand_r4;orc_stand_r5;orc_stand_r6;orc_stand_r7;orc_stand_r8;orc_stand_r9;orc_stand_r10;orc_stand_r11;orc_stand_r12;orc_stand_r13;orc_stand_r14;orc_stand_r15		0.2
-orc_walk_l	orc_walking_l0;orc_walking_l1;orc_walking_l2;orc_walking_l3;orc_walking_l4;orc_walking_l5;orc_walking_l6;orc_walking_l7;orc_walking_l8;orc_walking_l9		0.3
-orc_walk_r	orc_walking_r0;orc_walking_r1;orc_walking_r2;orc_walking_r3;orc_walking_r4;orc_walking_r5;orc_walking_r6;orc_walking_r7;orc_walking_r8;orc_walking_r9		0.3
 goblin_stand_l	goblin_stand_l0;goblin_stand_l1;goblin_stand_l2;goblin_stand_l3;goblin_stand_l4;goblin_stand_l5;goblin_stand_l6;goblin_stand_l7;goblin_stand_l8;goblin_stand_l9;goblin_stand_l10;		0.2
 goblin_stand_r	goblin_stand_r0;goblin_stand_r1;goblin_stand_r2;goblin_stand_r3;goblin_stand_r4;goblin_stand_r5;goblin_stand_r6;goblin_stand_r7;goblin_stand_r8;goblin_stand_r9;goblin_stand_r10;		0.2
 goblin_walk_l	goblin_walking_l0;goblin_walking_l1;goblin_walking_l2;goblin_walking_l3;goblin_walking_l4;goblin_walking_l5;goblin_walking_l6;goblin_walking_l7;goblin_walking_l8;goblin_walking_l9;goblin_walking_l10;goblin_walking_l11;goblin_walking_l12;goblin_walking_l13;		0.3

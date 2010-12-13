@@ -234,18 +234,18 @@ public class Mob extends Personaje {
                 break;
             case 7:
                 if (xdir < 0) {
-                    setGraphic("orc_walk_l");
+                    setGraphic("goblin2_walk_l");
                 } else if (xdir > 0) {
-                    setGraphic("orc_walk_r");
+                    setGraphic("goblin2_walk_r");
                 } else if (ydir > 0) {
-                    setGraphic("orc_walk_l");
+                    setGraphic("goblin2_walk_l");
                 } else if (ydir < 0) {
-                    setGraphic("orc_walk_r");
+                    setGraphic("goblin2_walk_r");
                 } else if (ydir == 0 && xdir == 0) {
-                    if (this.getGraphic().equals("orc_walk_l")) {
-                        setGraphic("orc_stand_l");
-                    } else if (this.getGraphic().equals("orc_walk_r")) {
-                        setGraphic("orc_stand_r");
+                    if (this.getGraphic().equals("goblin2_walk_l")) {
+                        setGraphic("goblin2_stand_l");
+                    } else if (this.getGraphic().equals("goblin2_walk_r")) {
+                        setGraphic("goblin2_stand_r");
                     }
                 }
                 break;
@@ -300,7 +300,7 @@ public class Mob extends Personaje {
                     }
                 }
                 startAnim();
-                System.out.println(this.getImageName());
+                
 //                System.out.println(eng.getAnimation(this.getAnimId()).);
                 break;
             case 12:
