@@ -178,8 +178,8 @@ public class Icono extends JGObject {
 
     }
    public void paintEquipo() {
-        x = 100 + eng.viewXOfs();
-        y = 100 + eng.viewYOfs();
+        x = xAnt + eng.viewXOfs();
+        y = yAnt + eng.viewYOfs();
 
     }
 }
