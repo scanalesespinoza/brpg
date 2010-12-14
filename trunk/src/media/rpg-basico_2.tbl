@@ -130,9 +130,11 @@ zancadilla	-	0	/media/imagenes/habilidades/zancadilla.jpg	-
 //                      Menu
 //******************************************************************************
 barracombate	-	0	/media/imagenes/menu/barracombate.png	-
+barrainfo	-	0	/media/imagenes/menu/barrainfo.png	-
 combate	-	0	/media/imagenes/menu/batalla.jpg	-
 lateral	-	0	/media/imagenes/menu/lateral.jpg	-
 monitor	-	0	/media/imagenes/menu/monitor.png	-
+desc	-	0	/media/imagenes/menu/desc.png	-
 titulo	-	0	/media/imagenes/menu/titulo.png	-
 trade	-	0	/media/imagenes/menu/trade.jpg	-
 tab_usable	-	0	/media/imagenes/menu/usable.png	-
