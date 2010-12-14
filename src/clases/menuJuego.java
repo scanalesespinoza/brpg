@@ -271,9 +271,19 @@ public class menuJuego extends JGObject {
                     eng.setColor(JGColor.yellow);
                     eng.drawString("Ptos. Restantes:" + pj.getTotalPuntosHabilidad(), eng.viewWidth() - 100, 25, -1);
                     eng.setColor(JGColor.white);
-                } else {
+                }else{
+                    HashMap<Short,Boton> boton2 = botones_habilidad_aumentar;
+                    Iterator iti = boton2.entrySet().iterator();
+                    while (iti.hasNext()) {
+                        Map.Entry e = (Map.Entry) iti.next();
+                        boton2.get(Short.parseShort(e.getKey().toString())).suspend();
+                    }
+
                 }
 
+                suspenderBotones(2);
+                suspenderBotones(3);
+                suspenderBotones(4);
                 break;
             case 2/*"mision"*/:
                 menuActual = 2;
@@ -442,8 +452,8 @@ public class menuJuego extends JGObject {
 //                menuActual = 3;
         int cont = 0;
         Iterator it3 = pj.getInventario().getObjetos().entrySet().iterator();
-        linea_y = 400;
-        linea_x = 110;
+        linea_y = 395;
+        linea_x = 120;
         while (it3.hasNext()) {
             Map.Entry e = (Map.Entry) it3.next();
             //Si tiene almenos una cantidad de objetos lo dibujo
@@ -789,34 +799,37 @@ public class menuJuego extends JGObject {
                 eng.drawImage(eng.viewWidth() - 100, 210, "vestir", false);
             }
         }
+
         if (!eng.inGameState("InCombat")) {
-            new Boton("usable", "tab_usable", 110, 370, (int) Math.pow(2, 5), 2, 30/*id boton*/);
-            new Boton("equipo", "tab_equipo", 210, 370, (int) Math.pow(2, 5), 2, 30/*id boton*/);
-            new Boton("colec", "tab_colec", 310, 370, (int) Math.pow(2, 5), 2, 30/*id boton*/);
+            new Boton("usable", "tab_usable", 00, 370, (int) Math.pow(2, 5), 2, 32/*id boton*/);
+            new Boton("equipo", "tab_equipo", 100, 370, (int) Math.pow(2, 5), 2, 32/*id boton*/);
+            new Boton("colec", "tab_colec", 200, 370, (int) Math.pow(2, 5), 2, 32/*id boton*/);
 
 
             if (filtrar == 0) {
-                eng.drawImage(110, 370, "tab_usable_dest", false);
-                eng.drawImage(210, 370, "tab_equipo", false);
-                eng.drawImage(310, 370, "tab_colec", false);
+                eng.drawImage(0, 370, "tab_usable_dest", false);
+                eng.drawImage(100, 370, "tab_equipo", false);
+                eng.drawImage(200, 370, "tab_colec", false);
             } else if (filtrar == 1) {
-                eng.drawImage(110, 370, "tab_usable", false);
-                eng.drawImage(210, 370, "tab_equipo_dest", false);
-                eng.drawImage(310, 370, "tab_colec", false);
+                eng.drawImage(0, 370, "tab_usable", false);
+                eng.drawImage(100, 370, "tab_equipo_dest", false);
+                eng.drawImage(200, 370, "tab_colec", false);
             } else if (filtrar == 2) {
-                eng.drawImage(110, 370, "tab_usable", false);
-                eng.drawImage(210, 370, "tab_equipo", false);
-                eng.drawImage(310, 370, "tab_colec_dest", false);
+                eng.drawImage(0, 370, "tab_usable", false);
+                eng.drawImage(100, 370, "tab_equipo", false);
+                eng.drawImage(200, 370, "tab_colec_dest", false);
             }
         } else {
             eng.removeObjects("equipo", (int) Math.pow(2, 5));
             eng.removeObjects("colec", (int) Math.pow(2, 5));
-            eng.drawImage(110, 370, "tab_usable", false);
+            eng.drawImage(0, 370, "tab_usable", false);
         }
+//        eng.drawImage(300, 370, "barrainfo", false);
 
-        setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
+
+        setSeccion(new JGPoint(120, 440), new JGPoint(12, 1));
         generaSeccion(2);
-        setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
+        setSeccion(new JGPoint(120, 395), new JGPoint(12, 1));
         generaSeccion(1);
 //        if (eng.inGameState("InCombat")) {
 //            setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
@@ -835,11 +848,12 @@ public class menuJuego extends JGObject {
         }
 //        if ((eng.inGameState("InWorld")) && ((eng.getKey(73)) || (eng.getKey(105)))) {
 
-//
+////
 //            setSeccion(new JGPoint(eng.viewWidth() - 80, 40), new JGPoint(2, 10));
 //            generaSeccion(1);
 //        }
         if (eng.inGameState("InReward")) {
+            eng.drawImage(150, 200, "trade", false);
             setSeccion(new JGPoint(200, 200), new JGPoint(4, 4));
             generaSeccion(0);
         }

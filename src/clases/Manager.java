@@ -603,6 +603,7 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
+        
         pj.getMisiones().getFecha();
         //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
@@ -655,11 +656,11 @@ public class Manager extends JGEngine {
             }
 
         }
-        seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
+        seccion.setSeccion(new JGPoint(120, 440), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
         menu.recibeHm(hmIconoHabilidades, 2, filtro);
 
-        seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
+        seccion.setSeccion(new JGPoint(120, 395), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
         menu.recibeHm(hmIconoItem, 1, filtro);
 
@@ -2232,8 +2233,10 @@ public class Manager extends JGEngine {
                                             pj.getHabilidades().aumentarNivel((short) boton.getId());
                                             pj.gastarPuntosHabilidad();
                                         }
-                                        seccion.setWorking(false);
-                                        setLimpiarIconos(true);
+//                                        mostrarVestir=-1;
+//                                        seccion.removerIconos();
+//                                        seccion.setWorking(false);
+
                                     }
                                     break;
                                 case 2://Menú está en misión
@@ -2287,13 +2290,14 @@ public class Manager extends JGEngine {
 
 
                 if (obj.y >= viewYOfs() + (viewHeight() - 180)) {
-                    if ((getMouseButton(3) && (getKey(66))) || (getMouseButton(3) && (getKey(98)))) {
-                        clearMouseButton(3);
-                        seccion.removerIconos();
-                        cursor.setVentana((byte) 4);
-                        pj.getInventario().eliminarItem((short) boton.getId(), (short) 1);
-                        seccion.setWorking(false);
-
+                   if ((getMouseButton(3)) &&((getKey(66))||(getKey(98)))) {
+                        if(boton.getTipo_boton()==4){
+                            clearMouseButton(3);
+                            seccion.removerIconos();
+                            cursor.setVentana((byte) 4);
+                            pj.getInventario().eliminarItem((short) boton.getId(), (short) 1);
+                            seccion.setWorking(false);
+                        }
                     }
                     if (boton.getTipo_boton() == 3 && getMouseButton(3)) {
                         Objeto item = pj.getInventario().getObjetos().get((short) boton.getId()).getObjeto();
@@ -2360,6 +2364,8 @@ public class Manager extends JGEngine {
                         cursor.setVentana((byte) 1);
                     }
                 }
+
+
             }
 
             //click en icono
@@ -2410,6 +2416,7 @@ public class Manager extends JGEngine {
                             new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + ((Icono) obj).getItem().getBeneficio() + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
                             pj.usarItem(((Icono) obj).getItem());
                         }
+                        removerEquipo();
                         seccion.removerIconos();
                         seccion.setWorking(false);
                     }
@@ -2440,6 +2447,7 @@ public class Manager extends JGEngine {
                         seccion.setWorking(false);
 //                        clearKey(90);clearKey(122);
                     }
+
                 }
             }
         }
