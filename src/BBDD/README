@@ -15,5 +15,5 @@ diálogos de misión y algunos de personaje...
 -DB_WEB_TT2_V2.0 -Agregado campo Objeto.beneficio predeterminado = 0
 -DB_WEB_TT2_V2.5 -Agregado tabla para funcionalidad de equipar objetos y que in-
 fluya en las estadísticas del personaje jugador
-
+-DB_WEB_TT2_V3.0 -Agregado las gráficas, como dato
 /******************************************************************************/
