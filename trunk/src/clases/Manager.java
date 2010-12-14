@@ -3,7 +3,6 @@ package clases;
 import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGPoint;
@@ -577,6 +576,8 @@ public class Manager extends JGEngine {
         if (checkCollision((int) Math.pow(2, 2), pj) == Math.pow(2, 2)) {
             mob_concurrente = pj.getEnemigo();
             setGameState("InCombat");
+            removerEquipo();
+            mostrarVestir=0;
             menu.restablecerDinamicaCombate();
             menu.anim_mob_flag = "Parado";
             menu.anim_mob = mob_concurrente.anim_parado;
@@ -646,6 +647,41 @@ public class Manager extends JGEngine {
             }
 
         } else {
+            removerEquipo();
+            if (mostrarVestir == -1) {
+                mostrarVestir = 1;
+
+            }
+
+
+        }
+        seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
+        seccion.generaSeccion(pj, 0);
+        menu.recibeHm(hmIconoHabilidades, 2, filtro);
+
+        seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
+        seccion.generaSeccion(pj, 1);
+        menu.recibeHm(hmIconoItem, 1, filtro);
+
+
+//        seccion.removerIconos();
+//        seccion.setWorking(false);
+//        seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
+//        seccion.generaSeccion(pj, 1);
+//        menu.recibeHm(hmIconoItem, 1, filtro);
+
+        seccion.setWorking(true);
+
+        cursor.desplegarInformacion();
+
+        moveObjects(null, 1);
+
+        menu.paintB(pj);
+        menu.menuActual(getTeclaMenu(), pj);
+
+    }
+
+    public void removerEquipo(){
             if (equipo1 != null) {
 //                equipo1.x = 200+ viewXOfs();
 //                equipo1.y = 200 + viewYOfs();
@@ -671,38 +707,11 @@ public class Manager extends JGEngine {
 //                equipo5.y = 400 + viewYOfs();
                 equipo5.remove();
             }
-            if (mostrarVestir == -1) {
-                mostrarVestir = 1;
-            }
-
-        }
-        seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
-        seccion.generaSeccion(pj, 0);
-        menu.recibeHm(hmIconoHabilidades, 2, filtro);
-
-        seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
-        seccion.generaSeccion(pj, 1);
-        menu.recibeHm(hmIconoItem, 1, filtro);
-
-//        seccion.removerIconos();
-//        seccion.setWorking(false);
-//        seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
-//        seccion.generaSeccion(pj, 1);
-//        menu.recibeHm(hmIconoItem, 1, filtro);
-
-        seccion.setWorking(true);
-
-        cursor.desplegarInformacion();
-
-        moveObjects(null, 1);
-
-        menu.paintB(pj);
-        menu.menuActual(getTeclaMenu(), pj);
-
     }
 
     @Override
     public void doFrame() {
+//        System.out.println("mostraaaaaaaaar "+mostrarVestir);
         moveObjects(null, (int) Math.pow(2, 5)); //muevo los botones que estan en el menu
 //        if ((inGameStateNextFrame("InWorld") && !inGameState("InWorld"))) {
 //            //seccion.removerIconos();
@@ -769,6 +778,10 @@ public class Manager extends JGEngine {
     }
 
     public void paintFrameInCombat() {
+        mostrarVestir=0;
+        removerEquipo();
+        menu.vestir(false);
+
         if (std_mob_daño != null) {
             std_mob_daño.paintB();
         }
@@ -2590,24 +2603,25 @@ public class Manager extends JGEngine {
                                     
                                         cantidad++;
                                         if (personaje.getTipo() == 0) {
-                                            if (mostrarVestir > 0) {
+                                            if (mostrarVestir == 1&& inGameState("InWorld") ) {
+
 //                                            System.out.println("entra again"+inv.getEquipo().get(obje.getIdObjeto()).getEquipado());
                                                 if (obje.getTipo() == 1 && inv.getEquipo().get(obje.getIdObjeto()).getEquipado() == 1) {
                                                     if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 1) {
-                                                        equipo1 = new Icono("1icono", 100, 100, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                        equipo1 = new Icono("1icono", 115, 80, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo1.suspend();
                                                     } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 2) {
-                                                        equipo2 = new Icono("2icono", 100, 150, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                        equipo2 = new Icono("2icono", 110, 150, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo2.suspend();
                                                     } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 3) {
-                                                        equipo3 = new Icono("3icono", 100, 200, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                        equipo3 = new Icono("3icono", 70, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo3.suspend();
                                                     } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 4) {
-                                                        equipo4 = new Icono("4icono", 100, 250, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                        equipo4 = new Icono("4icono", 140, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo4.suspend();
                                                     } else {
 //                                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
-                                                        equipo5 = new Icono("5icono", 100, 300, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                        equipo5 = new Icono("5icono", 110, 300, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo5.suspend();
                                                     }
                                                 }
@@ -2637,11 +2651,14 @@ public class Manager extends JGEngine {
 //                                                }
                                             }
                                         } else {
+                                            if (inv.tieneItem(obje.getIdObjeto())) {
+                                            System.out.println("Dibuje a este qlio 2: " + obje.getNombre() + " " + obje.getNombreGrafico());
                                             hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
                                             setFont(new JGFont("Arial", 0, 24));
                                             //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                             this.recorrido.x += 37;
                                             this.tabla.x--;
+                                            }
                                         }
                                     
 

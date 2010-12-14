@@ -50,17 +50,17 @@ casa_5	-	20	/media/imagenes/tiles/Terrible_Casa_HechaMier_Tunning_V2.png	-
 ******************************************************************define mob/npc
 mario	-	0	/media/imagenes/mobs/mario.gif	-
 guardia	-	0	/media/imagenes/npc/guard.gif	-
-viajero	-	0	/media/imagenes/npc/npc_4.gif	x
-mono	-	0	/media/imagenes/npc/npc_1.gif	-
-people	-	0	/media/imagenes/npc/npc_2.gif	-
-people2	-	0	/media/imagenes/npc/npc_3.gif	-
+viajero	-	0	/media/imagenes/npc/npc_4.png	x
+mono	-	0	/media/imagenes/npc/npc_1.png	-
+people	-	0	/media/imagenes/npc/npc_2.png	-
+people2	-	0	/media/imagenes/npc/npc_3.png	-
 people3	-	0	/media/imagenes/npc/npc_people3.png	-
 people4	-	0	/media/imagenes/npc/npc_people4.png	-
-perdido	-	0	/media/imagenes/npc/npc_5.gif	x
+perdido	-	0	/media/imagenes/npc/npc_5.png	x
 escultura	-	0	/media/imagenes/npc/npc_escultura.png	x
-mision_1	-	0	/media/imagenes/npc/mision_1.gif	-
-mision_2	-	0	/media/imagenes/npc/mision_2.gif	-
-mision_3	-	0	/media/imagenes/npc/mision_3.gif	-
+mision_1	-	0	/media/imagenes/npc/mision_1.png	-
+mision_2	-	0	/media/imagenes/npc/mision_2.png	-
+mision_3	-	0	/media/imagenes/npc/mision_3.png	-
 mob_1	-	0	/media/imagenes/mobs/mob_animal.png	-
 mob_2	-	0	/media/imagenes/mobs/mob_2.png	-
 mob_3	-	0	/media/imagenes/mobs/mob_3.gif	-
@@ -83,8 +83,8 @@ casa5Npc	-	0	/media/imagenes/npc/npc4.png	-
 *************************************************************define imagenes GUI
 cursor	-	0	/media/imagenes/menu/cursor.png	-
 //define imagen del npc vendedor
-vendedor_1	-	0	/media/imagenes/npc/vendedor_1.gif	-
-vendedor_2	-	0	/media/imagenes/npc/vendedor_2.gif	-
+vendedor_1	-	0	/media/imagenes/npc/vendedor_1.png	-
+vendedor_2	-	0	/media/imagenes/npc/vendedor_2.png	-
 //define imagen de la ventana de trade
 ventana trade	-	0	/media/imagenes/npc/ventana_trade.png	-
 //define imagen boton cerrar
@@ -99,7 +99,6 @@ abandonar	-	0	/media/imagenes/menu/abandonar.png	-
 mini_mapa	-	0	/media/imagenes/menu/mini_mapa2.png	-
 //define img personaje combate
 personaje_combate	-	0	/media/imagenes/personaje/goku.jpg	-
-mob_combate	-	0	/media/imagenes/mobs/ihsahn.jpg	-
 //******************************************************************************
 //                      Iconos
 //******************************************************************************
@@ -108,17 +107,31 @@ hongo	-	0	/media/imagenes/item/hongo.jpg	-
 pescado	-	0	/media/imagenes/item/pessscado.jpg	-
 pocion	-	0	/media/imagenes/item/pocion.jpg	-
 zapatos	-	0	/media/imagenes/item/zapatos.jpg	-
+capa	-	0	/media/imagenes/item/capa.jpg	-
+amuleto	-	0	/media/imagenes/item/amuleto.jpg	-
+casco	-	0	/media/imagenes/item/casco.jpg	-
+cincel	-	0	/media/imagenes/item/cincel.jpg	-
+martillo	-	0	/media/imagenes/item/martillo.jpg	-
+pegamento	-	0	/media/imagenes/item/pegamento.jpg	-
+roca	-	0	/media/imagenes/item/roca.jpg	-
 //habilidades
 boladefuego	-	0	/media/imagenes/habilidades/bolas-de-fuego.jpg	-
 curacion	-	0	/media/imagenes/habilidades/curacion.jpg	-
 golpesimple	-	0	/media/imagenes/habilidades/golpesimple.jpg	-
 saetadehielo	-	0	/media/imagenes/habilidades/saetadehielo.jpg	-
+acuchillar	-	0	/media/imagenes/habilidades/acuchillar.jpg	-
+aturdir	-	0	/media/imagenes/habilidades/aturdir.jpg	-
+empujon	-	0	/media/imagenes/habilidades/empujon.jpg	-
+envenenar	-	0	/media/imagenes/habilidades/envenenar.jpg	-
+maldecir	-	0	/media/imagenes/habilidades/maldecir.jpg	-
+vendar	-	0	/media/imagenes/habilidades/vendar.jpg	-
+zancadilla	-	0	/media/imagenes/habilidades/zancadilla.jpg	-
 //******************************************************************************
 //                      Menu
 //******************************************************************************
 barracombate	-	0	/media/imagenes/menu/barracombate.png	-
 combate	-	0	/media/imagenes/menu/batalla.jpg	-
-lateral	-	0	/media/imagenes/menu/lateral.png	-
+lateral	-	0	/media/imagenes/menu/lateral.jpg	-
 monitor	-	0	/media/imagenes/menu/monitor.png	-
 titulo	-	0	/media/imagenes/menu/titulo.png	-
 trade	-	0	/media/imagenes/menu/trade.jpg	-
