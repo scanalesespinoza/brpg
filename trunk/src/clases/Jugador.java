@@ -181,7 +181,7 @@ public class Jugador extends Personaje {
 
     public void subirNivel() {
         eng.playAudio("evento", "subir_nivel", false);
-        this.aumentarNivel();
+//        this.aumentarNivel();
         this.aumentarStats();
         this.setExperiencia(0);
         this.setLimiteSuperiorExperiencia((int) this.calcularLimiteExperiencia());
@@ -635,7 +635,6 @@ public class Jugador extends Personaje {
             this.hp = this.hpMax;
         } else {
             this.hp = 0;
-            muerte();
         }
     }
 
@@ -643,7 +642,7 @@ public class Jugador extends Personaje {
         if (menu.termineAnimacionMuerte) {
             this.aumentarDisminuirDinero((int) -(this.getDinero() * ((float) (0.2))));
             eng.setGameState("InDeath");
-            eng.playAudio("ambiental", "muerte", true);
+//            eng.playAudio("ambiental", "muerte", true);
         }
     }
 
