@@ -207,18 +207,17 @@ CREATE TABLE IF NOT EXISTS `habilidad` (
 -- Volcar la base de datos para la tabla `habilidad`
 --
 
-INSERT INTO `habilidad` (`id`, `nombre`, `descripcion`, `danobeneficio`, `costobasico`, `nivelmaximo`, `nom_grafico`, `tiempoEspera`) VALUES
-(1, 'Golpe simple', 'golpe con el puño', -10, 5, 7, 'golpesimple', 2),
-(3, 'Bola de fuego', 'Bola de fuego que quema al oponente', -11, 5, 10, 'boladefuego', 2),
-(4, 'Saeta de hielo', 'Ataque que daña y congela al oponente', -7, 4, 9, 'saetadehielo', 2),
-(5, 'Acuchillar', 'Daño físico moderado', -8, 3, 10, 'singrafico', 2),
-(6, 'Curación', 'Cura daño de forma instantánea', 12, 2, 11, 'curacion', 7),
-(7, 'Envenenar', 'Lanza un veneno a tu oponente', -5, 4, 7, 'singrafico', 2),
-(8, 'Aturdir', 'Daña físicamente e inhabilita al oponente', -5, 6, 4, 'singrafico', 2),
-(9, 'Vendar', 'Cura daño mínimo', 4, 2, 6, 'singrafico', 2),
-(10, 'Zancadilla ', 'Golpe a las piernas del oponente', -6, 3, 9, 'singrafico', 2),
-(11, 'Maldecir', 'Lanza una maldición de daño al oponente', -7, 3, 8, 'singrafico', 2),
-(12, 'Empujón', 'Aleja al oponente sin daño', 0, 2, 4, 'singrafico', 2);
+INSERT INTO `habilidad` VALUES (1, 'Golpe simple', 'golpe con el puño', -10, 5, 7, 'golpesimple', 2);
+INSERT INTO `habilidad` VALUES (3, 'Bola de fuego', 'Bola de fuego que quema al oponente', -11, 5, 10, 'boladefuego', 2);
+INSERT INTO `habilidad` VALUES (4, 'Saeta de hielo', 'Ataque que daña y congela al oponente', -7, 4, 9, 'saetadehielo', 2);
+INSERT INTO `habilidad` VALUES (5, 'Acuchillar', 'Daño físico moderado', -8, 3, 10, 'acuchillar', 2);
+INSERT INTO `habilidad` VALUES (6, 'Curación', 'Cura daño de forma instantánea', 12, 2, 11, 'curacion', 2);
+INSERT INTO `habilidad` VALUES (7, 'Envenenar', 'Lanza un veneno a tu oponente', -5, 4, 7, 'envenenar', 2);
+INSERT INTO `habilidad` VALUES (8, 'Aturdir', 'Daña físicamente e inhabilita al oponente', -5, 6, 4, 'aturdir', 2);
+INSERT INTO `habilidad` VALUES (9, 'Vendar', 'Cura daño mínimo', 4, 2, 6, 'vendar', 2);
+INSERT INTO `habilidad` VALUES (10, 'Zancadilla ', 'Golpe a las piernas del oponente', -6, 3, 9, 'zancadilla', 2);
+INSERT INTO `habilidad` VALUES (11, 'Maldecir', 'Lanza una maldición de daño al oponente', -7, 3, 8, 'maldecir', 2);
+INSERT INTO `habilidad` VALUES (12, 'Empujón', 'Aleja al oponente sin daño', 0, 2, 4, 'empujon', 2);
 
 -- --------------------------------------------------------
 
@@ -372,18 +371,17 @@ CREATE TABLE IF NOT EXISTS `objeto` (
 -- Volcar la base de datos para la tabla `objeto`
 --
 
-INSERT INTO `objeto` (`id`, `nombre`, `descripcion`, `tipo`, `peso`, `valordinero`, `usocombate`, `beneficio`, `nom_grafico`) VALUES
-(1, 'zapato', 'Este item se puede utilizar en el pie\r\n', 1, 15, 1000, 0, 0, 'zapatos'),
-(2, 'capa', 'Este item se puede utilizar en la espalda\r\n', 1, 3, 30, 0, 0, 'singrafico'),
-(3, 'Poción curadora', 'Esta poción revitaliza tus puntos de vida', 0, 23, 2, 1, 100, 'pocion'),
-(4, 'Roca pesada', 'Roca pesada para tirarse de un puente', 2, 4900, 5000, 0, 0, 'singrafico'),
-(5, 'Pescado', 'Alimento para curarse paultinamente', 0, 100, 1000, 0, 12, 'pescado'),
-(6, 'Hongo', 'Vegetal que cura enfermedades simples', 0, 1, 5, 1, 20, 'hongo'),
-(7, 'Amuleto de Koh', 'Muestra fehaciente de tu victoria ante Koh', 2, 15, 3000, 0, 0, 'singrafico'),
-(8, 'Cincel', 'Artefacto para tallar', 2, 10, 100, 0, 0, 'singrafico'),
-(9, 'Martillo', 'Artefacto para golpear otras piezas', 2, 10, 250, 0, 0, 'singrafico'),
-(10, 'Pegamento rápido', 'Une dos piezas por medio de un lazo químico', 2, 25, 59, 0, 0, 'singrafico'),
-(11, 'Casco de seguridad', 'Cuida tu cabeza frente a impactos', 1, 30, 900, 0, 0, 'singrafico');
+INSERT INTO `objeto` VALUES (1, 'zapato', 'Este item se puede utilizar en el pie\r\n', 1, 15, 1000, 0, 0, 'zapatos');
+INSERT INTO `objeto` VALUES (2, 'capa', 'Este item se puede utilizar en la espalda\r\n', 1, 3, 30, 0, 0, 'capa');
+INSERT INTO `objeto` VALUES (3, 'Poción curadora', 'Esta poción revitaliza tus puntos de vida', 1, 23, 2, 3, 100, 'pocion');
+INSERT INTO `objeto` VALUES (4, 'Roca pesada', 'Roca pesada para tirarse de un puente', 2, 4900, 5000, 0, 0, 'roca');
+INSERT INTO `objeto` VALUES (5, 'Pescado', 'Alimento para curarse paultinamente', 0, 100, 1000, 0, 0, 'pescado');
+INSERT INTO `objeto` VALUES (6, 'Hongo', 'Vegetal que cura enfermedades simples', 0, 1, 5, 1, 0, 'hongo');
+INSERT INTO `objeto` VALUES (7, 'Amuleto de Koh', 'Muestra fehaciente de tu victoria ante Koh', 2, 15, 3000, 0, 0, 'amuleto');
+INSERT INTO `objeto` VALUES (8, 'Cincel', 'Artefacto para tallar', 1, 10, 100, 1, 50, 'cincel');
+INSERT INTO `objeto` VALUES (9, 'Martillo', 'Artefacto para golpear otras piezas', 1, 10, 250, 1, 50, 'martillo');
+INSERT INTO `objeto` VALUES (10, 'Pegamento rápido', 'Une dos piezas por medio de un lazo químico', 2, 25, 59, 0, 0, 'pegamento');
+INSERT INTO `objeto` VALUES (11, 'Casco de seguridad', 'Cuida tu cabeza frente a impactos', 1, 30, 900, 0, 0, 'casco');
 
 -- --------------------------------------------------------
 
