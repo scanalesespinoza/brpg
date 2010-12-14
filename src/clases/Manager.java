@@ -30,7 +30,7 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 15;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 13;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
@@ -380,10 +380,10 @@ public class Manager extends JGEngine {
                         mob_medio_1 = new Mob("tana_stand_r","tana_dying_l",20, "tana_hit_l", 5, "tana_attack_l", 11, "tana_stand2_l", 6  ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 9:
-                        mob_medio_2 = new Mob("mutant_stand_r","mutant_dying_l",60, "mutant_hit_l", 5, "mutant_attack_l", 18, "mutant_stand2_l", 8 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        //mob_medio_2 = new Mob("mutant_stand_r","mutant_dying_l",60, "mutant_hit_l", 5, "mutant_attack_l", 18, "mutant_stand2_l", 8 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 10:
-                        mob_dificil_1 = new Mob("grif_walk_l", "grif_dying_l",46, "grif_hit_l", 6, "grif_attack_l", 14, "grif_stand2_l", 8 , 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        //mob_dificil_1 = new Mob("grif_walk_l", "grif_dying_l",46, "grif_hit_l", 6, "grif_attack_l", 14, "grif_stand2_l", 8 , 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 11:
                         mob_dificil_2 = new Mob("wolverine","wolverine_dying_l",5, "wolverine_hit_l", 6, "wolverine_attack_l", 7, "wolverine_stand2_l", 1  , 0.0,res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
@@ -401,8 +401,8 @@ public class Manager extends JGEngine {
         mob_facil_1.cargarDatos(objetos, habilidades, misiones);
         mob_facil_2.cargarDatos(objetos, habilidades, misiones);
         mob_medio_1.cargarDatos(objetos, habilidades, misiones);
-        mob_medio_2.cargarDatos(objetos, habilidades, misiones);
-        mob_dificil_1.cargarDatos(objetos, habilidades, misiones);
+        //mob_medio_2.cargarDatos(objetos, habilidades, misiones);
+//        mob_dificil_1.cargarDatos(objetos, habilidades, misiones);
         mob_dificil_2.cargarDatos(objetos, habilidades, misiones);
         mob_jefe_final.cargarDatos(objetos, habilidades, misiones);
         npc_vendedor_1.cargarDatos(objetos, habilidades, misiones);
@@ -414,8 +414,8 @@ public class Manager extends JGEngine {
         mob_facil_1.resume_in_view = false;
         mob_facil_2.resume_in_view = false;
         mob_medio_1.resume_in_view = false;
-        mob_medio_2.resume_in_view = false;
-        mob_dificil_1.resume_in_view = false;
+        //mob_medio_2.resume_in_view = false;
+        //mob_dificil_1.resume_in_view = false;
         mob_dificil_2.resume_in_view = false;
         mob_jefe_final.resume_in_view = false;
         this.pj = new Jugador("human_", "pj_stand_r", 6, "pj_stand_r", 6, "pj_attack1_r", 3, "pj_stand_r", 6, 1, idJugador, conect);
@@ -911,6 +911,10 @@ public class Manager extends JGEngine {
                     }
                 };
             }
+        }
+        if (pj.getHp() <= 0){
+            terminar_combate = true;
+            pj.muerte();
         }
         if (mob_concurrente.getHp() <= 0) {
             terminar_combate = true;
@@ -2085,7 +2089,7 @@ public class Manager extends JGEngine {
                                             mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
                                         } else {
                                             mjs = "¡ +" + misi.getRecompensaExp() + " de experiencia !";
-                                            eng.playAudio("evento", "hallar_algo", false);
+//                                            eng.playAudio("evento", "hallar_algo", false);
                                         }
                                         new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
 

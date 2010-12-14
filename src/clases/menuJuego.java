@@ -692,6 +692,12 @@ public class menuJuego extends JGObject {
                 }
             } else {//la pelea acabó-...buscar quien murió
                 if (pj.getHp() <= 0) {
+                    this.continua_anim_pj = true;
+                    this.anim_pj_flag = "Muerte";
+                    this.frame_pj = 0;
+                    this.tick_actual_pj = 0;
+                    termineAnimacionMuerte = true;
+                    dibujandoAnimacionMuerte = true;
                     //Aca setear animacion dying del pj y Standing del mob
                 } else if (pj.getEnemigo().getHp() <= 0 && !dibujandoAnimacionMuerte) {//Mob Murió, muestro animación
                     anim_mob = pj.getEnemigo().anim_muerte;
