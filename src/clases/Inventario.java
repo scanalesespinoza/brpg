@@ -58,17 +58,8 @@ public class Inventario {
      * en el hashmap
      */
     public void salvarInventario() {
-        System.out.println();
-        System.out.println();
-        System.out.println();
-
-        System.out.println();
-        System.out.println("--updates----updates----updates----updates----updates----updates----updates--");
         bdUpdates();
-        System.out.println();
-        System.out.println("--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs");
         bdInserts();
-        System.out.println("--deletes----deletes----deletes----deletes----deletes----deletes----deletes--");
         bdDeletes();
     }
 
@@ -95,7 +86,6 @@ public class Inventario {
                     if (cant > 0) {
                         String StrSql = "UPDATE inventario" + " SET cantidad = " + cant + "," + "     estaEquipado = " + equipado + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND objeto_id = " + item.getIdObjeto();
                         conexion.Ejecutar(StrSql);
-                        System.out.println(StrSql);
 
                     }
                 }
@@ -117,8 +107,6 @@ public class Inventario {
                 Item item = this.getItem(Short.parseShort(e.getKey().toString()));
                 int cant = item.getCantidad();
                 int equipado = 0;
-                System.out.println("DEBERIA ITEM QLIO "+ item.getObjeto().getNombre());
-                System.out.println("DEBERIA  "+ item.isNewItem());
                 if (item.isNewItem()) {
                     if (item.getObjeto().getTipo() == 1) {
                         if (equipo.get(item.getObjeto().getIdObjeto()).getEquipado() == 1) {
@@ -126,10 +114,8 @@ public class Inventario {
                             equipado = 1;
                         }
                     }
-                    System.out.println("CANTI "+cant);
                     if (cant > 0) {
                         String StrSql = "INSERT INTO inventario VALUES(" + this.getIdPersonaje() + "," + item.getIdObjeto() + "," + cant + "," + equipado + ")";
-                        System.out.println(StrSql);
                         conexion.Ejecutar(StrSql);
                         item.setNewItem(false);
                     }
@@ -159,7 +145,6 @@ public class Inventario {
                 }
                 if (cant <= 0) {
                     String StrSql = "DELETE FROM inventario WHERE" + " personaje_id = " + this.getIdPersonaje() + " AND objeto_id = " + item.getIdObjeto();
-                    System.out.println(StrSql);
                     conexion.Ejecutar(StrSql);
                 }
             }

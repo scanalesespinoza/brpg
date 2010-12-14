@@ -747,7 +747,6 @@ public class Jugador extends Personaje {
         try {
             String StrSql = "UPDATE jugador "
                     + "   SET `vitalidad` = "+this.vitalidad+", `destreza` = "+this.destreza+", `sabiduria`= "+this.sabiduria+", `fuerza` = "+this.fuerza+", `totalpuntoshabilidad`= "+this.totalPuntosHabilidad+", `totalpuntosestadistica` = "+this.totalPuntosEstadistica+", `limitesuperiorexperiencia`= "+this.limiteSuperiorExperiencia+", `experiencia` = "+this.experiencia+", `pesosoportado` = "+this.pesoSoportado+", `dinero` = "+this.dinero+"  WHERE personaje_id = " + this.getIdPersonaje();
-            System.out.println(StrSql);
             conexion.Ejecutar(StrSql);
         } catch (Exception ex) {
             Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
