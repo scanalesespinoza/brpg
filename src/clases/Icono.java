@@ -173,6 +173,7 @@ public class Icono extends JGObject {
         y = yAnt + eng.viewYOfs();
 
         eng.setFont(new JGFont("Arial", 0, 24));
+        eng.setTextOutline(1, JGColor.black);
         eng.setColor(JGColor.white);
         eng.drawString("" + this.cantidad, xAnt+10, yAnt+10, 0);
 

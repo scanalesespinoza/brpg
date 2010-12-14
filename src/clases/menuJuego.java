@@ -735,14 +735,14 @@ public class menuJuego extends JGObject {
             eng.drawImage(eng.viewWidth() -200 -(int) (eng.getImage(img).getSize().x /2) , 200 -(int)(eng.getImage(img).getSize().y/2), img, false);
         }
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
-//        eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
+        eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
         eng.setFont(new JGFont("Arial", 1, 18));
         eng.setColor(JGColor.white);
         eng.drawString("Items", 20, eng.viewHeight() - 70, -1);
         eng.drawString("Habilidades", 20, eng.viewHeight() - 40, -1);
         eng.setFont(new JGFont("Arial", 1, 14));
 
-        eng.drawImage(eng.viewWidth() - 90, 0, "lateral", false);
+        eng.drawImage(eng.viewWidth() - 110, 0, "lateral", false);
         eng.drawImage(eng.viewWidth() - 90, 315, "titulo", false);
         eng.drawImage(eng.viewWidth() - 90, 5, "titulo", false);
 
@@ -750,22 +750,23 @@ public class menuJuego extends JGObject {
          * Equipo
          */
         HashMap<Short,String> hmEquipo = new HashMap<Short,String>(pj.getInventario().itemEquipados(pj.getInventario().getEquipo(),(Personaje) pj));
-        if(this.vestir){
-                eng.drawImage(50, 50, "vestimenta", false);
-                eng.drawImage(100, 100, hmEquipo.get((short)1), false);
-                eng.drawImage(100, 150, hmEquipo.get((short)2), false);
-                eng.drawImage(100, 200, hmEquipo.get((short)3), false);
-                eng.drawImage(100, 250, hmEquipo.get((short)4), false);
-                eng.drawImage(100, 300, hmEquipo.get((short)5), false);
-                }
 
 
         if(eng.inGameState("InWorld")){
-        new Boton("vestir", "vestir", eng.viewWidth()-100, 171, (int) Math.pow(2, 5), 2, 31/*id boton*/);
+        if(this.vestir){
+                eng.drawImage(50, 50, "vestimenta", false);
+                eng.drawImage(115, 80, hmEquipo.get((short)1), false);
+                eng.drawImage(110, 150, hmEquipo.get((short)2), false);
+                eng.drawImage(70, 210, hmEquipo.get((short)3), false);
+                eng.drawImage(140, 210, hmEquipo.get((short)4), false);
+                eng.drawImage(110, 300, hmEquipo.get((short)5), false);
+                }
+
+        new Boton("vestir", "vestir", eng.viewWidth()-105, 191, (int) Math.pow(2, 5), 2, 31/*id boton*/);
             if (this.vestir) {
-                eng.drawImage( eng.viewWidth()-100, 171, "vestir_select", false);
+                eng.drawImage( eng.viewWidth()-100, 191, "vestir_select", false);
             } else {
-                eng.drawImage( eng.viewWidth()-100, 171, "vestir", false);
+                eng.drawImage( eng.viewWidth()-100, 191, "vestir", false);
             }
         }
         if (!eng.inGameState("InCombat")) {
@@ -805,7 +806,7 @@ public class menuJuego extends JGObject {
         if (eng.inGameState("InCommerce")) {
 
 //            eng.drawImage(20, 20, "trade", false);
-//            eng.drawImage(150, 200, "trade", false);
+            eng.drawImage(150, 200, "trade", false);
             eng.drawImage(230, 320, "cerrar", false);
 //            setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
 //            generaSeccion(1);
