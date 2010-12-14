@@ -432,9 +432,9 @@ public class Manager extends JGEngine {
             public void alarm() {
                 if (!inGameState("InCombat")) {
                     pj.regenerarMp(5);
-                    new StdScoring("scoring_pj_mp", ((viewWidth() * 8) / 100), (double) 312, -0.1, -0.5, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue}, 5, false);
+                    new StdScoring("scoring_pj_mp", ((viewWidth() * 30) / 100), (double) 322 -270, -0.1, -0.005, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue}, 5, false);
                     pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
-                    new StdScoring("scoring_pj", ((viewWidth() * 10) / 100), (double) 302, -0.09, -0.5, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
+                    new StdScoring("scoring_pj", ((viewWidth() * 32) / 100), (double) 302 - 270, -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
                 }
             }
         };
@@ -609,15 +609,15 @@ public class Manager extends JGEngine {
 
         setColor(JGColor.black);
         // aca graficar todas las wes hermosas y lindas de la warifaifa
-        drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302, 0);
+        drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302 - 280, 0);
 
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs()- 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs()- 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
         setColor(JGColor.blue);
         setFont(new JGFont("Arial", 0, 10));
-        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322, 0, false);
+        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322- 280, 0, false);
         setColor(JGColor.green);
-        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337, 0, false);
+        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337- 280, 0, false);
 
 
         if (mostrarVestir == 1) {
@@ -806,22 +806,22 @@ public class Manager extends JGEngine {
 
         setColor(JGColor.black);
         // aca graficar todas las wes hermosas y lindas de la warifaifa
-        drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302, 0);
+        drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302 - 280, 0);
 
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs()- 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs()- 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
 
         setColor(JGColor.black);
-        drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 70) / 100), (double) 302, 0);
-        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 322 + viewYOfs(), (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
-        drawRect(viewWidth() * 70 / 100 + viewXOfs(), 337 + viewYOfs(), (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
+        drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 60) / 100), (double) 302- 280, 0);
+        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
+        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 337 + viewYOfs()- 280, (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
 
         setFont(new JGFont("Arial", 0, 10));
-        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322, 0, false);
-        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 77) / 100) + 9, 322, 0, false);
+        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322- 280, 0, false);
+        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 322- 280, 0, false);
         setColor(JGColor.green);
-        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337, 0, false);
-        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 77) / 100) + 9, 337, 0, false);
+        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337- 280, 0, false);
+        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 337- 280, 0, false);
 
         if (mob_concurrente.getIdProximoAtaque() != -1) {
             std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white}, 10);
@@ -848,7 +848,7 @@ public class Manager extends JGEngine {
                     //el personaje puede atacar por que no está bloqueado
                     dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
                     if (dañoBeneficio < 0) {
-                        dañoBeneficio -= ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
+                        dañoBeneficio += ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
                         //se convierte en daño hacia el enemigo
                         mob_concurrente.recibirDañoBeneficio(-(mob_concurrente.getHpMax() / 4));
                         //si no es beneficio al jugador
@@ -892,7 +892,7 @@ public class Manager extends JGEngine {
                 //el MOB puede atacar por que no está bloqueado
                 dañoBeneficio = mob_concurrente.getHabilidades().getDañoBeneficio(mob_concurrente.getIdProximoAtaque());
                 if (dañoBeneficio < 0) {
-                    dañoBeneficio -= ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
+                    dañoBeneficio += ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
                     //se convierte en daño hacia el jugador
                     pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
                     //playAudio("evento_combate", "golpe2", false);
@@ -1982,9 +1982,9 @@ public class Manager extends JGEngine {
         public void hit(JGObject obj) {
             if (obj instanceof Icono) {
                 if (((Icono) obj).getTipo() == 0) {//habilidades{
-                    ventanaManager.mostrarDatoFreak("Habilidad: " + ((Icono) obj).getHabilidad().getNombre());
+                    menu.mostrarDatoFreak("Habilidad: " + ((Icono) obj).getHabilidad().getNombre());
                 } else {
-                    ventanaManager.mostrarDatoFreak("Ítem: " + ((Icono) obj).getItem().getNombre());
+                    menu.mostrarDatoFreak("Ítem: " + ((Icono) obj).getItem().getNombre());
                 }
             }
 //                         ventanaManager.mostrarDatoFreak("Obj: "+obj.colid);
