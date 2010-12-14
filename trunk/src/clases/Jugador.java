@@ -15,6 +15,7 @@ import jgame.*;
  * @author gerald
  */
 public class Jugador extends Personaje {
+
     private short idJugador;
     private HashMap<Short, Integer> preCompra = new HashMap<Short, Integer>();
     private Mob enemigo;
@@ -44,8 +45,8 @@ public class Jugador extends Personaje {
         this.frames_anim_parado = frames_parado;
         this.frames_anim_muerte = frames_muerte;
         this.anim_inworld = graf;
-        setTileBBox(16, 50, 64 ,16);
-        
+        setTileBBox(16, 50, 64, 16);
+
     }
     private short vitalidad;
     private short destreza;
@@ -172,7 +173,7 @@ public class Jugador extends Personaje {
 
     public Jugador(dbDelegate con) {
         super(con);
-        
+
     }
     /* Aumenta la todas las  cosas inherentes al subir de nivel
      * 
@@ -190,7 +191,9 @@ public class Jugador extends Personaje {
      */
 
     public void aumentarNivel() {
-        this.setNivel((short) (this.getNivel() + 1));
+        if (!(this.getNivel() + 1 >= 100)) {
+            this.setNivel((short) (this.getNivel() + 1));
+        }
     }
 
     private double calcularLimiteExperiencia() {
@@ -414,8 +417,8 @@ public class Jugador extends Personaje {
     }
 
     public int getDestreza() {
-        int totalDes=0;
-        totalDes=this.destreza+this.getInventario().getDestreza();
+        int totalDes = 0;
+        totalDes = this.destreza + this.getInventario().getDestreza();
         return totalDes;
     }
 
@@ -448,8 +451,8 @@ public class Jugador extends Personaje {
     }
 
     public int getFuerza() {
-        int totalFue=0;
-        totalFue=this.fuerza+this.getInventario().getFuerza();
+        int totalFue = 0;
+        totalFue = this.fuerza + this.getInventario().getFuerza();
         return totalFue;
     }
 
@@ -474,8 +477,8 @@ public class Jugador extends Personaje {
     }
 
     public int getSabiduria() {
-        int totalSab=0;
-        totalSab=this.sabiduria+this.getInventario().getSabiduria();
+        int totalSab = 0;
+        totalSab = this.sabiduria + this.getInventario().getSabiduria();
         return totalSab;
     }
 
@@ -504,8 +507,8 @@ public class Jugador extends Personaje {
      * @return
      */
     public int getVitalidad() {
-        int totalVit=0;
-        totalVit=this.vitalidad+this.getInventario().getVitalidad();
+        int totalVit = 0;
+        totalVit = this.vitalidad + this.getInventario().getVitalidad();
         return totalVit;
     }
 
@@ -736,5 +739,18 @@ public class Jugador extends Personaje {
 
     public void setLinkMenu(menuJuego menu) {
         this.menu = menu;
+    }
+
+    @Override
+    public void salvarPersonaje() {
+        super.salvarPersonaje();
+        try {
+            String StrSql = "UPDATE jugador "
+                    + "   SET `vitalidad` = "+this.vitalidad+", `destreza` = "+this.destreza+", `sabiduria`= "+this.sabiduria+", `fuerza` = "+this.fuerza+", `totalpuntoshabilidad`= "+this.totalPuntosHabilidad+", `totalpuntosestadistica` = "+this.totalPuntosEstadistica+", `limitesuperiorexperiencia`= "+this.limiteSuperiorExperiencia+", `experiencia` = "+this.experiencia+", `pesosoportado` = "+this.pesoSoportado+", `dinero` = "+this.dinero+"  WHERE personaje_id = " + this.getIdPersonaje();
+            System.out.println(StrSql);
+            conexion.Ejecutar(StrSql);
+        } catch (Exception ex) {
+            Logger.getLogger(Personaje.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -39,33 +39,7 @@ public class Inventario {
 //     * Carga los objetos desde la base de datos asociados al personaje
 //     * las deja en el arreglo "objetos"
 //     */
-//    public void cargarInventario(short id) {
-////        this.conexion = new dbDelegate();
-//        String StrSql = "SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto,"
-//                + " inv.cantidad cantidad, inv.estaEquipado estaEquipado "
-//                + "  FROM inventario inv"
-//                + " WHERE inv.Personaje_id=" + id;
-//        try {
-//            ResultSet res = conexion.Consulta(StrSql);
-//            byte i = 0;
-//            while (res.next()) {
-//                Item item = new Item();
-//                item.setIdObjeto(res.getShort("idObjeto"));
-//                item.setIdPersonaje(res.getShort("idPersonaje"));
-//                item.setCantidad(res.getShort("cantidad"));
-//                item.setEstaEquipado(res.getShort("estaequipado"));
-//                item.setNewItem(false);
-//                Objeto obj = new Objeto();
-//                obj.setObjeto(item.getIdObjeto());
-//                item.setObjeto(obj);
-//                this.objetos.put(item.getIdObjeto(), item);
-//                i += 1;
-//            }
-////            this.conexion.cierraDbCon();
-//        } catch (Exception ex) {
-//            System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
-//        }
-//    }
+//  
     /************************IMPORTANTE*****************************************/
     //    Para manipular correctamente la base de datos, se ha diseñado una serie de
     //    convenciones:
@@ -84,9 +58,18 @@ public class Inventario {
      * en el hashmap
      */
     public void salvarInventario() {
-        bdDeletes();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        System.out.println();
+        System.out.println("--updates----updates----updates----updates----updates----updates----updates--");
         bdUpdates();
+        System.out.println();
+        System.out.println("--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs--Insertrs");
         bdInserts();
+        System.out.println("--deletes----deletes----deletes----deletes----deletes----deletes----deletes--");
+        bdDeletes();
     }
 
     /**
@@ -96,17 +79,27 @@ public class Inventario {
      */
     private void bdUpdates() {
         try {
-            this.conexion = new dbDelegate();
             Iterator it = this.getObjetos().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry e = (Map.Entry) it.next();
                 Item item = this.getItem(Short.parseShort(e.getKey().toString()));
-                if (!item.isNewItem() && item.getCantidad() > 0) {
-                    String StrSql = "UPDATE inventario" + " SET cantidad = " + item.getCantidad() + "," + "     estaEquipado = " + item.getEstaEquipado() + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND objeto_id = " + item.getIdObjeto();
-                    conexion.Ejecutar(StrSql);
+                int cant = item.getCantidad();
+                int equipado = 0;
+                if (!item.isNewItem()) {
+                    if (item.getObjeto().getTipo() == 1) {
+                        if (equipo.get(item.getObjeto().getIdObjeto()).getEquipado() == 1) {
+                            cant += 1;
+                            equipado = 1;
+                        }
+                    }
+                    if (cant > 0) {
+                        String StrSql = "UPDATE inventario" + " SET cantidad = " + cant + "," + "     estaEquipado = " + equipado + " WHERE personaje_id = " + this.getIdPersonaje() + "   AND objeto_id = " + item.getIdObjeto();
+                        conexion.Ejecutar(StrSql);
+                        System.out.println(StrSql);
+
+                    }
                 }
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -118,17 +111,30 @@ public class Inventario {
      */
     private void bdInserts() {
         try {
-            this.conexion = new dbDelegate();
             Iterator it = this.getObjetos().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry e = (Map.Entry) it.next();
                 Item item = this.getItem(Short.parseShort(e.getKey().toString()));
-                if (item.isNewItem() && item.getCantidad() > 0) {
-                    String StrSql = "INSERT INTO inventario VALUES(" + this.getIdPersonaje() + "," + item.getIdObjeto() + "," + item.getCantidad() + "," + item.getEstaEquipado() + ")";
-                    conexion.Ejecutar(StrSql);
+                int cant = item.getCantidad();
+                int equipado = 0;
+                System.out.println("DEBERIA ITEM QLIO "+ item.getObjeto().getNombre());
+                System.out.println("DEBERIA  "+ item.isNewItem());
+                if (item.isNewItem()) {
+                    if (item.getObjeto().getTipo() == 1) {
+                        if (equipo.get(item.getObjeto().getIdObjeto()).getEquipado() == 1) {
+                            cant += 1;
+                            equipado = 1;
+                        }
+                    }
+                    System.out.println("CANTI "+cant);
+                    if (cant > 0) {
+                        String StrSql = "INSERT INTO inventario VALUES(" + this.getIdPersonaje() + "," + item.getIdObjeto() + "," + cant + "," + equipado + ")";
+                        System.out.println(StrSql);
+                        conexion.Ejecutar(StrSql);
+                        item.setNewItem(false);
+                    }
                 }
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -139,17 +145,24 @@ public class Inventario {
      */
     private void bdDeletes() {
         try {
-            this.conexion = new dbDelegate();
             Iterator it = this.getObjetos().entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry e = (Map.Entry) it.next();
                 Item item = this.getItem(Short.parseShort(e.getKey().toString()));
-                if (item.getCantidad() <= 0) {
+                int cant = item.getCantidad();
+                if (!item.isNewItem()) {
+                    if (item.getObjeto().getTipo() == 1) {
+                        if (equipo.get(item.getObjeto().getIdObjeto()).getEquipado() == 1) {
+                            cant += 1;
+                        }
+                    }
+                }
+                if (cant <= 0) {
                     String StrSql = "DELETE FROM inventario WHERE" + " personaje_id = " + this.getIdPersonaje() + " AND objeto_id = " + item.getIdObjeto();
+                    System.out.println(StrSql);
                     conexion.Ejecutar(StrSql);
                 }
             }
-            this.conexion.cierraDbCon();
         } catch (Exception ex) {
             Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,6 +186,15 @@ public class Inventario {
             //para eso se pone el valor newItem como true
             item.setNewItem(true);
             this.getObjetos().put(idItem, item);
+            if (item.getObjeto().getTipo() == 1) {
+                parteEquipo = new Equipo();
+                parteEquipo.setEquipo(obj.getIdObjeto(), (short) 0);
+                setFuerza(parteEquipo.getFuerza());
+                setSabiduria(parteEquipo.getSabiduria());
+                setVitalidad(parteEquipo.getVitalidad());
+                setDestreza(parteEquipo.getDestreza());
+                equipo.put(item.getIdObjeto(), parteEquipo);
+            }
         }
     }
 
@@ -188,15 +210,16 @@ public class Inventario {
             //si el item es nuevo en el hashmap, se debe ingresar en la base de datos
             //para eso  se pone el valor newItem como true
             item.setNewItem(true);
-            parteEquipo = new Equipo();
             this.getObjetos().put(idItem, item);
-                    parteEquipo.setEquipo(obj.getIdObjeto(), item.getEstaEquipado());
-                    setFuerza(parteEquipo.getFuerza());
-                    setSabiduria(parteEquipo.getSabiduria());
-                    setVitalidad(parteEquipo.getVitalidad());
-                    setDestreza(parteEquipo.getDestreza());
-
-                    equipo.put(item.getIdObjeto(), parteEquipo);
+            if (item.getObjeto().getTipo() == 1) {
+                parteEquipo = new Equipo();
+                parteEquipo.setEquipo(obj.getIdObjeto(), (short) 0);
+                setFuerza(parteEquipo.getFuerza());
+                setSabiduria(parteEquipo.getSabiduria());
+                setVitalidad(parteEquipo.getVitalidad());
+                setDestreza(parteEquipo.getDestreza());
+                equipo.put(item.getIdObjeto(), parteEquipo);
+            }
         }
     }
 
@@ -206,9 +229,29 @@ public class Inventario {
      * @param cantidad
      */
     public void eliminarItem(short idItem, short cantidad) {
+        Item item = getObjetos().get(idItem);
         if (tieneItem(idItem, cantidad)) {
-            this.getObjetos().get(idItem).restarCantidad(cantidad);
+            item.restarCantidad(cantidad);
         }
+        //si el item fue recientemente agregado y no esta equipado y su cantidad es cero..
+        //sacar del hashmap (NO SE SI HAY QUE SACARLO DEL EQUIPO)
+        if (item.isNewItem()) {
+            if (!tieneItemEquipado(item.getIdObjeto()) && item.getCantidad() <= 0) {
+                this.getObjetos().remove(item.getIdObjeto());
+                equipo.remove(item.getIdObjeto());
+            }
+        }
+    }
+
+    private boolean tieneItemEquipado(short id) {
+        boolean result = false;
+        Item item = this.getObjetos().get(id);
+        if (item.getObjeto().getTipo() == 1) {
+            if (equipo.get(item.getObjeto().getIdObjeto()).getEquipado() == 1) {
+                result = true;
+            }
+        }
+        return result;
     }
 
     /**
@@ -216,8 +259,16 @@ public class Inventario {
      * @param idItem
      */
     public void eliminarItem(short idItem) {
+        Item item = getObjetos().get(idItem);
         if (comprobarItem(idItem)) {
             this.getObjetos().get(idItem).setCantidad((short) 0);
+
+        }
+        //si el item fue recientemente agregado y no esta equipado y su cantidad es cero..
+        //sacar del hashmap (NO SE SI HAY QUE SACARLO DEL EQUIPO)
+        if (item.isNewItem() && !tieneItemEquipado(item.getIdObjeto()) && item.getCantidad() <= 0) {
+            this.getObjetos().remove(item.getIdObjeto());
+            equipo.remove(item.getIdObjeto());
         }
     }
 
@@ -366,33 +417,26 @@ public class Inventario {
             byte i = 0;
             while (res.next()) {
                 parteEquipo = new Equipo();
-
                 Item item = new Item();
                 item.setIdObjeto(res.getShort("idObjeto"));
                 item.setIdPersonaje(res.getShort("idPersonaje"));
                 item.setCantidad(res.getShort("cantidad"));
                 item.setEstaEquipado(res.getShort("estaequipado"));
-
                 item.setNewItem(false);
                 Objeto obj = objetos.get(item.getIdObjeto());
-                
                 if (obj.getTipo() == 1) {
                     parteEquipo.setEquipo(obj.getIdObjeto(), item.getEstaEquipado());
                     setFuerza(parteEquipo.getFuerza());
                     setSabiduria(parteEquipo.getSabiduria());
                     setVitalidad(parteEquipo.getVitalidad());
                     setDestreza(parteEquipo.getDestreza());
-                    
                     equipo.put(item.getIdObjeto(), parteEquipo);
                 }
-
                 item.setObjeto(obj);
                 this.objetos.put(item.getIdObjeto(), item);
                 i += 1;
-
-
             }
-//            this.conexion.cierraDbCon();
+//            cargarEquipo();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }
@@ -426,23 +470,13 @@ public class Inventario {
         return objetos;
     }
 
-//    private void repaldarInventario(HashMap<Short, Item> objetos) {
-//        this.respaldoObjetos = (HashMap<Short, Item>) this.objetos.clone();
-//
-//    }
     public void restablecerInventario() {
-
         for (Map.Entry id : this.respaldoObjetos.entrySet()) {
             this.objetos.get(Short.valueOf(id.getKey().toString())).sumarCantidad(Short.valueOf(id.getValue().toString()));
         }
-
         this.respaldoObjetos = new HashMap<Short, Short>();
     }
 
-//    public void respaldarInventario() {
-//        this.respaldoObjetos = this.objetos;
-//
-//    }
     public void mod_despojar(short id) {
         if (this.respaldoObjetos.containsKey(id)) {
             this.respaldoObjetos.put(id, (short) (this.respaldoObjetos.get(id) + 1));
@@ -469,41 +503,36 @@ public class Inventario {
             if (id != Short.parseShort(e.getKey().toString()) && equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn() == unEquipo.getEquipaEn() && equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
                 hayEquipo = true;
                 equipo.get(Short.parseShort(e.getKey().toString())).setEquipado((short) 0);
+                getObjetos().get(Short.parseShort(e.getKey().toString())).setEstaEquipado((short) 0);
                 this.setDestreza((short) -equipo.get(Short.parseShort(e.getKey().toString())).getDestreza());
                 this.setFuerza((short) -equipo.get(Short.parseShort(e.getKey().toString())).getFuerza());
                 this.setSabiduria((short) -equipo.get(Short.parseShort(e.getKey().toString())).getSabiduria());
                 this.setVitalidad((short) -equipo.get(Short.parseShort(e.getKey().toString())).getVitalidad());
-
                 this.agregarItem(Short.parseShort(e.getKey().toString()), (short) 1, objetos.get(Short.parseShort(e.getKey().toString())).getObjeto());
-
-
             }
             if (id == Short.parseShort(e.getKey().toString()) && equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn() == unEquipo.getEquipaEn() && equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
                 mismo = true;
             }
         }
-
         if (!mismo) {
             equipo.get(id).setEquipado((short) 1);
+            getObjetos().get(id).setEstaEquipado((short) 1);
             this.setDestreza((short) equipo.get(id).getDestreza());
             this.setFuerza((short) equipo.get(id).getFuerza());
             this.setSabiduria((short) equipo.get(id).getSabiduria());
             this.setVitalidad((short) equipo.get(id).getVitalidad());
             this.eliminarItem(id, (short) 1);
         }
-
-
     }
 
     public void desequipar(short id) {
         if (equipo.get(id).getEquipado() == 1) {
             equipo.get(id).setEquipado((short) 0);
-
+            getObjetos().get(id).setEstaEquipado((short) 0);
             this.setDestreza((short) -equipo.get(id).getDestreza());
             this.setFuerza((short) -equipo.get(id).getFuerza());
             this.setSabiduria((short) -equipo.get(id).getSabiduria());
             this.setVitalidad((short) -equipo.get(id).getVitalidad());
-
             this.agregarItem(id, (short) 1, objetos.get(id).getObjeto());
         }
     }
@@ -513,19 +542,14 @@ public class Inventario {
      */
     public void cargarEquipo() {
         Iterator it = equipo.entrySet().iterator();
-
         boolean hayEquipo = false;
         while (it.hasNext() && !hayEquipo) {
             Map.Entry e = (Map.Entry) it.next();
-
             if (equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
                 this.eliminarItem(Short.parseShort(e.getKey().toString()), (short) 1);
+
             }
-
-
         }
-
-
     }
 
     public HashMap<Short, String> itemEquipados(HashMap<Short, Equipo> equipo, Personaje pj) {
@@ -552,7 +576,7 @@ public class Inventario {
             if (equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
 //                    hmGraficos.put(equipo.get(Short.parseShort(e.getKey().toString())).getEquipaEn(), pj.getInventario().getObjetos().get(Short.parseShort(e.getKey().toString())).getObjeto().getNombreGrafico());
             }
-            
+
 
         }
     }
@@ -672,11 +696,11 @@ public class Inventario {
 
         public void setEquipo(short id, short estaEquipado) {
 //            this.conexion = new dbDelegate();
-            
+
             String StrSql = "SELECT *"
                     + "  FROM equipo"
                     + " WHERE id_objeto=" + id;
-            
+
             try {
                 ResultSet res = conexion.Consulta(StrSql);
                 if (res.next()) {
@@ -687,7 +711,7 @@ public class Inventario {
                     this.setSabiduria(res.getShort("sabiduria"));
                     this.setFuerza(res.getShort("fuerza"));
                     this.setEquipaEn(res.getShort("equipa_en"));
-                    
+
                 }
 //                this.conexion.cierraDbCon();
             } catch (Exception ex) {

@@ -3,6 +3,7 @@ package clases;
 import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGPoint;
@@ -447,6 +448,7 @@ public class Manager extends JGEngine {
             }
         };
     }
+    
     /** View offset. */
     int xofs = 0, yofs = 0;
 
@@ -650,9 +652,7 @@ public class Manager extends JGEngine {
             removerEquipo();
             if (mostrarVestir == -1) {
                 mostrarVestir = 1;
-
             }
-
 
         }
         seccion.setSeccion(new JGPoint(110, 435), new JGPoint(12, 1));
@@ -662,7 +662,6 @@ public class Manager extends JGEngine {
         seccion.setSeccion(new JGPoint(110, 400), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
         menu.recibeHm(hmIconoItem, 1, filtro);
-
 
 //        seccion.removerIconos();
 //        seccion.setWorking(false);
@@ -711,7 +710,6 @@ public class Manager extends JGEngine {
 
     @Override
     public void doFrame() {
-//        System.out.println("mostraaaaaaaaar "+mostrarVestir);
         moveObjects(null, (int) Math.pow(2, 5)); //muevo los botones que estan en el menu
 //        if ((inGameStateNextFrame("InWorld") && !inGameState("InWorld"))) {
 //            //seccion.removerIconos();
@@ -922,7 +920,7 @@ public class Manager extends JGEngine {
             final Mob enemigo_procesar = (Mob) getObject(mob_concurrente.getName());
             if (menu.isTermineAnimacionMuerte()) {
                 if (respawn_mob == null) {
-                    respawn_mob = new JGTimer((int) (getFrameRate() * 10 * 1), true) {
+                    respawn_mob = new JGTimer((int) (getFrameRate() * 30 * 1), true) {
 
                         @Override
                         public void alarm() {
@@ -2658,7 +2656,7 @@ public class Manager extends JGEngine {
                                             //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
                                             this.recorrido.x += 37;
                                             this.tabla.x--;
-                                            }
+                                        }
                                         }
                                     
 
