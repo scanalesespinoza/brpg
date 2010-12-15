@@ -421,7 +421,7 @@ public class Inventario {
                 this.objetos.put(item.getIdObjeto(), item);
                 i += 1;
             }
-//            cargarEquipo();
+            cargarEquipo();
         } catch (Exception ex) {
             System.out.println("Problemas en: clase->Inventario , método->cargarInventario() " + ex);
         }
@@ -527,12 +527,10 @@ public class Inventario {
      */
     public void cargarEquipo() {
         Iterator it = equipo.entrySet().iterator();
-        boolean hayEquipo = false;
-        while (it.hasNext() && !hayEquipo) {
+        while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
             if (equipo.get(Short.parseShort(e.getKey().toString())).getEquipado() == 1) {
                 this.eliminarItem(Short.parseShort(e.getKey().toString()), (short) 1);
-
             }
         }
     }

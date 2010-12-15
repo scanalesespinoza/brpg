@@ -30,7 +30,7 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 22;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 14;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
@@ -147,7 +147,7 @@ public class Manager extends JGEngine {
             idJugador = Short.parseShort(getParameter("personaje_id"));
         }
         setFrameRate(60, 2);
-        dbgShowGameState(true);
+//        dbgShowGameState(true);
         dbgShowBoundingBox(false);
         try {
             defineMedia("/media/rpg-basico_2.tbl");
@@ -732,12 +732,12 @@ public class Manager extends JGEngine {
         if (getKey(27)) {
             cursor.limpiarInformacion();
         }
-
+        
     }
-
     public void paintFrameInDeath() {
         //Avisar de que el jugador perdio y debe recuperarse terriblemente
-        new Ventana("Te encuentras exahusto despues del combate, vé a la ciudad para recuperarte");
+//        drawImage(seg, seg, nomNpcInteractuar, salir);
+//        new Ventana("Te encuentras exahusto despues del combate, vé a la ciudad para recuperarte");
     }
 
     public void doFrameInDeath() {
@@ -1425,7 +1425,7 @@ public class Manager extends JGEngine {
             seccionNpc.generaSeccion(vendedor, 1);
             menu.recibeHm(hmIconoItem, 0, filtro);
 
-            cerrar = new Boton("cerrar", "cerrar", 230, 320, (int) Math.pow(2, 5), 0, 0);
+            cerrar = new Boton("cerrar", "cerrar", 220, 320, (int) Math.pow(2, 5), 0, 0);
             cerrar.pintar();
 
             cursor.setVentana((byte) 2);
@@ -2460,7 +2460,7 @@ public class Manager extends JGEngine {
 
         public void desplegarInformacion() {
             if (dibujar) {
-                drawImage(0, viewHeight() - 190, "desc", false);
+                drawImage(0, viewHeight() - 197, "desc", false);
             }
             setFont(new JGFont("Arial", 0, 10));
             setColor(JGColor.white);
@@ -2634,20 +2634,20 @@ public class Manager extends JGEngine {
 //                                            System.out.println("entra again"+inv.getEquipo().get(obje.getIdObjeto()).getEquipado());
                                             if (obje.getTipo() == 1 && inv.getEquipo().get(obje.getIdObjeto()).getEquipado() == 1) {
                                                 if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 1) {
-                                                    equipo1 = new Icono("1icono", 115, 80, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    equipo1 = new Icono("1icono", 115, 100, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo1.suspend();
                                                 } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 2) {
-                                                    equipo2 = new Icono("2icono", 110, 150, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    equipo2 = new Icono("2icono", 110, 170, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo2.suspend();
                                                 } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 3) {
-                                                    equipo3 = new Icono("3icono", 70, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    equipo3 = new Icono("3icono", 70, 230, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo3.suspend();
                                                 } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 4) {
-                                                    equipo4 = new Icono("4icono", 140, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    equipo4 = new Icono("4icono", 150, 230, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo4.suspend();
                                                 } else {
 //                                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
-                                                    equipo5 = new Icono("5icono", 110, 300, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    equipo5 = new Icono("5icono", 110, 320, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo5.suspend();
                                                 }
                                             }
