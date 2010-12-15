@@ -619,7 +619,21 @@ public class menuJuego extends JGObject {
                         tick_go_pj = 6;
                     }
 
-                } else if (continua_anim_pj && anim_pj_flag != "Parado" && anim_concu_aux_pj != "Parado") {
+                } else if (continua_anim_pj && anim_pj_flag != "Parado" && anim_concu_aux_pj == "Atacando") {
+                     //cualquier imagen tiene prioridad sobre el flag "Parado"
+                    anim_pj = anim_aux_pj;
+                    frames_pj = frame_concu_aux_pj;
+                    this.continua_anim_pj = true;
+                    this.anim_pj_flag = anim_concu_aux_pj;
+                    this.frame_pj = 0;
+                    this.tick_actual_pj = 0;
+                    if (this.frames_pj < 10) {
+                        //Calculo cuantos ticks deben ocurrir para pasar al siguiente cuadro
+                        tick_go_pj = (eng.getFrameRate() / frames_pj) - 2;
+                    } else {
+                        tick_go_pj = 6;
+                    }
+
                 } else if (continua_anim_pj && anim_pj_flag != "Parado" && anim_concu_aux_pj == "Parado") {
                 } else if (continua_anim_pj && anim_pj_flag == "Parado" && anim_aux_pj == "Parado") {
                     anim_pj = anim_aux_pj;
@@ -877,7 +891,7 @@ public class menuJuego extends JGObject {
         if ((eng.inGameState("InCombat"))) {
             if (pj.isBloquearUso()) {
                 eng.setColor(JGColor.magenta);
-                eng.drawString("No puedes utilizar habilidades o items", eng.viewWidth() / 2 +25 , eng.viewHeight() - 100, -1, false);
+                eng.drawString("En espera para usar habilidades o items", eng.viewWidth() / 2 +25 , eng.viewHeight() - 100, -1, false);
             }
             eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
         }

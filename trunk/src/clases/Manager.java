@@ -3,7 +3,6 @@ package clases;
 import extensiones.StdScoring;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import jgame.JGColor;
 import jgame.JGFont;
 import jgame.JGPoint;
@@ -30,7 +29,7 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 14;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 18;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
@@ -45,6 +44,11 @@ public class Manager extends JGEngine {
     public Npc npc_encargo_1; // id = 3
     public Npc npc_encargo_2; // id = 4
     public Npc npc_encargo_3; // id = 5
+    private Npc npc_encargo_4; // id = 13;
+    private Npc npc_encargo_5; // id = 14;
+    private Npc npc_encargo_6; // id = 15;
+    private Npc npc_encargo_7; // id = 16;
+    private Npc npc_encargo_8; // id = 17;
     public Mob mob_facil_1; // id = 6
     public Mob mob_facil_2; // id = 7
     public Mob mob_medio_1; // id = 8
@@ -78,6 +82,7 @@ public class Manager extends JGEngine {
     private StdScoring std_mob_daño, std_mob_sanacion, std_pj_daño, std_pj_sanacion, std_mob_habilidad, std_pj_mana;
     private HashMap<Short, Objeto> objetos;
     private boolean terminar_combate;
+    private StdScoring std_pj_habilidad;
 
     public Icono getIcon() {
         return icon;
@@ -183,47 +188,8 @@ public class Manager extends JGEngine {
 //        setCursor(null);
         inicializarTeclas();
         try {
-////            mob_facil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 6, "mob_facil_1", "mob_1", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 6
-////            mob_facil_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 7, "mob_facil_2", "orc_stand_r", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 7
-////
-////            mob_medio_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 8, "mob_medio_1", "mob_3", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 8
-////            mob_medio_2 = new Mob(140 * 16, 110 * 16, 1.5, (short) 9, "mob_medio_2", "mob_4", (short) 10, (short) 3, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 9
-////
-////            mob_dificil_1 = new Mob(140 * 16, 110 * 16, 1.5, (short) 10, "mob_dificil_1", "grif_walk_r", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 10
-////            mob_dificil_2 = new Mob(140 * 16, 110 * 16, 0, (short) 11, "mob_dificil_2", "mob_6", (short) 10, (short) 3, mob_jefe_final, false, 0.9, (int) Math.pow(2, 2)); // id = 11
-////
-////            mob_jefe_final = new Mob(140 * 16, 110 * 16, 0, (short) 12, "mob_jefe_final", "boss_1", (short) 10, (short) 2, pj, false, 0.9, (int) Math.pow(2, 2)); // id = 12
-////
-//            mob_facil_1.cargarDatos((short) 6);
-//            mob_facil_2.cargarDatos((short) 7);
-//            mob_medio_1.cargarDatos((short) 8);
-//            mob_medio_2.cargarDatos((short) 9);
-//            mob_dificil_1.cargarDatos((short) 10);
-//            mob_dificil_2.cargarDatos((short) 11);
-//            mob_jefe_final.cargarDatos((short) 12);
-//
-//            mob_facil_1.resume_in_view = false;
-//            mob_facil_2.resume_in_view = false;
-//            mob_medio_1.resume_in_view = false;
-//            mob_medio_2.resume_in_view = false;
-//            mob_dificil_1.resume_in_view = false;
-//            mob_dificil_2.resume_in_view = false;
-//            mob_jefe_final.resume_in_view = false;
-
             dibujarObjetosEscenario();
             menu = new menuJuego(null, true, xofs, xofs, xofs, null, pj, conect);
-
-//            npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-//            npc_vendedor_1.cargarDatos((short) 1);
-//            npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-//            npc_vendedor_2.cargarDatos((short) 2);
-//            npc_encargo_1 = new Npc(700, 75, "npc_encargo_1", "people", (int) Math.pow(2, 3), 0, (short) 3, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 3
-//            npc_encargo_1.cargarDatos((short) 3);
-//            npc_encargo_2 = new Npc(730, 75, "npc_encargo_2", "people2", (int) Math.pow(2, 3), 0, (short) 4, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 4
-//            npc_encargo_2.cargarDatos((short) 4);
-//            npc_encargo_3 = new Npc(760, 75, "npc_encargo_3", "people3", (int) Math.pow(2, 3), 0, (short) 5, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior;
-//            npc_encargo_3.cargarDatos((short) 5);
-
         } catch (Exception ex) {
             System.out.println("Extrae datos del HashMapsssssssssssssssss: " + ex);
         }
@@ -327,30 +293,37 @@ public class Manager extends JGEngine {
                 switch (res.getShort("id")) {
                     //Pongo los constructores
                     case 1:
-//                        npc_vendedor_1 = new Npc(1040, 416, "npc_vendedor_1", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-//                        npc_vendedor_1.cargarDatos((short) 1);
                         npc_vendedor_1 = new Npc("vendedor_1", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 2:
-//                        npc_vendedor_2 = new Npc(1040, 416, "npc_vendedor_2", "vendedor", 0, (short) 22, (short) 1, (short) 1, new String[]{"Hola amiguirijillo", "soy el vendedorsillo"});//
-//                        npc_vendedor_2.cargarDatos((short) 2);
                         npc_vendedor_2 = new Npc("vendedor_2", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 3:
-//                        npc_encargo_1 = new Npc(700, 75, "npc_encargo_1", "people", (int) Math.pow(2, 3), 0, (short) 3, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 3
-//                        npc_encargo_1.cargarDatos((short) 3);
                         npc_encargo_1 = new Npc("mision_1", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 4:
-//                        npc_encargo_2 = new Npc(730, 75, "npc_encargo_2", "people2", (int) Math.pow(2, 3), 0, (short) 4, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior; // id = 4
-//                        npc_encargo_2.cargarDatos((short) 4);
                         npc_encargo_2 = new Npc("mision_2", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
                     case 5:
-//                        npc_encargo_3 = new Npc(760, 75, "npc_encargo_3", "people3", (int) Math.pow(2, 3), 0, (short) 5, new String[]{"Alcalde: Hola forastero,", "actualemente la cuidad", "tiene muchos problemas,", "por favor ve y ayuda a la gente.", "Usualmente se mantienen", "en sus casas, temerosos", "de salir."});//casa superior;
-//                        npc_encargo_3.cargarDatos((short) 5);
                         npc_encargo_3 = new Npc("mision_3", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
                         break;
+                    case 13:
+                        npc_encargo_4 = new Npc("guard_stand_r", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 14:
+                        npc_encargo_5 = new Npc("guard_stand_r", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 15:
+                        npc_encargo_6 = new Npc("viajero", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 16:
+                        npc_encargo_7 = new Npc("mono", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+                    case 17:
+                        npc_encargo_8 = new Npc("perdido", res.getShort("id"), res.getString("nombre"), res.getShort("nivel"), res.getDouble("posicionx"), res.getDouble("posiciony"), res.getShort("tipo"), conect);
+                        break;
+
+
                 }
                 System.out.println("PERSONAJE NPC :" + res.getString("nombre"));
 
@@ -410,6 +383,11 @@ public class Manager extends JGEngine {
         npc_encargo_1.cargarDatos(objetos, habilidades, misiones);
         npc_encargo_2.cargarDatos(objetos, habilidades, misiones);
         npc_encargo_3.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_4.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_5.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_6.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_7.cargarDatos(objetos, habilidades, misiones);
+        npc_encargo_8.cargarDatos(objetos, habilidades, misiones);
 
         mob_facil_1.resume_in_view = false;
         mob_facil_2.resume_in_view = false;
@@ -487,19 +465,14 @@ public class Manager extends JGEngine {
             // playAudio("ambiental", "pantano", true);
         }
         capturarTeclas();
-        if (isPresionada(KeyShift) && isPresionada(KeyCtrl)) {
-            setGameState("InCombat");
-        } else if (isPresionada(KeyShift) && isPresionada(KeyTab)) {
-            initGame();
-        }
-//       
+
         moveObjects(null, 0);
         // llamada al metodo de colision entre objetos con las siguientes id de colision
 
-//        checkCollision(
-//                (int) Math.pow(2, 3) + (int) Math.pow(2, 1), // Colisión entre Npc + Jugador
-//                (int) Math.pow(2, 1) // ejecuta hit Jugador
-//                );
+        checkCollision(
+                (int) Math.pow(2, 6) + (int) Math.pow(2, 1), // Colisión entre Npc + Jugador
+                (int) Math.pow(2, 1) // ejecuta hit NPC
+                );
         checkCollision(
                 (int) Math.pow(2, 3) + (int) Math.pow(2, 0), // Colisión entre Npc + Cursor
                 (int) Math.pow(2, 0) // ejecuta hit Cursor
@@ -583,7 +556,7 @@ public class Manager extends JGEngine {
             menu.anim_pj = pj.anim_parado;
             menu.frames_pj = pj.frames_anim_parado;
             terminar_combate = false;
-
+            this.setIcon(null);
             //playAudio("ambiental", "combate", true);
             filtro = 0;
             seccion.setWorking(false);
@@ -601,7 +574,7 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
-
+        drawString("(" + pj.x + "," + pj.y + ")", viewWidth() / 2, viewHeight() / 2, -1);
         pj.getMisiones().getFecha();
         //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
@@ -732,8 +705,9 @@ public class Manager extends JGEngine {
         if (getKey(27)) {
             cursor.limpiarInformacion();
         }
-        
+
     }
+
     public void paintFrameInDeath() {
         //Avisar de que el jugador perdio y debe recuperarse terriblemente
 //        drawImage(seg, seg, nomNpcInteractuar, salir);
@@ -789,7 +763,9 @@ public class Manager extends JGEngine {
         if (std_mob_habilidad != null) {
             std_mob_habilidad.paintB();
         }
-
+        if (std_pj_habilidad != null) {
+            std_pj_habilidad.paintB();
+        }
         if (std_pj_mana != null) {
             std_pj_mana.paintB();
         }
@@ -797,28 +773,31 @@ public class Manager extends JGEngine {
         //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
 
-        setColor(JGColor.black);
+        setColor(JGColor.white);
         // aca graficar todas las wes hermosas y lindas de la warifaifa
         drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302 - 280, 0);
 
         drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
         drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
-
-        setColor(JGColor.black);
-        drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 60) / 100), (double) 302 - 280, 0);
-        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
-        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
+        drawImage(((viewWidth() * 58) / 100), (double) 302 - 285, "monitor_hpmp", false);
+        setColor(JGColor.white);
+        drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 65) / 100), (double) 302 - 280, 0);
+        drawRect(viewWidth() * 65 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
+        drawRect(viewWidth() * 65 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
 
         setFont(new JGFont("Arial", 0, 10));
         drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322 - 280, 0, false);
-        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 322 - 280, 0, false);
+        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 72) / 100) + 9, 322 - 280, 0, false);
         setColor(JGColor.green);
         drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337 - 280, 0, false);
-        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 337 - 280, 0, false);
+        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 72) / 100) + 9, 337 - 280, 0, false);
+
 
         if (mob_concurrente.getIdProximoAtaque() != -1) {
-            std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, "Enemigo usó " + mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white}, 10);
+            std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, "Enemigo usó " + mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white, JGColor.yellow}, 2);
         }
+
+
     }
 
     public void doFrameInCombat() {
@@ -838,6 +817,7 @@ public class Manager extends JGEngine {
                 //personaje utilizara una habilidad
                 pj.setProximoAtaque(this.getIconoPresionado().getIdObjeto());
                 if (pj.getIdProximoAtaque() != -1) {
+                    std_pj_habilidad = new StdScoring("nombreAtaque2", ((viewWidth() * 16) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, "Usaste " + pj.getHabilidades().getHabilidad(pj.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white, JGColor.yellow}, 2);
                     //el personaje puede atacar por que no está bloqueado
                     dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
                     if (dañoBeneficio < 0) {
@@ -854,6 +834,8 @@ public class Manager extends JGEngine {
                         std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
 //                    menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5), null);
                     }
+                    pj.setIdProximoAtaque((short) -1);
+
                 }
                 setIcon(null);
             } else if (this.getIconoPresionado() != null && this.getIconoPresionado().getTipo() == 1) {
@@ -1150,9 +1132,9 @@ public class Manager extends JGEngine {
                     "+!.%%%..!!!!!!!..!!!!!!!!!!........*****...!............!...*****..............+",
                     "+!.%%%%..........!!!!!!!!!!........*****...!............!...*****..............+",//10
                     "+!.%%%%..........!!!!!!!!!!........*****...!............!.^.*****..............+",
-                    "+!.%%%%%.............^!!!!!........*****...!............!...*****..............+",
-                    "+!.%%%%%%..%.%.%.%.%..!!!!!........*****...!!!..!!!!!!!!!...*****..............+",
-                    "+!..%%%%%%%%%%%%%%%%%%%%%%%%%%%....*****...!!!..!!!!!!!!!...*****.............^+",
+                    "+!.%%%%%.............^!!!!!........*****...!!!!!!!!!!!!!!...*****..............+",
+                    "+!.%%%%%%..%.%.%.%.%..!!!!!........*****....................*****..............+",
+                    "+!..%%%%%%%%%%%%%%%%%%%%%%%%%%%....*****....................*****.............^+",
                     "+!....%%%%%%%%%%%%%%^%%%%%%%%%%%...*****....................*****.............^+",//15
                     "+!^................................*****..^^^^^^............*****.......^^^^^^^+",
                     "+!*****************************************************************************|",
@@ -1162,42 +1144,42 @@ public class Manager extends JGEngine {
                     "+!*****************************************************************************|",
                     "+!.................................**********..................................+",
                     "+!.................................*****.*****.................................+",
-                    "+!..!!!!!!!!!!!!!!....^............*****..*****................................+",
-                    "+!..!!!!!!!!!!!!!!.................*****...*****.................!!!!!!........+",//25
-                    "+!..!!!!!!!!!!!!!!.................*****....*****................!!!!!!........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.....*****.....^.........!!!!!!........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****......*****..............!!!!!!........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.......*****.............!!!!!!........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****........*****............!!!!!!........+",//30
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****.^.......*****...........!!!!!!........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..........*****..........!!!!!!........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****...........*****.........!!!!!!........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****............*****........!!!!!!........+",
-                    "+!...................!!!!!!!!!!!!!!*****.............*****.....................+",//35
-                    "+!...................!!!!!!!!!!!!!!*****..............*****....................+",
-                    "+!...................!!!!!!!!!!!!!!*****...............*****...................+",
+                    "+!..!!!!!!!!!!!!!.....^............*****..*****................................+",
+                    "+!..!!!!!!!!!!!!!..................*****...*****...............................+",//25
+                    "+!..!!!!!!!!!!!!!..................*****....*****..............................+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****.....*****.....^.........!!!...!!!.....+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****......*****..............!!!...!!!.....+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****.......*****.............!!!...!!!.....+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****........*****............!!!...!!!.....+",//30
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****.^.......*****.........................+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****..........*****........................+",
+                    "+!...................!!!!!!!!!!!!!.*****...........*****.......................+",
+                    "+!...................!!!!!!!!!!!!!.*****............*****......................+",
+                    "+!...................!!!!!!!!!!!!!.*****.............*****.....................+",//35
+                    "+!.................................*****..............*****....................+",
+                    "+!.................................*****...............*****...................+",
                     "+!.................................*****................*****..................+",//38
-                    "+!..!!!!!!!!!!!!!!.................*****.................*****.................+",
-                    "+!..!!!!!!!!!!!!!!.................*****..!!!!!!!!!!!!!!..*****................+",
-                    "+!..!!!!!!!!!!!!!!..........^......*****..!!!!!!!!!!!!!!...*****...............+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!....*****..............+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!.....*****.............+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!......*****............+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!.......*****...........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!........*****..........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!.........*****.........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!..........*****........+",
-                    "+!..!!!!!!!!!!!!!!...!!!!!!!!!!!!!!*****..!............!...........*****.......+",
-                    "+!............^^^....!!!!!!!!!!!!!!*****..!!!..!!!!!!!!!............*****......+",
-                    "+!.............^.....!!!!!!!!!!!!!!*****.............................*****.....+",
-                    "+!..^................!!!!!!!!!!!!!!*****..............................*****^^..+",
+                    "+!..!!!!!!!!!!!!!..................*****.................*****.................+",
+                    "+!..!!!!!!!!!!!!!..................*****..!!!!!!!!!!!!!!..*****................+",
+                    "+!..!!!!!!!!!!!!!...........^......*****..!!!!!!!!!!!!!!...*****...............+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****..!............!....*****..............+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****..!............!.....*****.............+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****..!............!......*****............+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****..!............!.......*****...........+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****..!............!........*****..........+",
+                    "+!..!!!!!!!!!!!!!....!!!!!!!!!!!!!.*****..!............!.........*****.........+",
+                    "+!...................!!!!!!!!!!!!!.*****..!............!..........*****........+",
+                    "+!...................!!!!!!!!!!!!!.*****..!!!!!!!!!!!!!!...........*****.......+",
+                    "+!............^^^....!!!!!!!!!!!!!.*****............................*****......+",
+                    "+!.............^...................*****.............................*****.....+",
+                    "+!..^..............................*****..............................*****^^..+",
                     "+!.................................*****...............................*****^..+",
                     "+!.................................*****................^...............*****..+",
                     "+!.................................*****...............^^^...............*****.+",
                     "+!...^.............................*****..................................*****+",
                     "+!.......................^.........*****...................................****|",
-                    "+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*****!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!***|",
-                    "+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*****!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**|",
+                    "+!.................................*****....................................***|",
+                    "+..................................*****.....................................**|",
                     "+++++++++++++++++++++++++++++++++++*****++++++++++++++++++++++++++++++++++++++||",});
         /**
          * Mapa completo de tiles que definen la entrada a la ciudad.
@@ -1216,22 +1198,22 @@ public class Manager extends JGEngine {
                     "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
                     "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
                     "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",//10
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[^[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[^[[[[[[[[[[[[[[[[[[[[[[[[[[[",//15
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[^[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[^[[[[[[[[[[[[[[[[[[[[[[[[[[[",//15
                     "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
                     "******[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
                     "******[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
                     "******[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
                     "******[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
                     "******[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[^[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",//25
-                    "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[)))",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[^[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[",//25
+                    "¡¡¡[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[)))",
                     "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[))))))",
                     "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[)))))))))",
                     "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[^[[[[[[[[[[[[[)))))))))))",
@@ -1498,19 +1480,12 @@ public class Manager extends JGEngine {
         new Npc(700, 75, "alcaldia", "casa4", (int) Math.pow(2, 6), 0, (short) 105, conect, new String[]{});
         new Npc(680, 660, "casa1", "casa3", (int) Math.pow(2, 6), 0, (short) 100, conect, new String[]{});
         new Npc(80, 400, "casa2", "casa2", (int) Math.pow(2, 6), 0, (short) 101, conect, new String[]{"Casa 2"});
-        new Npc(350, 448, "casa3", "casa4", (int) Math.pow(2, 6), 0, (short) 102, conect, new String[]{"Casa 3"});
+        new Npc(350, 448, "casa3", "casa3", (int) Math.pow(2, 6), 0, (short) 102, conect, new String[]{"Casa 3"});
         new Npc(80, 634, "casa3", "casa3", (int) Math.pow(2, 6), 0, (short) 103, conect, new String[]{"Casa 3"});
         new Npc(350, 682, "casa3", "casa5", (int) Math.pow(2, 6), 0, (short) 104, conect, new String[]{"Casa 3"});
         new Npc(352, 64, "arbol1", "arbol", (int) Math.pow(2, 6), 0, (short) 106, conect, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
         new Npc(288, 32, "arbol2", "arbol", (int) Math.pow(2, 6), 0, (short) 107, conect, new String[]{"Hola amiguirijillo", "soy Don Arbol, cuidame"});//
         new Npc(128, 64, "arbol2", "pileta", (int) Math.pow(2, 6), 0, (short) 108, conect, new String[]{"Hola amiguirijillo", "soy la fuente magica"});//
-        new Npc(16 * 80, 16 * 10, "guardia", "guard_stand_r", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
-        new Npc(16 * 80, 16 * 21, "guardia", "guard_stand_r", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Guardia: vé con cuidado"});
-        new Npc(16 * 16, 16 * 12, "viajero", "viajero", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Viajero: "});
-        new Npc(16 * 10, 16 * 17, "mono", "mono", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"Mono: "});
-        new Npc(16 * 10, 16 * 110, "perdido", "perdido", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"perdido: "});
-        new Npc(16 * 80, 16 * 8, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
-        new Npc(16 * 80, 16 * 24, "escultura", "escultura", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(16 * 100, 16 * 35, "arbol_seco1", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(16 * 140, 16 * 100, "arbol_seco2", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(16 * 130, 16 * 110, "arbol_seco3", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
@@ -1808,7 +1783,7 @@ public class Manager extends JGEngine {
         }
 
         private void mostrarTexto() {
-            setTextOutline(0,null);
+            setTextOutline(0, null);
             dibujarVentana();
             desplegarMensaje(350, 260 + 16, this.linea_1);
             desplegarMensaje(350, 260 + 32, this.linea_2);
@@ -1986,8 +1961,8 @@ public class Manager extends JGEngine {
                     menu.mostrarDatoFreak("Habilidad: " + ((Icono) obj).getHabilidad().getNombre());
                 } else {
                     String msj = "Ítem: " + ((Icono) obj).getItem().getNombre();
-                    if (inGameState("InCommerce")){
-                        msj += " {pesa : "+objetos.get(((Icono) obj).getItem().getIdObjeto()).getPeso()+"| vale: "+objetos.get(((Icono) obj).getItem().getIdObjeto()).getValorDinero()+"}";
+                    if (inGameState("InCommerce")) {
+                        msj += " {pesa : " + objetos.get(((Icono) obj).getItem().getIdObjeto()).getPeso() + "| vale: " + objetos.get(((Icono) obj).getItem().getIdObjeto()).getValorDinero() + "}";
                     }
                     menu.mostrarDatoFreak(msj);
                 }
@@ -2053,7 +2028,6 @@ public class Manager extends JGEngine {
                                 case 0://el personaje hizo todas las misiones o no tiene ninguna
                                     //aca se pone el dialogo normal
                                     ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
-
                                     break;
                                 case 1: //el personaje no tiene la misión.. agregar
 
@@ -2536,14 +2510,18 @@ public class Manager extends JGEngine {
         }
 
         public void setInformacionObjeto(String nom, String desc, String val, String tip, String pes, String usoCom) {
-            if (usoCom.equals("true")){
+            if (usoCom.equals("true")) {
                 usoCom = "sí";
-            }else usoCom = "no";
-            if (tip.equals("0")){
+            } else {
+                usoCom = "no";
+            }
+            if (tip.equals("0")) {
                 tip = "Usable";
-            }else if(tip.equals("1")){
+            } else if (tip.equals("1")) {
                 tip = "Equipable";
-            }else tip ="Coleccionable";
+            } else {
+                tip = "Coleccionable";
+            }
             setInformacion(nom, desc, val, pes, tip, usoCom, null, null, null, null, null, null, null, true);
         }
 

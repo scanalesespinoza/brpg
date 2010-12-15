@@ -37,6 +37,7 @@ public class Npc extends Personaje {
         this.nomNpc = name;
         this.colId = colId;
         this.dialogo = new dialogo_personaje(conn);
+        
     }
 
     public Npc(double x, double y, String name, String mediaName, int tamano, short idNpc, short nivel, short tipo,  dbDelegate conn,String[] dialogo) throws SQLException {
@@ -57,12 +58,7 @@ public class Npc extends Personaje {
     }
 
     public String obtieneDialogo() {
-        return dialogo.getParrafo() + " y mi nombre eh " + this.getNombre();
-    }
-
-    @Override
-    public void hit(JGObject obj) {
-        //System.out.println("Hit NPC!"+obj.getName());
+        return dialogo.getParrafo();
     }
 
     public short getIdNpc() {
@@ -124,13 +120,9 @@ public class Npc extends Personaje {
         }
     }
 
-    public void getDialogoConcurrente(HashMap<Short, Encargo.UnEncargo> misiones) {
-        //busco si tiene las misiones el personaje
-        Iterator it = misiones.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            UnEncargo mision = (UnEncargo) e.getValue();
 
-        }
+    @Override
+    public void hit(JGObject obj){
+
     }
 }
