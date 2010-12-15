@@ -223,7 +223,7 @@ public class menuJuego extends JGObject {
                     eng.drawRect(eng.viewWidth() - 82, 60, (pj.getMp() * 76) / pj.getMpMax(), 8, true, false, false, new JGColor[]{JGColor.blue, JGColor.blue});
                     eng.setTextOutline(0, null);
                     eng.setColor(JGColor.blue);
-                    eng.drawString(pj.getHp() + "/" + pj.getHpMax(), eng.viewWidth() - 45, 51, 0, false);
+                    eng.drawString(pj.getHp() + "/" + pj.getHpMax(), eng.viewWidth() - 45, 52, 0, false);
                     eng.setColor(JGColor.green);
                     eng.drawString(pj.getMp() + "/" + pj.getMpMax(), eng.viewWidth() - 45, 61, 0, false);
                     eng.setTextOutline(1, JGColor.black);

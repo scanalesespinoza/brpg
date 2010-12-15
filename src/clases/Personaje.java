@@ -53,7 +53,7 @@ public class Personaje extends extensiones.StdDungeon {
     public Personaje(double x, double y, double speed, short idPersonaje, String nombre, String graf, short nivel, short tipo, int cid,dbDelegate conn) {
         super(nombre, x, y, cid, graf, true, false,
                 16, 32, speed);
-        stopAnim();
+//        stopAnim();
         this.idPersonaje = idPersonaje;
         this.nombre = nombre;
         this.nivel = nivel;

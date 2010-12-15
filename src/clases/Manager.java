@@ -409,10 +409,11 @@ public class Manager extends JGEngine {
             @Override
             public void alarm() {
                 if (!inGameState("InCombat")) {
-                    pj.regenerarMp(5);
-                    new StdScoring("scoring_pj_mp", ((viewWidth() * 30) / 100), (double) 322 - 270, -0.1, -0.005, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue}, 5, false);
+                    setTextOutline(0, null);
+                    new StdScoring("scoring_pj_mp", (pj.x + 25) - viewXOfs(), (pj.y + 50) - viewYOfs(), -0.1, -0.005, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 11), new JGColor[]{JGColor.blue}, 5, false);
                     pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
-                    new StdScoring("scoring_pj", ((viewWidth() * 32) / 100), (double) 302 - 270, -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
+                    new StdScoring("scoring_pj", (pj.x + 50) - viewXOfs(), (pj.y + 25) + 10 -viewYOfs(), -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
+                    setTextOutline(1, JGColor.black);
                 }
             }
         };
@@ -574,16 +575,9 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
-        drawString("(" + pj.x + "," + pj.y + ")", viewWidth() / 2, viewHeight() / 2, -1);
-        pj.getMisiones().getFecha();
         //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
-
         setColor(JGColor.black);
-
-
-
-
         if (mostrarVestir == 1) {
 
             if (equipo1 != null) {
@@ -674,7 +668,8 @@ public class Manager extends JGEngine {
 
     @Override
     public void doFrame() {
-        moveObjects(null, (int) Math.pow(2, 5)); //muevo los botones que estan en el menu
+        moveObjects(null, (int) Math.pow(2, 3)); //muevo los npc
+        moveObjects(null, (int) Math.pow(2, 5));//muevo los botones que estan en el menu
 //        if ((inGameStateNextFrame("InWorld") && !inGameState("InWorld"))) {
 //            //seccion.removerIconos();
 //            //removeObjects("icono", (int) Math.pow(2, 4));
@@ -788,8 +783,6 @@ public class Manager extends JGEngine {
         if (mob_concurrente.getIdProximoAtaque() != -1) {
             std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, "Enemigo usó " + mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white, JGColor.yellow}, 2);
         }
-
-
     }
 
     public void doFrameInCombat() {
