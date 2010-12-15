@@ -89,6 +89,8 @@ vendedor_2	-	0	/media/imagenes/npc/vendedor_2.png	-
 ventana trade	-	0	/media/imagenes/npc/ventana_trade.png	-
 //define imagen boton cerrar
 cerrar	-	0	/media/imagenes/menu/cerrar.png	-
+//define imagen boton siguiente
+siguiente	-	0	/media/imagenes/menu/siguiente.png	-
 //define imagen boton suma habilidades/estadisticas
 suma	-	0	/media/imagenes/menu/suma.png	-
 //define imagen boton ver habilidades/estadisticas/mision

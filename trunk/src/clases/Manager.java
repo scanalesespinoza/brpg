@@ -960,7 +960,7 @@ public class Manager extends JGEngine {
                 btn1 = new Boton("cerrar", "cerrar", 430, 330, (int) (Math.pow(2, 5)), 0, 0);
                 btn1.pintar();
             } else {//termino el dialogo //aun podria estar leyendo el ultimo parrafo = new Boton("cerrar", "suma", 430, 330, (int) (Math.pow(2, 5)), 0, 0);
-                btn1 = new Boton("siguiente", "ver", 430, 330, (int) (Math.pow(2, 5)), 5, 0);
+                btn1 = new Boton("siguiente", "siguiente", 430, 330, (int) (Math.pow(2, 5)), 5, 0);
                 btn1.pintar();
             }
         }
@@ -1808,10 +1808,12 @@ public class Manager extends JGEngine {
         }
 
         private void mostrarTexto() {
+            setTextOutline(0,null);
             dibujarVentana();
             desplegarMensaje(350, 260 + 16, this.linea_1);
             desplegarMensaje(350, 260 + 32, this.linea_2);
             desplegarMensaje(350, 260 + 48, this.linea_3);
+            setTextOutline(1, JGColor.black);
         }
 
         public void siguiente() {
