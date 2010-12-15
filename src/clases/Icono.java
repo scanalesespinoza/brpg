@@ -177,6 +177,7 @@ public class Icono extends JGObject {
         eng.setColor(JGColor.white);
         eng.drawString("" + this.cantidad, xAnt+10, yAnt+10, 0);
 
+
     }
    public void paintEquipo() {
         x = xAnt + eng.viewXOfs();
