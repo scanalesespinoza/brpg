@@ -134,8 +134,8 @@ public class StdDungeon extends JGObject {
 	double x,double y, int cid,
 	String graphic, int occupy_mask) {
 		super(name,unique_id, x,y, cid, graphic);
-		setTileBBox(0,0,eng.tileWidth(),eng.tileHeight());
-		setDirSpeed(0,0,0.0);
+                setTileBBox(0,0,eng.tileWidth(),eng.tileHeight());
+                setDirSpeed(0,0,0.0);
 		this.occupy_mask=occupy_mask;
 	}
         /** Moves the object around, and ensures it occupies

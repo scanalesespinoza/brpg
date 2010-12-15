@@ -24,17 +24,18 @@ calle	*	0	/media/imagenes/tiles/marble16.gif	-
 //define cuadro fin de la calle
 callefin	|	32	/media/imagenes/tiles/marble16.gif	-
 //define piedra
-piedra	+	11	/media/imagenes/tiles/piedra_16x16.png	-
+piedra	+	20	/media/imagenes/tiles/piedra_16x16.png	-
 //define piedraOscura
 piedra_os	^	16	/media/imagenes/tiles/Rock_Gray_1.png	-
 //define pasto
 pasto	%	0	/media/imagenes/tiles/pasto_oscuro.png	-
 //define tile bloquedo
-cuadro	!	20	/media/imagenes/tiles/vacio.png	-
+cuadro	!	20	/media/imagenes/tiles/nulo_16x16.png	-
 //define pasto pantano
 ppantano	(	0	/media/imagenes/tiles/pasto_oscuro.png	-
 ppantano1	)	0	/media/imagenes/tiles/pasto_oscuro1.png	-
 pentradaciudad	[	0	/media/imagenes/tiles/pasto_oscuro2.png	-
+pentradaciudad	¡	20	/media/imagenes/tiles/pasto_oscuro2.png	-
 //barrera boss
 reja_boss	=	20	/media/imagenes/tiles/Tile_Barrera_Boss.png	-
 //Define arboles
@@ -132,6 +133,7 @@ zancadilla	-	0	/media/imagenes/habilidades/zancadilla.jpg	-
 //                      Menu
 //******************************************************************************
 barracombate	-	0	/media/imagenes/menu/barracombate.png	-
+monitor_hpmp	-	0	/media/imagenes/menu/cuadro_barra.png	-
 barrainfo	-	0	/media/imagenes/menu/barrainfo.png	-
 combate	-	0	/media/imagenes/menu/batalla.jpg	-
 lateral	-	0	/media/imagenes/menu/lateral.jpg	-

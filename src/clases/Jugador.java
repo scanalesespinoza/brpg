@@ -411,6 +411,7 @@ public class Jugador extends Personaje {
             case 4:
                 this.enemigo = (Mob) obj;
                 break;
+
             default:
                 break;
         }
