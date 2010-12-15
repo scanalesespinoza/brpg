@@ -788,19 +788,19 @@ public class menuJuego extends JGObject {
 
         if (eng.inGameState("InWorld")) {
             if (this.vestir) {
-                eng.drawImage(50, 50, "vestimenta", false);
-                eng.drawImage(115, 80, hmEquipo.get((short) 1), false);
-                eng.drawImage(110, 150, hmEquipo.get((short) 2), false);
-                eng.drawImage(70, 210, hmEquipo.get((short) 3), false);
-                eng.drawImage(140, 210, hmEquipo.get((short) 4), false);
-                eng.drawImage(110, 300, hmEquipo.get((short) 5), false);
+                eng.drawImage(50, 70, "vestimenta", false);
+                eng.drawImage(115, 100, hmEquipo.get((short) 1), false);
+                eng.drawImage(110, 170, hmEquipo.get((short) 2), false);
+                eng.drawImage(70, 230, hmEquipo.get((short) 3), false);
+                eng.drawImage(150, 230, hmEquipo.get((short) 4), false);
+                eng.drawImage(110, 320, hmEquipo.get((short) 5), false);
             }
 
             new Boton("vestir", "vestir", eng.viewWidth() - 105, 210, (int) Math.pow(2, 5), 2, 31/*id boton*/);
             if (this.vestir) {
-                eng.drawImage(eng.viewWidth() - 100, 210, "vestir_select", false);
+                eng.drawImage(eng.viewWidth() - 105, 210, "vestir_select", false);
             } else {
-                eng.drawImage(eng.viewWidth() - 100, 210, "vestir", false);
+                eng.drawImage(eng.viewWidth() - 105, 210, "vestir", false);
             }
         }
 
@@ -827,6 +827,9 @@ public class menuJuego extends JGObject {
             eng.removeObjects("equipo", (int) Math.pow(2, 5));
             eng.removeObjects("colec", (int) Math.pow(2, 5));
             eng.drawImage(0, 370, "tab_usable", false);
+            eng.drawImage(100, 370, "tab_equipo_n", false);
+            eng.drawImage(200, 370, "tab_colec_n", false);
+
         }
         eng.drawImage(300, 370, "barrainfo", false);
 
@@ -844,11 +847,12 @@ public class menuJuego extends JGObject {
 
 //            eng.drawImage(20, 20, "trade", false);
             eng.drawImage(150, 200, "trade", false);
-            eng.drawImage(230, 320, "cerrar", false);
+            eng.drawImage(220, 320, "cerrar", false);
 //            setSeccion(new JGPoint(25, 25), new JGPoint(2, 4));
 //            generaSeccion(1);
             setSeccion(new JGPoint(170, 220), new JGPoint(3, 4));
             generaSeccion(0);
+            eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
         }
 //        if ((eng.inGameState("InWorld")) && ((eng.getKey(73)) || (eng.getKey(105)))) {
 
@@ -857,9 +861,14 @@ public class menuJuego extends JGObject {
 //            generaSeccion(1);
 //        }
         if (eng.inGameState("InReward")) {
-            eng.drawImage(150, 200, "trade", false);
+            eng.drawImage(150, 150, "reward", false);
             setSeccion(new JGPoint(200, 200), new JGPoint(4, 4));
             generaSeccion(0);
+            eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
+        }
+        if (eng.inGameState("InDeath")) {
+            eng.drawImage(75, 150, "muerte", false);
+            eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
         }
         mensajeInfo.paintC();
         if (mensajeVali != null) {
@@ -870,6 +879,7 @@ public class menuJuego extends JGObject {
                 eng.setColor(JGColor.magenta);
                 eng.drawString("No puedes utilizar habilidades o items", eng.viewWidth() / 2 +25 , eng.viewHeight() - 100, -1, false);
             }
+            eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
         }
     }
 

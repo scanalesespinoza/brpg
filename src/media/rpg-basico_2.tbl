@@ -139,13 +139,18 @@ monitor	-	0	/media/imagenes/menu/monitor.png	-
 desc	-	0	/media/imagenes/menu/desc.png	-
 titulo	-	0	/media/imagenes/menu/titulo.png	-
 trade	-	0	/media/imagenes/menu/trade.jpg	-
+muerte	-	0	/media/imagenes/menu/muerte.png	-
+reward	-	0	/media/imagenes/menu/reward.png	-
 tab_usable	-	0	/media/imagenes/menu/usable.png	-
 tab_colec	-	0	/media/imagenes/menu/colec.png	-
 tab_equipo	-	0	/media/imagenes/menu/equipo.png	-
+tab_colec_n	-	0	/media/imagenes/menu/colec_n.png	-
+tab_equipo_n	-	0	/media/imagenes/menu/equipo_n.png	-
 tab_usable_dest	-	0	/media/imagenes/menu/usable_dest.png	-
 tab_colec_dest	-	0	/media/imagenes/menu/colec_dest.png	-
 tab_equipo_dest	-	0	/media/imagenes/menu/equipo_dest.png	-
 vestir	-	0	/media/imagenes/menu/vestir.png	-
+vestir_n	-	0	/media/imagenes/menu/vestir_n.png	-
 vestir_select	-	0	/media/imagenes/menu/vestir_select.png	-
 vestimenta	-	0	/media/imagenes/menu/vestimenta.png	-
 
