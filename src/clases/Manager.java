@@ -580,16 +580,8 @@ public class Manager extends JGEngine {
         setFont(new JGFont("Arial", 0, 15));
 
         setColor(JGColor.black);
-        // aca graficar todas las wes hermosas y lindas de la warifaifa
-        drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302 - 280, 0);
 
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
-        setColor(JGColor.blue);
-        setFont(new JGFont("Arial", 0, 10));
-        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322 - 280, 0, false);
-        setColor(JGColor.green);
-        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337 - 280, 0, false);
+
 
 
         if (mostrarVestir == 1) {
@@ -784,14 +776,14 @@ public class Manager extends JGEngine {
         drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 65) / 100), (double) 302 - 280, 0);
         drawRect(viewWidth() * 65 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
         drawRect(viewWidth() * 65 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
-
+        setTextOutline(0, null);
         setFont(new JGFont("Arial", 0, 10));
-        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322 - 280, 0, false);
-        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 72) / 100) + 9, 322 - 280, 0, false);
+        drawString(pj.getHp() + "/" + pj.getHpMax(), ((viewWidth() * 17) / 100) + 9, 323 - 280, 0, false);
+        drawString(mob_concurrente.getHp() + "/" + mob_concurrente.getHpMax(), ((viewWidth() * 72) / 100) + 9, 323 - 280, 0, false);
         setColor(JGColor.green);
-        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337 - 280, 0, false);
-        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 72) / 100) + 9, 337 - 280, 0, false);
-
+        drawString(pj.getMp() + "/" + pj.getMpMax(), ((viewWidth() * 17) / 100) + 9, 338 - 280, 0, false);
+        drawString(mob_concurrente.getHp() + "/" + mob_concurrente.getHpMax(), ((viewWidth() * 72) / 100) + 9, 338 - 280, 0, false);
+        setTextOutline(1, JGColor.black);
 
         if (mob_concurrente.getIdProximoAtaque() != -1) {
             std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, "Enemigo usó " + mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white, JGColor.yellow}, 2);
