@@ -863,7 +863,7 @@ public class menuJuego extends JGObject {
         }
         mensajeInfo.paintC();
         if (mensajeVali != null) {
-            mensajeVali.paintC();
+            mensajeVali.paintB();
         }
         if ((eng.inGameState("InCombat"))) {
             if (pj.isBloquearUso()) {
