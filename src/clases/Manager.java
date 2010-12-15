@@ -30,7 +30,7 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 14;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 22;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
@@ -144,7 +144,7 @@ public class Manager extends JGEngine {
         setProgressMessage("Iniciando la aplicación, espere...");
         setAuthorMessage("Sergio Canales Espinoza ||                    -JGame-                    || Gerald Schmidt Padilla");
         if (isApplet()) {
-            idJugador = Short.parseShort(getParameter("id_personaje"));
+            idJugador = Short.parseShort(getParameter("personaje_id"));
         }
         setFrameRate(60, 2);
         dbgShowGameState(true);
@@ -371,13 +371,13 @@ public class Manager extends JGEngine {
                 switch (res.getShort("id")) {
                     //Pongo los constructores
                     case 6:
-                        mob_facil_1 = new Mob("goblin_stand_r","goblin_dying_l",10, "goblin_hit_l", 5, "goblin_attack_l", 13, "goblin_stand2_l", 11,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_facil_1 = new Mob("goblin_stand_r", "goblin_dying_l", 10, "goblin_hit_l", 5, "goblin_attack_l", 13, "goblin_stand2_l", 11, 0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
                         break;
                     case 7:
-                        mob_facil_2 = new Mob("goblin2_stand_r","goblin2_dying_l",24, "goblin2_hit_l", 6, "goblin2_attack_l", 13, "goblin2_stand2_l", 8,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_facil_2 = new Mob("goblin2_stand_r", "goblin2_dying_l", 24, "goblin2_hit_l", 6, "goblin2_attack_l", 13, "goblin2_stand2_l", 8, 0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
                         break;
                     case 8:
-                        mob_medio_1 = new Mob("tana_stand_r","tana_dying_l",20, "tana_hit_l", 5, "tana_attack_l", 11, "tana_stand2_l", 6  ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_medio_1 = new Mob("tana_stand_r", "tana_dying_l", 20, "tana_hit_l", 5, "tana_attack_l", 11, "tana_stand2_l", 6, 0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
                         break;
                     case 9:
                         //mob_medio_2 = new Mob("mutant_stand_r","mutant_dying_l",60, "mutant_hit_l", 5, "mutant_attack_l", 18, "mutant_stand2_l", 8 ,0.3, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
@@ -386,10 +386,10 @@ public class Manager extends JGEngine {
                         //mob_dificil_1 = new Mob("grif_walk_l", "grif_dying_l",46, "grif_hit_l", 6, "grif_attack_l", 14, "grif_stand2_l", 8 , 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
                         break;
                     case 11:
-                        mob_dificil_2 = new Mob("wolverine","wolverine_dying_l",5, "wolverine_hit_l", 6, "wolverine_attack_l", 7, "wolverine_stand2_l", 1  , 0.0,res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"),conect);
+                        mob_dificil_2 = new Mob("wolverine", "wolverine_dying_l", 5, "wolverine_hit_l", 6, "wolverine_attack_l", 7, "wolverine_stand2_l", 1, 0.0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
                         break;
                     case 12:
-                        mob_jefe_final = new Mob("boss_stand_l", "boss_dying_l",20, "boss_hit_l", 5, "boss_attack_l", 14, "boss_stand2_l", 10, 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
+                        mob_jefe_final = new Mob("boss_stand_l", "boss_dying_l", 20, "boss_hit_l", 5, "boss_attack_l", 14, "boss_stand2_l", 10, 0, res.getShort("Id"), res.getString("nombre"), res.getShort("nivel"), res.getShort("posicionx"), res.getShort("posiciony"), res.getShort("tipo"), pj, false, 0.9, res.getShort("vitalidad"), res.getShort("destreza"), res.getShort("sabiduria"), res.getShort("fuerza"), res.getShort("experiencia"), res.getShort("dinero"), conect);
                         break;
                 }
                 System.out.println("PERSONAJE NPC :" + res.getString("nombre"));
@@ -432,7 +432,7 @@ public class Manager extends JGEngine {
             public void alarm() {
                 if (!inGameState("InCombat")) {
                     pj.regenerarMp(5);
-                    new StdScoring("scoring_pj_mp", ((viewWidth() * 30) / 100), (double) 322 -270, -0.1, -0.005, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue}, 5, false);
+                    new StdScoring("scoring_pj_mp", ((viewWidth() * 30) / 100), (double) 322 - 270, -0.1, -0.005, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue}, 5, false);
                     pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
                     new StdScoring("scoring_pj", ((viewWidth() * 32) / 100), (double) 302 - 270, -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
                 }
@@ -444,11 +444,10 @@ public class Manager extends JGEngine {
             @Override
             public void alarm() {
                 pj.salvarDatos();
-                
+
             }
         };
     }
-    
     /** View offset. */
     int xofs = 0, yofs = 0;
 
@@ -465,7 +464,7 @@ public class Manager extends JGEngine {
             clearMouseButton(3);
             setGameState("InWorld");
 
-        } 
+        }
     }
 
     public void doFrameInWorld() {
@@ -575,13 +574,16 @@ public class Manager extends JGEngine {
             mob_concurrente = pj.getEnemigo();
             setGameState("InCombat");
             removerEquipo();
-            mostrarVestir=0;
+            mostrarVestir = 0;
             menu.restablecerDinamicaCombate();
             menu.anim_mob_flag = "Parado";
             menu.anim_mob = mob_concurrente.anim_parado;
             menu.frames_mob = mob_concurrente.frames_anim_parado;
+            menu.anim_pj_flag = "Parado";
+            menu.anim_pj = pj.anim_parado;
+            menu.frames_pj = pj.frames_anim_parado;
             terminar_combate = false;
-            
+
             //playAudio("ambiental", "combate", true);
             filtro = 0;
             seccion.setWorking(false);
@@ -599,7 +601,7 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
-        
+
         pj.getMisiones().getFecha();
         //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
@@ -608,13 +610,13 @@ public class Manager extends JGEngine {
         // aca graficar todas las wes hermosas y lindas de la warifaifa
         drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302 - 280, 0);
 
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs()- 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs()- 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
         setColor(JGColor.blue);
         setFont(new JGFont("Arial", 0, 10));
-        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322- 280, 0, false);
+        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322 - 280, 0, false);
         setColor(JGColor.green);
-        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337- 280, 0, false);
+        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337 - 280, 0, false);
 
 
         if (mostrarVestir == 1) {
@@ -677,32 +679,32 @@ public class Manager extends JGEngine {
 
     }
 
-    public void removerEquipo(){
-            if (equipo1 != null) {
+    public void removerEquipo() {
+        if (equipo1 != null) {
 //                equipo1.x = 200+ viewXOfs();
 //                equipo1.y = 200 + viewYOfs();
-                equipo1.remove();
-            }
-            if (equipo2 != null) {
+            equipo1.remove();
+        }
+        if (equipo2 != null) {
 //                equipo2.x = 200+ viewXOfs();
 //                equipo2.y = 250 + viewYOfs();
-                equipo2.remove();
-            }
-            if (equipo3 != null) {
+            equipo2.remove();
+        }
+        if (equipo3 != null) {
 //                equipo3.x = 200+ viewXOfs();
 //                equipo3.y = 300 + viewYOfs();
-                equipo3.remove();
-            }
-            if (equipo4 != null) {
+            equipo3.remove();
+        }
+        if (equipo4 != null) {
 //                equipo4.x = 200+ viewXOfs();
 //                equipo4.y = 350 + viewYOfs();
-                equipo4.remove();
-            }
-            if (equipo5 != null) {
+            equipo4.remove();
+        }
+        if (equipo5 != null) {
 //                equipo5.x = 200+ viewXOfs();
 //                equipo5.y = 400 + viewYOfs();
-                equipo5.remove();
-            }
+            equipo5.remove();
+        }
     }
 
     @Override
@@ -716,15 +718,18 @@ public class Manager extends JGEngine {
         if (checkCollision((int) Math.pow(2, 4), cursor) != Math.pow(2, 4)) {
 //            cursor.setMensajeIcon(null);
             ventanaManager.mostrarDatoFreak("");
+            menu.mostrarDatoFreak("");
         }
         //el cursor no choca contra un boton del tipo ver
         if (checkCollision((int) Math.pow(2, 5), cursor) != Math.pow(2, 5)) {
             ventanaManager.mostrarDatoFreak("");
+            menu.mostrarDatoFreak("");
 //            cursor.limpiarInformacion();
         }
         //el cursor no choca contra un npc
         if (checkCollision((int) Math.pow(2, 3), cursor) != Math.pow(2, 3)) {
             ventanaManager.mostrarDatoFreak("");
+            menu.mostrarDatoFreak("");
         }
         moveObjects(null, (int) Math.pow(2, 7));
         if (getKey(27)) {
@@ -756,24 +761,19 @@ public class Manager extends JGEngine {
 
         //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
         ventanaManager.mostrarDatoFreak("Pulse ENTER para continuar");
-        if (getKey(KeyEnter)|| getMouseButton(1)) {
+        if (getKey(KeyEnter) || getMouseButton(1)) {
             clearMouseButton(1);
-            new JGTimer(60 * 3, true) {
+            seccion.removerIconos();
+            setGameState("InWorld");
+            pj.resume();
+            pj.aumentarDisminuirMp(pj.getMpMax() / 2);
+            pj.recibirDañoBeneficio(pj.getHpMax() / 2);
 
-                @Override
-                public void alarm() {
-                    seccion.removerIconos();
-                    pj.aumentarDisminuirMp(pj.getMpMax() / 2);
-                    pj.recibirDañoBeneficio(pj.getHpMax() / 2);
-                    setGameState("InWorld");
-                    pj.resume();
-                }
-            };
         }
     }
 
     public void paintFrameInCombat() {
-        mostrarVestir=0;
+        mostrarVestir = 0;
         removerEquipo();
         menu.vestir(false);
 
@@ -805,20 +805,20 @@ public class Manager extends JGEngine {
         // aca graficar todas las wes hermosas y lindas de la warifaifa
         drawString(pj.getNombre() + " Nivel " + pj.getNivel(), ((viewWidth() * 10) / 100), (double) 302 - 280, 0);
 
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs()- 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
-        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs()- 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (pj.getHp() * 100 / pj.getHpMax()), 10, true, false, 0, JGColor.green);
+        drawRect(viewWidth() * 10 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (pj.getMp() * 100 / pj.getMpMax()), 10, true, false, 0, JGColor.blue);
 
         setColor(JGColor.black);
-        drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 60) / 100), (double) 302- 280, 0);
+        drawString(mob_concurrente.getNombre() + " Nivel " + mob_concurrente.getNivel(), ((viewWidth() * 60) / 100), (double) 302 - 280, 0);
         drawRect(viewWidth() * 60 / 100 + viewXOfs(), 322 + viewYOfs() - 280, (float) (mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()), 10, true, false, 400, JGColor.green);
-        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 337 + viewYOfs()- 280, (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
+        drawRect(viewWidth() * 60 / 100 + viewXOfs(), 337 + viewYOfs() - 280, (float) (mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()), 10, true, false, 400, JGColor.blue);
 
         setFont(new JGFont("Arial", 0, 10));
-        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322- 280, 0, false);
-        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 322- 280, 0, false);
+        drawString((pj.getHp() * 100 / pj.getHpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 322 - 280, 0, false);
+        drawString((mob_concurrente.getHp() * 100 / mob_concurrente.getHpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 322 - 280, 0, false);
         setColor(JGColor.green);
-        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337- 280, 0, false);
-        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 337- 280, 0, false);
+        drawString((pj.getMp() * 100 / pj.getMpMax()) + "%", ((viewWidth() * 17) / 100) + 9, 337 - 280, 0, false);
+        drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 337 - 280, 0, false);
 
         if (mob_concurrente.getIdProximoAtaque() != -1) {
             std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white}, 10);
@@ -912,9 +912,10 @@ public class Manager extends JGEngine {
                 };
             }
         }
-        if (pj.getHp() <= 0){
+        if (pj.getHp() <= 0) {
             terminar_combate = true;
             pj.muerte();
+//            menu.restablecerDinamicaCombate();
         }
         if (mob_concurrente.getHp() <= 0) {
             terminar_combate = true;
@@ -946,7 +947,7 @@ public class Manager extends JGEngine {
                     mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
                 } else {
                     mjs = "¡ +" + mob_concurrente.getExperiencia() + " de experiencia !";
-                    playAudio("evento", "hallar_algo", false);
+//                    playAudio("evento", "hallar_algo", false);
                 }
                 new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
 //                menu.restablecerDinamicaCombate();
@@ -989,8 +990,8 @@ public class Manager extends JGEngine {
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
         ventanaManager.mostrarDatoFreak("Pulse ENTER para continuar");
-        if (getKey(KeyEnter)|| getMouseButton(1)) {
-        
+        if (getKey(KeyEnter) || getMouseButton(1)) {
+
 //            mob_concurrente.recibirDañoBeneficio(mob_concurrente.getHpMax());
 //            mob_concurrente.aumentarDisminuirMp(mob_concurrente.getMpMax());
             clearMouseButton(1);
@@ -2291,8 +2292,8 @@ public class Manager extends JGEngine {
 
 
                 if (obj.y >= viewYOfs() + (viewHeight() - 180)) {
-                   if ((getMouseButton(3)) &&((getKey(66))||(getKey(98)))) {
-                        if(boton.getTipo_boton()==4){
+                    if ((getMouseButton(3)) && ((getKey(66)) || (getKey(98)))) {
+                        if (boton.getTipo_boton() == 4) {
                             clearMouseButton(3);
                             seccion.removerIconos();
                             cursor.setVentana((byte) 4);
@@ -2313,11 +2314,11 @@ public class Manager extends JGEngine {
                     clearMouseButton(3);
                     filtro = 0;
                     seccion.setWorking(false);
-                            if(mostrarVestir==1){
-                            mostrarVestir = -1;
-                            }else{
-                                mostrarVestir=0;
-                            }
+                    if (mostrarVestir == 1) {
+                        mostrarVestir = -1;
+                    } else {
+                        mostrarVestir = 0;
+                    }
                     if (inGameState("InCommerce")) {
                         cursor.setVentana((byte) 4);
                     }
@@ -2330,11 +2331,11 @@ public class Manager extends JGEngine {
                     clearMouseButton(3);
                     filtro = 1;
                     seccion.setWorking(false);
-                            if(mostrarVestir==1){
-                            mostrarVestir = -1;
-                            }else{
-                                mostrarVestir=0;
-                            }
+                    if (mostrarVestir == 1) {
+                        mostrarVestir = -1;
+                    } else {
+                        mostrarVestir = 0;
+                    }
 //                    if (inGameState("InWorld")) {
 //                        mostrarVestir = -1;
 //                    }
@@ -2350,11 +2351,11 @@ public class Manager extends JGEngine {
                     clearMouseButton(3);
                     filtro = 2;
                     seccion.setWorking(false);
-                            if(mostrarVestir==1){
-                            mostrarVestir = -1;
-                            }else{
-                                mostrarVestir=0;
-                            }
+                    if (mostrarVestir == 1) {
+                        mostrarVestir = -1;
+                    } else {
+                        mostrarVestir = 0;
+                    }
 //                    if (inGameState("InWorld")) {
 //                        mostrarVestir = -1;
 //                    }
@@ -2428,20 +2429,20 @@ public class Manager extends JGEngine {
                         if (obj.y < viewYOfs() + (viewHeight() - 100)) {
                             pj.getInventario().desequipar(((Icono) obj).getItem().getIdObjeto());
 
-                            if(mostrarVestir==1){
-                            mostrarVestir = -1;
-                            }else{
-                                mostrarVestir=0;
+                            if (mostrarVestir == 1) {
+                                mostrarVestir = -1;
+                            } else {
+                                mostrarVestir = 0;
                             }
 
                         }
                         if (obj.y >= viewYOfs() + (viewHeight() - 100)) {
                             pj.getInventario().equipar(((Icono) obj).getItem().getIdObjeto());
 
-                          if(mostrarVestir==1){
-                            mostrarVestir = -1;
-                            }else{
-                                mostrarVestir=0;
+                            if (mostrarVestir == 1) {
+                                mostrarVestir = -1;
+                            } else {
+                                mostrarVestir = 0;
                             }
                         }
                         seccion.removerIconos();
@@ -2607,58 +2608,58 @@ public class Manager extends JGEngine {
                                     Map.Entry en = (Map.Entry) it.next();
                                     Objeto obje = inv.getItem(Short.parseShort(en.getKey().toString())).getObjeto();
                                     //Objeto obje = inv.getElObjeto(Short.parseShort(en.getKey().toString()));
-                                    
-                                        cantidad++;
-                                        if (personaje.getTipo() == 0) {
-                                            if (mostrarVestir == 1&& inGameState("InWorld") ) {
+
+                                    cantidad++;
+                                    if (personaje.getTipo() == 0) {
+                                        if (mostrarVestir == 1 && inGameState("InWorld")) {
 
 //                                            System.out.println("entra again"+inv.getEquipo().get(obje.getIdObjeto()).getEquipado());
-                                                if (obje.getTipo() == 1 && inv.getEquipo().get(obje.getIdObjeto()).getEquipado() == 1) {
-                                                    if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 1) {
-                                                        equipo1 = new Icono("1icono", 115, 80, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                            if (obje.getTipo() == 1 && inv.getEquipo().get(obje.getIdObjeto()).getEquipado() == 1) {
+                                                if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 1) {
+                                                    equipo1 = new Icono("1icono", 115, 80, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo1.suspend();
-                                                    } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 2) {
-                                                        equipo2 = new Icono("2icono", 110, 150, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 2) {
+                                                    equipo2 = new Icono("2icono", 110, 150, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo2.suspend();
-                                                    } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 3) {
-                                                        equipo3 = new Icono("3icono", 70, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 3) {
+                                                    equipo3 = new Icono("3icono", 70, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo3.suspend();
-                                                    } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 4) {
-                                                        equipo4 = new Icono("4icono", 140, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                } else if (pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn() == 4) {
+                                                    equipo4 = new Icono("4icono", 140, 210, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo4.suspend();
-                                                    } else {
+                                                } else {
 //                                                    new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
-                                                        equipo5 = new Icono("5icono", 110, 300, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
+                                                    equipo5 = new Icono("5icono", 110, 300, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje);
 //                                                    equipo5.suspend();
-                                                    }
                                                 }
-                                                
                                             }
-                                            if (obje.getTipo() == filtro) {
-                                                //if(obje.getTipo()==1){
+
+                                        }
+                                        if (obje.getTipo() == filtro) {
+                                            //if(obje.getTipo()==1){
 //
 //                                                    if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipado()==1){
 //                                                        pj.getInventario().eliminarItem(obje.getIdObjeto(), (short)1);
 //                                                        System.out.println("Nombre Objeto-----"+obje.getNombre()+"---lugar que se equipa "+pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn());
 //                                                    }
 //                                                }
-                                                if (inv.tieneItem(obje.getIdObjeto())) {
-                                                    hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
-                                                    setFont(new JGFont("Arial", 0, 24));
-                                                    //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
-                                                    this.recorrido.x += 37;
-                                                    this.tabla.x--;
-                                                }
-                                                //                                                if(obje.getTipo()==1){
+                                            if (inv.tieneItem(obje.getIdObjeto())) {
+                                                hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
+                                                setFont(new JGFont("Arial", 0, 24));
+                                                //                                        drawString("Cantidad" + inv.contarItem(obje.getIdObjeto()), viewHeight() / 2, viewWidth() / 2, 0);
+                                                this.recorrido.x += 37;
+                                                this.tabla.x--;
+                                            }
+                                            //                                                if(obje.getTipo()==1){
 //
 //                                                    if(pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipado()==1){
 //                                                        pj.getInventario().agregarItem(obje.getIdObjeto(), (short)1);
 //                                                        System.out.println("Nombre Objeto-----"+obje.getNombre()+"---lugar que se equipa "+pj.getInventario().getEquipo().get(obje.getIdObjeto()).getEquipaEn());
 //                                                    }
 //                                                }
-                                            }
-                                        } else {
-                                            if (inv.tieneItem(obje.getIdObjeto())) {
+                                        }
+                                    } else {
+                                        if (inv.tieneItem(obje.getIdObjeto())) {
                                             System.out.println("Dibuje a este qlio 2: " + obje.getNombre() + " " + obje.getNombreGrafico());
                                             hmIconoItem.put(cantidad, new Icono("icono", this.recorrido.x, this.recorrido.y, obje.getNombreGrafico(), obje.getIdObjeto(), (short) 1, inv.contarItem(obje.getIdObjeto()), personaje.getTipo(), obje.getNombre(), obje));
                                             setFont(new JGFont("Arial", 0, 24));
@@ -2666,8 +2667,8 @@ public class Manager extends JGEngine {
                                             this.recorrido.x += 37;
                                             this.tabla.x--;
                                         }
-                                        }
-                                    
+                                    }
+
 
                                 } else {
                                     fin = true;

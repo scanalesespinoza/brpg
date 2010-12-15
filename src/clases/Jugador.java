@@ -180,8 +180,8 @@ public class Jugador extends Personaje {
      */
 
     public void subirNivel() {
-        eng.playAudio("evento", "subir_nivel", false);
-//        this.aumentarNivel();
+//        eng.playAudio("evento", "subir_nivel", false);
+        this.aumentarNivel();
         this.aumentarStats();
         this.setExperiencia(0);
         this.setLimiteSuperiorExperiencia((int) this.calcularLimiteExperiencia());
@@ -227,7 +227,7 @@ public class Jugador extends Personaje {
     }
 
     public void aumentarExperiencia(short exp) {
-        if (this.getExperiencia() + exp >= this.getLimiteSuperiorExperiencia()) {//persoanje subió de nivel
+        if (this.getExperiencia() + exp >= this.getLimiteSuperiorExperiencia()) {//personaje subió de nivel
             short resto = (short) ((this.getExperiencia() + exp) - (this.getLimiteSuperiorExperiencia()));
             subirNivel();
             this.aumentarExperiencia(resto);
