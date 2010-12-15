@@ -57,18 +57,18 @@ public class menuJuego extends JGObject {
     public boolean termineAnimacionMuerte = false;
     public boolean dibujandoAnimacionMuerte = false;
     public boolean vestir = false;
-    private StdScoring mensajito = new StdScoring("freak", 480, 380, 0, 0, -1, "", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue, JGColor.white}, 20, false);
+    private StdScoring mensajeInfo = new StdScoring("freak", 430, 390, 0, 0, -1, "", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue, JGColor.white}, 20, false);
+    private StdScoring mensajeVali;
+
+    public void mostrarMensajeValidacion(String txt) {
+        this.mensajeVali = new StdScoring("validacion", 430, 380, 0, 0, 120, txt, new JGFont("arial", 1, 10), new JGColor[]{JGColor.yellow, JGColor.black}, 20, false);
+    }
 
     public void mostrarDatoFreak(String txt) {
-            this.mensajito.msg = txt;
-//            if (!this.mensaje_flash.equals(txt) || this.mensajito.cycletimer >= this.mensajito.expiry ) {//cambio de mensaje
-//                if (mensajito != null ) mensajito.suspend();
-//
-//                this.mensaje_flash = txt;
-//            }else {
-//                this.mensajito.paintB();
-//            }
-        }
+        this.mensajeInfo.msg = txt;
+
+    }
+
     public StdScoring getStdScoreNpc() {
         return stdScoreNpc;
     }
@@ -271,8 +271,8 @@ public class menuJuego extends JGObject {
                     eng.setColor(JGColor.yellow);
                     eng.drawString("Ptos. Restantes:" + pj.getTotalPuntosHabilidad(), eng.viewWidth() - 100, 25, -1);
                     eng.setColor(JGColor.white);
-                }else{
-                    HashMap<Short,Boton> boton2 = botones_habilidad_aumentar;
+                } else {
+                    HashMap<Short, Boton> boton2 = botones_habilidad_aumentar;
                     Iterator iti = boton2.entrySet().iterator();
                     while (iti.hasNext()) {
                         Map.Entry e = (Map.Entry) iti.next();
@@ -565,13 +565,11 @@ public class menuJuego extends JGObject {
     }
 
     public void paintB(Jugador pj) {
-        
+
         String img = null, img1 = null;
         if ((eng.inGameState("InCombat"))) {
             eng.drawImage(0, 0, "combate", false);
-            if (pj.isBloquearUso()) {
-                eng.drawString("Estás bloqueado, no puedes utilizar habilidades o items", eng.viewWidth() / 2 - 100, eng.viewHeight() - 100, -1, false);
-            }
+
             //dibujo los perfiles de los contrincantes
 //            //personaje
 //            String img1 = "personaje_combate";
@@ -830,7 +828,7 @@ public class menuJuego extends JGObject {
             eng.removeObjects("colec", (int) Math.pow(2, 5));
             eng.drawImage(0, 370, "tab_usable", false);
         }
-//        eng.drawImage(300, 370, "barrainfo", false);
+        eng.drawImage(300, 370, "barrainfo", false);
 
 
         setSeccion(new JGPoint(120, 440), new JGPoint(12, 1));
@@ -863,7 +861,16 @@ public class menuJuego extends JGObject {
             setSeccion(new JGPoint(200, 200), new JGPoint(4, 4));
             generaSeccion(0);
         }
-        mensajito.paintB();
+        mensajeInfo.paintC();
+        if (mensajeVali != null) {
+            mensajeVali.paintC();
+        }
+        if ((eng.inGameState("InCombat"))) {
+            if (pj.isBloquearUso()) {
+                eng.setColor(JGColor.magenta);
+                eng.drawString("No puedes utilizar habilidades o items", eng.viewWidth() / 2 +25 , eng.viewHeight() - 100, -1, false);
+            }
+        }
     }
 
     public void restablecerDinamicaCombate() {

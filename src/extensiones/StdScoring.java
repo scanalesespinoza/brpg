@@ -34,7 +34,7 @@ public class StdScoring extends JGObject {
     }
 
     public StdScoring(String name, double x, double y, double xspeed, double yspeed,
-            int expiry, String message, JGFont font, JGColor[] colors, int cyclespeed,boolean pf_relative) {
+            int expiry, String message, JGFont font, JGColor[] colors, int cyclespeed, boolean pf_relative) {
         super(name, true, x, y, (int) Math.pow(2, 7), null, xspeed, yspeed, expiry);
         msg = message;
         this.font = font;
@@ -52,11 +52,18 @@ public class StdScoring extends JGObject {
     }
 
     public void paintB() {
-        if (cycletimer <=  expiry) {
+        if (cycletimer <= expiry) {
             eng.setFont(font);
             eng.setColor(cols[(cycletimer / cyclespeed) % cols.length]);
             eng.drawString(msg, (int) x, (int) y, 0, pf_relative);
             cycletimer++;
         }
+    }
+
+    public void paintC() {
+        eng.setFont(font);
+        eng.setColor(cols[(cycletimer / cyclespeed) % cols.length]);
+        eng.drawString(msg, (int) x, (int) y, 0, pf_relative);
+        cycletimer++;
     }
 }
