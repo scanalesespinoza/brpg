@@ -30,7 +30,7 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 13;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 14;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
@@ -2229,13 +2229,14 @@ public class Manager extends JGEngine {
                                         if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
                                             pj.getHabilidades().agregaHabilidad((short) boton.getId(), habilidades.get((short) boton.getId()));
                                             pj.gastarPuntosHabilidad();
+
                                         } else if (pj.getHabilidades().getHabilidad((short) boton.getId()).puedeAumentar()) {
                                             pj.getHabilidades().aumentarNivel((short) boton.getId());
                                             pj.gastarPuntosHabilidad();
                                         }
 //                                        mostrarVestir=-1;
-//                                        seccion.removerIconos();
-//                                        seccion.setWorking(false);
+                                        seccion.removerIconos();
+                                        seccion.setWorking(false);
 
                                     }
                                     break;
