@@ -717,18 +717,15 @@ public class Manager extends JGEngine {
         //el cursor no choca contra el icono
         if (checkCollision((int) Math.pow(2, 4), cursor) != Math.pow(2, 4)) {
 //            cursor.setMensajeIcon(null);
-            ventanaManager.mostrarDatoFreak("");
             menu.mostrarDatoFreak("");
         }
         //el cursor no choca contra un boton del tipo ver
         if (checkCollision((int) Math.pow(2, 5), cursor) != Math.pow(2, 5)) {
-            ventanaManager.mostrarDatoFreak("");
             menu.mostrarDatoFreak("");
 //            cursor.limpiarInformacion();
         }
         //el cursor no choca contra un npc
         if (checkCollision((int) Math.pow(2, 3), cursor) != Math.pow(2, 3)) {
-            ventanaManager.mostrarDatoFreak("");
             menu.mostrarDatoFreak("");
         }
         moveObjects(null, (int) Math.pow(2, 7));
@@ -760,7 +757,7 @@ public class Manager extends JGEngine {
 
 
         //personaje es enviado a la ciudad, poner con cara de muerto, o alguna seña que lo está
-        ventanaManager.mostrarDatoFreak("Pulse ENTER para continuar");
+        menu.mostrarDatoFreak("Pulse ENTER para continuar");
         if (getKey(KeyEnter) || getMouseButton(1)) {
             clearMouseButton(1);
             seccion.removerIconos();
@@ -768,7 +765,6 @@ public class Manager extends JGEngine {
             pj.resume();
             pj.aumentarDisminuirMp(pj.getMpMax() / 2);
             pj.recibirDañoBeneficio(pj.getHpMax() / 2);
-
         }
     }
 
@@ -821,7 +817,7 @@ public class Manager extends JGEngine {
         drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 337 - 280, 0, false);
 
         if (mob_concurrente.getIdProximoAtaque() != -1) {
-            std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white}, 10);
+            std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80,"Enemigo usó "+ mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white}, 10);
         }
     }
 
@@ -989,7 +985,7 @@ public class Manager extends JGEngine {
         checkCollision(
                 (int) Math.pow(2, 4) + (int) Math.pow(2, 0), // Colisión entre Iconos + cursor
                 (int) Math.pow(2, 0)); // ejecuta hit cursor
-        ventanaManager.mostrarDatoFreak("Pulse ENTER para continuar");
+        menu.mostrarDatoFreak("Pulse ENTER para continuar");
         if (getKey(KeyEnter) || getMouseButton(1)) {
 
 //            mob_concurrente.recibirDañoBeneficio(mob_concurrente.getHpMax());
@@ -1989,7 +1985,7 @@ public class Manager extends JGEngine {
                     menu.mostrarDatoFreak("Ítem: " + ((Icono) obj).getItem().getNombre());
                 }
             }
-//                         ventanaManager.mostrarDatoFreak("Obj: "+obj.colid);
+//                         menu.mostrarDatoFreak("Obj: "+obj.colid);
             if ((obj.colid == (int) Math.pow(2, 4))) {//es icono
                 Icono iconito = (Icono) obj;
                 this.setMensajeIcon(iconito.getNombreLogico());
@@ -2004,7 +2000,7 @@ public class Manager extends JGEngine {
                 switch (npc_procesar.getTipo()) {
                     case 2://npc de misiones
                         npc_concurrente = npc_procesar;
-                        ventanaManager.mostrarDatoFreak("Personaje: " + npc_procesar.getNombre());
+                        menu.mostrarDatoFreak("Personaje: " + npc_procesar.getNombre());
                         if (getMouseButton(3)) {
                             clearMouseButton(3);
                             //veo qué misión tiene el npc que el personaje no tenga (también veo el
@@ -2121,7 +2117,7 @@ public class Manager extends JGEngine {
                         }
                         break;
                     case 1://npc vendedor
-                        ventanaManager.mostrarDatoFreak("Vendedor: " + ((Personaje) (obj)).getNombre());
+                        menu.mostrarDatoFreak("Vendedor: " + ((Personaje) (obj)).getNombre());
                         //setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
                         if (getMouseButton(3)) {
                             vendedor_concurrente = (Npc) obj;
@@ -2186,9 +2182,9 @@ public class Manager extends JGEngine {
                 if (obj.x >= viewXOfs() + (viewWidth() - 180)) {// es del menu
                     if (boton.getTipo_boton() != 3) {
                         if (boton.getTipo_boton() == 4) {
-                            ventanaManager.mostrarDatoFreak("Eliminar");
+                            menu.mostrarDatoFreak("Eliminar");
                         } else if (boton.getTipo_boton() == 1) {
-                            ventanaManager.mostrarDatoFreak("Asignar puntos");
+                            menu.mostrarDatoFreak("Asignar puntos");
                         }
                         if (getMouseButton(3)) {
                             clearMouseButton(3);
@@ -2253,7 +2249,7 @@ public class Manager extends JGEngine {
                         //corresponde al menu y es boton del tipo "ver"
                         //por comportamiento mouse over , se muestra información
                         //en el monitor
-                        ventanaManager.mostrarDatoFreak("Ver descripción");
+                        menu.mostrarDatoFreak("Ver descripción");
                         switch (menu.getMenuActual()) {
                             case 4://Menú está en Estadísticas
                                 switch (boton.getId()) {
@@ -2268,13 +2264,13 @@ public class Manager extends JGEngine {
                                         setInformacionEstadistica("Fuerza", "Aumenta el daño que causas", "La distribución de puntos no tiene restricción");
                                         break;//
                                     case 2:
-                                        setInformacionEstadistica("Destreza", "Aumenta el la sanación en ti", "La distribución de puntos no tiene restricción");
+                                        setInformacionEstadistica("Destreza", "Mejora tu precisión", "La distribución de puntos no tiene restricción");
                                         break;
                                     case 3:
-                                        setInformacionEstadistica("Sabiduría", "Reduce el daño que recibes", "La distribución de puntos no tiene restricción");
+                                        setInformacionEstadistica("Sabiduría", "Aumenta tu entereza espiritual", "La distribución de puntos no tiene restricción");
                                         break;
                                     case 4:
-                                        setInformacionEstadistica("Vitalidad", "Aumenta el los puntos de vida que posees", "La distribución de puntos no tiene restricción");
+                                        setInformacionEstadistica("Vitalidad", "Aumenta los puntos de vida que posees", "La distribución de puntos no tiene restricción");
                                         break;
                                 }
                                 break;
@@ -2382,9 +2378,9 @@ public class Manager extends JGEngine {
                             cursor.setVentana((byte) 4);
                         } else {
                             if (!pj.validarDinero(icon.getItem().getValorDinero())) {
-                                ventanaManager.mostrarMensajeValidacion("No tiene suficiente dinero");
+                                menu.mostrarMensajeValidacion("No tiene suficiente dinero");
                             } else {
-                                ventanaManager.mostrarMensajeValidacion("No soportas mas peso");
+                                menu.mostrarMensajeValidacion("No soportas mas peso");
                             }
                         }
                     }
@@ -2404,7 +2400,7 @@ public class Manager extends JGEngine {
                             personaje_concurrente.getInventario().mod_despojar(icon.getIdObjeto());
                             cursor.setVentana((byte) 4);
                         } else {
-                            ventanaManager.mostrarMensajeValidacion("No soportas mas peso");
+                            menu.mostrarMensajeValidacion("No soportas mas peso");
                         }
                     }
                 }
