@@ -30,7 +30,7 @@ piedra_os	^	16	/media/imagenes/tiles/Rock_Gray_1.png	-
 //define pasto
 pasto	%	0	/media/imagenes/tiles/pasto_oscuro.png	-
 //define tile bloquedo
-cuadro	!	20	/media/imagenes/tiles/nulo_16x16.png	-
+cuadro	!	20	/media/imagenes/tiles/vacio.png	-
 //define pasto pantano
 ppantano	(	0	/media/imagenes/tiles/pasto_oscuro.png	-
 ppantano1	)	0	/media/imagenes/tiles/pasto_oscuro1.png	-

@@ -38,6 +38,7 @@ public class Npc extends Personaje {
         this.colId = colId;
         this.dialogo = new dialogo_personaje(conn);
         
+        
     }
 
     public Npc(double x, double y, String name, String mediaName, int tamano, short idNpc, short nivel, short tipo,  dbDelegate conn,String[] dialogo) throws SQLException {
@@ -51,6 +52,10 @@ public class Npc extends Personaje {
     public Npc(String graf, short idPersonaje, String nombre, short nivel, double posicionX, double posicionY, short tipo,  dbDelegate conn) {
         super(posicionX, posicionY, 1, idPersonaje, nombre, graf, nivel, tipo, (int) Math.pow(2, 3),conn);
         this.dialogo = new dialogo_personaje(conn);
+        this.idNpc = idPersonaje;
+        this.grafNpc = graf;
+        this.nomNpc = nombre;
+        this.colId =  (int) Math.pow(2, 3);
     }
 
     public Npc(dbDelegate con) {
