@@ -817,7 +817,7 @@ public class Manager extends JGEngine {
         drawString((mob_concurrente.getMp() * 100 / mob_concurrente.getMpMax()) + "%", ((viewWidth() * 67) / 100) + 9, 337 - 280, 0, false);
 
         if (mob_concurrente.getIdProximoAtaque() != -1) {
-            std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80,"Enemigo usó "+ mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white}, 10);
+            std_mob_habilidad = new StdScoring("nombreAtaque", ((viewWidth() * 70) / 100) + viewXOfs(), 315 + viewYOfs(), 0, 0, 80, "Enemigo usó " + mob_concurrente.getHabilidades().getHabilidad(mob_concurrente.getIdProximoAtaque()).getHabilidad().getNombre(), new JGFont("Arial", 0, 12), new JGColor[]{JGColor.black, JGColor.white}, 10);
         }
     }
 
@@ -1902,6 +1902,7 @@ public class Manager extends JGEngine {
         private String pjEntregar = null;
         private String nota = null;
         private boolean limpiarIconos = false;
+        private boolean dibujar = false;
 
         public boolean isLimpiarIconos() {
             return limpiarIconos;
@@ -1982,7 +1983,11 @@ public class Manager extends JGEngine {
                 if (((Icono) obj).getTipo() == 0) {//habilidades{
                     menu.mostrarDatoFreak("Habilidad: " + ((Icono) obj).getHabilidad().getNombre());
                 } else {
-                    menu.mostrarDatoFreak("Ítem: " + ((Icono) obj).getItem().getNombre());
+                    String msj = "Ítem: " + ((Icono) obj).getItem().getNombre();
+                    if (inGameState("InCommerce")){
+                        msj += " {pesa : "+objetos.get(((Icono) obj).getItem().getIdObjeto()).getPeso()+"| vale: "+objetos.get(((Icono) obj).getItem().getIdObjeto()).getValorDinero()+"}";
+                    }
+                    menu.mostrarDatoFreak(msj);
                 }
             }
 //                         menu.mostrarDatoFreak("Obj: "+obj.colid);
@@ -2283,6 +2288,7 @@ public class Manager extends JGEngine {
                                 setInformacionMision(mis.getNombre(), mis.getDescripcion(), String.valueOf(mis.getRecompensaExp()), String.valueOf(mis.getIdPersonajeConcluyeMision()));
                                 break;
                         }
+
                     }
                 }
 
@@ -2451,6 +2457,9 @@ public class Manager extends JGEngine {
         }
 
         public void desplegarInformacion() {
+            if (dibujar) {
+                drawImage(0, viewHeight() - 190, "desc", false);
+            }
             setFont(new JGFont("Arial", 0, 10));
             setColor(JGColor.white);
             if (nombre != null) {
@@ -2469,7 +2478,7 @@ public class Manager extends JGEngine {
                 drawString("Tipo : " + tipo, viewWidth() / 2, viewHeight() - 160, -1);
             }
             if (usoCombat != null) {
-                drawString("Uso Combate : " + usoCombat, viewWidth() / 2, viewHeight() - 150, -1);
+                drawString("Permitido en combate : " + usoCombat, viewWidth() / 2, viewHeight() - 150, -1);
             }
             if (danoBeneficio != null) {
                 if (Integer.parseInt(danoBeneficio) > 0) {
@@ -2485,18 +2494,19 @@ public class Manager extends JGEngine {
                 drawString("Nivel máx : " + maxLvl, viewWidth() / 2, viewHeight() - 160, -1);
             }
             if (recompensa != null) {
-                drawString("Recompensa exp : " + recompensa, viewWidth() / 2, viewHeight() - 180, -1);
+                drawString("Recompensa exp : " + recompensa, 16, viewHeight() - 160, -1);
             }
             if (pjEntregar != null) {
-                drawString("A quién entregar : " + pjEntregar, viewWidth() / 2, viewHeight() - 150, -1);
+                //drawString("A quién entregar : " + pjEntregar, viewWidth() / 2, viewHeight() - 150, -1);
             }
             if (nota != null) {
-                drawString("Nota : " + nota, viewWidth() / 2, viewHeight() - 110, -1);
+                drawString("Nota : " + nota, viewWidth() / 2, viewHeight() - 150, -1);
             }
+
         }
 
         private void setInformacion(String nom, String desc, String val, String pes, String tip, String usoCom, String dano, String cos,
-                String lvl, String maxLvl, String rec, String pjEnt, String not) {
+                String lvl, String maxLvl, String rec, String pjEnt, String not, boolean dib) {
             this.nombre = nom;
             this.descripcion = desc;
             this.valor = val;
@@ -2510,27 +2520,37 @@ public class Manager extends JGEngine {
             this.recompensa = rec;
             this.pjEntregar = pjEnt;
             this.nota = not;
+            this.dibujar = dib;
 
         }
 
         public void limpiarInformacion() {
-            setInformacion(null, null, null, null, null, null, null, null, null, null, null, null, null);
+            setInformacion(null, null, null, null, null, null, null, null, null, null, null, null, null, false);
+
         }
 
         public void setInformacionHabilidad(String nom, String desc, String dano, String cos, String pmaxLvl) {
-            setInformacion(nom, desc, null, null, null, null, dano, cos, null, pmaxLvl, null, null, null);
+            setInformacion(nom, desc, null, null, null, null, dano, cos, null, pmaxLvl, null, null, null, true);
         }
 
         public void setInformacionObjeto(String nom, String desc, String val, String tip, String pes, String usoCom) {
-            setInformacion(nom, desc, val, pes, tip, usoCom, null, null, null, null, null, null, null);
+            if (usoCom.equals("true")){
+                usoCom = "sí";
+            }else usoCom = "no";
+            if (tip.equals("0")){
+                tip = "Usable";
+            }else if(tip.equals("1")){
+                tip = "Equipable";
+            }else tip ="Coleccionable";
+            setInformacion(nom, desc, val, pes, tip, usoCom, null, null, null, null, null, null, null, true);
         }
 
         public void setInformacionMision(String nom, String desc, String rec, String pjEnt) {
-            setInformacion(nom, desc, null, null, null, null, null, null, null, null, rec, pjEnt, null);
+            setInformacion(nom, desc, null, null, null, null, null, null, null, null, rec, pjEnt, null, true);
         }
 
         public void setInformacionEstadistica(String nom, String desc, String not) {
-            setInformacion(nom, desc, null, null, null, null, null, null, null, null, null, null, not);
+            setInformacion(nom, desc, null, null, null, null, null, null, null, null, null, null, not, true);
         }
 
         public String getMensajeIcon() {
