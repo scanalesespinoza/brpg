@@ -198,6 +198,7 @@ public class menuJuego extends JGObject {
         eng.setFont(new JGFont("Arial", 2, 20));
         int linea_y;
         int linea_x;
+        int eje_y_exp;
 
         switch (menu) {
             case 0/*"main"*/:
@@ -208,23 +209,41 @@ public class menuJuego extends JGObject {
                 eng.setFont(new JGFont("Arial", 0, 10));//fuente parrafo
                 eng.drawString("Nombre: " + pjTest.getNombre(), eng.viewWidth() - 97, 30, -1);
                 eng.drawString("Nivel: " + pjTest.getNivel(), eng.viewWidth() - 97, 40, -1);
-                eng.drawString("Experiencia", eng.viewWidth() - 97, 50, -1);
-                eng.drawString("Dinero :" + pjTest.getDinero(), eng.viewWidth() - 97, 83, -1);
-                eng.drawString("Peso libre :" + pjTest.getPesoDisponible(), eng.viewWidth() - 97, 93, -1);
-                eng.setColor(JGColor.red);
-                eng.drawRect(eng.viewWidth() - 100, 70, 93, 10, false, false, false);
-                eng.setColor(JGColor.yellow);
-                eng.drawRect(eng.viewWidth() - 99, 71, (pj.getExperiencia() * 91) / pj.getLimiteSuperiorExperiencia(), 9, true, false, false, new JGColor[]{JGColor.blue, JGColor.orange, JGColor.green, JGColor.magenta, JGColor.white, JGColor.red});
-                eng.setColor(JGColor.white);
-                eng.drawString(pj.getExperiencia() + "/" + pj.getLimiteSuperiorExperiencia(), eng.viewWidth() - 50, 60, 0, false);
 
-//                eng.drawString("Zona" , eng.viewWidth() - 97, 253, -1);
-////                eng.drawRect(eng.viewWidth() - 80, 263 , 70, 52.5, true, false, false);
-//                eng.drawImage(eng.viewWidth() - 87, 263, "mini_mapa", false);
-//                eng.setColor(JGColor.black);
-//                eng.drawOval(((pj.x * 70) / eng.pfWidth()) + (eng.viewWidth() - 87), ((pj.y * 52.5) / eng.pfHeight()) + (263), 4, 4, true, true, false);
-//                eng.setColor(JGColor.white);
-//                //Dibujar el personaje en el "mini..Mapa"
+                eje_y_exp = 50;
+                if (!eng.inGameState("InCombat")) {
+                    eng.drawString("HP: ", eng.viewWidth() - 97, 50, -1);
+                    eng.drawString("MP: ", eng.viewWidth() - 97, 60, -1);
+                    eng.setFont(new JGFont("Arial", 0, 8));
+                    //BARRA HP
+                    eng.setColor(JGColor.green);
+                    eng.drawRect(eng.viewWidth() - 82, 50, (pj.getHp() * 76) / pj.getHpMax(), 8, true, false, false, new JGColor[]{JGColor.green, JGColor.green});
+                    //BARRA MP
+                    eng.setColor(JGColor.blue);
+                    eng.drawRect(eng.viewWidth() - 82, 60, (pj.getMp() * 76) / pj.getMpMax(), 8, true, false, false, new JGColor[]{JGColor.blue, JGColor.blue});
+                    eng.setTextOutline(0, null);
+                    eng.setColor(JGColor.blue);
+                    eng.drawString(pj.getHp() + "/" + pj.getHpMax(), eng.viewWidth() - 45, 51, 0, false);
+                    eng.setColor(JGColor.green);
+                    eng.drawString(pj.getMp() + "/" + pj.getMpMax(), eng.viewWidth() - 45, 61, 0, false);
+                    eng.setTextOutline(1, JGColor.black);
+                    eje_y_exp = 70;
+                }
+                                    eng.setFont(new JGFont("arial", 0, 10));
+                eng.setColor(JGColor.white);
+                //BARRA EXPERIENCIA
+                eng.drawString("Experiencia", eng.viewWidth() - 97, eje_y_exp, -1);
+                eng.setColor(JGColor.red);
+                eng.drawRect(eng.viewWidth() - 100, eje_y_exp + 20, 93, 10, false, false, false);
+                eng.setColor(JGColor.yellow);
+                eng.drawRect(eng.viewWidth() - 99, eje_y_exp + 21, (pj.getExperiencia() * 91) / pj.getLimiteSuperiorExperiencia(), 9, true, false, false, new JGColor[]{JGColor.blue, JGColor.orange, JGColor.green, JGColor.magenta, JGColor.white, JGColor.red});
+                eng.setColor(JGColor.white);
+                eng.drawString(pj.getExperiencia() + "/" + pj.getLimiteSuperiorExperiencia(), eng.viewWidth() - 50, eje_y_exp + 10, 0, false);
+                eng.setColor(JGColor.white);
+                eng.drawString("Dinero :" + pjTest.getDinero(), eng.viewWidth() - 97, eje_y_exp + 33, -1);
+                eng.drawString("Peso libre :" + pjTest.getPesoDisponible(), eng.viewWidth() - 97, eje_y_exp + 43, -1);
+                
+                
                 removerIconos();
                 suspenderBotones(1);
                 suspenderBotones(4);
@@ -427,6 +446,7 @@ public class menuJuego extends JGObject {
 
 
         }
+        eng.setFont(new JGFont("Arial", 1, 14));
         eng.drawString("Zona", eng.viewWidth() - 75, 253, -1);
 //                eng.drawRect(eng.viewWidth() - 80, 263 , 70, 52.5, true, false, false);
         eng.drawImage(eng.viewWidth() - 87, 263, "mini_mapa", false);
@@ -510,19 +530,12 @@ public class menuJuego extends JGObject {
                 }
 
             } else {
-                this.botones_objetos_abandonar.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
-                this.botones_objetos_ver.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
+                if (this.botones_objetos_abandonar.containsKey(((Inventario.Item) e.getValue()).getIdObjeto()) && this.botones_objetos_ver.containsKey(((Inventario.Item) e.getValue()).getIdObjeto())) {
+                    this.botones_objetos_abandonar.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
+                    this.botones_objetos_ver.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
+                }
 
             }
-//                    if (cont % 2 != 0) {//el numero es par se dibuja lo mas a la izquierda posible
-//                        linea_x = eng.viewWidth() - 80;
-//                        linea_y += 42;
-//                    }
-
-//                    if (linea_y > 42 * 6) {
-//                        linea_y = 30;
-//                    }
-
             cont++;
         }
     }
@@ -620,7 +633,7 @@ public class menuJuego extends JGObject {
                     }
 
                 } else if (continua_anim_pj && anim_pj_flag != "Parado" && anim_concu_aux_pj == "Atacando") {
-                     //cualquier imagen tiene prioridad sobre el flag "Parado"
+                    //cualquier imagen tiene prioridad sobre el flag "Parado"
                     anim_pj = anim_aux_pj;
                     frames_pj = frame_concu_aux_pj;
                     this.continua_anim_pj = true;
@@ -891,7 +904,7 @@ public class menuJuego extends JGObject {
         if ((eng.inGameState("InCombat"))) {
             if (pj.isBloquearUso()) {
                 eng.setColor(JGColor.magenta);
-                eng.drawString("En espera para usar habilidades o items", eng.viewWidth() / 2 +25 , eng.viewHeight() - 100, -1, false);
+                eng.drawString("En espera para usar habilidades o items", eng.viewWidth() / 2 + 25, eng.viewHeight() - 100, -1, false);
             }
             eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
         }
