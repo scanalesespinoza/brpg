@@ -477,7 +477,7 @@ public class menuJuego extends JGObject {
         while (it3.hasNext()) {
             Map.Entry e = (Map.Entry) it3.next();
             //Si tiene almenos una cantidad de objetos lo dibujo
-            if (pj.getInventario().tieneItem(Short.parseShort(e.getKey().toString()))) {
+            if ((pj.getInventario().tieneItem(Short.parseShort(e.getKey().toString())))) {
                 Objeto ob = pj.getInventario().getObjetos().get(Short.parseShort(e.getKey().toString())).getObjeto();
 
                 if (this.botones_objetos_ver.containsKey(ob.getIdObjeto())) {
@@ -534,7 +534,6 @@ public class menuJuego extends JGObject {
                     this.botones_objetos_abandonar.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
                     this.botones_objetos_ver.get(((Inventario.Item) e.getValue()).getIdObjeto()).suspend();
                 }
-
             }
             cont++;
         }
