@@ -59,6 +59,17 @@ public class menuJuego extends JGObject {
     public boolean vestir = false;
     private StdScoring mensajeInfo = new StdScoring("freak", 430, 390, 0, 0, -1, "", new JGFont("arial", 1, 10), new JGColor[]{JGColor.blue, JGColor.white}, 20, false);
     private StdScoring mensajeVali;
+    private boolean musicaOn = false;
+    private Boton boton_sonido_on;
+    private Boton boton_sonido_off;
+
+    public boolean isMusicaOn() {
+        return musicaOn;
+    }
+
+    public void setMusicaOn(boolean musicaOn) {
+        this.musicaOn = musicaOn;
+    }
 
     public void mostrarMensajeValidacion(String txt) {
         this.mensajeVali = new StdScoring("validacion", 430, 380, 0, 0, 120, txt, new JGFont("arial", 1, 10), new JGColor[]{JGColor.yellow, JGColor.black}, 20, false);
@@ -191,6 +202,10 @@ public class menuJuego extends JGObject {
 //        this.botones_objetos_usar = new HashMap<Short, Boton>();
         this.botones_objetos_ver = new HashMap<Short, Boton>();
 
+        this.boton_sonido_on = new Boton("sonido_prender", "ver", eng.viewWidth() - 45, 100, (int) Math.pow(2, 5), 15, 1);
+        this.boton_sonido_off = new Boton("sonido_apagar", "abandonar", eng.viewWidth() - 45, 100, (int) Math.pow(2, 5), 15, 0);
+        this.boton_sonido_on.suspend();
+        this.boton_sonido_off.suspend();
     }
 
     public void menuActual(int menu, Jugador pj) {
@@ -229,7 +244,7 @@ public class menuJuego extends JGObject {
                     eng.setTextOutline(1, JGColor.black);
                     eje_y_exp = 70;
                 }
-                                    eng.setFont(new JGFont("arial", 0, 10));
+                eng.setFont(new JGFont("arial", 0, 10));
                 eng.setColor(JGColor.white);
                 //BARRA EXPERIENCIA
                 eng.drawString("Experiencia", eng.viewWidth() - 97, eje_y_exp, -1);
@@ -242,8 +257,8 @@ public class menuJuego extends JGObject {
                 eng.setColor(JGColor.white);
                 eng.drawString("Dinero :" + pjTest.getDinero(), eng.viewWidth() - 97, eje_y_exp + 33, -1);
                 eng.drawString("Peso libre :" + pjTest.getPesoDisponible(), eng.viewWidth() - 97, eje_y_exp + 43, -1);
-                
-                
+
+
                 removerIconos();
                 suspenderBotones(1);
                 suspenderBotones(4);
@@ -339,63 +354,6 @@ public class menuJuego extends JGObject {
                 }
 
                 break;
-//            case 3/*"inventario"*/:
-//                eng.setFont(new JGFont("Arial", 1, 14));
-//                eng.setColor(JGColor.yellow);
-//                eng.drawString("Inventario", eng.viewWidth() - 75, 10, 0);
-//                eng.setFont(new JGFont("Arial", 0, 10));
-//                eng.setColor(JGColor.white);
-//                menuActual = 3;
-//                int cont = 0;
-//                Iterator it3 = pj.getInventario().getObjetos().entrySet().iterator();
-//                linea_y = 30;
-//                linea_x = eng.viewWidth() - 80;
-//                while (it3.hasNext()) {
-//                    Map.Entry e = (Map.Entry) it3.next();
-//                    //Si tiene almenos una cantidad de objetos lo dibujo
-//                    if (pj.getInventario().tieneItem(Short.parseShort(e.getKey().toString()))) {
-//                        Objeto ob = pj.getInventario().getObjetos().get(Short.parseShort(e.getKey().toString())).getObjeto();
-//                        if (this.botones_objetos_ver.containsKey(ob.getIdObjeto())) {
-//                            this.botones_objetos_ver.get(ob.getIdObjeto()).resume();
-//                            this.botones_objetos_ver.get(ob.getIdObjeto()).setyAnt(linea_y + 32);
-//                            this.botones_objetos_ver.get(ob.getIdObjeto()).setxAnt(linea_x + 8);
-//                            this.botones_objetos_ver.get(ob.getIdObjeto()).pintar();
-//                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).resume();
-//                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).setyAnt(linea_y + 32);
-//                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).setxAnt(linea_x + 16);
-//                            this.botones_objetos_abandonar.get(ob.getIdObjeto()).pintar();
-//                            this.botones_objetos_usar.get(ob.getIdObjeto()).resume();
-//                            this.botones_objetos_usar.get(ob.getIdObjeto()).setyAnt(linea_y);
-//                            this.botones_objetos_usar.get(ob.getIdObjeto()).setxAnt(linea_x);
-//                            this.botones_objetos_usar.get(ob.getIdObjeto()).pintar();
-//                        } else {
-//                            Boton btn = new Boton(ob.getNombre() + "_ver", "ver", linea_x + 8, linea_y + 32, (int) Math.pow(2, 5), 3, ob.getIdObjeto());
-//                            btn.suspend();
-//                            this.botones_objetos_ver.put(ob.getIdObjeto(), btn);
-//
-//                            btn = new Boton(ob.getNombre() + "_abandonar", "abandonar", linea_x + 16, linea_y + 32, (int) Math.pow(2, 5), 4, ob.getIdObjeto());
-//                            btn.suspend();
-//                            this.botones_objetos_abandonar.put(ob.getIdObjeto(), btn);
-//
-//                            btn = new Boton(ob.getNombre() + "_usar", ob.getNombreGrafico(), linea_x, linea_y, (int) Math.pow(2, 5), 2, ob.getIdObjeto());
-//                            btn.suspend();
-//                            this.botones_objetos_usar.put(ob.getIdObjeto(), btn);
-//
-//                        }
-//                        linea_x += 37;
-//                    }
-//                    if (cont % 2 != 0) {//el numero es par se dibuja lo mas a la izquierda posible
-//                        linea_x = eng.viewWidth() - 80;
-//                        linea_y += 42;
-//                    }
-//
-//                    if (linea_y > 42 * 6) {
-//                        linea_y = 30;
-//                    }
-//                    cont++;
-//                }
-
-//                break;
             case 4/*"estadistica"*/:
                 eng.setFont(new JGFont("Arial", 1, 14));
                 eng.setColor(JGColor.yellow);
@@ -440,32 +398,43 @@ public class menuJuego extends JGObject {
                 eng.drawString("Opciones", eng.viewWidth() - 97, 10, -1);
                 eng.setColor(JGColor.white);
                 eng.setFont(new JGFont("Arial", 0, 10));
-                eng.drawString("Teclas", eng.viewWidth() - 97, 30, -1);
-                eng.drawString("Musica", eng.viewWidth() - 97, 40, -1);
+                String msj;
+                if (musicaOn){
+                    boton_sonido_on.suspend();
+                    boton_sonido_off.resume();
+                    boton_sonido_off.pintar();
+                    msj = "Activada";
+                } else {
+                    boton_sonido_off.suspend();
+                    boton_sonido_on.resume();
+                    boton_sonido_on.pintar();
+                    msj = "Desactivada";
+                }
+                eng.drawString("Música: "+msj, eng.viewWidth() - 97, 40, -1);
                 break;
 
 
         }
         eng.setFont(new JGFont("Arial", 1, 14));
         eng.drawString("Zona", eng.viewWidth() - 75, 253, -1);
-//                eng.drawRect(eng.viewWidth() - 80, 263 , 70, 52.5, true, false, false);
+//                eng.drawRect(eng.viewWidth() - 80, 263 , 70, 52.5, true, false, false);+
+        //Dibujar el personaje en el "mini..Mapa"
         eng.drawImage(eng.viewWidth() - 87, 263, "mini_mapa", false);
         eng.setColor(JGColor.black);
         eng.drawOval(((pj.x * 70) / eng.pfWidth()) + (eng.viewWidth() - 87), ((pj.y * 52.5) / eng.pfHeight()) + (263), 4, 4, true, true, false);
         eng.setColor(JGColor.white);
-        //Dibujar el personaje en el "mini..Mapa"
+
         eng.setFont(new JGFont("Arial", 1, 14));
         eng.drawString("Menu[Tecla]", eng.viewWidth() - 97, 320, -1);
         eng.setFont(new JGFont("Arial", 0, 10));
-        eng.drawString("General     ", eng.viewWidth() - 97, 340, -1);
         eng.drawString("Habilidades [H]", eng.viewWidth() - 97, 350, -1);
         eng.drawString("Misiones     [M]", eng.viewWidth() - 97, 360, -1);
-        eng.drawString("Inventario    [ I ]  ", eng.viewWidth() - 97, 370, -1);
-        eng.drawString("Estadisticas[E]", eng.viewWidth() - 97, 380, -1);
+        eng.drawString("Estadisticas[E]", eng.viewWidth() - 97, 370, -1);
         eng.drawString("Opciones    [O]", eng.viewWidth() - 97, 390, -1);
         eng.setFont(new JGFont("Arial", 0, 10));
-        eng.drawString("Salir del Juego", eng.viewWidth() - 97, 430, -1);
-        eng.drawString("[Escape]", eng.viewWidth() - 97, 450, -1);
+        eng.drawString("Para salir del", eng.viewWidth() - 50, 430, 0);
+        eng.drawString("Juego cierre", eng.viewWidth() - 50, 440, 0);
+        eng.drawString("esta ventana", eng.viewWidth() - 50, 450, 0);
         /*
          * Inventario siempre dibujado
          */
@@ -551,15 +520,7 @@ public class menuJuego extends JGObject {
             boton = this.botones_mision_ver;
             boton2 = this.botones_mision_abandonar;
         }
-//        } else if (i == 3) {
-//            boton = this.botones_objetos_abandonar;
-//            boton2 = this.botones_objetos_ver;
-//            Iterator it = boton.entrySet().iterator();
-//            while (it.hasNext()) {
-//                Map.Entry e = (Map.Entry) it.next();
-////                this.botones_objetos_usar.get(Short.parseShort(e.getKey().toString())).suspend();
-//            }
-//        }
+
         Iterator it = boton.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry e = (Map.Entry) it.next();
@@ -1140,5 +1101,11 @@ public class menuJuego extends JGObject {
 
     public void removerIconos() {
         eng.removeObjects("iconoMenu", (int) Math.pow(2, 4));
+    }
+
+    public void playAudio(String canal, String sonido, boolean loop) {
+        if (this.musicaOn) {
+            eng.playAudio(canal, sonido, loop);
+        }
     }
 }
