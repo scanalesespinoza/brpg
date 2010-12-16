@@ -180,7 +180,7 @@ public class Manager extends JGEngine {
         //setMsgFont(new JGFont("Helvetica",0,32));
         setFont(new JGFont("Arial", 0, 20));
         setPFSize(160, 120);//menuJuego de juego
-        //playAudio("ambiental", "ciudad", true);
+
         //Objeto cursor, imágen que sigue las coordenadas del mouse
         cursor = new Cursor();
         //cargaJugador(0,0); reemplazamos por el metodo nuevo
@@ -412,7 +412,7 @@ public class Manager extends JGEngine {
                     setTextOutline(0, null);
                     new StdScoring("scoring_pj_mp", (pj.x + 25) - viewXOfs(), (pj.y + 50) - viewYOfs(), -0.1, -0.005, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 11), new JGColor[]{JGColor.blue}, 5, false);
                     pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
-                    new StdScoring("scoring_pj", (pj.x + 50) - viewXOfs(), (pj.y + 25) + 10 -viewYOfs(), -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
+                    new StdScoring("scoring_pj", (pj.x + 50) - viewXOfs(), (pj.y + 25) + 10 - viewYOfs(), -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
                     setTextOutline(1, JGColor.black);
                 }
             }
@@ -426,6 +426,7 @@ public class Manager extends JGEngine {
 
             }
         };
+        menu.playAudio("ambiental", "ciudad", true);
     }
     /** View offset. */
     int xofs = 0, yofs = 0;
@@ -454,16 +455,6 @@ public class Manager extends JGEngine {
         pj.desbloquear();
         if (pj.isSuspended()) {
             pj.setResumeMode(true);
-        }
-        if (pj.x < viewWidth() * 2 && pj.y < viewHeight() * 2) {
-            //esta en la ciudad
-            //playAudio("ambiental", "ciudad", true);
-        } else if (pj.x < viewWidth() * 3 && pj.y < viewHeight() * 3) {
-            //esta en la afuera de la ciudad
-            //playAudio("ambiental", "ciudad2", true);
-        } else {
-            //Esta en pantano
-            // playAudio("ambiental", "pantano", true);
         }
         capturarTeclas();
 
@@ -558,7 +549,7 @@ public class Manager extends JGEngine {
             menu.frames_pj = pj.frames_anim_parado;
             terminar_combate = false;
             this.setIcon(null);
-            //playAudio("ambiental", "combate", true);
+            menu.playAudio("ambiental", "combate", true);
             filtro = 0;
             seccion.setWorking(false);
             seccion.removerIconos();
@@ -707,7 +698,7 @@ public class Manager extends JGEngine {
 
                 @Override
                 public void alarm() {
-                    //playAudio("ambiental", "muerte", true);
+//                    menu.playAudio("ambiental", "muerte", true);
                     pj.setPos(CIUDAD_X, CIUDAD_Y);
                     pj.setDir(0, 0);
                     pj.suspend();
@@ -811,11 +802,11 @@ public class Manager extends JGEngine {
                         mob_concurrente.recibirDañoBeneficio(-(mob_concurrente.getHpMax() / 4));
                         //si no es beneficio al jugador
                         std_mob_daño = new StdScoring("scoring_mob", ((viewWidth() * 78) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
-                        // playAudio("evento_combate", "golpe", false);
+                        menu.playAudio("evento_combate", "golpe", false);
 //                    menu.recibeScore(null, new StdScoring("scoring", mob_concurrente.x, mob_concurrente.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5));
                     } else {
                         pj.recibirDañoBeneficio(dañoBeneficio);
-                        //playAudio("evento_combate", "heal", false);
+                        menu.playAudio("evento_combate", "heal", false);
                         std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
 //                    menu.recibeScore(new StdScoring("scoring", pj.x, pj.y, 0, -2, 80, "" + dañoBeneficio, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5), null);
                     }
@@ -836,7 +827,7 @@ public class Manager extends JGEngine {
                     //el personaje puede usar un item
                     dañoBeneficio = pj.getInventario().getItem(pj.getIdProximoItem()).getObjeto().getBeneficio();
                     pj.recibirDañoBeneficio(dañoBeneficio);
-                    //playAudio("evento_combate", "heal2", false);
+                    menu.playAudio("evento_combate", "heal2", false);
                     std_pj_sanacion = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
                     pj.setIdProximoItem((short) -1);
                 }
@@ -855,7 +846,7 @@ public class Manager extends JGEngine {
                     dañoBeneficio += ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
                     //se convierte en daño hacia el jugador
                     pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
-                    //playAudio("evento_combate", "golpe2", false);
+//                    menu.playAudio("evento_combate", "golpe2", false);
                     std_pj_daño = new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                     //si no es beneficio al MOB
                 } else {
@@ -910,7 +901,7 @@ public class Manager extends JGEngine {
                     mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
                 } else {
                     mjs = "¡ +" + mob_concurrente.getExperiencia() + " de experiencia !";
-//                    playAudio("evento", "hallar_algo", false);
+                    menu.playAudio("evento", "hallar_algo", false);
                 }
                 new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
 //                menu.restablecerDinamicaCombate();
@@ -966,6 +957,7 @@ public class Manager extends JGEngine {
             this.entregarRecompensa = false;
             personaje_concurrente.getInventario().restablecerInventario();
             this.personaje_concurrente = null;
+            menu.playAudio("ambiental", "ciudad2", true);
         } else {
             interacVentana(personaje_concurrente, "InReward");
         }
@@ -1831,13 +1823,6 @@ public class Manager extends JGEngine {
 
         public void mostrarDatoFreak(String txt) {
             this.mensajito.msg = txt;
-//            if (!this.mensaje_flash.equals(txt) || this.mensajito.cycletimer >= this.mensajito.expiry ) {//cambio de mensaje
-//                if (mensajito != null ) mensajito.suspend();
-//
-//                this.mensaje_flash = txt;
-//            }else {
-//                this.mensajito.paintB();
-//            }
         }
     }
 
@@ -2052,7 +2037,7 @@ public class Manager extends JGEngine {
                                             mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
                                         } else {
                                             mjs = "¡ +" + misi.getRecompensaExp() + " de experiencia !";
-//                                            eng.playAudio("evento", "hallar_algo", false);
+                                            menu.playAudio("evento", "hallar_algo", false);
                                         }
                                         new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
 
@@ -2067,7 +2052,7 @@ public class Manager extends JGEngine {
                                             short cantidad = misi.getRequerimientos().getObjetos().get(objeto_id).getCantidad();
                                             pj.getInventario().eliminarItem(objeto_id, cantidad);
                                         }
-                                        //playAudio("evento", "hallar_algo", false);
+                                        menu.playAudio("evento", "hallar_algo", false);
                                         entregarRecompensa = true;
                                     }
 
@@ -2084,13 +2069,13 @@ public class Manager extends JGEngine {
                         break;
                     case 1://npc vendedor
                         menu.mostrarDatoFreak("Vendedor: " + ((Personaje) (obj)).getNombre());
-                        //setMensaje("Vendedor: Hola " + pj.getNombre() + ", deseas hacer un trato     ?" + obj.colid);
                         if (getMouseButton(3)) {
                             vendedor_concurrente = (Npc) obj;
                             setVentana((byte) 1);
                             mostrarVestir = 0;
+                            menu.playAudio("evento", "mensaje", false);
                         }
-                    //playAudio("evento", "mensaje", false);
+
 
                 }
             }
@@ -2146,6 +2131,14 @@ public class Manager extends JGEngine {
                     }
                 }
                 if (obj.x >= viewXOfs() + (viewWidth() - 180)) {// es del menu
+                    if (boton.getTipo_boton() == 15 && getMouseButton(3)) {
+                        clearMouseButton(3);
+                        System.out.println("asdasd");
+                        menu.setMusicaOn(!menu.isMusicaOn());
+                        if (!menu.isMusicaOn()) {
+                            stopAudio();
+                        }
+                    }
                     if (boton.getTipo_boton() != 3) {
                         if (boton.getTipo_boton() == 4) {
                             menu.mostrarDatoFreak("Eliminar");
@@ -2158,7 +2151,7 @@ public class Manager extends JGEngine {
                             switch (menu.getMenuActual()) {
                                 case 4://Menú está en Estadísticas
                                     if (pj.getTotalPuntosEstadistica() > 0) {
-                                        // playAudio("evento", "permitido", false);
+                                        menu.playAudio("evento", "permitido", false);
                                         switch (boton.getId()) {
                                             /**
                                              * ids para estadisticas
@@ -2188,7 +2181,7 @@ public class Manager extends JGEngine {
                                     break;
                                 case 1://Menú está en Habilidad
                                     if (pj.getTotalPuntosHabilidad() > 0) {
-                                        //playAudio("evento", "permitido", false);
+                                        menu.playAudio("evento", "permitido", false);
                                         if (!pj.getHabilidades().tieneHabilidad((short) boton.getId())) {
                                             pj.getHabilidades().agregaHabilidad((short) boton.getId(), habilidades.get((short) boton.getId()));
                                             pj.gastarPuntosHabilidad();
@@ -2206,7 +2199,7 @@ public class Manager extends JGEngine {
                                 case 2://Menú está en misión
                                     if (boton.getTipo_boton() == 4) {//boton corresponde al tipo abandonar
                                         pj.getMisiones().abandonaMision((short) boton.getId());
-                                        //playAudio("evento", "no_permitido", false);
+                                        menu.playAudio("evento", "no_permitido", false);
                                     }
                                     break;
                             }
@@ -2251,6 +2244,7 @@ public class Manager extends JGEngine {
                         }
 
                     }
+
                 }
 
 
@@ -2378,7 +2372,7 @@ public class Manager extends JGEngine {
                         if (!pj.isBloquearUso()) {
                             //el personaje va a usar un item, por que el culiao es entero choro
                             pj.recibirDañoBeneficio(((Icono) obj).getItem().getBeneficio());
-                            //playAudio("evento_combate", "heal2", false);
+                            menu.playAudio("evento_combate", "heal2", false);
                             new StdScoring("scoring_pj", ((viewWidth() * 10) / 100) + viewXOfs(), (double) 302 + viewYOfs(), -0.09, -1, 160, "" + ((Icono) obj).getItem().getBeneficio() + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green, JGColor.yellow}, 5);
                             pj.usarItem(((Icono) obj).getItem());
                         }

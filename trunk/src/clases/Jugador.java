@@ -180,7 +180,7 @@ public class Jugador extends Personaje {
      */
 
     public void subirNivel() {
-//        eng.playAudio("evento", "subir_nivel", false);
+//      menu.playAudio("evento", "subir_nivel", false);
         this.aumentarNivel();
         this.aumentarStats();
         this.setExperiencia(0);
@@ -643,7 +643,7 @@ public class Jugador extends Personaje {
         if (menu.termineAnimacionMuerte) {
             this.aumentarDisminuirDinero((int) -(this.getDinero() * ((float) (0.2))));
             eng.setGameState("InDeath");
-//            eng.playAudio("ambiental", "muerte", true);
+            menu.playAudio("ambiental", "muerte", true);
         }
     }
 
