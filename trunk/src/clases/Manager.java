@@ -2262,6 +2262,7 @@ public class Manager extends JGEngine {
                             cursor.setVentana((byte) 4);
                             pj.getInventario().eliminarItem((short) boton.getId(), (short) 1);
                             seccion.setWorking(false);
+                            removerEquipo();
                         }
                     }
                     if (boton.getTipo_boton() == 3 && getMouseButton(3)) {
