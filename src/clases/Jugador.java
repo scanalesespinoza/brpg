@@ -656,8 +656,8 @@ public class Jugador extends Personaje {
     }
 
     public int regenerarMp(int porcentaje) {
-        aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))));
-        return (int) (mpMax * ((float) (porcentaje / 100.0)));
+        aumentarDisminuirMp((int) (mpMax * ((float) (porcentaje / 100.0))) + 10);
+        return (int) (mpMax * ((float) (porcentaje / 100.0)) +  10);
     }
 
     public void aumentarDisminuirMp(int cant) {
@@ -687,19 +687,19 @@ public class Jugador extends Personaje {
     }
 
     public void aumentarFuerza(int i) {
-        this.setFuerza((short) (getFuerza() + 1));
+        this.fuerza++;
     }
 
     public void aumentarDestreza(int i) {
-        this.setDestreza((short) (getDestreza() + 1));
+        this.destreza++;
     }
 
     void aumentarSabiduria(int i) {
-        this.setSabiduria((short) (getSabiduria() + 1));
+        this.sabiduria++;
     }
 
     void aumentarVitalidad(int i) {
-        this.setVitalidad((short) (getVitalidad() + 1));
+        this.vitalidad++;
     }
 
     void gastarPuntoEstadistica() {

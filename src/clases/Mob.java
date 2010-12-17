@@ -5,6 +5,8 @@
 package clases;
 
 import java.sql.ResultSet;
+import jgame.JGColor;
+import jgame.JGFont;
 import jgame.JGObject;
 import jgame.JGPoint;
 
@@ -34,6 +36,8 @@ public class Mob extends Personaje {
     public int frames_anim_muerte, frames_anim_golpeado, frames_anim_atacar, frames_anim_parado;
     private int frames_anim_concurrente;
     private String anim_concurrente;
+    private JGColor color;
+
     public int getFrames_anim_concurrente() {
         return frames_anim_concurrente;
     }
@@ -61,9 +65,12 @@ public class Mob extends Personaje {
         this.frames_anim_parado = frames_parado;
         this.frames_anim_muerte = frames_muerte;
         this.anim_inworld = graf;
-        this.dinero=dinero;
+        this.dinero = dinero;
         this.setHp();
         this.setMp();
+        if (nombre.equals("Koh")){
+            color = JGColor.yellow;
+        }else color=JGColor.white;
     }
 
     public void cargarInventario() {
@@ -112,7 +119,6 @@ public class Mob extends Personaje {
     public void setDinero(short dinero) {
         this.dinero = dinero;
     }
-
 
     public boolean isAtacando() {
         return atacando;
@@ -313,7 +319,7 @@ public class Mob extends Personaje {
                     }
                 }
                 startAnim();
-                
+
 //                System.out.println(eng.getAnimation(this.getAnimId()).);
                 break;
             case 12:
@@ -548,11 +554,13 @@ public class Mob extends Personaje {
             this.hp = this.hpMax;
         } else {
             this.hp = 0;
-            
+
         }
-        if (this.hp <= 0){
+        if (this.hp <= 0) {
             setMuriendo(true);
-        }else setMuriendo(false);
+        } else {
+            setMuriendo(false);
+        }
     }
 
     public void muerte() {
@@ -597,5 +605,15 @@ public class Mob extends Personaje {
 
     public Integer getMpMax() {
         return mpMax;
+    }
+
+    @Override
+    public void paint() {
+        if (!eng.inGameState("InCombat")) {
+            eng.setColor(color);
+            eng.setTextOutline(1, JGColor.red);
+            eng.drawString(this.getNombre(), this.x + eng.getImage(this.getImageName()).getSize().x / 2, this.y, 0, true);
+            eng.setTextOutline(1, JGColor.black);
+        }
     }
 }

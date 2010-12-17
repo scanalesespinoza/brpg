@@ -29,7 +29,7 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 18;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 19;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
@@ -413,14 +413,14 @@ public class Manager extends JGEngine {
                 if (!inGameState("InCombat")) {
                     setTextOutline(0, null);
                     new StdScoring("scoring_pj_mp", (pj.x + 25) - viewXOfs(), (pj.y + 50) - viewYOfs(), -0.1, -0.005, 160, " +" + pj.regenerarMp(5) + " MP ", new JGFont("arial", 1, 11), new JGColor[]{JGColor.blue}, 5, false);
-                    pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100));
-                    new StdScoring("scoring_pj", (pj.x + 50) - viewXOfs(), (pj.y + 25) + 10 - viewYOfs(), -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
+                    pj.recibirDañoBeneficio((int) (pj.getHpMax() * 3 / 100) + 10);
+                    new StdScoring("scoring_pj", (pj.x + 50) - viewXOfs(), (pj.y + 25) + 10 - viewYOfs(), -0.1, -0.005, 160, "" + (pj.getHpMax() * 3 / 100 + 10) + " HP", new JGFont("arial", 1, 13), new JGColor[]{JGColor.green}, 5, false);
                     setTextOutline(1, JGColor.black);
                 }
             }
         };
         //Guarda en la base de datos el jugador
-        new JGTimer((int) (getFrameRate() * 30), false) {
+        new JGTimer((int) (getFrameRate() * 60), false) {
 
             @Override
             public void alarm() {
@@ -569,7 +569,6 @@ public class Manager extends JGEngine {
     @Override
     public void paintFrame() {
 
-        drawString(pj.x+"   ,   "+pj.y, viewWidth()/2, viewHeight()/2, 0);
         //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
         setColor(JGColor.black);
@@ -801,9 +800,9 @@ public class Manager extends JGEngine {
                     //el personaje puede atacar por que no está bloqueado
                     dañoBeneficio = pj.getHabilidades().getDañoBeneficio(pj.getIdProximoAtaque());
                     if (dañoBeneficio < 0) {
-                        dañoBeneficio += ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
+                        dañoBeneficio -= ((pj.getAtaque()) * (100 - mob_concurrente.getDefensa())) / 50 - pj.getAtaque();
                         //se convierte en daño hacia el enemigo
-                        mob_concurrente.recibirDañoBeneficio(-(mob_concurrente.getHpMax() / 4));
+                        mob_concurrente.recibirDañoBeneficio(dañoBeneficio);
                         //si no es beneficio al jugador
                         std_mob_daño = new StdScoring("scoring_mob", ((viewWidth() * 78) / 100) + viewXOfs(), (double) 302 + viewYOfs(), 0.09, -1, 160, "" + dañoBeneficio + " HP", new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.red, JGColor.orange, JGColor.yellow}, 5);
                         menu.playAudio("evento_combate", "golpe", false);
@@ -847,7 +846,7 @@ public class Manager extends JGEngine {
                 //el MOB puede atacar por que no está bloqueado
                 dañoBeneficio = mob_concurrente.getHabilidades().getDañoBeneficio(mob_concurrente.getIdProximoAtaque());
                 if (dañoBeneficio < 0) {
-                    dañoBeneficio += ((mob_concurrente.getAtaque()) * (50 - pj.getDefensa())) / 50 - mob_concurrente.getAtaque();
+                    dañoBeneficio += ((mob_concurrente.getAtaque()) * ( - pj.getDefensa())) / 50 - (mob_concurrente.getAtaque() * mob_concurrente.getNivel())/4;
                     //se convierte en daño hacia el jugador
                     pj.recibirDañoBeneficio(dañoBeneficio);//dañoBeneficio
 //                    menu.playAudio("evento_combate", "golpe2", false);
@@ -880,7 +879,7 @@ public class Manager extends JGEngine {
             final Mob enemigo_procesar = (Mob) getObject(mob_concurrente.getName());
             if (menu.isTermineAnimacionMuerte()) {
                 if (respawn_mob == null) {
-                    respawn_mob = new JGTimer((int) (getFrameRate() * 30 * 1), true) {
+                    respawn_mob = new JGTimer((int) (getFrameRate() * 60 * 1), true) {
 
                         @Override
                         public void alarm() {
@@ -900,8 +899,8 @@ public class Manager extends JGEngine {
                 setGameState("InReward");
                 int nivel = pj.getNivel();
                 pj.aumentarExperiencia(mob_concurrente.getExperiencia());
-                System.out.println("----dinero"+mob_concurrente.getDinero());
-                pj.aumentarDisminuirDinero(mob_concurrente.getDinero()+100);
+                System.out.println("----dinero" + mob_concurrente.getDinero());
+                pj.aumentarDisminuirDinero(mob_concurrente.getDinero() + 100);
                 String mjs;
                 if (nivel != pj.getNivel()) {
                     mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
@@ -1474,7 +1473,7 @@ public class Manager extends JGEngine {
         new Npc(16 * 130, 16 * 110, "arbol_seco3", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(16 * 60, 16 * 100, "arbol_seco4", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(80, 1616, "arbol_seco5", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
-        new Npc(144, 1616, "arbol_seco6", "casa_5", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
+//        new Npc(144, 1616, "arbol_seco6", "casa_5", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(608, 1608, "arbol_seco7", "arbol_seco", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(880, 1184, "arbol_seco8", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
         new Npc(816, 1520, "arbol_seco9", "arbol_seco2", (int) Math.pow(2, 6), (short) 4, (short) 20, conect, new String[]{"escultura: "});
@@ -1961,130 +1960,140 @@ public class Manager extends JGEngine {
                         menu.mostrarDatoFreak("Personaje: " + npc_procesar.getNombre());
                         if (getMouseButton(3)) {
                             clearMouseButton(3);
-                            //veo qué misión tiene el npc que el personaje no tenga (también veo el
-                            Iterator it = npc_procesar.getMisiones().getMisiones().entrySet().iterator();
-                            short mision_id = -1;
-                            short accion = 0;
-                            /**
-                             * -1 = invalido
-                             *  0 = agregar
-                             *  1 = agregar
-                             *  2 = comprobar
-                             *
-                             */
-                            while (it.hasNext() && accion == 0) {
-                                Map.Entry e = (Map.Entry) it.next();
-                                Mision mis = npc_procesar.getMisiones().getMisiones().get(Short.parseShort(e.getKey().toString())).getMision();
-                                if (!mis.isRepetible()) {//no es repetible
-                                    if (!pj.getMisiones().isHizoMision(mis.getIdMision(), misiones.get(mis.getIdMision()))) {//nunca ha hecho la mision
-                                        if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
-                                            //si llega hasta acá, el pj nunca en su vida  ha tomado la misión
-                                            accion = 1;//agregar
-                                            //Validar que el personaje tenga nivel necesario
+                            if (getXDist(npc_procesar.x, pj.x) <= 64 && getXDist(npc_procesar.y, pj.y) <= 30) {
+                                //veo qué misión tiene el npc que el personaje no tenga (también veo el
+                                Iterator it = npc_procesar.getMisiones().getMisiones().entrySet().iterator();
+                                short mision_id = -1;
+                                short accion = 0;
+                                /**
+                                 * -1 = invalido
+                                 *  0 = agregar
+                                 *  1 = agregar
+                                 *  2 = comprobar
+                                 *
+                                 */
+                                while (it.hasNext() && accion == 0) {
+                                    Map.Entry e = (Map.Entry) it.next();
+                                    Mision mis = npc_procesar.getMisiones().getMisiones().get(Short.parseShort(e.getKey().toString())).getMision();
+                                    if (!mis.isRepetible()) {//no es repetible
+                                        if (!pj.getMisiones().isHizoMision(mis.getIdMision(), misiones.get(mis.getIdMision()))) {//nunca ha hecho la mision
+                                            if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
+                                                //si llega hasta acá, el pj nunca en su vida  ha tomado la misión
+                                                accion = 1;//agregar
+                                                //Validar que el personaje tenga nivel necesario
 
+                                            } else {
+                                                //comprobar si cumple la misión
+                                                accion = 2;
+                                            }
+                                        }
+                                    } else {
+                                        if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
+                                            accion = 1;//agregar
                                         } else {
                                             //comprobar si cumple la misión
                                             accion = 2;
                                         }
                                     }
-                                } else {
-                                    if (!pj.getMisiones().isHaciendoMision(mis.getIdMision())) {//no la esta desarrollando
-                                        accion = 1;//agregar
-                                    } else {
-                                        //comprobar si cumple la misión
-                                        accion = 2;
+                                    mision_id = mis.getIdMision();
+                                    if (mis.getNivelRequerido() > pj.getNivel()) {
+                                        accion = 0;
                                     }
                                 }
-                                mision_id = mis.getIdMision();
-                                if (mis.getNivelRequerido() > pj.getNivel()) {
-                                    accion = 0;
-                                }
-                            }
-                            switch (accion) {
-                                case 0://el personaje hizo todas las misiones o no tiene ninguna
-                                    //aca se pone el dialogo normal
-                                    ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
-                                    break;
-                                case 1: //el personaje no tiene la misión.. agregar
+                                switch (accion) {
+                                    case 0://el personaje hizo todas las misiones o no tiene ninguna
+                                        //aca se pone el dialogo normal
+                                        ventanaManager.setDialogo(npc_concurrente.obtieneDialogo());
+                                        break;
+                                    case 1: //el personaje no tiene la misión.. agregar
 
-                                    pj.getMisiones().agregarMision(mision_id, (short) 1, misiones.get(mision_id));
-                                    //pasamos al segundo dialogo (Comprobación)
-                                    ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoIniciarMision());
-                                    break;
-                                case 2://Comprobar Mision
-                                    //Busco si el PJ tiene los objetos que la mision requiere
-                                    //recorro el hashmap de la lista de objetos asociados A LA MISION
-                                    /**Iterator **/
-                                    it = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().entrySet().iterator();
-                                    boolean fail = false;
-                                    int cont = 0;
-                                    while (it.hasNext() && !fail) {
-                                        Map.Entry e = (Map.Entry) it.next();
-                                        short objeto_id = Short.parseShort(e.getKey().toString());
-                                        short cantidad = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().get(objeto_id).getCantidad();
-                                        if (!pj.getInventario().tieneItem(objeto_id, cantidad)) {
-                                            fail = true;
+                                        pj.getMisiones().agregarMision(mision_id, (short) 1, misiones.get(mision_id));
+                                        //pasamos al segundo dialogo (Comprobación)
+                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoIniciarMision());
+                                        break;
+                                    case 2://Comprobar Mision
+                                        //Busco si el PJ tiene los objetos que la mision requiere
+                                        //recorro el hashmap de la lista de objetos asociados A LA MISION
+                                        /**Iterator **/
+                                        it = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().entrySet().iterator();
+                                        boolean fail = false;
+                                        int cont = 0;
+                                        while (it.hasNext() && !fail) {
+                                            Map.Entry e = (Map.Entry) it.next();
+                                            short objeto_id = Short.parseShort(e.getKey().toString());
+                                            short cantidad = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision().getRequerimientos().getObjetos().get(objeto_id).getCantidad();
+                                            if (!pj.getInventario().tieneItem(objeto_id, cantidad)) {
+                                                fail = true;
+                                            }
+
+                                            cont++;
                                         }
+                                        String stringRelleno = "...                                                      ...";//30 espacios
 
-                                        cont++;
-                                    }
-                                    String stringRelleno = "...                                                      ...";//30 espacios
-
-                                    if (fail) {//no tiene los requerimientos para cumplir la mision
-                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoFalloMision());
-                                    } else {
-                                        //cumplio los requerimientos...
-                                        Mision misi = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision();
-                                        int nivel = pj.getNivel();
-                                        //Se da la experiencia
-                                        pj.aumentarExperiencia(misi.getRecompensaExp());
-                                        pj.aumentarDisminuirDinero(misi.getRecompensaDinero());
-                                        String mjs;
-                                        if (nivel != pj.getNivel()) {
-                                            mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
+                                        if (fail) {//no tiene los requerimientos para cumplir la mision
+                                            ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoFalloMision());
                                         } else {
-                                            mjs = "¡ +" + misi.getRecompensaExp() + " de experiencia !";
+                                            //cumplio los requerimientos...
+                                            Mision misi = npc_procesar.getMisiones().getMisiones().get(mision_id).getMision();
+                                            int nivel = pj.getNivel();
+                                            //Se da la experiencia
+                                            pj.aumentarExperiencia(misi.getRecompensaExp());
+                                            pj.aumentarDisminuirDinero(misi.getRecompensaDinero());
+                                            String mjs;
+                                            if (nivel != pj.getNivel()) {
+                                                mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
+                                            } else {
+                                                mjs = "¡ +" + misi.getRecompensaExp() + " de experiencia !";
+                                                menu.playAudio("evento", "hallar_algo", false);
+                                            }
+                                            new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
+
+
+                                            interacVentana(npc_concurrente, "InInteraction");
+                                            pj.getMisiones().completarMision(misi.getIdMision());
+                                            //se da los item que tiene asociado el personaje que le dio la misión (NPC_CONCURRENTE)
+                                            ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoCumplirMision());
+                                            //se restan de su inventario
+                                            for (Map.Entry id : misi.getRequerimientos().getObjetos().entrySet()) {
+                                                short objeto_id = Short.parseShort(id.getKey().toString());
+                                                short cantidad = misi.getRequerimientos().getObjetos().get(objeto_id).getCantidad();
+                                                pj.getInventario().eliminarItem(objeto_id, cantidad);
+                                            }
                                             menu.playAudio("evento", "hallar_algo", false);
+                                            entregarRecompensa = true;
                                         }
-                                        new StdScoring("pj_exp", pj.x, pj.y + 100, 0, -2, 120, mjs, new JGFont("helvetica", 1, 20), new JGColor[]{JGColor.green}, 10);
 
 
-                                        interacVentana(npc_concurrente, "InInteraction");
-                                        pj.getMisiones().completarMision(misi.getIdMision());
-                                        //se da los item que tiene asociado el personaje que le dio la misión (NPC_CONCURRENTE)
-                                        ventanaManager.setDialogo(npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoComprobarMision() + stringRelleno + stringRelleno + npc_concurrente.getMisiones().getMisiones().get(mision_id).getMision().getDialogo().dialogoCumplirMision());
-                                        //se restan de su inventario
-                                        for (Map.Entry id : misi.getRequerimientos().getObjetos().entrySet()) {
-                                            short objeto_id = Short.parseShort(id.getKey().toString());
-                                            short cantidad = misi.getRequerimientos().getObjetos().get(objeto_id).getCantidad();
-                                            pj.getInventario().eliminarItem(objeto_id, cantidad);
-                                        }
-                                        menu.playAudio("evento", "hallar_algo", false);
-                                        entregarRecompensa = true;
-                                    }
+                                        break;
+                                    default:
+                                        break;
+                                }
 
-
-                                    break;
-                                default:
-                                    break;
+                                ventanaManager.activarParametrosFormateoTexto();
+                                setGameState("InInteraction");
+                                salirInInteracting = false;
+                            } else {
+                                menu.mostrarMensajeValidacion("Estás muy lejos de " + npc_procesar.getNombre());
                             }
-
-                            ventanaManager.activarParametrosFormateoTexto();
-                            setGameState("InInteraction");
-                            salirInInteracting = false;
                         }
                         break;
                     case 1://npc vendedor
                         menu.mostrarDatoFreak("Vendedor: " + ((Personaje) (obj)).getNombre());
                         if (getMouseButton(3)) {
-                            vendedor_concurrente = (Npc) obj;
-                            setVentana((byte) 1);
-                            mostrarVestir = 0;
-                            menu.playAudio("evento", "mensaje", false);
+                            clearMouseButton(3);
+                            if (getXDist(npc_procesar.x, pj.x) <= 64 && getXDist(npc_procesar.y, pj.y) <= 30) {
+                                vendedor_concurrente = (Npc) obj;
+                                setVentana((byte) 1);
+                                mostrarVestir = 0;
+                                menu.playAudio("evento", "mensaje", false);
+                            } else {
+                                menu.mostrarMensajeValidacion("Estás muy lejos de " + npc_procesar.getNombre());
+                            }
                         }
 
 
                 }
+
             }
             if ((obj.colid == (int) Math.pow(2, 4)) && (getMouseButton(3)) & (inGameState("InCombat"))) {
                 clearMouseButton(3);

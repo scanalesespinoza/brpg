@@ -155,7 +155,8 @@ vestir	-	0	/media/imagenes/menu/vestir.png	-
 vestir_n	-	0	/media/imagenes/menu/vestir_n.png	-
 vestir_select	-	0	/media/imagenes/menu/vestir_select.png	-
 vestimenta	-	0	/media/imagenes/menu/vestimenta.png	-
-
+sonido_off	-	0	/media/imagenes/menu/sonido_off.png	-
+sonido_on	-	0	/media/imagenes/menu/sonido_on.png	-
 //define imagen por defecto de iconos
 singrafico	-	0	/media/imagenes/menu/not_found.png	-
 //***********************Mapas de personajes******************
