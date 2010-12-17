@@ -202,8 +202,8 @@ public class menuJuego extends JGObject {
 //        this.botones_objetos_usar = new HashMap<Short, Boton>();
         this.botones_objetos_ver = new HashMap<Short, Boton>();
 
-        this.boton_sonido_on = new Boton("sonido_prender", "ver", eng.viewWidth() - 45, 100, (int) Math.pow(2, 5), 15, 1);
-        this.boton_sonido_off = new Boton("sonido_apagar", "abandonar", eng.viewWidth() - 45, 100, (int) Math.pow(2, 5), 15, 0);
+        this.boton_sonido_on = new Boton("sonido_prender", "sonido_off", eng.viewWidth() - 75, 80, (int) Math.pow(2, 5), 15, 1);
+        this.boton_sonido_off = new Boton("sonido_apagar", "sonido_on", eng.viewWidth() - 75, 80, (int) Math.pow(2, 5), 15, 0);
         this.boton_sonido_on.suspend();
         this.boton_sonido_off.suspend();
     }
@@ -386,7 +386,7 @@ public class menuJuego extends JGObject {
                 eng.setColor(JGColor.white);
                 eng.drawString("Fuerza:    " + pj.getFuerza(), eng.viewWidth() - 94, 40, -1);
                 eng.drawString("Destreza:  " + pj.getDestreza(), eng.viewWidth() - 94, 55, -1);
-                eng.drawString("Sabiduria: " + pj.getSabiduria(), eng.viewWidth() - 94, 70, -1);
+                eng.drawString("Sabiduría: " + pj.getSabiduria(), eng.viewWidth() - 94, 70, -1);
                 eng.drawString("Vitalidad: " + pj.getVitalidad(), eng.viewWidth() - 94, 85, -1);
                 eng.setFont(new JGFont("Arial", 0, 10));
 
@@ -425,11 +425,11 @@ public class menuJuego extends JGObject {
         eng.setColor(JGColor.white);
 
         eng.setFont(new JGFont("Arial", 1, 14));
-        eng.drawString("Menu[Tecla]", eng.viewWidth() - 97, 320, -1);
+        eng.drawString("Menú[Tecla]", eng.viewWidth() - 97, 320, -1);
         eng.setFont(new JGFont("Arial", 0, 10));
         eng.drawString("Habilidades [H]", eng.viewWidth() - 97, 350, -1);
         eng.drawString("Misiones     [M]", eng.viewWidth() - 97, 360, -1);
-        eng.drawString("Estadisticas[E]", eng.viewWidth() - 97, 370, -1);
+        eng.drawString("Estadísticas[E]", eng.viewWidth() - 97, 370, -1);
         eng.drawString("Opciones    [O]", eng.viewWidth() - 97, 390, -1);
         eng.setFont(new JGFont("Arial", 0, 10));
         eng.drawString("Para salir del", eng.viewWidth() - 50, 430, 0);
@@ -757,7 +757,7 @@ public class menuJuego extends JGObject {
         }
 //            eng.drawString("Ancho: "+eng.viewWidth()+" Alto: "+eng.viewHeight(), eng.viewWidth()/2, eng.viewHeight()/2, 0);
         eng.drawImage(0, eng.viewHeight() - 90, "monitor", false);
-        eng.setFont(new JGFont("Arial", 1, 18));
+        eng.setFont(new JGFont("Arial", 1, 15));
         eng.setColor(JGColor.white);
         eng.drawString("Items", 20, eng.viewHeight() - 70, -1);
         eng.drawString("Habilidades", 20, eng.viewHeight() - 40, -1);
@@ -864,7 +864,7 @@ public class menuJuego extends JGObject {
         if ((eng.inGameState("InCombat"))) {
             if (pj.isBloquearUso()) {
                 eng.setColor(JGColor.magenta);
-                eng.drawString("En espera para usar habilidades o items", eng.viewWidth() / 2 + 25, eng.viewHeight() - 100, -1, false);
+                eng.drawString("En espera para usar habilidades o items", eng.viewWidth() / 2 + 6, eng.viewHeight() - 100, -1, false);
             }
             eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
         }
