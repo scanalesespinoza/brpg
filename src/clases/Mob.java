@@ -25,6 +25,7 @@ public class Mob extends Personaje {
     private short fuerza;
     private short destreza;
     private short experiencia;
+    private short dinero;
     private int hpMax;
     private int mpMax;
     private boolean muriendo = false, golpeado = false, atacando = false, esperando = false;
@@ -60,6 +61,7 @@ public class Mob extends Personaje {
         this.frames_anim_parado = frames_parado;
         this.frames_anim_muerte = frames_muerte;
         this.anim_inworld = graf;
+        this.dinero=dinero;
         this.setHp();
         this.setMp();
     }
@@ -73,7 +75,7 @@ public class Mob extends Personaje {
         String StrSql = "SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel, "
                 + " pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit,"
                 + " pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue,"
-                + " pjdos.experiencia experiencia "
+                + " pjdos.experiencia experiencia, pjdos.dinero dinero "
                 + " FROM personaje pjuno, mob pjdos "
                 + "WHERE pjuno.id=" + id
                 + "  AND pjdos.Personaje_id=" + id;
@@ -92,6 +94,8 @@ public class Mob extends Personaje {
                 this.setFuerza(res.getShort("fue"));
                 this.setSabiduria(res.getShort("sab"));
                 this.setExperiencia(res.getShort("experiencia"));
+                this.setDinero(res.getShort("dinero"));
+
             }
 //            this.conexion.cierraDbCon();
         } catch (Exception ex) {
@@ -100,6 +104,15 @@ public class Mob extends Personaje {
 
 
     }
+
+    public short getDinero() {
+        return dinero;
+    }
+
+    public void setDinero(short dinero) {
+        this.dinero = dinero;
+    }
+
 
     public boolean isAtacando() {
         return atacando;

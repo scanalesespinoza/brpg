@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class dbDelegate {
 
-   static final String bd = "db_web_tt2";
+   static final String bd = "db_web_tt4";
    static final String login = "root";
    static final String password = "Vicarious";
    static String url = "jdbc:mysql://felhunter.sytes.net:3306/"+bd;
