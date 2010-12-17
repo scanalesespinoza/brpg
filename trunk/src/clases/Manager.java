@@ -236,6 +236,8 @@ public class Manager extends JGEngine {
                 mis.setIdMision(res.getShort("id"));
                 mis.setIdPersonajeConcluyeMision(res.getShort("personaje_id"));
                 mis.setNivelRequerido(res.getShort("nivelrequerido"));
+                mis.setRecompensaDinero(res.getShort("recompensadinero"));
+
                 if (res.getShort("repetible") == 0) {
                     bool = false;
                 } else {
@@ -566,6 +568,8 @@ public class Manager extends JGEngine {
 
     @Override
     public void paintFrame() {
+
+        drawString(pj.x+"   ,   "+pj.y, viewWidth()/2, viewHeight()/2, 0);
         //Dibujo barra vida y mana del jugador
         setFont(new JGFont("Arial", 0, 15));
         setColor(JGColor.black);
@@ -896,6 +900,8 @@ public class Manager extends JGEngine {
                 setGameState("InReward");
                 int nivel = pj.getNivel();
                 pj.aumentarExperiencia(mob_concurrente.getExperiencia());
+                System.out.println("----dinero"+mob_concurrente.getDinero());
+                pj.aumentarDisminuirDinero(mob_concurrente.getDinero()+100);
                 String mjs;
                 if (nivel != pj.getNivel()) {
                     mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
@@ -2032,6 +2038,7 @@ public class Manager extends JGEngine {
                                         int nivel = pj.getNivel();
                                         //Se da la experiencia
                                         pj.aumentarExperiencia(misi.getRecompensaExp());
+                                        pj.aumentarDisminuirDinero(misi.getRecompensaDinero());
                                         String mjs;
                                         if (nivel != pj.getNivel()) {
                                             mjs = "¡ Has alcanzado el nivel " + pj.getNivel() + " !";
@@ -2171,10 +2178,12 @@ public class Manager extends JGEngine {
                                             case 3:
                                                 pj.aumentarSabiduria(1);
                                                 pj.gastarPuntoEstadistica();
+                                                pj.setMp();
                                                 break;
                                             case 4:
                                                 pj.gastarPuntoEstadistica();
                                                 pj.aumentarVitalidad(1);
+                                                pj.setHp();
                                                 break;
                                         }
                                     }

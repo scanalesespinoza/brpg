@@ -17,12 +17,22 @@ public class Mision {
     private String descripcion;
     private short nivelRequerido;
     private short recompensaExp;
+    private short recompensaDinero;
     private boolean repetible;
     private short idPersonajeConcluyeMision;
     private dbDelegate conexion;
     private dialogo_mision dialogo;
     private ObjetoMision requerimientos;
     private boolean bool;
+
+    public short getRecompensaDinero() {
+        return recompensaDinero;
+    }
+
+    public void setRecompensaDinero(short recompensaDinero) {
+        this.recompensaDinero = recompensaDinero;
+    }
+
 
     
     public ObjetoMision getRequerimientos() {

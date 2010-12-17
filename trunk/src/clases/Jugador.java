@@ -145,13 +145,13 @@ public class Jugador extends Personaje {
         return mp;
     }
 
-    private void setHp() {
-        this.hp = (getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 100) + getNivel();
+    public void setHp() {
+        this.hp = (getVitalidad() / 5 * 100) + (getVitalidad() * 20) + (getNivel() * 10) + getNivel();
         this.hpMax = this.hp;
     }
 
-    private void setMp() {
-        this.mp = (((getSabiduria() / 7) * 50) + (getSabiduria() / 30) + getNivel() * 100 + getNivel());
+    public void setMp() {
+        this.mp = (((getSabiduria() / 7) * 50) + (getSabiduria() / 30) + getNivel() * 10 + getNivel());
         this.mpMax = this.mp;
     }
 
