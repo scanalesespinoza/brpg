@@ -158,7 +158,7 @@ public class ContrincanteHabilidad {
 
     public Integer getDañoBeneficio(short idHabilidad) {
         Short nivel = this.getHabilidades().get(idHabilidad).getNivelHabilidad();
-        return Math.round((int) (getHabilidad(idHabilidad).getHabilidad().getDanoBeneficio() * (1 + (0.1 * nivel))));
+        return Math.round((int) (getHabilidad(idHabilidad).getHabilidad().getDanoBeneficio() * ( nivel)));
     }
 
     public int getTiempoEspera(short idHabilidad) {
