@@ -10,10 +10,10 @@ import java.util.HashMap;
  */
 public class dbDelegate {
 
-   static final String bd = "db_web_tt4";
+   static final String bd = "db_web_tt2";
    static final String login = "root";
    static final String password = "Vicarious";
-   static String url = "jdbc:mysql://felhunter.sytes.net:3306/"+bd;
+   static String url = "jdbc:mysql://localhost:3306/"+bd;
    private Statement St;
    private ResultSet reg;
 
@@ -29,7 +29,7 @@ public class dbDelegate {
 
          Class.forName("com.mysql.jdbc.Driver");
          conn = DriverManager.getConnection(url,login,password);
-         System.out.println("Conexion ´dbDelegate´ correcta");
+//         System.out.println("Conexion ´dbDelegate´ correcta");
          if (conn != null) {
             System.out.println("Conexión a base de datos "+url+" ... Ok");
          }

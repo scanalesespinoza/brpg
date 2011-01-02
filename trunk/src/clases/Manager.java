@@ -29,7 +29,7 @@ public class Manager extends JGEngine {
      * principal del personaje que ha seleccionado el usuario para jugar.
      * Permite en una misma sesion de juego recuperar, actualizar y desconectar al personaje Jugador.
      */
-    private short idJugador = 19;//Valor en duro, debiera recibirse como parametro desde el sitio web
+    private short idJugador = 18;//Valor en duro, debiera recibirse como parametro desde el sitio web
     private int interactuar = 0;//0=Jugador presente en el juego/1=Jugador ausente e interactuando con Npc/>0 Ejecutando dialogo y acciones de Npc
     private String nomNpcInteractuar;
     public int pausa = 0;// Modo de evitar que se ejecuten acciones por los 60 frames que ocurren por segundo
@@ -1385,7 +1385,7 @@ public class Manager extends JGEngine {
             menu.recibeHm(hmIconoItem, 1, filtro);
             pj.bloquear();
 
-            seccionNpc.setSeccion(new JGPoint(160, 210), new JGPoint(3, 4));
+            seccionNpc.setSeccion(new JGPoint(170, 220), new JGPoint(3, 4));
             seccionNpc.generaSeccion(vendedor, 1);
             menu.recibeHm(hmIconoItem, 0, filtro);
 
@@ -1953,6 +1953,7 @@ public class Manager extends JGEngine {
             }
             //click en NPC
             if (obj.colid == (int) Math.pow(2, 3) && obj.y < viewHeight() - 110 + viewYOfs() && obj.x < viewXOfs() + viewWidth() - 110) {
+                removerEquipo();
                 Npc npc_procesar = (Npc) obj;
                 switch (npc_procesar.getTipo()) {
                     case 2://npc de misiones
@@ -2474,7 +2475,7 @@ public class Manager extends JGEngine {
                 //drawString("A quién entregar : " + pjEntregar, viewWidth() / 2, viewHeight() - 150, -1);
             }
             if (nota != null) {
-                drawString("Nota : " + nota, viewWidth() / 2, viewHeight() - 150, -1);
+                drawString("Nota : " + nota, viewWidth() / 2 -50, viewHeight() - 150, -1);
             }
 
         }
