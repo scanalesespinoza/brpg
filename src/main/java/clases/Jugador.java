@@ -367,7 +367,9 @@ public class Jugador extends Personaje {
                 }
 
                 if (rClick.intersects(this.getTileBBox()) || eng.getMouseButton(3) || eng.getKey(eng.KeyLeft)
-                        || eng.getKey(eng.KeyDown) || eng.getKey(eng.KeyUp) || eng.getKey(eng.KeyRight)) {
+                        || eng.getKey(eng.KeyDown) || eng.getKey(eng.KeyUp) || eng.getKey(eng.KeyRight)
+                        || eng.getKey('W') || eng.getKey('A') || eng.getKey('S') || eng.getKey('D')
+                        || eng.getKey('w') || eng.getKey('a') || eng.getKey('s') || eng.getKey('d')) {
                     setbDownkey(false);
                     setbLeftkey(false);
                     setbRightkey(false);
@@ -381,18 +383,18 @@ public class Jugador extends Personaje {
                 setbLeftkey(false);
                 setbRightkey(false);
                 setbUpkey(false);
-                if (eng.getKey(eng.KeyUp)) {
+                if (eng.getKey(eng.KeyUp) || eng.getKey('W') || eng.getKey('w')) {
                     setbUpkey(true);
-                }   //else {eng.clearKey(eng.KeyUp);}
-                if (eng.getKey(eng.KeyDown)) {
+                }   
+                if (eng.getKey(eng.KeyDown) || eng.getKey('S') || eng.getKey('s')) {
                     setbDownkey(true);
-                } //else {eng.clearKey(eng.KeyDown);}
-                if (eng.getKey(eng.KeyLeft)) {
+                } 
+                if (eng.getKey(eng.KeyLeft) || eng.getKey('A') || eng.getKey('a')) {
                     setbLeftkey(true);
-                } //else {eng.clearKey(eng.KeyLeft);}
-                if (eng.getKey(eng.KeyRight)) {
+                } 
+                if (eng.getKey(eng.KeyRight) || eng.getKey('D') || eng.getKey('d')) {
                     setbRightkey(true);
-                }//else {eng.clearKey(eng.KeyRight);}
+                }
             }
             player_move();
         }
