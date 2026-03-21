@@ -486,8 +486,10 @@ public class Manager extends JGEngine {
     }
 
     public void doFrameTitle() {
-        if (getMouseButton(3)) { // start game
+        if (getMouseButton(3) || getMouseButton(1) || getKey(KeyEnter)) { // start game
             clearMouseButton(3);
+            clearMouseButton(1);
+            clearKey(KeyEnter);
             setGameState("InWorld");
 
         }
