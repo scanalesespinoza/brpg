@@ -1,0 +1,48 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------------< cl.brpg:brpg >----------------------------
+[INFO] Building brpg 2026.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ brpg ---
+[INFO] Copying 264 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ brpg ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 23 source files with javac [debug target 21] to target\classes
+[INFO] /C:/Users/sergi/git/brpg/src/main/java/clases/Encargo.java: Some input files use or override a deprecated API.
+[INFO] /C:/Users/sergi/git/brpg/src/main/java/clases/Encargo.java: Recompile with -Xlint:deprecation for details.
+[INFO] /C:/Users/sergi/git/brpg/src/main/java/clases/dbDelegate.java: Some input files use unchecked or unsafe operations.
+[INFO] /C:/Users/sergi/git/brpg/src/main/java/clases/dbDelegate.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[166,13] cannot find symbol
+  symbol:   method getImage()
+  location: class clases.Icono
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[167,23] cannot find symbol
+  symbol:   method getImage()
+  location: class clases.Icono
+[INFO] 2 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.824 s
+[INFO] Finished at: 2026-03-21T18:56:37-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project brpg: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[166,13] cannot find symbol
+[ERROR]   symbol:   method getImage()
+[ERROR]   location: class clases.Icono
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[167,23] cannot find symbol
+[ERROR]   symbol:   method getImage()
+[ERROR]   location: class clases.Icono
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

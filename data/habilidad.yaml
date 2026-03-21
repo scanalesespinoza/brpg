@@ -1,0 +1,89 @@
+---
+- id: 1
+  nombre: "Golpe simple"
+  descripcion: "Golpe con el puño"
+  danobeneficio: -5
+  costobasico: 0
+  nivelmaximo: 7
+  nom_grafico: "golpesimple"
+  tiempoEspera: 2
+- id: 3
+  nombre: "Bola de fuego"
+  descripcion: "Bola de fuego que quema al oponente"
+  danobeneficio: -11
+  costobasico: 3
+  nivelmaximo: 10
+  nom_grafico: "boladefuego"
+  tiempoEspera: 5
+- id: 4
+  nombre: "Saeta de hielo"
+  descripcion: "Ataque que daña y congela al oponente"
+  danobeneficio: -7
+  costobasico: 4
+  nivelmaximo: 9
+  nom_grafico: "saetadehielo"
+  tiempoEspera: 3
+- id: 5
+  nombre: "Acuchillar"
+  descripcion: "Daño físico moderado"
+  danobeneficio: -8
+  costobasico: 1
+  nivelmaximo: 10
+  nom_grafico: "acuchillar"
+  tiempoEspera: 2
+- id: 6
+  nombre: "Curación"
+  descripcion: "Cura daño de forma instantánea"
+  danobeneficio: 12
+  costobasico: 2
+  nivelmaximo: 11
+  nom_grafico: "curacion"
+  tiempoEspera: 4
+- id: 7
+  nombre: "Envenenar"
+  descripcion: "Lanza un veneno a tu oponente"
+  danobeneficio: -5
+  costobasico: 4
+  nivelmaximo: 7
+  nom_grafico: "envenenar"
+  tiempoEspera: 4
+- id: 8
+  nombre: "Aturdir"
+  descripcion: "Daña físicamente e inhabilita al oponente"
+  danobeneficio: -10
+  costobasico: 10
+  nivelmaximo: 4
+  nom_grafico: "aturdir"
+  tiempoEspera: 8
+- id: 9
+  nombre: "Vendar"
+  descripcion: "Cura daño mínimo"
+  danobeneficio: 8
+  costobasico: 2
+  nivelmaximo: 6
+  nom_grafico: "vendar"
+  tiempoEspera: 10
+- id: 10
+  nombre: "Zancadilla "
+  descripcion: "Golpe a las piernas del oponente"
+  danobeneficio: -6
+  costobasico: 3
+  nivelmaximo: 9
+  nom_grafico: "zancadilla"
+  tiempoEspera: 4
+- id: 11
+  nombre: "Maldecir"
+  descripcion: "Lanza una maldición de daño al oponente"
+  danobeneficio: -7
+  costobasico: 3
+  nivelmaximo: 8
+  nom_grafico: "maldecir"
+  tiempoEspera: 2
+- id: 12
+  nombre: "Empujón"
+  descripcion: "Aleja al oponente sin daño"
+  danobeneficio: 1
+  costobasico: 2
+  nivelmaximo: 4
+  nom_grafico: "empujon"
+  tiempoEspera: 3

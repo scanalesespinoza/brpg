@@ -1,0 +1,28 @@
+---
+- id: 1
+  nombre: "¡De compras!"
+  descripcion: "Compra 2 cinceles, 1 martillo , 2 pegamentos y 1 casco de seguridad"
+  nivelrequerido: 1
+  recompensaexp: 60
+  recompensadinero: 5000
+  repetible: 0
+  personaje_id: 3
+  mision_siguiente_id: 2
+- id: 2
+  nombre: "Destruye a Koh"
+  descripcion: "Encuentra a Koh en lo mas profundo del pantano, enfréntalo y trae su amuleto"
+  nivelrequerido: 28
+  recompensaexp: 1000
+  recompensadinero: 20000
+  repetible: 1
+  personaje_id: 3
+  mision_siguiente_id: null
+- id: 3
+  nombre: "Provisiones"
+  descripcion: "Recolecta 3 hongos y 2 pociones, los puedes comprar o tomar de los monstruos"
+  nivelrequerido: 2
+  recompensaexp: 1000
+  recompensadinero: 1000
+  repetible: 1
+  personaje_id: 4
+  mision_siguiente_id: null

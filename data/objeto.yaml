@@ -1,0 +1,100 @@
+---
+- id: 1
+  nombre: "zapato"
+  descripcion: "Este item se puede utilizar en el pie\r\n"
+  tipo: 1
+  peso: 100
+  valordinero: 1000
+  usocombate: 0
+  beneficio: 0
+  nom_grafico: "zapatos"
+- id: 2
+  nombre: "capa"
+  descripcion: "Este item se puede utilizar en la espalda\r\n"
+  tipo: 1
+  peso: 100
+  valordinero: 1500
+  usocombate: 0
+  beneficio: 0
+  nom_grafico: "capa"
+- id: 3
+  nombre: "Poción curadora"
+  descripcion: "Esta poción revitaliza tus puntos de vida"
+  tipo: 0
+  peso: 20
+  valordinero: 10
+  usocombate: 3
+  beneficio: 2000
+  nom_grafico: "pocion"
+- id: 4
+  nombre: "Roca pesada"
+  descripcion: "Roca pesada para tirarse de un puente"
+  tipo: 2
+  peso: 1000
+  valordinero: 500
+  usocombate: 0
+  beneficio: 0
+  nom_grafico: "roca"
+- id: 5
+  nombre: "Pescado"
+  descripcion: "Alimento para curarse paultinamente"
+  tipo: 0
+  peso: 20
+  valordinero: 15
+  usocombate: 0
+  beneficio: 20
+  nom_grafico: "pescado"
+- id: 6
+  nombre: "Hongo"
+  descripcion: "Vegetal que cura enfermedades simples"
+  tipo: 0
+  peso: 10
+  valordinero: 5
+  usocombate: 1
+  beneficio: 15
+  nom_grafico: "hongo"
+- id: 7
+  nombre: "Amuleto de Koh"
+  descripcion: "Muestra fehaciente de tu victoria ante Koh"
+  tipo: 2
+  peso: 15
+  valordinero: 3000
+  usocombate: 0
+  beneficio: 0
+  nom_grafico: "amuleto"
+- id: 8
+  nombre: "Cincel"
+  descripcion: "Artefacto para tallar"
+  tipo: 1
+  peso: 100
+  valordinero: 1200
+  usocombate: 1
+  beneficio: 50
+  nom_grafico: "cincel"
+- id: 9
+  nombre: "Martillo"
+  descripcion: "Artefacto para golpear otras piezas"
+  tipo: 1
+  peso: 100
+  valordinero: 1500
+  usocombate: 1
+  beneficio: 50
+  nom_grafico: "martillo"
+- id: 10
+  nombre: "Pegamento rápido"
+  descripcion: "Une dos piezas por medio de un lazo químico"
+  tipo: 2
+  peso: 25
+  valordinero: 100
+  usocombate: 0
+  beneficio: 0
+  nom_grafico: "pegamento"
+- id: 11
+  nombre: "Casco de seguridad"
+  descripcion: "Cuida tu cabeza frente a impactos"
+  tipo: 1
+  peso: 80
+  valordinero: 1300
+  usocombate: 0
+  beneficio: 0
+  nom_grafico: "casco"

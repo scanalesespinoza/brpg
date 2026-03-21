@@ -1,0 +1,44 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------------< cl.brpg:brpg >----------------------------
+[INFO] Building brpg 2026.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.0:exec (default-cli) @ brpg ---
+Loaded 1 rows for habilidad
+Loaded 0 rows for mision
+Loaded 1 rows for objeto
+Loaded 16 rows for personaje
+Loaded 5 rows for mob
+Loaded 0 rows for inventario
+Loaded 16 rows for jugador
+Initialized YamlPersistenceService
+*******************************************************************
+HABILIDAD Golpe simple
+*******************************************************************
+Inicio obtiene misiones
+Inicio obtiene datos personaje
+*******************************************************************
+Inicio obtiene misiones
+Inicio obtiene datos personaje
+OBJETO: zapato
+**********PERSAONJEASDasda************************************************
+PERSONAJE NPC :Vendedor 1
+PERSONAJE NPC :Vendedor 2
+PERSONAJE NPC :Mision 1
+PERSONAJE NPC :Mision 2
+PERSONAJE NPC :Mision 3
+PERSONAJE NPC :Guard
+PERSONAJE NPC :Guard 2
+PERSONAJE NPC :Viajero
+PERSONAJE NPC :Mono
+PERSONAJE NPC :Perdido
+*******************************************************************
+**********************************************************
+PERSONAJE NPC :Goblin
+PERSONAJE NPC :Goblin2
+PERSONAJE NPC :Tana
+PERSONAJE NPC :Wolverine
+PERSONAJE NPC :Boss
+*******************************************************************

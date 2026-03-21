@@ -1,0 +1,69 @@
+---
+- id: 1
+  texto: "Estoy ocupado, no puedo hablar"
+- id: 2
+  texto: "Buen dia, estoy algo ocupado acá, necesito que compres algo ¿Me ayudas?"
+- id: 3
+  texto: "Vaya, las diligencias en este pueblo son muchas, ¿Cumpliste mi encargo?"
+- id: 4
+  texto: "Mmmmm... veo que no...¡Anímate! no es muy difícil"
+- id: 5
+  texto: "Bien, ahora podré seguir con mis asuntos..¡Gracias!"
+- id: 6
+  texto: "Necesito un favor mas, anda un ente extraño que aterra a la ciudad, su nombre es Koh ...¡Destrúyelo!"
+- id: 7
+  texto: "Tu valentía es admirable ¿Cómo te fue?"
+- id: 8
+  texto: "Vaya, no te desanimes...Koh es difícil de vencer, ha estado tiempo aquí y se ha fortalecido mucho, es conveniente que tu lo hagas también"
+- id: 9
+  texto: "¡Que honra tenerte en mi pueblo!..Muchas gracias por destruir a Koh y terminar esta presentación de Trabajo de Título"
+- id: 10
+  texto: "Recuérda combatir con monstruos para fortalecer tus capacidades"
+- id: 11
+  texto: "Hola, ¿Cómo estás?"
+- id: 12
+  texto: "Hola, debo juntar hongos y pociones, mientras más ...¡Mejor! ...¿Te apuntas?"
+- id: 13
+  texto: "Has vuelto, ¿Cómo te fue?"
+- id: 14
+  texto: "Uff ...No son suficientes, trae más"
+- id: 15
+  texto: "Justo... ¡Muchas Gracias!"
+- id: 16
+  texto: "Si tienes puntos de habilidad, deberías utilizarlos con sabiduría. Puedes hacerlo en el menú de habilidades presionando la letra \"H\""
+- id: 17
+  texto: "Si tienes puntos de estadísticas, deberías utilizarlos con sabiduría. Puedes hacerlo en el menú de estadísticas presionando la letra \"E\""
+- id: 18
+  texto: "Al subir de nivel, obtienes automáticamente puntos de estadísticas y habilidades para distribuirlos según te parezca"
+- id: 19
+  texto: "Para comenzar una batalla solo debes acercarte a algún monstruo"
+- id: 20
+  texto: "Mantente con vida durante un combate, ya sea con ítems o habilidades de sanación"
+- id: 21
+  texto: "Si eres vencido en combate, te llevarán a la ciudad para que estés a salvo"
+- id: 22
+  texto: "Si eres el vencedor de un combate, no olvides hacerte del botín"
+- id: 23
+  texto: "Usa tus habilidades con inteligencia , ya que tienen un costo de ejecución y un tiempo de reutilización asociados que pueden variar el resultado de un combate"
+- id: 24
+  texto: "Puedes activar y desactivar el sonido en el menú opciones apretando la letra \"O\""
+- id: 25
+  texto: "Puedes gestionar las misiones que te han encomendado en el menú de misiones presionando la tecla \"M\""
+- id: 26
+  texto: "Puedes eliminar items de tu inventario pulsando la tecla \"B\" y presionando un icono del inventario"
+- id: 27
+  texto: "Puedes equipar items desde tu inventario haciendo click en un icono de la pestaña equipo"
+- id: 28
+  texto: "También puedes desequiparlos presionando el botón \"Vestir\" ubicado en el panel lateral, y luego presionando los iconos de la ventana \"Vestimenta\""
+- id: 29
+  texto: "Agradecimientos : Jorge Castro (Música) ,Joshua Semann(Edición de gráficos) , Iván Araya (Gráficos)"
+- id: 30
+  texto: "Creadores: Sergio Canales Espinoza , Gerald Schmidt Padilla"
+- id: 31
+  texto: "Para utilizar un ítem, puedes hacer click en él y , dependiendo de si se puede usar en un determinado estado, actualizará tu situación"
+- id: 32
+  texto: "Para comprar items , debes interactuar con un vendedor, él te mostrará una ventana con su mercancía, si tienes suficiente dinero y soportas suficiente peso, podrás comprar"
+- id: 33
+  texto: "Para vender items, debes interactuar con un vendedor, cuando él te ofrezca su mercancía, puedes hacer click en tus objetos y estos serán vendidos , en consecuencia liberarás peso y ganarás dinero"
+- id: 34
+  texto: "Después de ganar una batalla o cumplir con una misión , puedes obtener un una cantidad de objetos asociados al personaje con el que interactuaste"
