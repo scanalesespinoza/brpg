@@ -1,0 +1,126 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------------< cl.brpg:brpg >----------------------------
+[INFO] Building brpg 2026.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- exec:3.1.0:exec (default-cli) @ brpg ---
+Loaded 1 rows for habilidad
+Loaded 0 rows for mision
+Loaded 1 rows for objeto
+Loaded 16 rows for personaje
+Loaded 5 rows for mob
+Loaded 0 rows for inventario
+Loaded 16 rows for jugador
+Initialized YamlPersistenceService
+EXEC QUERY: SELECT * FROM habilidad 
+*******************************************************************
+EXEC QUERY: SELECT * FROM habilidad 
+HABILIDAD Golpe simple
+*******************************************************************
+Inicio obtiene misiones
+Inicio obtiene datos personaje
+EXEC QUERY: SELECT * FROM mision 
+*******************************************************************
+Inicio obtiene misiones
+Inicio obtiene datos personaje
+EXEC QUERY: SELECT * FROM objeto 
+OBJETO: zapato
+**********PERSAONJEASDasda************************************************
+EXEC QUERY: SELECT * FROM personaje p  WHERE tipo = 2 OR tipo= 1 
+PERSONAJE NPC :Vendedor 1
+PERSONAJE NPC :Vendedor 2
+PERSONAJE NPC :Mision 1
+PERSONAJE NPC :Mision 2
+PERSONAJE NPC :Mision 3
+PERSONAJE NPC :Guard
+PERSONAJE NPC :Guard 2
+PERSONAJE NPC :Viajero
+PERSONAJE NPC :Mono
+PERSONAJE NPC :Perdido
+*******************************************************************
+**********************************************************
+EXEC QUERY: SELECT * FROM personaje p,mob m  WHERE p.id = m.personaje_id 
+PERSONAJE NPC :Goblin
+PERSONAJE NPC :Goblin2
+PERSONAJE NPC :Tana
+PERSONAJE NPC :Wolverine
+PERSONAJE NPC :Boss
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=6
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 6 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 6 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 6
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=7
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 7 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 7 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 7
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=8
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 8 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 8 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 8
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=11
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 11 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 11 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 11
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=12
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 12 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 12 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 12
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=1
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 1 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 1 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 1
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =1
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=2
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 2 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 2 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 2
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =2
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=3
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 3 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 3 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 3
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =3
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=4
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 4 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 4 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 4
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =4
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=5
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 5 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 5 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 5
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =5
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=13
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 13 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 13 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 13
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =13
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=14
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 14 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 14 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 14
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =14
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=15
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 15 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 15 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 15
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =15
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=16
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 16 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 16 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 16
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =16
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=17
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 17 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 17 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 17
+EXEC QUERY: SELECT txt.id, txt.texto,dial.texto_siguiente_id FROM dialogo_personaje dial, texto txt WHERE dial.texto_id = txt.id    AND dial.personaje_id =17
+EXEC QUERY: SELECT  pjuno.id id, pjuno.nombre nombre, pjuno.nivel nivel,  pjuno.posicionX posX, pjuno.posicionY posY,pjuno.tipo tipo, pjdos.vitalidad vit, pjdos.destreza des, pjdos.sabiduria sab, pjdos.fuerza fue, pjdos.totalPuntosHabilidad ptosHab, pjdos.totalPuntosEstadistica ptosEst, pjdos.limiteSuperiorExperiencia limExp, pjdos.experiencia experiencia, pjdos.pesoSoportado peso, pjdos.fechaCreacion, pjdos.estaBaneado ban, pjdos.Cuenta_id cuenta, pjdos.dinero dinero FROM personaje pjuno, jugador pjdos WHERE pjuno.id=18  AND pjdos.Personaje_id=18
+Processing JOIN for Personaje/Jugador
+EXEC QUERY: SELECT   inv.Personaje_id idPersonaje, inv.Objeto_id idObjeto, inv.cantidad cantidad, inv.estaEquipado estaEquipado   FROM inventario inv WHERE inv.Personaje_id=18
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 18 AND updated_at IS NOT NULL
+EXEC QUERY: SELECT * FROM encargo  WHERE personaje_id = 18 AND updated_at IS NULL
+EXEC QUERY: SELECT * FROM contrincante_habilidad WHERE personaje_id = 18
+*******************************************************************

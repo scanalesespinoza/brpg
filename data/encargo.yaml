@@ -1,0 +1,121 @@
+---
+- personaje_id: 3
+  mision_id: 1
+  created_at: "2010-11-30 18:07:18"
+  rolpersonaje: 0
+  updated_at: null
+- personaje_id: 3
+  mision_id: 2
+  created_at: "2010-11-30 18:08:31"
+  rolpersonaje: 0
+  updated_at: null
+- personaje_id: 4
+  mision_id: 3
+  created_at: "2010-11-30 18:08:37"
+  rolpersonaje: 0
+  updated_at: null
+- personaje_id: 18
+  mision_id: 1
+  created_at: "2010-11-15 23:17:30"
+  rolpersonaje: 1
+  updated_at: null
+- personaje_id: 18
+  mision_id: 3
+  created_at: "2010-11-15 23:16:55"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 00:55:18"
+- personaje_id: 18
+  mision_id: 3
+  created_at: "2010-11-17 00:55:30"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 00:55:32"
+- personaje_id: 18
+  mision_id: 3
+  created_at: "2010-11-17 02:43:57"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 02:44:12"
+- personaje_id: 19
+  mision_id: 1
+  created_at: "2010-11-17 11:40:53"
+  rolpersonaje: 1
+  updated_at: null
+- personaje_id: 19
+  mision_id: 3
+  created_at: "2010-11-17 11:38:59"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 11:39:03"
+- personaje_id: 19
+  mision_id: 3
+  created_at: "2010-11-17 11:39:09"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 11:39:58"
+- personaje_id: 19
+  mision_id: 3
+  created_at: "2010-11-17 11:43:00"
+  rolpersonaje: 1
+  updated_at: null
+- personaje_id: 28
+  mision_id: 1
+  created_at: "2010-11-24 21:07:41"
+  rolpersonaje: 1
+  updated_at: null
+- personaje_id: 28
+  mision_id: 3
+  created_at: "2010-11-24 21:11:34"
+  rolpersonaje: 1
+  updated_at: "2010-11-24 21:12:20"
+- personaje_id: 28
+  mision_id: 3
+  created_at: "2010-11-24 21:16:00"
+  rolpersonaje: 1
+  updated_at: "2010-11-24 21:16:04"
+- personaje_id: 28
+  mision_id: 3
+  created_at: "2010-11-24 21:16:13"
+  rolpersonaje: 1
+  updated_at: "2010-11-24 21:16:16"
+- personaje_id: 28
+  mision_id: 3
+  created_at: "2010-11-24 21:16:27"
+  rolpersonaje: 1
+  updated_at: "2010-11-24 21:17:16"
+- personaje_id: 28
+  mision_id: 3
+  created_at: "2010-11-24 21:17:23"
+  rolpersonaje: 1
+  updated_at: "2010-11-24 21:17:31"
+- personaje_id: 28
+  mision_id: 3
+  created_at: "2010-11-24 21:17:36"
+  rolpersonaje: 1
+  updated_at: "2010-11-24 21:17:40"
+- personaje_id: 28
+  mision_id: 3
+  created_at: "2010-11-24 21:17:48"
+  rolpersonaje: 1
+  updated_at: null
+- personaje_id: 31
+  mision_id: 1
+  created_at: "2010-11-17 14:22:51"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 14:36:12"
+- personaje_id: 31
+  mision_id: 3
+  created_at: "2010-11-17 14:31:46"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 14:32:35"
+- personaje_id: 31
+  mision_id: 3
+  created_at: "2010-11-17 14:33:16"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 14:33:27"
+- personaje_id: 31
+  mision_id: 3
+  created_at: "2010-11-17 14:34:34"
+  rolpersonaje: 1
+  updated_at: "2010-11-17 14:34:38"
+- personaje_id: 18
+  rolpersonaje: 1
+  updated_at: null
+  created_at: "2026/0/19 01:45:13"
+  mision_id: 3
