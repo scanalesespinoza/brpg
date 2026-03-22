@@ -25,6 +25,10 @@ public class Boton extends JGObject {
     private double xAnt;
     private double yAnt;
     private int id;
+    private boolean alignRight = false;
+    private double offsetRight = 0;
+    private boolean alignBottom = false;
+    private double offsetBottom = 0;
 
     public int getId() {
         return id;
@@ -41,6 +45,18 @@ public class Boton extends JGObject {
         yAnt = y;
         this.id = id;
         this.resume_in_view = false;
+        
+        // Hacer el UI responsivo para ventanas expandidas
+        if (eng != null) {
+            if (eng.viewWidth() > 0 && x >= 400) {
+                alignRight = true;
+                offsetRight = eng.viewWidth() - x;
+            }
+            if (eng.viewHeight() > 0 && y >= 300) {
+                alignBottom = true;
+                offsetBottom = eng.viewHeight() - y;
+            }
+        }
     }
 
     @Override
@@ -66,6 +82,10 @@ public class Boton extends JGObject {
 
     @Override
     public void move(){
+        if (eng != null) {
+            if (alignRight) xAnt = eng.viewWidth() - offsetRight;
+            if (alignBottom) yAnt = eng.viewHeight() - offsetBottom;
+        }
         x = xAnt + eng.viewXOfs();
         y = yAnt + eng.viewYOfs();
         

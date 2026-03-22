@@ -5,6 +5,9 @@
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ brpg ---
+[INFO] Deleting C:\Users\sergi\git\brpg\target
+[INFO] 
 [INFO] --- resources:3.3.1:resources (default-resources) @ brpg ---
 [INFO] Copying 264 resources from src\main\resources to target\classes
 [INFO] 
@@ -18,33 +21,39 @@
 [INFO] -------------------------------------------------------------
 [ERROR] COMPILATION ERROR : 
 [INFO] -------------------------------------------------------------
-[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[166,13] cannot find symbol
-  symbol:   method getImage()
-  location: class clases.Icono
-[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[167,23] cannot find symbol
-  symbol:   method getImage()
-  location: class clases.Icono
-[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[2199,76] cannot find symbol
-  symbol:   method getRecompensaDinero()
-  location: variable misi of type clases.Mision
-[INFO] 3 errors 
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[664,46] cannot find symbol
+  symbol:   method eng()
+  location: class clases.Manager
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[664,62] cannot find symbol
+  symbol:   method eng()
+  location: class clases.Manager
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[668,46] cannot find symbol
+  symbol:   method eng()
+  location: class clases.Manager
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[668,62] cannot find symbol
+  symbol:   method eng()
+  location: class clases.Manager
+[INFO] 4 errors 
 [INFO] -------------------------------------------------------------
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.696 s
-[INFO] Finished at: 2026-03-21T18:54:35-03:00
+[INFO] Total time:  4.000 s
+[INFO] Finished at: 2026-03-21T22:08:12-03:00
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project brpg: Compilation failure: Compilation failure: 
-[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[166,13] cannot find symbol
-[ERROR]   symbol:   method getImage()
-[ERROR]   location: class clases.Icono
-[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Icono.java:[167,23] cannot find symbol
-[ERROR]   symbol:   method getImage()
-[ERROR]   location: class clases.Icono
-[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[2199,76] cannot find symbol
-[ERROR]   symbol:   method getRecompensaDinero()
-[ERROR]   location: variable misi of type clases.Mision
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[664,46] cannot find symbol
+[ERROR]   symbol:   method eng()
+[ERROR]   location: class clases.Manager
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[664,62] cannot find symbol
+[ERROR]   symbol:   method eng()
+[ERROR]   location: class clases.Manager
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[668,46] cannot find symbol
+[ERROR]   symbol:   method eng()
+[ERROR]   location: class clases.Manager
+[ERROR] /C:/Users/sergi/git/brpg/src/main/java/clases/Manager.java:[668,62] cannot find symbol
+[ERROR]   symbol:   method eng()
+[ERROR]   location: class clases.Manager
 [ERROR] -> [Help 1]
 [ERROR] 
 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.

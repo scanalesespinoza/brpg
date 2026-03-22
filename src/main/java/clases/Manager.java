@@ -661,11 +661,11 @@ public class Manager extends JGEngine {
             }
 
         }
-        seccion.setSeccion(new JGPoint(120, 440), new JGPoint(12, 1));
+        seccion.setSeccion(new JGPoint(120, viewHeight() - 100), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 0);
         menu.recibeHm(hmIconoHabilidades, 2, filtro);
 
-        seccion.setSeccion(new JGPoint(120, 395), new JGPoint(12, 1));
+        seccion.setSeccion(new JGPoint(120, viewHeight() - 145), new JGPoint(12, 1));
         seccion.generaSeccion(pj, 1);
         menu.recibeHm(hmIconoItem, 1, filtro);
 

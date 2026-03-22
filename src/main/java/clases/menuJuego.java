@@ -441,7 +441,7 @@ public class menuJuego extends JGObject {
 //                menuActual = 3;
         int cont = 0;
         Iterator it3 = pj.getInventario().getObjetos().entrySet().iterator();
-        linea_y = 395;
+        linea_y = eng.viewHeight() - 145;
         linea_x = 120;
         while (it3.hasNext()) {
             Map.Entry e = (Map.Entry) it3.next();
@@ -792,38 +792,38 @@ public class menuJuego extends JGObject {
         }
 
         if (!eng.inGameState("InCombat")) {
-            new Boton("usable", "tab_usable", 00, 370, (int) Math.pow(2, 5), 2, 32/*id boton*/);
-            new Boton("equipo", "tab_equipo", 100, 370, (int) Math.pow(2, 5), 2, 32/*id boton*/);
-            new Boton("colec", "tab_colec", 200, 370, (int) Math.pow(2, 5), 2, 32/*id boton*/);
+            new Boton("usable", "tab_usable", 00, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32/*id boton*/);
+            new Boton("equipo", "tab_equipo", 100, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32/*id boton*/);
+            new Boton("colec", "tab_colec", 200, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32/*id boton*/);
 
 
             if (filtrar == 0) {
-                eng.drawImage(0, 370, "tab_usable_dest", false);
-                eng.drawImage(100, 370, "tab_equipo", false);
-                eng.drawImage(200, 370, "tab_colec", false);
+                eng.drawImage(0, eng.viewHeight() - 170, "tab_usable_dest", false);
+                eng.drawImage(100, eng.viewHeight() - 170, "tab_equipo", false);
+                eng.drawImage(200, eng.viewHeight() - 170, "tab_colec", false);
             } else if (filtrar == 1) {
-                eng.drawImage(0, 370, "tab_usable", false);
-                eng.drawImage(100, 370, "tab_equipo_dest", false);
-                eng.drawImage(200, 370, "tab_colec", false);
+                eng.drawImage(0, eng.viewHeight() - 170, "tab_usable", false);
+                eng.drawImage(100, eng.viewHeight() - 170, "tab_equipo_dest", false);
+                eng.drawImage(200, eng.viewHeight() - 170, "tab_colec", false);
             } else if (filtrar == 2) {
-                eng.drawImage(0, 370, "tab_usable", false);
-                eng.drawImage(100, 370, "tab_equipo", false);
-                eng.drawImage(200, 370, "tab_colec_dest", false);
+                eng.drawImage(0, eng.viewHeight() - 170, "tab_usable", false);
+                eng.drawImage(100, eng.viewHeight() - 170, "tab_equipo", false);
+                eng.drawImage(200, eng.viewHeight() - 170, "tab_colec_dest", false);
             }
         } else {
             eng.removeObjects("equipo", (int) Math.pow(2, 5));
             eng.removeObjects("colec", (int) Math.pow(2, 5));
-            eng.drawImage(0, 370, "tab_usable", false);
-            eng.drawImage(100, 370, "tab_equipo_n", false);
-            eng.drawImage(200, 370, "tab_colec_n", false);
+            eng.drawImage(0, eng.viewHeight() - 170, "tab_usable", false);
+            eng.drawImage(100, eng.viewHeight() - 170, "tab_equipo_n", false);
+            eng.drawImage(200, eng.viewHeight() - 170, "tab_colec_n", false);
 
         }
-        eng.drawImage(300, 370, "barrainfo", false);
+        eng.drawImage(300, eng.viewHeight() - 170, "barrainfo", false);
 
 
-        setSeccion(new JGPoint(120, 440), new JGPoint(12, 1));
+        setSeccion(new JGPoint(120, eng.viewHeight() - 100), new JGPoint(12, 1));
         generaSeccion(2);
-        setSeccion(new JGPoint(120, 395), new JGPoint(12, 1));
+        setSeccion(new JGPoint(120, eng.viewHeight() - 145), new JGPoint(12, 1));
         generaSeccion(1);
 //        if (eng.inGameState("InCombat")) {
 //            setSeccion(new JGPoint(110, 330), new JGPoint(12, 1));
