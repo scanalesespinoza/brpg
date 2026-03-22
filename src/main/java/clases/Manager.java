@@ -163,6 +163,16 @@ public class Manager extends JGEngine {
         setFrameRate(60, 2);
         // dbgShowGameState(true);
         dbgShowBoundingBox(false);
+
+        // Hacer que la ventana sea redimensionable
+        java.awt.Component parent = this;
+        while (parent != null && !(parent instanceof java.awt.Frame)) {
+            parent = parent.getParent();
+        }
+        if (parent instanceof java.awt.Frame) {
+            ((java.awt.Frame) parent).setResizable(true);
+        }
+
         try {
             defineMedia("/media/rpg-basico_2.tbl");
             setBGImage("bgimage");
