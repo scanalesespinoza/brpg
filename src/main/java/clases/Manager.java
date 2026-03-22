@@ -147,6 +147,9 @@ public class Manager extends JGEngine {
     public void initCanvas() {
         // we set the background colour to same colour as the splash background
         setCanvasSettings(40, 30, 16, 16, JGColor.black, new JGColor(255, 246, 199), null);
+        
+        // Habilitar el escalado automático de la pantalla al redimensionar la ventana (Aspect Ratio fijo 800/540)
+        setScalingPreferences(800.0/540.0, 800.0/540.0, 0, 0, 0, 0);
     }
 
     @Override
