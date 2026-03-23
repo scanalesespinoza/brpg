@@ -62,6 +62,10 @@ public class menuJuego extends JGObject {
     private boolean musicaOn = false;
     private Boton boton_sonido_on;
     private Boton boton_sonido_off;
+    private Boton botonVestir;
+    private Boton botonUsable;
+    private Boton botonEquipo;
+    private Boton botonColec;
 
     public boolean isMusicaOn() {
         return musicaOn;
@@ -206,6 +210,15 @@ public class menuJuego extends JGObject {
         this.boton_sonido_off = new Boton("sonido_apagar", "sonido_on", eng.viewWidth() - 75, 80, (int) Math.pow(2, 5), 15, 0);
         this.boton_sonido_on.suspend();
         this.boton_sonido_off.suspend();
+        
+        this.botonVestir = new Boton("btn_vestir", "vestir", eng.viewWidth() - 105, 210, (int) Math.pow(2, 5), 2, 31);
+        this.botonUsable = new Boton("btn_usable", "tab_usable", 0, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32);
+        this.botonEquipo = new Boton("btn_equipo", "tab_equipo", 100, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32);
+        this.botonColec = new Boton("btn_colec", "tab_colec", 200, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32);
+        this.botonVestir.suspend();
+        this.botonUsable.suspend();
+        this.botonEquipo.suspend();
+        this.botonColec.suspend();
     }
 
     public void menuActual(int menu, Jugador pj) {
@@ -218,6 +231,11 @@ public class menuJuego extends JGObject {
         switch (menu) {
             case 0/*"main"*/:
                 menuActual = 0;
+                eng.setColor(new JGColor(20, 20, 20));
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 120, true, false, false);
+                eng.setColor(jgame.JGColor.white);
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 120, false, false, false);
+                
                 eng.setFont(new JGFont("Arial", 1, 14));//fuente titulo
                 pjTest = (Jugador) eng.getObject("player");
                 eng.drawString("General", eng.viewWidth() - 97, 10, -1);
@@ -226,38 +244,10 @@ public class menuJuego extends JGObject {
                 eng.drawString("Nivel: " + pjTest.getNivel(), eng.viewWidth() - 97, 40, -1);
 
                 eje_y_exp = 50;
-                if (!eng.inGameState("InCombat")) {
-                    eng.drawString("HP: ", eng.viewWidth() - 97, 50, -1);
-                    eng.drawString("MP: ", eng.viewWidth() - 97, 60, -1);
-                    eng.setFont(new JGFont("Arial", 0, 8));
-                    //BARRA HP
-                    eng.setColor(JGColor.green);
-                    eng.drawRect(eng.viewWidth() - 82, 50, (pj.getHp() * 76) / pj.getHpMax(), 8, true, false, false, new JGColor[]{JGColor.green, JGColor.green});
-                    //BARRA MP
-                    eng.setColor(JGColor.blue);
-                    eng.drawRect(eng.viewWidth() - 82, 60, (pj.getMp() * 76) / pj.getMpMax(), 8, true, false, false, new JGColor[]{JGColor.blue, JGColor.blue});
-                    eng.setTextOutline(0, null);
-                    eng.setColor(JGColor.blue);
-                    eng.drawString(pj.getHp() + "/" + pj.getHpMax(), eng.viewWidth() - 45, 52, 0, false);
-                    eng.setColor(JGColor.green);
-                    eng.drawString(pj.getMp() + "/" + pj.getMpMax(), eng.viewWidth() - 45, 61, 0, false);
-                    eng.setTextOutline(1, JGColor.black);
-                    eje_y_exp = 70;
-                }
                 eng.setFont(new JGFont("arial", 0, 10));
-                eng.setColor(JGColor.white);
-                //BARRA EXPERIENCIA
-                eng.drawString("Experiencia", eng.viewWidth() - 97, eje_y_exp, -1);
-                eng.setColor(JGColor.red);
-                eng.drawRect(eng.viewWidth() - 100, eje_y_exp + 20, 93, 10, false, false, false);
-                eng.setColor(JGColor.yellow);
-                eng.drawRect(eng.viewWidth() - 99, eje_y_exp + 21, (pj.getExperiencia() * 91) / pj.getLimiteSuperiorExperiencia(), 9, true, false, false, new JGColor[]{JGColor.blue, JGColor.orange, JGColor.green, JGColor.magenta, JGColor.white, JGColor.red});
-                eng.setColor(JGColor.white);
-                eng.drawString(pj.getExperiencia() + "/" + pj.getLimiteSuperiorExperiencia(), eng.viewWidth() - 50, eje_y_exp + 10, 0, false);
                 eng.setColor(JGColor.white);
                 eng.drawString("Dinero :" + pjTest.getDinero(), eng.viewWidth() - 97, eje_y_exp + 33, -1);
                 eng.drawString("Peso libre :" + pjTest.getPesoDisponible(), eng.viewWidth() - 97, eje_y_exp + 43, -1);
-
 
                 removerIconos();
                 suspenderBotones(1);
@@ -267,14 +257,16 @@ public class menuJuego extends JGObject {
                 break;
             case 1/*"habilidad"*/:
                 menuActual = 1;
+                eng.setColor(new JGColor(20, 20, 20));
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 200, true, false, false);
+                eng.setColor(jgame.JGColor.white);
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 200, false, false, false);
+                
                 eng.setFont(new JGFont("Arial", 1, 14));//fuente titulo
                 eng.setColor(JGColor.yellow);
                 eng.drawString("Habilidades", eng.viewWidth() - 100, 10, -1);
                 eng.setColor(JGColor.white);
                 eng.setFont(new JGFont("Arial", 0, 10));//fuente parrafo
-                //Dibujo todas las habilidades que el sistema posee
-                //si el personaje no tiene la habilidad o no la tiene al maximo nivel.. se muestra
-                //el boton =)
 
                 String linea_menu = "";
                 Iterator it = this.botones_habilidad_aumentar.entrySet().iterator();
@@ -290,7 +282,7 @@ public class menuJuego extends JGObject {
                             boton.pintar();
                         }
                     }
-                    linea_menu += "{";
+                    linea_menu += " {";
                     if (pj.getHabilidades().tieneHabilidad(Short.parseShort(e.getKey().toString()))) {
                         linea_menu += pj.getHabilidades().getHabilidad(Short.parseShort(e.getKey().toString())).getNivelHabilidad() + "}";
                     } else {
@@ -303,7 +295,7 @@ public class menuJuego extends JGObject {
                 }
                 if (pj.getTotalPuntosHabilidad() > 0) {
                     eng.setColor(JGColor.yellow);
-                    eng.drawString("Ptos. Restantes:" + pj.getTotalPuntosHabilidad(), eng.viewWidth() - 100, 25, -1);
+                    eng.drawString("Ptos. Restantes: " + pj.getTotalPuntosHabilidad(), eng.viewWidth() - 100, 25, -1);
                     eng.setColor(JGColor.white);
                 } else {
                     HashMap<Short, Boton> boton2 = botones_habilidad_aumentar;
@@ -355,13 +347,19 @@ public class menuJuego extends JGObject {
 
                 break;
             case 4/*"estadistica"*/:
+                menuActual = 4;
+                eng.setColor(new JGColor(20, 20, 20));
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 100, true, false, false);
+                eng.setColor(jgame.JGColor.white);
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 100, false, false, false);
+                
                 eng.setFont(new JGFont("Arial", 1, 14));
                 eng.setColor(JGColor.yellow);
                 eng.drawString("Estadísticas", eng.viewWidth() - 100, 10, -1);
                 eng.setFont(new JGFont("Arial", 0, 10));
-                menuActual = 4;
+                
                 if (pj.getTotalPuntosEstadistica() > 0) {
-                    eng.drawString("Ptos. Restantes:" + pj.getTotalPuntosEstadistica(), eng.viewWidth() - 100, 25, -1);
+                    eng.drawString("Ptos. Restantes: " + pj.getTotalPuntosEstadistica(), eng.viewWidth() - 100, 25, -1);
                     this.botones_estadistica_aumentar.get((short) 1).resume();
                     this.botones_estadistica_aumentar.get((short) 2).resume();
                     this.botones_estadistica_aumentar.get((short) 3).resume();
@@ -384,10 +382,10 @@ public class menuJuego extends JGObject {
                 this.botones_estadistica_ver.get((short) 3).pintar();
                 this.botones_estadistica_ver.get((short) 4).pintar();
                 eng.setColor(JGColor.white);
-                eng.drawString("Fuerza:    " + pj.getFuerza(), eng.viewWidth() - 94, 40, -1);
-                eng.drawString("Destreza:  " + pj.getDestreza(), eng.viewWidth() - 94, 55, -1);
-                eng.drawString("Sabiduría: " + pj.getSabiduria(), eng.viewWidth() - 94, 70, -1);
-                eng.drawString("Vitalidad: " + pj.getVitalidad(), eng.viewWidth() - 94, 85, -1);
+                eng.drawString("Fuerza:      " + pj.getFuerza(), eng.viewWidth() - 94, 40, -1);
+                eng.drawString("Destreza:    " + pj.getDestreza(), eng.viewWidth() - 94, 55, -1);
+                eng.drawString("Sabiduría:   " + pj.getSabiduria(), eng.viewWidth() - 94, 70, -1);
+                eng.drawString("Vitalidad:   " + pj.getVitalidad(), eng.viewWidth() - 94, 85, -1);
                 eng.setFont(new JGFont("Arial", 0, 10));
 
                 break;
@@ -770,32 +768,30 @@ public class menuJuego extends JGObject {
         /*
          * Equipo
          */
-        HashMap<Short, String> hmEquipo = new HashMap<Short, String>(pj.getInventario().itemEquipados(pj.getInventario().getEquipo(), (Personaje) pj));
-
-
         if (eng.inGameState("InWorld")) {
+            this.botonVestir.resume();
+            
             if (this.vestir) {
+                HashMap<Short, String> hmEquipo = new HashMap<Short, String>(pj.getInventario().itemEquipados(pj.getInventario().getEquipo(), (Personaje) pj));
                 eng.drawImage(50, 70, "vestimenta", false);
                 eng.drawImage(115, 100, hmEquipo.get((short) 1), false);
                 eng.drawImage(110, 170, hmEquipo.get((short) 2), false);
                 eng.drawImage(70, 230, hmEquipo.get((short) 3), false);
                 eng.drawImage(150, 230, hmEquipo.get((short) 4), false);
                 eng.drawImage(110, 320, hmEquipo.get((short) 5), false);
-            }
-
-            new Boton("vestir", "vestir", eng.viewWidth() - 105, 210, (int) Math.pow(2, 5), 2, 31/*id boton*/);
-            if (this.vestir) {
+                
                 eng.drawImage(eng.viewWidth() - 105, 210, "vestir_select", false);
             } else {
                 eng.drawImage(eng.viewWidth() - 105, 210, "vestir", false);
             }
+        } else {
+            this.botonVestir.suspend();
         }
 
         if (!eng.inGameState("InCombat")) {
-            new Boton("usable", "tab_usable", 00, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32/*id boton*/);
-            new Boton("equipo", "tab_equipo", 100, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32/*id boton*/);
-            new Boton("colec", "tab_colec", 200, eng.viewHeight() - 170, (int) Math.pow(2, 5), 2, 32/*id boton*/);
-
+            this.botonUsable.resume();
+            this.botonEquipo.resume();
+            this.botonColec.resume();
 
             if (filtrar == 0) {
                 eng.drawImage(0, eng.viewHeight() - 170, "tab_usable_dest", false);
@@ -811,6 +807,9 @@ public class menuJuego extends JGObject {
                 eng.drawImage(200, eng.viewHeight() - 170, "tab_colec_dest", false);
             }
         } else {
+            this.botonUsable.suspend();
+            this.botonEquipo.suspend();
+            this.botonColec.suspend();
             eng.removeObjects("equipo", (int) Math.pow(2, 5));
             eng.removeObjects("colec", (int) Math.pow(2, 5));
             eng.drawImage(0, eng.viewHeight() - 170, "tab_usable", false);
@@ -868,6 +867,54 @@ public class menuJuego extends JGObject {
             }
             eng.drawImage(eng.viewWidth() - 105, 210, "vestir_n", false);
         }
+
+        // -------------------------------------------------------------
+        // HUD PERSISTENTE (MODERNIZADO)
+        // -------------------------------------------------------------
+        // Backdrop central inferior para status
+        eng.setColor(new JGColor(30, 30, 30));
+        eng.drawRect(eng.viewWidth() / 2 - 150, eng.viewHeight() - 35, 300, 35, true, false, false);
+        eng.setColor(JGColor.white);
+        eng.drawRect(eng.viewWidth() / 2 - 150, eng.viewHeight() - 35, 300, 35, false, false, false);
+        
+        eng.setFont(new JGFont("Arial", 1, 10));
+        eng.drawString("HP", eng.viewWidth() / 2 - 145, eng.viewHeight() - 30, -1);
+        eng.drawString("MP", eng.viewWidth() / 2 - 5, eng.viewHeight() - 30, -1);
+        eng.drawString("XP", eng.viewWidth() / 2 - 145, eng.viewHeight() - 15, -1);
+        
+        // BARS HUD
+        eng.setFont(new JGFont("Arial", 0, 9));
+        
+        // BARRA HP
+        eng.setColor(new JGColor(100, 0, 0));
+        eng.drawRect(eng.viewWidth() / 2 - 125, eng.viewHeight() - 30, 110, 10, true, false, false); // bg
+        eng.setColor(JGColor.green);
+        int hpWidth = (pj.getHp() * 108) / pj.getHpMax();
+        eng.drawRect(eng.viewWidth() / 2 - 124, eng.viewHeight() - 29, Math.max(0, hpWidth), 8, true, false, false, new JGColor[]{JGColor.green, JGColor.green});
+        eng.setColor(JGColor.white);
+        eng.setTextOutline(0, null);
+        eng.drawString(pj.getHp() + "/" + pj.getHpMax(), eng.viewWidth() / 2 - 70, eng.viewHeight() - 29, 0, false);
+        
+        // BARRA MP
+        eng.setColor(new JGColor(0, 0, 50));
+        eng.drawRect(eng.viewWidth() / 2 + 15, eng.viewHeight() - 30, 110, 10, true, false, false); // bg
+        eng.setColor(JGColor.blue);
+        int mpWidth = (pj.getMp() * 108) / pj.getMpMax();
+        eng.drawRect(eng.viewWidth() / 2 + 16, eng.viewHeight() - 29, Math.max(0, mpWidth), 8, true, false, false, new JGColor[]{JGColor.blue, JGColor.blue});
+        eng.setColor(JGColor.white);
+        eng.drawString(pj.getMp() + "/" + pj.getMpMax(), eng.viewWidth() / 2 + 70, eng.viewHeight() - 29, 0, false);
+        
+        // BARRA XP
+        eng.setColor(new JGColor(50, 50, 0));
+        eng.drawRect(eng.viewWidth() / 2 - 125, eng.viewHeight() - 15, 250, 8, true, false, false); // bg
+        eng.setColor(JGColor.yellow);
+        int xpLimits = Math.max(1, pj.getLimiteSuperiorExperiencia());
+        int xpWidth = (pj.getExperiencia() * 248) / xpLimits;
+        eng.drawRect(eng.viewWidth() / 2 - 124, eng.viewHeight() - 14, Math.max(0, xpWidth), 6, true, false, false, new JGColor[]{JGColor.blue, JGColor.orange, JGColor.green, JGColor.magenta, JGColor.white, JGColor.red});
+        eng.setColor(JGColor.white);
+        eng.drawString(pj.getExperiencia() + "/" + xpLimits, eng.viewWidth() / 2, eng.viewHeight() - 15, 0, false);
+        
+        eng.setTextOutline(1, JGColor.black);
     }
 
     public void restablecerDinamicaCombate() {
