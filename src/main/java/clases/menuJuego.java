@@ -313,9 +313,14 @@ public class menuJuego extends JGObject {
                 break;
             case 2/*"mision"*/:
                 menuActual = 2;
+                eng.setColor(new JGColor(20, 20, 20));
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 200, true, false, false);
+                eng.setColor(jgame.JGColor.white);
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 200, false, false, false);
+                
                 eng.setFont(new JGFont("Arial", 1, 14));//fuente titulo
                 eng.setColor(JGColor.yellow);
-                eng.drawString("Misiones", eng.viewWidth() - 97, 10, -1);
+                eng.drawString("Misiones", eng.viewWidth() - 100, 10, -1);
                 eng.setColor(JGColor.white);
                 eng.setFont(new JGFont("Arial", 0, 10));//fuente parrafo
                 Iterator it1 = pj.getMisiones().getMisiones().entrySet().iterator();
@@ -391,9 +396,14 @@ public class menuJuego extends JGObject {
                 break;
             case 5/*"Opciones"*/:
                 menuActual = 5;
+                eng.setColor(new JGColor(20, 20, 20));
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 100, true, false, false);
+                eng.setColor(jgame.JGColor.white);
+                eng.drawRect(eng.viewWidth() - 110, 5, 105, 100, false, false, false);
+                
                 eng.setFont(new JGFont("Arial", 1, 14));
                 eng.setColor(JGColor.yellow);
-                eng.drawString("Opciones", eng.viewWidth() - 97, 10, -1);
+                eng.drawString("Opciones", eng.viewWidth() - 100, 10, -1);
                 eng.setColor(JGColor.white);
                 eng.setFont(new JGFont("Arial", 0, 10));
                 String msj;
@@ -411,36 +421,62 @@ public class menuJuego extends JGObject {
                 eng.drawString("Música: "+msj, eng.viewWidth() - 97, 40, -1);
                 break;
 
-
         }
+        
+        // DIBUJAR PANEL MINIMAPA
+        eng.setColor(new JGColor(20, 20, 20));
+        eng.drawRect(eng.viewWidth() - 110, 210, 105, 90, true, false, false);
+        eng.setColor(JGColor.white);
+        eng.drawRect(eng.viewWidth() - 110, 210, 105, 90, false, false, false);
+        
         eng.setFont(new JGFont("Arial", 1, 14));
-        eng.drawString("Zona", eng.viewWidth() - 75, 253, -1);
-//                eng.drawRect(eng.viewWidth() - 80, 263 , 70, 52.5, true, false, false);+
-        //Dibujar el personaje en el "mini..Mapa"
-        eng.drawImage(eng.viewWidth() - 87, 263, "mini_mapa", false);
+        eng.setColor(JGColor.yellow);
+        eng.drawString("Zona", eng.viewWidth() - 100, 215, -1);
+        eng.setColor(JGColor.white);
+        
+        // Dibujar el personaje en el "mini..Mapa"
+        eng.drawImage(eng.viewWidth() - 95, 235, "mini_mapa", false);
         eng.setColor(JGColor.black);
-        eng.drawOval(((pj.x * 70) / eng.pfWidth()) + (eng.viewWidth() - 87), ((pj.y * 52.5) / eng.pfHeight()) + (263), 4, 4, true, true, false);
+        eng.drawOval(((pj.x * 70) / eng.pfWidth()) + (eng.viewWidth() - 95), ((pj.y * 52.5) / eng.pfHeight()) + (235), 4, 4, true, true, false);
         eng.setColor(JGColor.white);
 
-        eng.setFont(new JGFont("Arial", 1, 14));
-        eng.drawString("Menú[Tecla]", eng.viewWidth() - 97, 320, -1);
+        // DIBUJAR PANEL CONTROLES
+        eng.setColor(new JGColor(20, 20, 20));
+        eng.drawRect(eng.viewWidth() - 110, 305, 105, 120, true, false, false);
+        eng.setColor(JGColor.white);
+        eng.drawRect(eng.viewWidth() - 110, 305, 105, 120, false, false, false);
+
+        eng.setFont(new JGFont("Arial", 1, 12));
+        eng.setColor(JGColor.yellow);
+        eng.drawString("Controles [Teclas]", eng.viewWidth() - 105, 310, -1);
+        eng.setColor(JGColor.white);
         eng.setFont(new JGFont("Arial", 0, 10));
-        eng.drawString("Habilidades [H]", eng.viewWidth() - 97, 350, -1);
-        eng.drawString("Misiones     [M]", eng.viewWidth() - 97, 360, -1);
-        eng.drawString("Estadísticas[E]", eng.viewWidth() - 97, 370, -1);
-        eng.drawString("Opciones    [O]", eng.viewWidth() - 97, 390, -1);
-        eng.setFont(new JGFont("Arial", 0, 10));
-        eng.drawString("Para salir del", eng.viewWidth() - 50, 430, 0);
-        eng.drawString("Juego cierre", eng.viewWidth() - 50, 440, 0);
-        eng.drawString("esta ventana", eng.viewWidth() - 50, 450, 0);
+        eng.drawString("Habilidades [H]", eng.viewWidth() - 100, 330, -1);
+        eng.drawString("Misiones    [M]", eng.viewWidth() - 100, 345, -1);
+        eng.drawString("Estadísticas[E]", eng.viewWidth() - 100, 360, -1);
+        eng.drawString("Opciones    [O]", eng.viewWidth() - 100, 375, -1);
+        
+        eng.setColor(JGColor.red);
+        eng.drawString("Cerrar ventana ", eng.viewWidth() - 100, 395, -1);
+        eng.drawString("para salir     ", eng.viewWidth() - 100, 405, -1);
+        eng.setColor(JGColor.white);
         /*
          * Inventario siempre dibujado
          */
-//                menuActual = 3;
+        
+        // DIBUJAR PANEL DE INVENTARIO
+        eng.setColor(new JGColor(20, 20, 20));
+        eng.drawRect(5, eng.viewHeight() - 140, 310, 100, true, false, false);
+        eng.setColor(JGColor.white);
+        eng.drawRect(5, eng.viewHeight() - 140, 310, 100, false, false, false);
+        
         int cont = 0;
         Iterator it3 = pj.getInventario().getObjetos().entrySet().iterator();
-        linea_y = eng.viewHeight() - 145;
-        linea_x = 120;
+        
+        // Ajustamos la posición inicial de los items dentro del nuevo panel
+        linea_y = eng.viewHeight() - 140;
+        linea_x = 15;
+        
         while (it3.hasNext()) {
             Map.Entry e = (Map.Entry) it3.next();
             //Si tiene almenos una cantidad de objetos lo dibujo
@@ -493,7 +529,13 @@ public class menuJuego extends JGObject {
                     this.botones_objetos_ver.get(ob.getIdObjeto()).resume();
                     this.botones_objetos_ver.get(ob.getIdObjeto()).pintar();
 
-                    linea_x += 37;
+                    linea_x += 45; // Más espaciado horizontal para los items en la grilla
+                    
+                    // Si nos pasamos del panel (ancho ~310), bajamos de fila
+                    if (linea_x > 260) {
+                        linea_x = 15;
+                        linea_y += 45;
+                    }
                 }
 
             } else {
@@ -507,7 +549,7 @@ public class menuJuego extends JGObject {
     }
 
     private void suspenderBotones(int i) {
-        HashMap<Short, Boton> boton = new HashMap<Short, Boton>(), boton2 = new HashMap<Short, Boton>();
+        HashMap<Short, Boton> boton = null, boton2 = null;
         if (i == 4) {
             boton = this.botones_estadistica_aumentar;
             boton2 = this.botones_estadistica_ver;
@@ -519,11 +561,13 @@ public class menuJuego extends JGObject {
             boton2 = this.botones_mision_abandonar;
         }
 
-        Iterator it = boton.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry e = (Map.Entry) it.next();
-            boton.get(Short.parseShort(e.getKey().toString())).suspend();
-            boton2.get(Short.parseShort(e.getKey().toString())).suspend();
+        if (boton != null && boton2 != null) {
+            Iterator it = boton.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry e = (Map.Entry) it.next();
+                boton.get(Short.parseShort(e.getKey().toString())).suspend();
+                boton2.get(Short.parseShort(e.getKey().toString())).suspend();
+            }
         }
     }
 
